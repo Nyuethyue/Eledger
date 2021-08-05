@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: eledger
+  datasource:
+    url: jdbc:postgresql://localhost:5432/eledger
+    username: postgres
+    password: postgres
+  jpa:
+    open-in-view: true
+
+server:
+  servlet:
+    context-path: /eledger
+  port: 8086
+
+logging:
+  level:
+    root: WARN
+    buthan.eledger: debug

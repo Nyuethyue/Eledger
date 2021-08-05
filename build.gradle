@@ -1,0 +1,64 @@
+plugins {
+    id 'org.springframework.boot' version '2.5.3'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+}
+
+group = 'buthan'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+//	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+//	implementation 'org.liquibase:liquibase-core'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'org.postgresql:postgresql'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+//Use log4j2 instead logback
+configurations.all {
+    exclude group: 'ch.qos.logback'
+
+    resolutionStrategy.dependencySubstitution.all { dependency ->
+        if (dependency.requested instanceof ModuleComponentSelector && dependency.requested.module == 'spring-boot-starter-logging') {
+            dependency.useTarget("org.springframework.boot:spring-boot-starter-log4j2:$dependency.requested.version", 'Use Log4j2 instead of Logback')
+        }
+    }
+}
+
+bootRun {
+    systemProperty 'java.util.logging.manager', findProperty('java.util.logging.manager') ?: 'org.apache.logging.log4j.jul.LogManager'
+}
+
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs << '-parameters' << '-Xlint:unchecked'
+    options.deprecation = true
+    inputs.file(processResources)
+}
