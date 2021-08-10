@@ -16,4 +16,4 @@ server:
 logging:
   level:
     root: WARN
-    buthan.eledger: debug
+    bhutan.eledger: debug

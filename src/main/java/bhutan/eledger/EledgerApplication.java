@@ -1,4 +1,4 @@
-package buthan.eledger;
+package bhutan.eledger;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

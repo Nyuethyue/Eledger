@@ -4,7 +4,7 @@ plugins {
     id 'java'
 }
 
-group = 'buthan'
+group = 'bhutan'
 
 java {
     toolchain {
@@ -60,5 +60,5 @@ test {
 tasks.withType(JavaCompile) {
     options.compilerArgs << '-parameters' << '-Xlint:unchecked'
     options.deprecation = true
-    inputs.file(processResources)
+    inputs.files(processResources)
 }
