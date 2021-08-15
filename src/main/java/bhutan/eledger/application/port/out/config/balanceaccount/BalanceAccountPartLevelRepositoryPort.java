@@ -5,9 +5,13 @@ import bhutan.eledger.domain.config.balanceaccount.BalanceAccountPartLevel;
 import java.util.Collection;
 import java.util.Optional;
 
-public interface BalanceAccountPartLevelReadPort {
+public interface BalanceAccountPartLevelRepositoryPort {
 
     Optional<BalanceAccountPartLevel> readById(Long id);
 
     Collection<BalanceAccountPartLevel> readAll();
+
+    Long create(BalanceAccountPartLevel balanceAccountPartLevel);
+
+    boolean existById(Integer id);
 }

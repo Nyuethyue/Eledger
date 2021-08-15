@@ -23,7 +23,7 @@ public interface CreateBalanceAccountUseCase {
         @NotEmpty
         private final Collection<BalanceAccountPartCommand> balanceAccountParts;
         @NotNull
-        private final BalanceAccountLastPartCommand BalanceAccountLastPart;
+        private final BalanceAccountLastPartCommand balanceAccountLastPart;
     }
 
     @Data
