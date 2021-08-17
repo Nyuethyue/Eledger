@@ -7,15 +7,15 @@ import lombok.Data;
 public class BalanceAccountPart {
     private final Long id;
     private final String code;
-    private final Integer balancePartLevelId;
+    private final Integer balanceAccountPartLevelId;
     private final Multilingual description;
 
-    public static BalanceAccountPart withoutId(String code, Integer balancePartLevelId, Multilingual description) {
+    public static BalanceAccountPart withoutId(String code, Integer balanceAccountPartLevelId, Multilingual description) {
 
         return new BalanceAccountPart(
                 null,
                 code,
-                balancePartLevelId,
+                balanceAccountPartLevelId,
                 description
         );
     }

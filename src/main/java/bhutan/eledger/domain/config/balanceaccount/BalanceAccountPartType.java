@@ -5,19 +5,19 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data(staticConstructor = "withId")
-public class BalanceAccountPartLevel implements Comparable<BalanceAccountPartLevel> {
+public class BalanceAccountPartType implements Comparable<BalanceAccountPartType> {
     private final Integer id;
     @EqualsAndHashCode.Include
     private final Integer level;
     private final Multilingual description;
 
     @Override
-    public int compareTo(BalanceAccountPartLevel o) {
+    public int compareTo(BalanceAccountPartType o) {
         return level.compareTo(o.level);
     }
 
-    public static BalanceAccountPartLevel withoutId(Integer level, Multilingual description) {
-        return new BalanceAccountPartLevel(
+    public static BalanceAccountPartType withoutId(Integer level, Multilingual description) {
+        return new BalanceAccountPartType(
                 null,
                 level,
                 description

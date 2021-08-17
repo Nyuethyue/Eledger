@@ -2,6 +2,7 @@ package bhutan.eledger.application.port.in.config.balanceaccount;
 
 import bhutan.eledger.domain.config.balanceaccount.BalanceAccountPart;
 import lombok.Data;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -10,16 +11,17 @@ import javax.validation.constraints.Positive;
 import java.util.Collection;
 import java.util.Map;
 
+@Validated
 public interface CreateBalanceAccountPartUseCase {
 
-    Collection<BalanceAccountPart> create(CreateBalanceAccountPartCommand command);
+    Collection<BalanceAccountPart> create(@Valid CreateBalanceAccountPartCommand command);
 
     @Data
     class CreateBalanceAccountPartCommand {
-        private final Integer parentId;
+        private final Long parentId;
         @NotNull
         @Positive
-        private final Integer balanceAccountPartLevelId;
+        private final Integer balanceAccountPartTypeId;
 
         @NotNull
         @Valid

@@ -15,5 +15,5 @@ public interface BalanceAccountPartRepositoryPort {
 
     Collection<BalanceAccountPart> create(Collection<BalanceAccountPart> balanceAccountParts);
 
-    boolean existByParentIdAndCodeInList(Integer parentId, Collection<String> codes);
+    boolean existByParentIdAndCodeInList(Long parentId, Collection<String> codes);
 }

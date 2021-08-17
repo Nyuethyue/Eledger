@@ -1,10 +1,7 @@
 package bhutan.eledger.application.service.balanceaccount;
 
-import am.iunetworks.lib.common.validation.ValidationError;
-import am.iunetworks.lib.common.validation.ViolationException;
 import am.iunetworks.lib.multilingual.core.Multilingual;
 import bhutan.eledger.application.port.in.config.balanceaccount.CreateBalanceAccountPartUseCase;
-import bhutan.eledger.application.port.out.config.balanceaccount.BalanceAccountPartLevelRepositoryPort;
 import bhutan.eledger.application.port.out.config.balanceaccount.BalanceAccountPartRepositoryPort;
 import bhutan.eledger.domain.config.balanceaccount.BalanceAccountPart;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +17,9 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 class CreateBalanceAccountPartService implements CreateBalanceAccountPartUseCase {
-    private final BalanceAccountPartLevelRepositoryPort balanceAccountPartLevelRepositoryPort;
     private final BalanceAccountPartRepositoryPort balanceAccountPartRepositoryPort;
+    private final BalanceAccountPartTypeValidator balanceAccountPartTypeValidator;
+    private final BalanceAccountPartValidator balanceAccountPartValidator;
 
     @Override
     public Collection<BalanceAccountPart> create(CreateBalanceAccountPartCommand command) {
@@ -36,45 +34,21 @@ class CreateBalanceAccountPartService implements CreateBalanceAccountPartUseCase
 
         var persistedBalanceAccountParts = balanceAccountPartRepositoryPort.create(balanceAccountParts);
 
-        log.debug("Balance account part level with ids: {} successfully created.", () -> persistedBalanceAccountParts.stream().map(BalanceAccountPart::getCode).collect(Collectors.toUnmodifiableList()));
+        log.debug("Balance account part with codes: {} successfully created.", () -> persistedBalanceAccountParts.stream().map(BalanceAccountPart::getCode).collect(Collectors.toUnmodifiableList()));
 
 
         return persistedBalanceAccountParts;
     }
 
     private void validate(CreateBalanceAccountPartCommand command) {
-
-        checkLevelExistence(command);
-        checkPartsExistence(command);
-    }
-
-    private void checkLevelExistence(CreateBalanceAccountPartCommand command) {
-        if (balanceAccountPartLevelRepositoryPort.existById(command.getBalanceAccountPartLevelId())) {
-            throw new ViolationException(
-                    new ValidationError()
-                            .addViolation("balanceAccountPartLevelId", "Level: [" + command.getBalanceAccountPartLevelId() + "] doesn't exists.")
-            );
-        }
-    }
-
-    private void checkPartsExistence(CreateBalanceAccountPartCommand command) {
-        Collection<String> balanceAccountPartCodes = command.getBalanceAccountParts()
-                .stream()
-                .map(BalanceAccountPartCommand::getCode)
-                .collect(Collectors.toUnmodifiableList());
-
-        boolean isAnyBalanceAccountExistsForLevel = balanceAccountPartRepositoryPort.existByParentIdAndCodeInList(
+        balanceAccountPartTypeValidator.checkExistenceById(command.getBalanceAccountPartTypeId());
+        balanceAccountPartValidator.checkPartsExistence(
                 command.getParentId(),
-                balanceAccountPartCodes
+                command.getBalanceAccountParts()
+                        .stream()
+                        .map(BalanceAccountPartCommand::getCode)
+                        .collect(Collectors.toUnmodifiableList())
         );
-
-        if (isAnyBalanceAccountExistsForLevel) {
-            throw new ViolationException(
-                    new ValidationError()
-                            .addViolation("balanceAccountPart", "One or more balance account part already exists. Codes: [" + balanceAccountPartCodes + "].")
-            );
-        }
-
     }
 
     private Collection<BalanceAccountPart> mapCommandToBalanceAccountParts(CreateBalanceAccountPartCommand command) {
@@ -83,11 +57,10 @@ class CreateBalanceAccountPartService implements CreateBalanceAccountPartUseCase
                 .map(balanceAccountPartCommand ->
                         BalanceAccountPart.withoutId(
                                 balanceAccountPartCommand.getCode(),
-                                command.getBalanceAccountPartLevelId(),
+                                command.getBalanceAccountPartTypeId(),
                                 Multilingual.fromMap(balanceAccountPartCommand.getDescriptions())
                         )
                 )
                 .collect(Collectors.toUnmodifiableList());
-
     }
 }
