@@ -6,11 +6,14 @@ import bhutan.eledger.application.port.out.config.balanceaccount.BalanceAccountP
 import bhutan.eledger.application.port.out.config.balanceaccount.BalanceAccountRepositoryPort;
 import bhutan.eledger.domain.config.balanceaccount.BalanceAccount;
 import bhutan.eledger.domain.config.balanceaccount.BalanceAccountPart;
+import bhutan.eledger.domain.config.balanceaccount.BalanceAccountPartStatus;
+import bhutan.eledger.domain.config.balanceaccount.BalanceAccountStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 
@@ -43,6 +46,9 @@ class CreateBalanceAccountService implements CreateBalanceAccountUseCase {
         BalanceAccount balanceAccount = BalanceAccount.withoutId(
                 bankAccountCodeWithoutLastPart + lastPart.getCode(),
                 lastPartId,
+                BalanceAccountStatus.ACTIVE,
+                LocalDate.now(),
+                null,
                 Multilingual.fromMap(command.getDescriptions())
         );
 
@@ -56,9 +62,14 @@ class CreateBalanceAccountService implements CreateBalanceAccountUseCase {
     }
 
     private BalanceAccountPart mapCommandToBalanceAccount(BalanceAccountLastPartCommand command) {
+
         return BalanceAccountPart.withoutId(
                 command.getCode(),
+                command.getParentId(),
                 command.getBalanceAccountPartTypeId(),
+                BalanceAccountPartStatus.ACTIVE,
+                LocalDate.now(),
+                null,
                 Multilingual.fromMap(command.getDescriptions())
         );
     }

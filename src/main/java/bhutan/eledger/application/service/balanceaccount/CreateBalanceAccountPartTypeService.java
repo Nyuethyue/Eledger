@@ -19,7 +19,7 @@ class CreateBalanceAccountPartTypeService implements CreateBalanceAccountPartTyp
     private final BalanceAccountPartTypeRepositoryPort balanceAccountPartTypeRepositoryPort;
 
     @Override
-    public Long create(CreateBalanceAccountPartTypeCommand command) {
+    public Integer create(CreateBalanceAccountPartTypeCommand command) {
         log.trace("Creating balance account part type with command: {}", command);
 
         BalanceAccountPartType balanceAccountPartType = mapCommandToBalanceAccountPartType(command);
@@ -28,7 +28,7 @@ class CreateBalanceAccountPartTypeService implements CreateBalanceAccountPartTyp
 
         log.trace("Persisting balance account part type: {}", balanceAccountPartType);
 
-        Long id = balanceAccountPartTypeRepositoryPort.create(balanceAccountPartType);
+        Integer id = balanceAccountPartTypeRepositoryPort.create(balanceAccountPartType);
 
         log.debug("Balance account part type with id: {} successfully created.", id);
 

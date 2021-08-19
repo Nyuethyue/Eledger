@@ -12,7 +12,7 @@ import java.util.Map;
 @Validated
 public interface CreateBalanceAccountPartTypeUseCase {
 
-    Long create(@Valid CreateBalanceAccountPartTypeUseCase.CreateBalanceAccountPartTypeCommand command);
+    Integer create(@Valid CreateBalanceAccountPartTypeUseCase.CreateBalanceAccountPartTypeCommand command);
 
     @Data
     class CreateBalanceAccountPartTypeCommand {

@@ -7,11 +7,11 @@ import java.util.Optional;
 
 public interface BalanceAccountPartTypeRepositoryPort {
 
-    Optional<BalanceAccountPartType> readById(Long id);
+    Optional<BalanceAccountPartType> readById(Integer id);
 
     Collection<BalanceAccountPartType> readAll();
 
-    Long create(BalanceAccountPartType balanceAccountPartType);
+    Integer create(BalanceAccountPartType balanceAccountPartType);
 
     boolean existById(Integer id);
 

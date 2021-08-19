@@ -4,11 +4,13 @@ import am.iunetworks.lib.multilingual.core.Multilingual;
 import bhutan.eledger.application.port.in.config.balanceaccount.CreateBalanceAccountPartUseCase;
 import bhutan.eledger.application.port.out.config.balanceaccount.BalanceAccountPartRepositoryPort;
 import bhutan.eledger.domain.config.balanceaccount.BalanceAccountPart;
+import bhutan.eledger.domain.config.balanceaccount.BalanceAccountPartStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -52,12 +54,17 @@ class CreateBalanceAccountPartService implements CreateBalanceAccountPartUseCase
     }
 
     private Collection<BalanceAccountPart> mapCommandToBalanceAccountParts(CreateBalanceAccountPartCommand command) {
+
         return command.getBalanceAccountParts()
                 .stream()
                 .map(balanceAccountPartCommand ->
                         BalanceAccountPart.withoutId(
                                 balanceAccountPartCommand.getCode(),
+                                command.getParentId(),
                                 command.getBalanceAccountPartTypeId(),
+                                BalanceAccountPartStatus.ACTIVE,
+                                LocalDate.now(),
+                                null,
                                 Multilingual.fromMap(balanceAccountPartCommand.getDescriptions())
                         )
                 )

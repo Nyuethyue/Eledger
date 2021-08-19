@@ -11,8 +11,5 @@ public interface BalanceAccountRepositoryPort {
 
     Collection<BalanceAccount> readAll();
 
-    Long create(BalanceAccount BalanceAccount);
-
-    Collection<BalanceAccount> create(Collection<BalanceAccount> BalanceAccounts);
-
+    Long create(BalanceAccount balanceAccount);
 }

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "balance_account")
@@ -23,6 +24,15 @@ class BalanceAccountEntity {
 
     @Column(name = "balance_account_last_part_id")
     private Long balanceAccountLastPartId;
+
+    @Column(name = "status")
+    private String status;
+
+    @Column(name = "start_date")
+    private LocalDate startDate;
+
+    @Column(name = "end_date")
+    private LocalDate endDate;
 
     @Column(name = "description")
     @Type(type = "MultilingualType")
@@ -50,6 +60,30 @@ class BalanceAccountEntity {
 
     public void setBalanceAccountLastPartId(Long balanceAccountLastPartId) {
         this.balanceAccountLastPartId = balanceAccountLastPartId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
     public MultilingualEntity getDescription() {
