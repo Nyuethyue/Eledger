@@ -1,16 +1,15 @@
 -----------------------------------------------------------------------------------------------------------------------------
 
 CREATE TABLE config.balance_account_part_type (
-	id int4 NOT NULL,
+	id int NOT NULL,
 	description jsonb NOT NULL,
-	"level" int4 NULL,
+	"level" int NULL,
 	CONSTRAINT pk_balance_account_part_type PRIMARY KEY (id)
 );
 
 CREATE SEQUENCE config.seq_balance_account_part_type
 	INCREMENT BY 1
 	MINVALUE 1
-	MAXVALUE 9223372036854775807
 	START 1
 	CACHE 1
 	NO CYCLE;
@@ -18,8 +17,8 @@ CREATE SEQUENCE config.seq_balance_account_part_type
 -----------------------------------------------------------------------------------------------------------------------------
 
 CREATE TABLE config.balance_account_part (
-	id int8 NOT NULL,
-	parent_id int8 NULL,
+	id bigint NOT NULL,
+	parent_id bigint NULL,
 	description jsonb NOT NULL,
 	code varchar NOT NULL,
 	balance_account_part_type_id int4 NULL,
@@ -34,7 +33,6 @@ CREATE UNIQUE INDEX idx_parent_id_code ON config.balance_account_part USING btre
 CREATE SEQUENCE config.seq_balance_account_part_type
 	INCREMENT BY 1
 	MINVALUE 1
-	MAXVALUE 9223372036854775807
 	START 1
 	CACHE 1
 	NO CYCLE;
@@ -42,10 +40,10 @@ CREATE SEQUENCE config.seq_balance_account_part_type
 -----------------------------------------------------------------------------------------------------------------------------
 
 CREATE TABLE config.balance_account (
-	id int8 NOT NULL,
+	id bigint NOT NULL,
 	code varchar NOT NULL,
 	description jsonb NOT NULL,
-	balance_account_last_part_id int8 NOT NULL,
+	balance_account_last_part_id bigint NOT NULL,
 	is_debit bool NULL,
 	CONSTRAINT pk_balance_account PRIMARY KEY (id),
 	CONSTRAINT fk_balance_account_part FOREIGN KEY (balance_account_last_part_id) REFERENCES config.balance_account_part(id)
@@ -54,7 +52,6 @@ CREATE TABLE config.balance_account (
 CREATE SEQUENCE config.seq_balance_account
 	INCREMENT BY 1
 	MINVALUE 1
-	MAXVALUE 9223372036854775807
 	START 1
 	CACHE 1
 	NO CYCLE;
