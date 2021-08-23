@@ -1,6 +1,5 @@
 package bhutan.eledger.adapter.persistence.config.balanceaccount;
 
-import am.iunetworks.lib.common.persistence.multilingual.entity.MultilingualEntity;
 import am.iunetworks.lib.multilingual.core.Multilingual;
 import bhutan.eledger.domain.config.balanceaccount.BalanceAccountPartType;
 import org.springframework.stereotype.Component;
@@ -9,18 +8,32 @@ import org.springframework.stereotype.Component;
 class BalanceAccountPartTypeMapper {
 
     BalanceAccountPartTypeEntity mapToEntity(BalanceAccountPartType partTypeDomain) {
-        return new BalanceAccountPartTypeEntity(
-                partTypeDomain.getId(),
-                partTypeDomain.getLevel(),
-                MultilingualEntity.of(partTypeDomain.getDescription())
-        );
+        BalanceAccountPartTypeEntity balanceAccountPartTypeEntity =
+                new BalanceAccountPartTypeEntity(
+                        partTypeDomain.getId(),
+                        partTypeDomain.getLevel()
+                );
+
+        partTypeDomain.getDescription()
+                .getTranslations()
+                .stream()
+                .map(t ->
+                        new BalanceAccountPartTypeDescriptionEntity(
+                                t.getId(),
+                                t.getLanguageCode(),
+                                t.getValue()
+                        )
+                )
+                .forEach(balanceAccountPartTypeEntity::addToDescriptions);
+
+        return balanceAccountPartTypeEntity;
     }
 
     BalanceAccountPartType mapToDomain(BalanceAccountPartTypeEntity partTypeEntity) {
         return BalanceAccountPartType.withId(
                 partTypeEntity.getId(),
                 partTypeEntity.getLevel(),
-                Multilingual.copyOf(partTypeEntity.getDescription())
+                Multilingual.of(partTypeEntity.getDescriptions())
         );
     }
 }

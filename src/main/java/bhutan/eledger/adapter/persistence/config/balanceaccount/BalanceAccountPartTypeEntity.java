@@ -1,20 +1,18 @@
 package bhutan.eledger.adapter.persistence.config.balanceaccount;
 
-import am.iunetworks.lib.common.persistence.multilingual.entity.MultilingualEntity;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "balance_account_part_type")
-@AllArgsConstructor
+@Table(name = "balance_account_part_type", schema = "config")
 @NoArgsConstructor
 class BalanceAccountPartTypeEntity {
 
     @Id
-    @SequenceGenerator(name = "balance_account_part_type_id_seq", sequenceName = "balance_account_part_type_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "balance_account_part_type_id_seq", schema = "config", sequenceName = "balance_account_part_type_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "balance_account_part_type_id_seq")
     @Column(name = "id")
     private Integer id;
@@ -22,9 +20,18 @@ class BalanceAccountPartTypeEntity {
     @Column(name = "level")
     private Integer level;
 
-    @Column(name = "description")
-    @Type(type = "MultilingualType")
-    private MultilingualEntity description;
+    public BalanceAccountPartTypeEntity(Integer id, Integer level) {
+        this.id = id;
+        this.level = level;
+    }
+
+    @OneToMany(
+            mappedBy = "balanceAccountPartType",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
+    )
+    private Set<BalanceAccountPartTypeDescriptionEntity> descriptions;
 
     public Integer getId() {
         return id;
@@ -42,11 +49,20 @@ class BalanceAccountPartTypeEntity {
         this.level = level;
     }
 
-    public MultilingualEntity getDescription() {
-        return description;
+    public Set<BalanceAccountPartTypeDescriptionEntity> getDescriptions() {
+        return descriptions;
     }
 
-    public void setDescription(MultilingualEntity description) {
-        this.description = description;
+    public void setDescriptions(Set<BalanceAccountPartTypeDescriptionEntity> descriptions) {
+        this.descriptions = descriptions;
+    }
+
+    public void addToDescriptions(BalanceAccountPartTypeDescriptionEntity description) {
+        if (descriptions == null) {
+            descriptions = new HashSet<>();
+        }
+
+        description.setBalanceAccountPartType(this);
+        descriptions.add(description);
     }
 }

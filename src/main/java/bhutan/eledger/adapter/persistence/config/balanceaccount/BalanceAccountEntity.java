@@ -1,20 +1,20 @@
 package bhutan.eledger.adapter.persistence.config.balanceaccount;
 
-import am.iunetworks.lib.common.persistence.multilingual.entity.MultilingualEntity;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "balance_account")
+@Table(name = "balance_account", schema = "config")
 @AllArgsConstructor
 @NoArgsConstructor
 class BalanceAccountEntity {
     @Id
-    @SequenceGenerator(name = "balance_account_id_seq", sequenceName = "balance_account_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "balance_account_id_seq", schema = "config", sequenceName = "balance_account_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "balance_account_id_seq")
     @Column(name = "id")
     private Long id;
@@ -29,14 +29,27 @@ class BalanceAccountEntity {
     private String status;
 
     @Column(name = "start_date")
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
     @Column(name = "end_date")
-    private LocalDate endDate;
+    private LocalDateTime endDate;
 
-    @Column(name = "description")
-    @Type(type = "MultilingualType")
-    private MultilingualEntity description;
+    @OneToMany(
+            mappedBy = "balanceAccount",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
+    )
+    private Set<BalanceAccountDescriptionEntity> descriptions;
+
+    public BalanceAccountEntity(Long id, String code, Long balanceAccountLastPartId, String status, LocalDateTime startDate, LocalDateTime endDate) {
+        this.id = id;
+        this.code = code;
+        this.balanceAccountLastPartId = balanceAccountLastPartId;
+        this.status = status;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 
     public Long getId() {
         return id;
@@ -70,27 +83,36 @@ class BalanceAccountEntity {
         this.status = status;
     }
 
-    public LocalDate getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 
-    public MultilingualEntity getDescription() {
-        return description;
+    public Set<BalanceAccountDescriptionEntity> getDescriptions() {
+        return descriptions;
     }
 
-    public void setDescription(MultilingualEntity description) {
-        this.description = description;
+    public void setDescriptions(Set<BalanceAccountDescriptionEntity> descriptions) {
+        this.descriptions = descriptions;
+    }
+
+    public void addToDescription(BalanceAccountDescriptionEntity description) {
+        if (descriptions == null) {
+            descriptions = new HashSet<>();
+        }
+
+        description.setBalanceAccount(this);
+        descriptions.add(description);
     }
 }

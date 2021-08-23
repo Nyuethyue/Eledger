@@ -1,6 +1,5 @@
 package bhutan.eledger.adapter.persistence.config.balanceaccount;
 
-import am.iunetworks.lib.common.persistence.multilingual.entity.MultilingualEntity;
 import am.iunetworks.lib.multilingual.core.Multilingual;
 import bhutan.eledger.domain.config.balanceaccount.BalanceAccount;
 import bhutan.eledger.domain.config.balanceaccount.BalanceAccountStatus;
@@ -10,15 +9,28 @@ import org.springframework.stereotype.Component;
 class BalanceAccountMapper {
 
     BalanceAccountEntity mapToEntity(BalanceAccount balanceAccount) {
-        return new BalanceAccountEntity(
+        BalanceAccountEntity balanceAccountEntity = new BalanceAccountEntity(
                 balanceAccount.getId(),
                 balanceAccount.getCode(),
                 balanceAccount.getBalanceAccountLastPartId(),
                 balanceAccount.getStatus().getValue(),
                 balanceAccount.getStartDate(),
-                balanceAccount.getEndDate(),
-                MultilingualEntity.of(balanceAccount.getDescription())
+                balanceAccount.getEndDate()
         );
+
+        balanceAccount.getDescription()
+                .getTranslations()
+                .stream()
+                .map(t ->
+                        new BalanceAccountDescriptionEntity(
+                                t.getId(),
+                                t.getLanguageCode(),
+                                t.getValue()
+                        )
+                )
+                .forEach(balanceAccountEntity::addToDescription);
+
+        return balanceAccountEntity;
     }
 
     BalanceAccount mapToDomain(BalanceAccountEntity balanceAccountEntity) {
@@ -29,7 +41,7 @@ class BalanceAccountMapper {
                 BalanceAccountStatus.of(balanceAccountEntity.getStatus()),
                 balanceAccountEntity.getStartDate(),
                 balanceAccountEntity.getEndDate(),
-                Multilingual.copyOf(balanceAccountEntity.getDescription())
+                Multilingual.of(balanceAccountEntity.getDescriptions())
         );
     }
 }

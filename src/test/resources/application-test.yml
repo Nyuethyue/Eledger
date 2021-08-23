@@ -6,18 +6,12 @@ spring:
     username: postgres
     password: postgres
   liquibase:
-    change-log: classpath:db/changelog/changelog.dev.xml
-    clear-checksums: false
+    change-log: classpath:db/changelog/changelog.test.xml
+    clear-checksums: true
     liquibase-schema: migration
   jpa:
     open-in-view: true
 
-server:
-  servlet:
-    context-path: /eledger
-  port: 8086
-
 logging:
   level:
-    root: WARN
-    bhutan.eledger: debug
+    bhutan.eledger: trace

@@ -1,6 +1,5 @@
 package bhutan.eledger.adapter.persistence.config.balanceaccount;
 
-import am.iunetworks.lib.common.persistence.multilingual.entity.MultilingualEntity;
 import am.iunetworks.lib.multilingual.core.Multilingual;
 import bhutan.eledger.domain.config.balanceaccount.BalanceAccountPart;
 import bhutan.eledger.domain.config.balanceaccount.BalanceAccountPartStatus;
@@ -10,16 +9,29 @@ import org.springframework.stereotype.Component;
 class BalanceAccountPartMapper {
 
     BalanceAccountPartEntity mapToEntity(BalanceAccountPart partDomain) {
-        return new BalanceAccountPartEntity(
+        BalanceAccountPartEntity balanceAccountPartEntity = new BalanceAccountPartEntity(
                 partDomain.getId(),
                 partDomain.getCode(),
                 partDomain.getParentId(),
                 partDomain.getBalanceAccountPartLevelId(),
                 partDomain.getStatus().getValue(),
                 partDomain.getStartDate(),
-                partDomain.getEndDate(),
-                MultilingualEntity.of(partDomain.getDescription())
+                partDomain.getEndDate()
         );
+
+        partDomain.getDescription()
+                .getTranslations()
+                .stream()
+                .map(t ->
+                        new BalanceAccountPartDescriptionEntity(
+                                t.getId(),
+                                t.getLanguageCode(),
+                                t.getValue()
+                        )
+                )
+                .forEach(balanceAccountPartEntity::addToDescriptions);
+
+        return balanceAccountPartEntity;
     }
 
     BalanceAccountPart mapToDomain(BalanceAccountPartEntity partEntity) {
@@ -31,7 +43,7 @@ class BalanceAccountPartMapper {
                 BalanceAccountPartStatus.of(partEntity.getStatus()),
                 partEntity.getStartDate(),
                 partEntity.getEndDate(),
-                Multilingual.copyOf(partEntity.getDescription())
+                Multilingual.of(partEntity.getDescriptions())
         );
     }
 }

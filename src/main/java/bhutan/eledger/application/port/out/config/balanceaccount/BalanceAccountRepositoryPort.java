@@ -12,4 +12,6 @@ public interface BalanceAccountRepositoryPort {
     Collection<BalanceAccount> readAll();
 
     Long create(BalanceAccount balanceAccount);
+
+    void deleteAll();
 }

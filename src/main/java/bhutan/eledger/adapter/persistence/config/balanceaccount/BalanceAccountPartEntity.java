@@ -1,20 +1,18 @@
 package bhutan.eledger.adapter.persistence.config.balanceaccount;
 
-import am.iunetworks.lib.common.persistence.multilingual.entity.MultilingualEntity;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "balance_account_part")
-@AllArgsConstructor
+@Table(name = "balance_account_part", schema = "config")
 @NoArgsConstructor
 class BalanceAccountPartEntity {
     @Id
-    @SequenceGenerator(name = "balance_account_part_id_seq", sequenceName = "balance_account_part_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "balance_account_part_id_seq", schema = "config", sequenceName = "balance_account_part_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "balance_account_part_id_seq")
     @Column(name = "id")
     private Long id;
@@ -22,7 +20,7 @@ class BalanceAccountPartEntity {
     @Column(name = "code")
     private String code;
 
-    @Column("parent_id")
+    @Column(name = "parent_id")
     private Long parentId;
 
     @Column(name = "balance_account_part_type_id")
@@ -32,14 +30,28 @@ class BalanceAccountPartEntity {
     private String status;
 
     @Column(name = "start_date")
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
     @Column(name = "end_date")
-    private LocalDate endDate;
+    private LocalDateTime endDate;
 
-    @Column(name = "description")
-    @Type(type = "MultilingualType")
-    private MultilingualEntity description;
+    @OneToMany(
+            mappedBy = "balanceAccountPart",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
+    )
+    private Set<BalanceAccountPartDescriptionEntity> descriptions;
+
+    public BalanceAccountPartEntity(Long id, String code, Long parentId, Integer balanceAccountPartTypeId, String status, LocalDateTime startDate, LocalDateTime endDate) {
+        this.id = id;
+        this.code = code;
+        this.parentId = parentId;
+        this.balanceAccountPartTypeId = balanceAccountPartTypeId;
+        this.status = status;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 
     public Long getId() {
         return id;
@@ -81,27 +93,36 @@ class BalanceAccountPartEntity {
         this.status = status;
     }
 
-    public LocalDate getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 
-    public MultilingualEntity getDescription() {
-        return description;
+    public Set<BalanceAccountPartDescriptionEntity> getDescriptions() {
+        return descriptions;
     }
 
-    public void setDescription(MultilingualEntity description) {
-        this.description = description;
+    public void setDescriptions(Set<BalanceAccountPartDescriptionEntity> descriptions) {
+        this.descriptions = descriptions;
+    }
+
+    public void addToDescriptions(BalanceAccountPartDescriptionEntity description) {
+        if (descriptions == null) {
+            descriptions = new HashSet<>();
+        }
+
+        description.setBalanceAccountPart(this);
+        descriptions.add(description);
     }
 }

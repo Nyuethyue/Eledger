@@ -37,4 +37,9 @@ class BalanceAccountAdapter implements BalanceAccountRepositoryPort {
 
         return balanceAccountEntity.getId();
     }
+
+    @Override
+    public void deleteAll() {
+        balanceAccountEntityRepository.deleteAll();
+    }
 }

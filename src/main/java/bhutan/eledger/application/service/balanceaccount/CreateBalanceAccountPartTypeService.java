@@ -46,7 +46,7 @@ class CreateBalanceAccountPartTypeService implements CreateBalanceAccountPartTyp
         if (balanceAccountPartTypeRepositoryPort.existByLevel(balanceAccountPartType.getLevel())) {
             throw new ViolationException(
                     new ValidationError()
-                            .addViolation("balanceAccountPartType", "Part with level: [" + balanceAccountPartType.getLevel() + "] already exists.")
+                            .addViolation("balanceAccountPartType", "Part type with level: [" + balanceAccountPartType.getLevel() + "] already exists.")
             );
         }
     }

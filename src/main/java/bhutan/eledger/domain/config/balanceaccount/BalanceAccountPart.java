@@ -3,7 +3,7 @@ package bhutan.eledger.domain.config.balanceaccount;
 import am.iunetworks.lib.multilingual.core.Multilingual;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data(staticConstructor = "withId")
 public class BalanceAccountPart {
@@ -12,8 +12,8 @@ public class BalanceAccountPart {
     private final Long parentId;
     private final Integer balanceAccountPartLevelId;
     private final BalanceAccountPartStatus status;
-    private final LocalDate startDate;
-    private final LocalDate endDate;
+    private final LocalDateTime startDate;
+    private final LocalDateTime endDate;
     private final Multilingual description;
 
     public static BalanceAccountPart withoutId(
@@ -21,8 +21,8 @@ public class BalanceAccountPart {
             Long parentId,
             Integer balanceAccountPartLevelId,
             BalanceAccountPartStatus status,
-            LocalDate startDate,
-            LocalDate endDate,
+            LocalDateTime startDate,
+            LocalDateTime endDate,
             Multilingual description
     ) {
 

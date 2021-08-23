@@ -23,6 +23,12 @@ class BalanceAccountPartTypeAdapter implements BalanceAccountPartTypeRepositoryP
     }
 
     @Override
+    public Optional<BalanceAccountPartType> readByLevel(Integer level) {
+        return balanceAccountPartTypeEntityRepository.findByLevel(level)
+                .map(balanceAccountPartTypeMapper::mapToDomain);
+    }
+
+    @Override
     public Collection<BalanceAccountPartType> readAll() {
         return balanceAccountPartTypeEntityRepository.findAll()
                 .stream()
@@ -35,7 +41,12 @@ class BalanceAccountPartTypeAdapter implements BalanceAccountPartTypeRepositoryP
         BalanceAccountPartTypeEntity balanceAccountPartTypeEntity =
                 balanceAccountPartTypeMapper.mapToEntity(balanceAccountPartType);
 
-        return balanceAccountPartTypeEntity.getId();
+        return balanceAccountPartTypeEntityRepository.save(balanceAccountPartTypeEntity).getId();
+    }
+
+    @Override
+    public Optional<Integer> getIdOfNextPartType(Integer fromPartTypeId) {
+        return balanceAccountPartTypeEntityRepository.getIdOfNextPartType(fromPartTypeId);
     }
 
     @Override
@@ -46,5 +57,15 @@ class BalanceAccountPartTypeAdapter implements BalanceAccountPartTypeRepositoryP
     @Override
     public boolean existByLevel(Integer level) {
         return balanceAccountPartTypeEntityRepository.existsByLevel(level);
+    }
+
+    @Override
+    public void deleteById(Integer id) {
+        balanceAccountPartTypeEntityRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteAll() {
+        balanceAccountPartTypeEntityRepository.deleteAll();
     }
 }

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -19,6 +20,14 @@ class BalanceAccountPartAdapter implements BalanceAccountPartRepositoryPort {
     public Optional<BalanceAccountPart> readById(Long id) {
         return balanceAccountPartEntityRepository.findById(id)
                 .map(balanceAccountPartMapper::mapToDomain);
+    }
+
+    @Override
+    public List<BalanceAccountPart> readAllByIdInSortedByLevel(Collection<Long> ids) {
+        return balanceAccountPartEntityRepository.queryAllByIdInSortedByLevel(ids)
+                .stream()
+                .map(balanceAccountPartMapper::mapToDomain)
+                .collect(Collectors.toUnmodifiableList());
     }
 
     @Override
@@ -54,5 +63,10 @@ class BalanceAccountPartAdapter implements BalanceAccountPartRepositoryPort {
     @Override
     public boolean existByParentIdAndCodeInList(Long parentId, Collection<String> codes) {
         return balanceAccountPartEntityRepository.existsByParentIdAndCodeIn(parentId, codes);
+    }
+
+    @Override
+    public void deleteAll() {
+        balanceAccountPartEntityRepository.deleteAll();
     }
 }

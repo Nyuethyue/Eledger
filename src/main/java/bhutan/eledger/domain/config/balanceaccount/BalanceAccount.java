@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @ToString
@@ -15,16 +15,16 @@ public class BalanceAccount {
     private final String code;
     private final Long balanceAccountLastPartId;
     private final BalanceAccountStatus status;
-    private final LocalDate startDate;
-    private final LocalDate endDate;
+    private final LocalDateTime startDate;
+    private final LocalDateTime endDate;
     private final Multilingual description;
 
     public static BalanceAccount withoutId(
             String code,
             Long balanceAccountLastPartId,
             BalanceAccountStatus status,
-            LocalDate startDate,
-            LocalDate endDate,
+            LocalDateTime startDate,
+            LocalDateTime endDate,
             Multilingual description
     ) {
         return new BalanceAccount(
