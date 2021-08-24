@@ -4,11 +4,14 @@ import am.iunetworks.lib.multilingual.core.Multilingual;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDateTime;
+
 @Data(staticConstructor = "withId")
 public class BalanceAccountPartType implements Comparable<BalanceAccountPartType> {
     private final Integer id;
     @EqualsAndHashCode.Include
     private final Integer level;
+    private final LocalDateTime creationDateTime;
     private final Multilingual description;
 
     @Override
@@ -16,10 +19,15 @@ public class BalanceAccountPartType implements Comparable<BalanceAccountPartType
         return level.compareTo(o.level);
     }
 
-    public static BalanceAccountPartType withoutId(Integer level, Multilingual description) {
+    public static BalanceAccountPartType withoutId(
+            Integer level,
+            LocalDateTime creationDateTime,
+            Multilingual description
+    ) {
         return new BalanceAccountPartType(
                 null,
                 level,
+                creationDateTime,
                 description
         );
     }

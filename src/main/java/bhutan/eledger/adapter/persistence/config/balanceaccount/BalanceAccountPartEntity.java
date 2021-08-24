@@ -29,6 +29,9 @@ class BalanceAccountPartEntity {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "creation_date_time")
+    private LocalDateTime creationDateTime;
+
     @Column(name = "start_date")
     private LocalDateTime startDate;
 
@@ -43,12 +46,13 @@ class BalanceAccountPartEntity {
     )
     private Set<BalanceAccountPartDescriptionEntity> descriptions;
 
-    public BalanceAccountPartEntity(Long id, String code, Long parentId, Integer balanceAccountPartTypeId, String status, LocalDateTime startDate, LocalDateTime endDate) {
+    public BalanceAccountPartEntity(Long id, String code, Long parentId, Integer balanceAccountPartTypeId, String status, LocalDateTime creationDateTime, LocalDateTime startDate, LocalDateTime endDate) {
         this.id = id;
         this.code = code;
         this.parentId = parentId;
         this.balanceAccountPartTypeId = balanceAccountPartTypeId;
         this.status = status;
+        this.creationDateTime = creationDateTime;
         this.startDate = startDate;
         this.endDate = endDate;
     }
@@ -87,6 +91,14 @@ class BalanceAccountPartEntity {
 
     public String getStatus() {
         return status;
+    }
+
+    public LocalDateTime getCreationDateTime() {
+        return creationDateTime;
+    }
+
+    public void setCreationDateTime(LocalDateTime creationDateTime) {
+        this.creationDateTime = creationDateTime;
     }
 
     public void setStatus(String status) {

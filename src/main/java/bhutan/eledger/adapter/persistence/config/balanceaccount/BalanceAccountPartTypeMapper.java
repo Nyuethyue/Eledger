@@ -11,7 +11,8 @@ class BalanceAccountPartTypeMapper {
         BalanceAccountPartTypeEntity balanceAccountPartTypeEntity =
                 new BalanceAccountPartTypeEntity(
                         partTypeDomain.getId(),
-                        partTypeDomain.getLevel()
+                        partTypeDomain.getLevel(),
+                        partTypeDomain.getCreationDateTime()
                 );
 
         partTypeDomain.getDescription()
@@ -33,6 +34,7 @@ class BalanceAccountPartTypeMapper {
         return BalanceAccountPartType.withId(
                 partTypeEntity.getId(),
                 partTypeEntity.getLevel(),
+                partTypeEntity.getCreationDateTime(),
                 Multilingual.of(partTypeEntity.getDescriptions())
         );
     }

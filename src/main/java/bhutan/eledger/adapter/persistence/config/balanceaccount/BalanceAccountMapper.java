@@ -14,6 +14,7 @@ class BalanceAccountMapper {
                 balanceAccount.getCode(),
                 balanceAccount.getBalanceAccountLastPartId(),
                 balanceAccount.getStatus().getValue(),
+                balanceAccount.getCreationDateTime(),
                 balanceAccount.getStartDate(),
                 balanceAccount.getEndDate()
         );
@@ -37,11 +38,12 @@ class BalanceAccountMapper {
         return BalanceAccount.withId(
                 balanceAccountEntity.getId(),
                 balanceAccountEntity.getCode(),
-                balanceAccountEntity.getBalanceAccountLastPartId(),
                 BalanceAccountStatus.of(balanceAccountEntity.getStatus()),
+                balanceAccountEntity.getCreationDateTime(),
                 balanceAccountEntity.getStartDate(),
                 balanceAccountEntity.getEndDate(),
-                Multilingual.of(balanceAccountEntity.getDescriptions())
+                Multilingual.of(balanceAccountEntity.getDescriptions()),
+                balanceAccountEntity.getBalanceAccountLastPartId()
         );
     }
 }

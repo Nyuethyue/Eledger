@@ -2,8 +2,9 @@
 
 CREATE TABLE config.balance_account_part_type
 (
-    id    integer NOT NULL,
-    level integer NULL
+    id                 integer   NOT NULL,
+    level              integer   NULL,
+    creation_date_time timestamp NOT NULL
 );
 
 ALTER TABLE config.balance_account_part_type
@@ -61,6 +62,7 @@ CREATE TABLE config.balance_account_part
     parent_id                    bigint    NULL,
     code                         varchar   NOT NULL,
     status                       varchar   NOT NULL,
+    creation_date_time           timestamp NOT NULL,
     start_date                   timestamp NULL,
     end_date                     timestamp NULL,
     balance_account_part_type_id integer   NULL
@@ -123,6 +125,7 @@ CREATE TABLE config.balance_account
     id                           bigint    NOT NULL,
     code                         varchar   NOT NULL,
     status                       varchar   NOT NULL,
+    creation_date_time           timestamp NOT NULL,
     start_date                   timestamp NULL,
     end_date                     timestamp NULL,
     balance_account_last_part_id bigint    NOT NULL

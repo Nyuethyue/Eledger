@@ -3,6 +3,7 @@ package bhutan.eledger.adapter.persistence.config.balanceaccount;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,10 +21,8 @@ class BalanceAccountPartTypeEntity {
     @Column(name = "level")
     private Integer level;
 
-    public BalanceAccountPartTypeEntity(Integer id, Integer level) {
-        this.id = id;
-        this.level = level;
-    }
+    @Column(name = "creation_date_time")
+    private LocalDateTime creationDateTime;
 
     @OneToMany(
             mappedBy = "balanceAccountPartType",
@@ -32,6 +31,12 @@ class BalanceAccountPartTypeEntity {
             fetch = FetchType.EAGER
     )
     private Set<BalanceAccountPartTypeDescriptionEntity> descriptions;
+
+    public BalanceAccountPartTypeEntity(Integer id, Integer level, LocalDateTime creationDateTime) {
+        this.id = id;
+        this.level = level;
+        this.creationDateTime = creationDateTime;
+    }
 
     public Integer getId() {
         return id;
@@ -47,6 +52,14 @@ class BalanceAccountPartTypeEntity {
 
     public void setLevel(Integer level) {
         this.level = level;
+    }
+
+    public LocalDateTime getCreationDateTime() {
+        return creationDateTime;
+    }
+
+    public void setCreationDateTime(LocalDateTime creationDateTime) {
+        this.creationDateTime = creationDateTime;
     }
 
     public Set<BalanceAccountPartTypeDescriptionEntity> getDescriptions() {

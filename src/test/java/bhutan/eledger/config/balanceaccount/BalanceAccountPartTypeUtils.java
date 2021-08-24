@@ -4,6 +4,7 @@ import am.iunetworks.lib.multilingual.core.Multilingual;
 import am.iunetworks.lib.multilingual.core.Translation;
 import bhutan.eledger.domain.config.balanceaccount.BalanceAccountPartType;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -50,6 +51,7 @@ class BalanceAccountPartTypeUtils {
     static BalanceAccountPartType balanceAccountPartTypeByLevel(Integer level) {
         return BalanceAccountPartType.withoutId(
                 level,
+                LocalDateTime.now(),
                 Multilingual.of(
                         Set.of(
                                 Translation.of(

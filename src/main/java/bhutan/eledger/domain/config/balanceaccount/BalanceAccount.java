@@ -13,28 +13,31 @@ import java.time.LocalDateTime;
 public class BalanceAccount {
     private final Long id;
     private final String code;
-    private final Long balanceAccountLastPartId;
     private final BalanceAccountStatus status;
+    private final LocalDateTime creationDateTime;
     private final LocalDateTime startDate;
     private final LocalDateTime endDate;
     private final Multilingual description;
+    private final Long balanceAccountLastPartId;
 
     public static BalanceAccount withoutId(
             String code,
-            Long balanceAccountLastPartId,
             BalanceAccountStatus status,
+            LocalDateTime creationDateTime,
             LocalDateTime startDate,
             LocalDateTime endDate,
-            Multilingual description
+            Multilingual description,
+            Long balanceAccountLastPartId
     ) {
         return new BalanceAccount(
                 null,
                 code,
-                balanceAccountLastPartId,
                 status,
+                creationDateTime,
                 startDate,
                 endDate,
-                description
+                description,
+                balanceAccountLastPartId
         );
     }
 }

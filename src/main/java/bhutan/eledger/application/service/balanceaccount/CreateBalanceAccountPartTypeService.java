@@ -11,6 +11,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Log4j2
 @Service
 @Transactional
@@ -38,6 +40,7 @@ class CreateBalanceAccountPartTypeService implements CreateBalanceAccountPartTyp
     private BalanceAccountPartType mapCommandToBalanceAccountPartType(CreateBalanceAccountPartTypeCommand command) {
         return BalanceAccountPartType.withoutId(
                 command.getLevel(),
+                LocalDateTime.now(),
                 Multilingual.fromMap(command.getDescriptions())
         );
     }

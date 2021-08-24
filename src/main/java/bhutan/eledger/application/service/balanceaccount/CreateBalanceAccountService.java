@@ -17,7 +17,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -66,13 +66,16 @@ class CreateBalanceAccountService implements CreateBalanceAccountUseCase {
 
         log.debug("Balance account last part with id: {} successfully created.", lastPartId);
 
+        LocalDateTime creationDateTime = LocalDateTime.now();
+
         BalanceAccount balanceAccount = BalanceAccount.withoutId(
                 bankAccountCodeWithoutLastPart + lastPart.getCode(),
-                lastPartId,
                 BalanceAccountStatus.ACTIVE,
-                LocalDate.now().atStartOfDay(),
+                creationDateTime,
+                creationDateTime.toLocalDate().atStartOfDay(),
                 null,
-                Multilingual.fromMap(command.getDescriptions())
+                Multilingual.fromMap(command.getDescriptions()),
+                lastPartId
         );
 
         log.trace("Persisting balance account: {}", balanceAccount);
@@ -86,14 +89,17 @@ class CreateBalanceAccountService implements CreateBalanceAccountUseCase {
 
     private BalanceAccountPart mapCommandToBalanceAccount(BalanceAccountLastPartCommand command, Long parentId, Integer balanceAccountPartTypeId) {
 
+        LocalDateTime creationDateTime = LocalDateTime.now();
+
         return BalanceAccountPart.withoutId(
                 command.getCode(),
                 parentId,
-                balanceAccountPartTypeId,
                 BalanceAccountPartStatus.ACTIVE,
-                LocalDate.now().atStartOfDay(),
+                creationDateTime,
+                creationDateTime.toLocalDate().atStartOfDay(),
                 null,
-                Multilingual.fromMap(command.getDescriptions())
+                Multilingual.fromMap(command.getDescriptions()),
+                balanceAccountPartTypeId
         );
     }
 }
