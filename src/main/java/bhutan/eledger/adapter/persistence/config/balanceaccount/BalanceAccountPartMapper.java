@@ -16,6 +16,7 @@ class BalanceAccountPartMapper {
                 partDomain.getBalanceAccountPartLevelId(),
                 partDomain.getStatus().getValue(),
                 partDomain.getCreationDateTime(),
+                partDomain.getLastModificationDateTime(),
                 partDomain.getStartDate(),
                 partDomain.getEndDate()
         );
@@ -42,6 +43,7 @@ class BalanceAccountPartMapper {
                 partEntity.getParentId(),
                 BalanceAccountPartStatus.of(partEntity.getStatus()),
                 partEntity.getCreationDateTime(),
+                partEntity.getLastModificationDateTime(),
                 partEntity.getStartDate(),
                 partEntity.getEndDate(),
                 Multilingual.of(partEntity.getDescriptions()),

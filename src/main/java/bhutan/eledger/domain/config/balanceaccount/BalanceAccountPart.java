@@ -12,6 +12,7 @@ public class BalanceAccountPart {
     private final Long parentId;
     private final BalanceAccountPartStatus status;
     private final LocalDateTime creationDateTime;
+    private final LocalDateTime lastModificationDateTime;
     private final LocalDateTime startDate;
     private final LocalDateTime endDate;
     private final Multilingual description;
@@ -22,6 +23,7 @@ public class BalanceAccountPart {
             Long parentId,
             BalanceAccountPartStatus status,
             LocalDateTime creationDateTime,
+            LocalDateTime lastModificationDateTime,
             LocalDateTime startDate,
             LocalDateTime endDate,
             Multilingual description,
@@ -34,6 +36,7 @@ public class BalanceAccountPart {
                 parentId,
                 status,
                 creationDateTime,
+                lastModificationDateTime,
                 startDate,
                 endDate,
                 description,

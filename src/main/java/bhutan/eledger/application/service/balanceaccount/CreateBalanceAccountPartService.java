@@ -65,6 +65,7 @@ class CreateBalanceAccountPartService implements CreateBalanceAccountPartUseCase
                                 command.getParentId(),
                                 BalanceAccountPartStatus.ACTIVE,
                                 creationDateTime,
+                                creationDateTime,
                                 creationDateTime.toLocalDate().atStartOfDay(),
                                 null,
                                 Multilingual.fromMap(balanceAccountPartCommand.getDescriptions()),

@@ -12,6 +12,7 @@ public class BalanceAccountPartType implements Comparable<BalanceAccountPartType
     @EqualsAndHashCode.Include
     private final Integer level;
     private final LocalDateTime creationDateTime;
+    private final LocalDateTime lastModificationDateTime;
     private final Multilingual description;
 
     @Override
@@ -22,12 +23,14 @@ public class BalanceAccountPartType implements Comparable<BalanceAccountPartType
     public static BalanceAccountPartType withoutId(
             Integer level,
             LocalDateTime creationDateTime,
+            LocalDateTime lastModificationDateTime,
             Multilingual description
     ) {
         return new BalanceAccountPartType(
                 null,
                 level,
                 creationDateTime,
+                lastModificationDateTime,
                 description
         );
     }

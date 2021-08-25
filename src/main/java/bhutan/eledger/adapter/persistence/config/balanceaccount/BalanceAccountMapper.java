@@ -15,6 +15,7 @@ class BalanceAccountMapper {
                 balanceAccount.getBalanceAccountLastPartId(),
                 balanceAccount.getStatus().getValue(),
                 balanceAccount.getCreationDateTime(),
+                balanceAccount.getLastModificationDateTime(),
                 balanceAccount.getStartDate(),
                 balanceAccount.getEndDate()
         );
@@ -40,6 +41,7 @@ class BalanceAccountMapper {
                 balanceAccountEntity.getCode(),
                 BalanceAccountStatus.of(balanceAccountEntity.getStatus()),
                 balanceAccountEntity.getCreationDateTime(),
+                balanceAccountEntity.getLastModificationDateTime(),
                 balanceAccountEntity.getStartDate(),
                 balanceAccountEntity.getEndDate(),
                 Multilingual.of(balanceAccountEntity.getDescriptions()),

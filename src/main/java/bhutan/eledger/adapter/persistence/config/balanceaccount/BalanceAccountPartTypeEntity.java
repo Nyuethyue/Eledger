@@ -24,6 +24,9 @@ class BalanceAccountPartTypeEntity {
     @Column(name = "creation_date_time")
     private LocalDateTime creationDateTime;
 
+    @Column(name = "last_modification_date_time")
+    private LocalDateTime lastModificationDateTime;
+
     @OneToMany(
             mappedBy = "balanceAccountPartType",
             cascade = CascadeType.ALL,
@@ -32,10 +35,11 @@ class BalanceAccountPartTypeEntity {
     )
     private Set<BalanceAccountPartTypeDescriptionEntity> descriptions;
 
-    public BalanceAccountPartTypeEntity(Integer id, Integer level, LocalDateTime creationDateTime) {
+    public BalanceAccountPartTypeEntity(Integer id, Integer level, LocalDateTime creationDateTime, LocalDateTime lastModificationDateTime) {
         this.id = id;
         this.level = level;
         this.creationDateTime = creationDateTime;
+        this.lastModificationDateTime = lastModificationDateTime;
     }
 
     public Integer getId() {
@@ -60,6 +64,14 @@ class BalanceAccountPartTypeEntity {
 
     public void setCreationDateTime(LocalDateTime creationDateTime) {
         this.creationDateTime = creationDateTime;
+    }
+
+    public LocalDateTime getLastModificationDateTime() {
+        return lastModificationDateTime;
+    }
+
+    public void setLastModificationDateTime(LocalDateTime lastModificationDateTime) {
+        this.lastModificationDateTime = lastModificationDateTime;
     }
 
     public Set<BalanceAccountPartTypeDescriptionEntity> getDescriptions() {

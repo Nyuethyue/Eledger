@@ -49,9 +49,12 @@ class BalanceAccountPartTypeUtils {
     }
 
     static BalanceAccountPartType balanceAccountPartTypeByLevel(Integer level) {
+        LocalDateTime creationDateTime = LocalDateTime.now();
+
         return BalanceAccountPartType.withoutId(
                 level,
-                LocalDateTime.now(),
+                creationDateTime,
+                creationDateTime,
                 Multilingual.of(
                         Set.of(
                                 Translation.of(

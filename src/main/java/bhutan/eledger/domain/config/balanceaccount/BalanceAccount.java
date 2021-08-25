@@ -15,6 +15,7 @@ public class BalanceAccount {
     private final String code;
     private final BalanceAccountStatus status;
     private final LocalDateTime creationDateTime;
+    private final LocalDateTime lastModificationDateTime;
     private final LocalDateTime startDate;
     private final LocalDateTime endDate;
     private final Multilingual description;
@@ -24,6 +25,7 @@ public class BalanceAccount {
             String code,
             BalanceAccountStatus status,
             LocalDateTime creationDateTime,
+            LocalDateTime lastModificationDateTime,
             LocalDateTime startDate,
             LocalDateTime endDate,
             Multilingual description,
@@ -34,6 +36,7 @@ public class BalanceAccount {
                 code,
                 status,
                 creationDateTime,
+                lastModificationDateTime,
                 startDate,
                 endDate,
                 description,

@@ -38,9 +38,12 @@ class CreateBalanceAccountPartTypeService implements CreateBalanceAccountPartTyp
     }
 
     private BalanceAccountPartType mapCommandToBalanceAccountPartType(CreateBalanceAccountPartTypeCommand command) {
+        LocalDateTime creationDateTime = LocalDateTime.now();
+
         return BalanceAccountPartType.withoutId(
                 command.getLevel(),
-                LocalDateTime.now(),
+                creationDateTime,
+                creationDateTime,
                 Multilingual.fromMap(command.getDescriptions())
         );
     }
