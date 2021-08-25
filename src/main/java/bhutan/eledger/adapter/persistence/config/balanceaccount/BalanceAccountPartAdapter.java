@@ -31,6 +31,14 @@ class BalanceAccountPartAdapter implements BalanceAccountPartRepositoryPort {
     }
 
     @Override
+    public Collection<BalanceAccountPart> readAllByParentId(Long parentId) {
+        return balanceAccountPartEntityRepository.readAllByParentId(parentId)
+                .stream()
+                .map(balanceAccountPartMapper::mapToDomain)
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+    @Override
     public Collection<BalanceAccountPart> readAll() {
         return balanceAccountPartEntityRepository.findAll()
                 .stream()

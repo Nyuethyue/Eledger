@@ -16,5 +16,7 @@ interface BalanceAccountPartEntityRepository extends JpaRepository<BalanceAccoun
             "ORDER BY bapt.level ASC")
     List<BalanceAccountPartEntity> queryAllByIdInSortedByLevel(Collection<Long> ids);
 
+    Collection<BalanceAccountPartEntity> readAllByParentId(Long parentId);
+
     boolean existsByParentIdAndCodeIn(Long id, Collection<String> codes);
 }

@@ -12,6 +12,8 @@ public interface BalanceAccountPartRepositoryPort {
 
     List<BalanceAccountPart> readAllByIdInSortedByLevel(Collection<Long> ids);
 
+    Collection<BalanceAccountPart> readAllByParentId(Long parentId);
+
     Collection<BalanceAccountPart> readAll();
 
     Long create(BalanceAccountPart balanceAccountPart);

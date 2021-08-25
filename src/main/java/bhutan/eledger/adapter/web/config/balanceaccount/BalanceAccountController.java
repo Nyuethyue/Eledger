@@ -13,7 +13,7 @@ import java.net.URI;
 @RestController
 @RequestMapping("/config/balance/account")
 @RequiredArgsConstructor
-public class BalanceAccountController {
+class BalanceAccountController {
     private final CreateBalanceAccountUseCase createBalanceAccountUseCase;
 
     @PostMapping

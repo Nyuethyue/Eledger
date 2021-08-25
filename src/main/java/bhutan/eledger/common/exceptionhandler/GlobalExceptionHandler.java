@@ -1,5 +1,6 @@
 package bhutan.eledger.common.exceptionhandler;
 
+import am.iunetworks.lib.common.validation.RecordNotFoundException;
 import am.iunetworks.lib.common.validation.ValidationError;
 import am.iunetworks.lib.common.validation.Violation;
 import am.iunetworks.lib.common.validation.ViolationException;
@@ -98,12 +99,12 @@ public class GlobalExceptionHandler {
         );
     }
 
-//    @ExceptionHandler(RecordNotFoundException.class)
-//    @ResponseStatus(HttpStatus.NOT_FOUND)
-//    @ResponseBody
-//    String onRecordNotFoundException(RecordNotFoundException e) {
-//        log.trace(e.getMessage());
-//
-//        return e.getHumanMessage();
-//    }
+    @ExceptionHandler(RecordNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    String onRecordNotFoundException(RecordNotFoundException e) {
+        log.trace(e.getMessage());
+
+        return e.getHumanMessage();
+    }
 }
