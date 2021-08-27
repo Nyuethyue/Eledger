@@ -83,6 +83,9 @@ CREATE UNIQUE INDEX ux_parent_id_code ON config.balance_account_part USING btree
 CREATE INDEX IF NOT EXISTS fki_balance_account_part_balance_account_part_type
     ON config.balance_account_part (balance_account_part_type_id);
 
+CREATE INDEX IF NOT EXISTS idx_balance_account_part_code
+    ON config.balance_account_part(code);
+
 CREATE SEQUENCE config.balance_account_part_id_seq
     INCREMENT BY 1
     MINVALUE 1
@@ -115,6 +118,9 @@ ALTER TABLE ONLY config.balance_account_part_description
 CREATE INDEX IF NOT EXISTS fki_bal_acc_part_dsc_bal_acc_part
     ON config.balance_account_part_description (balance_account_part_id);
 
+CREATE INDEX IF NOT EXISTS idx_balance_account_part_description_value
+    ON config.balance_account_part_description(value);
+
 CREATE SEQUENCE config.balance_account_part_description_id_seq
     INCREMENT BY 1
     MINVALUE 1
@@ -144,6 +150,9 @@ ALTER TABLE config.balance_account
     ADD CONSTRAINT fk_balance_account_balance_account_part
         FOREIGN KEY (balance_account_last_part_id)
             REFERENCES config.balance_account_part (id);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_balance_account_code
+    ON config.balance_account(code);
 
 CREATE SEQUENCE config.balance_account_id_seq
     INCREMENT BY 1
@@ -178,6 +187,9 @@ ALTER TABLE ONLY config.balance_account_description
 
 CREATE INDEX IF NOT EXISTS fki_bal_acc_dsc_bal_acc
     ON config.balance_account_description (balance_account_id);
+
+CREATE INDEX IF NOT EXISTS idx_balance_account_description_value
+    ON config.balance_account_description(value);
 
 CREATE SEQUENCE config.balance_account_description_id_seq
     INCREMENT BY 1
