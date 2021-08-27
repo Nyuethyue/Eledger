@@ -163,4 +163,23 @@ class CreateBalanceAccountPartSearchTest {
         Assertions.assertEquals("115", result.getContent().get(0).getCode());
         Assertions.assertEquals("2485", result.getContent().get(1).getCode());
     }
+
+    @Test
+    void searchByCodeNoneMatchTest() {
+        var result = searchBalanceAccountPartUseCase.search(new SearchBalanceAccountPartUseCase.SearchBalanceAccountPartCommand(
+                        null,
+                        null,
+                        "code",
+                        null,
+                        "en",
+                        "113",
+                        null,
+                        partTypeId
+                )
+        );
+
+        Assertions.assertEquals(0, result.getTotalCount());
+        Assertions.assertEquals(0, result.getTotalPages());
+        Assertions.assertEquals(0, result.getContent().size());
+    }
 }
