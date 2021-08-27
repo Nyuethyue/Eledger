@@ -1,8 +1,8 @@
 package bhutan.eledger.adapter.persistence.config.balanceaccount;
 
-import am.iunetworks.lib.common.persistence.spring.search.PageableResolver;
-import am.iunetworks.lib.common.persistence.spring.search.PagedSearchResult;
-import am.iunetworks.lib.common.persistence.spring.search.SearchResult;
+import am.iunetworks.lib.common.persistence.search.PageableResolver;
+import am.iunetworks.lib.common.persistence.search.PagedSearchResult;
+import am.iunetworks.lib.common.persistence.search.SearchResult;
 import bhutan.eledger.application.port.out.config.balanceaccount.BalanceAccountSearchPort;
 import bhutan.eledger.domain.config.balanceaccount.BalanceAccount;
 import com.querydsl.core.BooleanBuilder;
@@ -54,7 +54,7 @@ class BalanceAccountSearchAdapter implements BalanceAccountSearchPort {
                                     .and(qBalanceAccountDescription.languageCode.eq(command.getLanguageCode()))
                     );
 
-            predicate.and(qBalanceAccountDescription.value.startsWith(command.getHead()));
+            predicate.and(qBalanceAccountDescription.value.containsIgnoreCase(command.getHead()));
         }
 
         return jpqlQuery.where(predicate);

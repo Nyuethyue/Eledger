@@ -1,6 +1,6 @@
 package bhutan.eledger.configuration.config.balanceaccount;
 
-import am.iunetworks.lib.common.persistence.spring.search.AbstractSearchProperties;
+import am.iunetworks.lib.common.persistence.search.AbstractSearchProperties;
 import bhutan.eledger.adapter.persistence.config.balanceaccount.QBalanceAccountEntity;
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;

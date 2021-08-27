@@ -1,7 +1,9 @@
 package bhutan.eledger.adapter.web.config.balanceaccount;
 
+import am.iunetworks.lib.common.persistence.search.SearchResult;
 import bhutan.eledger.application.port.in.config.balanceaccount.CreateBalanceAccountPartUseCase;
 import bhutan.eledger.application.port.in.config.balanceaccount.ReadBalanceAccountPartUseCase;
+import bhutan.eledger.application.port.in.config.balanceaccount.SearchBalanceAccountPartUseCase;
 import bhutan.eledger.domain.config.balanceaccount.BalanceAccountPart;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,7 @@ import java.util.Collection;
 class BalanceAccountPartController {
     private final CreateBalanceAccountPartUseCase createBalanceAccountPartUseCase;
     private final ReadBalanceAccountPartUseCase readBalanceAccountPartUseCase;
+    private final SearchBalanceAccountPartUseCase searchBalanceAccountPartUseCase;
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> create(@RequestBody CreateBalanceAccountPartUseCase.CreateBalanceAccountPartCommand command) {
@@ -37,5 +40,11 @@ class BalanceAccountPartController {
     @ResponseStatus(value = HttpStatus.OK)
     public Collection<BalanceAccountPart> getAllByParentId(@PathVariable Long parentId) {
         return readBalanceAccountPartUseCase.readAllByParentId(parentId);
+    }
+
+    @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.OK)
+    public SearchResult<BalanceAccountPart> search(@RequestBody SearchBalanceAccountPartUseCase.SearchBalanceAccountPartCommand command) {
+        return searchBalanceAccountPartUseCase.search(command);
     }
 }

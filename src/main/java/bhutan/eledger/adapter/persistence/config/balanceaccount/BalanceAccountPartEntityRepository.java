@@ -1,12 +1,12 @@
 package bhutan.eledger.adapter.persistence.config.balanceaccount;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import am.iunetworks.lib.common.persistence.spring.querydsl.CustomQuerydslJpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.Collection;
 import java.util.List;
 
-interface BalanceAccountPartEntityRepository extends JpaRepository<BalanceAccountPartEntity, Long> {
+interface BalanceAccountPartEntityRepository extends CustomQuerydslJpaRepository<BalanceAccountPartEntity, Long> {
 
 
     @Query("SELECT bap " +

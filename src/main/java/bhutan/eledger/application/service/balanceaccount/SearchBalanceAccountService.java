@@ -1,7 +1,7 @@
 package bhutan.eledger.application.service.balanceaccount;
 
-import am.iunetworks.lib.common.persistence.spring.search.SearchResult;
-import am.iunetworks.lib.common.persistence.spring.search.SearchValidationUtils;
+import am.iunetworks.lib.common.persistence.search.SearchResult;
+import am.iunetworks.lib.common.persistence.search.SearchValidationUtils;
 import bhutan.eledger.application.port.in.config.balanceaccount.SearchBalanceAccountUseCase;
 import bhutan.eledger.application.port.out.config.balanceaccount.BalanceAccountSearchPort;
 import bhutan.eledger.configuration.config.balanceaccount.BalanceAccountSearchProperties;

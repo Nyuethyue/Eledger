@@ -80,6 +80,9 @@ ALTER TABLE config.balance_account_part
 
 CREATE UNIQUE INDEX ux_parent_id_code ON config.balance_account_part USING btree (parent_id, code);
 
+CREATE INDEX IF NOT EXISTS fki_balance_account_part_balance_account_part_type
+    ON config.balance_account_part (balance_account_part_type_id);
+
 CREATE SEQUENCE config.balance_account_part_id_seq
     INCREMENT BY 1
     MINVALUE 1
