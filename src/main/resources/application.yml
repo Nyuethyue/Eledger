@@ -21,3 +21,9 @@ logging:
   level:
     root: WARN
     bhutan.eledger: debug
+
+bhutan:
+  eledger:
+    balanceaccount:
+      search:
+        sort-property: code

@@ -23,6 +23,10 @@ repositories {
     mavenCentral()
 }
 
+ext {
+    set('querydslVersion', "5.0.0")
+}
+
 dependencies {
 //	implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
@@ -41,6 +45,12 @@ dependencies {
     implementation "am.iunetworks:multilingual-core:0.0.1"
     implementation "am.iunetworks:common-persistence:0.0.1"
     implementation "am.iunetworks:common-validation:0.0.1"
+
+    implementation "com.querydsl:querydsl-jpa:${querydslVersion}"
+    implementation "com.querydsl:querydsl-core:${querydslVersion}"
+
+    annotationProcessor "com.querydsl:querydsl-apt:${querydslVersion}:jpa"
+    annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
 }
 
 //Use log4j2 instead logback

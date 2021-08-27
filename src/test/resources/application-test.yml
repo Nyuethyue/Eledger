@@ -11,6 +11,7 @@ spring:
     liquibase-schema: migration
   jpa:
     open-in-view: true
+    show-sql: true
 
 logging:
   level:
