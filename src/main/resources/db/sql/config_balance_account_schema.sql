@@ -118,8 +118,6 @@ ALTER TABLE ONLY config.balance_account_part_description
 CREATE INDEX IF NOT EXISTS fki_bal_acc_part_dsc_bal_acc_part
     ON config.balance_account_part_description (balance_account_part_id);
 
---CREATE INDEX IF NOT EXISTS idx_balance_account_part_description_value ON config.balance_account_part_description(value);
-
 CREATE SEQUENCE config.balance_account_part_description_id_seq
     INCREMENT BY 1
     MINVALUE 1
@@ -186,8 +184,6 @@ ALTER TABLE ONLY config.balance_account_description
 
 CREATE INDEX IF NOT EXISTS fki_bal_acc_dsc_bal_acc
     ON config.balance_account_description (balance_account_id);
-
---CREATE INDEX IF NOT EXISTS idx_balance_account_description_value ON config.balance_account_description(value);
 
 CREATE SEQUENCE config.balance_account_description_id_seq
     INCREMENT BY 1
