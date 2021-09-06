@@ -34,7 +34,7 @@ class BalanceAccountPartTypeController {
         return readBalanceAccountPartTypeUseCase.readById(id);
     }
 
-    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     public Collection<BalanceAccountPartType> getAll() {
         return readBalanceAccountPartTypeUseCase.readAll();

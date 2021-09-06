@@ -27,7 +27,8 @@ class BalanceAccountPartController {
                 createBalanceAccountPartUseCase.create(command);
 
         return ResponseEntity
-                .ok(balanceAccountParts);
+                .status(HttpStatus.CREATED)
+                .body(balanceAccountParts);
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
