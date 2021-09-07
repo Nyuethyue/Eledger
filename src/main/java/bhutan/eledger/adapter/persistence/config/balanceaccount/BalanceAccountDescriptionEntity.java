@@ -24,6 +24,12 @@ class BalanceAccountDescriptionEntity extends TranslationEntity {
         this.id = id;
     }
 
+    public BalanceAccountDescriptionEntity(Long id, String languageCode, String value, BalanceAccountEntity balanceAccount) {
+        super(languageCode, value);
+        this.id = id;
+        this.balanceAccount = balanceAccount;
+    }
+
     @Override
     public Long getId() {
         return id;

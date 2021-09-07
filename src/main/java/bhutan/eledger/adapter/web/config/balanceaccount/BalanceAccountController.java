@@ -3,6 +3,7 @@ package bhutan.eledger.adapter.web.config.balanceaccount;
 import am.iunetworks.lib.common.persistence.search.SearchResult;
 import bhutan.eledger.application.port.in.config.balanceaccount.CreateBalanceAccountUseCase;
 import bhutan.eledger.application.port.in.config.balanceaccount.SearchBalanceAccountUseCase;
+import bhutan.eledger.application.port.in.config.balanceaccount.UpdateBalanceAccountUseCase;
 import bhutan.eledger.domain.config.balanceaccount.BalanceAccount;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import java.net.URI;
 class BalanceAccountController {
     private final CreateBalanceAccountUseCase createBalanceAccountUseCase;
     private final SearchBalanceAccountUseCase searchBalanceAccountUseCase;
+    private final UpdateBalanceAccountUseCase updateBalanceAccountUseCase;
 
     @PostMapping
     public ResponseEntity<Object> create(@RequestBody CreateBalanceAccountUseCase.CreateBalanceAccountCommand command) {
@@ -25,6 +27,15 @@ class BalanceAccountController {
 
         return ResponseEntity
                 .created(URI.create("/" + id))
+                .build();
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody UpdateBalanceAccountUseCase.UpdateBalanceAccountCommand command) {
+        updateBalanceAccountUseCase.updateBalanceAccount(id, command);
+
+        return ResponseEntity
+                .ok()
                 .build();
     }
 

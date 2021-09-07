@@ -39,6 +39,13 @@ class BalanceAccountAdapter implements BalanceAccountRepositoryPort {
     }
 
     @Override
+    public void update(BalanceAccount balanceAccount) {
+        balanceAccountEntityRepository.save(
+                balanceAccountMapper.mapToEntity(balanceAccount)
+        );
+    }
+
+    @Override
     public void deleteAll() {
         balanceAccountEntityRepository.deleteAll();
     }

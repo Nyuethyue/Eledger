@@ -5,6 +5,8 @@ import bhutan.eledger.domain.config.balanceaccount.BalanceAccount;
 import bhutan.eledger.domain.config.balanceaccount.BalanceAccountStatus;
 import org.springframework.stereotype.Component;
 
+import java.util.stream.Collectors;
+
 @Component
 class BalanceAccountMapper {
 
@@ -20,17 +22,20 @@ class BalanceAccountMapper {
                 balanceAccount.getEndDate()
         );
 
-        balanceAccount.getDescription()
-                .getTranslations()
-                .stream()
-                .map(t ->
-                        new BalanceAccountDescriptionEntity(
-                                t.getId(),
-                                t.getLanguageCode(),
-                                t.getValue()
+        balanceAccountEntity.setDescriptions(
+                balanceAccount.getDescription()
+                        .getTranslations()
+                        .stream()
+                        .map(t ->
+                                new BalanceAccountDescriptionEntity(
+                                        t.getId(),
+                                        t.getLanguageCode(),
+                                        t.getValue(),
+                                        balanceAccountEntity
+                                )
                         )
-                )
-                .forEach(balanceAccountEntity::addToDescription);
+                        .collect(Collectors.toSet())
+        );
 
         return balanceAccountEntity;
     }

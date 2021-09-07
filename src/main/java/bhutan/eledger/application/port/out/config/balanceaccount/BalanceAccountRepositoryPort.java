@@ -13,5 +13,7 @@ public interface BalanceAccountRepositoryPort {
 
     Long create(BalanceAccount balanceAccount);
 
+    void update(BalanceAccount balanceAccount);
+
     void deleteAll();
 }
