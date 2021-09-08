@@ -64,12 +64,12 @@ class CreateBalanceAccountPartTypeTest {
         Assertions.assertNotNull(partType.getDescription());
 
         var enTranslation = description.translationValue("en");
-        var btTranslation = description.translationValue("bt");
+        var btTranslation = description.translationValue("dz");
 
         Assertions.assertTrue(enTranslation.isPresent());
         Assertions.assertTrue(btTranslation.isPresent());
 
         Assertions.assertEquals(languageCodeToDescription.get("en"), enTranslation.get());
-        Assertions.assertEquals(languageCodeToDescription.get("bt"), btTranslation.get());
+        Assertions.assertEquals(languageCodeToDescription.get("dz"), btTranslation.get());
     }
 }

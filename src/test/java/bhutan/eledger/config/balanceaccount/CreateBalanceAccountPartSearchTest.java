@@ -60,21 +60,21 @@ class CreateBalanceAccountPartSearchTest {
                                         "11",
                                         Map.of(
                                                 "en", "Revenue",
-                                                "bt", "Bt value"
+                                                "dz", "DZ value"
                                         )
                                 ),
                                 new CreateBalanceAccountPartUseCase.BalanceAccountPartCommand(
                                         "115",
                                         Map.of(
                                                 "en", "income tax",
-                                                "bt", "Bt value"
+                                                "dz", "DZ value"
                                         )
                                 ),
                                 new CreateBalanceAccountPartUseCase.BalanceAccountPartCommand(
                                         "2485",
                                         Map.of(
                                                 "en", "Business income tax",
-                                                "bt", "Bt Business income tax"
+                                                "dz", "DZ Business income tax"
                                         )
                                 )
                         )

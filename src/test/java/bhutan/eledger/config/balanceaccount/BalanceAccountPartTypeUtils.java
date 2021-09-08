@@ -62,7 +62,7 @@ class BalanceAccountPartTypeUtils {
                                         LEVEL_TO_DESCRIPTION.get(level)
                                 ),
                                 Translation.of(
-                                        "bt",
+                                        "dz",
                                         LEVEL_TO_DESCRIPTION.get(level)
                                 )
                         )

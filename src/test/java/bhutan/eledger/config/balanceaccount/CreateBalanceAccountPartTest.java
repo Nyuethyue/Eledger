@@ -86,7 +86,7 @@ class CreateBalanceAccountPartTest {
                                         "11",
                                         Map.of(
                                                 "en", "Revenue",
-                                                "bt", "Revenue"
+                                                "dz", "Revenue"
                                         )
                                 )
                         )
@@ -102,8 +102,8 @@ class CreateBalanceAccountPartTest {
 
         Assertions.assertEquals("11", part.getCode());
         Assertions.assertEquals(BalanceAccountPartStatus.ACTIVE, part.getStatus());
-        Assertions.assertNotNull(part.getStartDate());
-        Assertions.assertNull(part.getEndDate());
+        Assertions.assertNotNull(part.getValidityPeriod().getStart());
+        Assertions.assertNull(part.getValidityPeriod().getEnd());
         Assertions.assertNotNull(part.getBalanceAccountPartLevelId());
 
         var description = part.getDescription();
@@ -111,7 +111,7 @@ class CreateBalanceAccountPartTest {
         Assertions.assertNotNull(part.getDescription());
 
         var enTranslation = description.translationValue("en");
-        var btTranslation = description.translationValue("bt");
+        var btTranslation = description.translationValue("dz");
 
         Assertions.assertTrue(enTranslation.isPresent());
         Assertions.assertTrue(btTranslation.isPresent());
