@@ -13,8 +13,7 @@ public class BalanceAccountPart {
     private final BalanceAccountPartStatus status;
     private final LocalDateTime creationDateTime;
     private final LocalDateTime lastModificationDateTime;
-    private final LocalDateTime startDate;
-    private final LocalDateTime endDate;
+    private final ValidityPeriod validityPeriod;
     private final Multilingual description;
     private final Integer balanceAccountPartLevelId;
 
@@ -24,8 +23,7 @@ public class BalanceAccountPart {
             BalanceAccountPartStatus status,
             LocalDateTime creationDateTime,
             LocalDateTime lastModificationDateTime,
-            LocalDateTime startDate,
-            LocalDateTime endDate,
+            ValidityPeriod validityPeriod,
             Multilingual description,
             Integer balanceAccountPartLevelId
     ) {
@@ -37,8 +35,7 @@ public class BalanceAccountPart {
                 status,
                 creationDateTime,
                 lastModificationDateTime,
-                startDate,
-                endDate,
+                validityPeriod,
                 description,
                 balanceAccountPartLevelId
         );

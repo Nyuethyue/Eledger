@@ -34,11 +34,11 @@ class BalanceAccountEntity {
     @Column(name = "last_modification_date_time")
     private LocalDateTime lastModificationDateTime;
 
-    @Column(name = "start_date")
-    private LocalDateTime startDate;
+    @Column(name = "start_of_validity")
+    private LocalDateTime startOfValidity;
 
-    @Column(name = "end_date")
-    private LocalDateTime endDate;
+    @Column(name = "end_of_validity")
+    private LocalDateTime endOfValidity;
 
     @OneToMany(
             mappedBy = "balanceAccount",
@@ -48,15 +48,15 @@ class BalanceAccountEntity {
     )
     private Set<BalanceAccountDescriptionEntity> descriptions;
 
-    public BalanceAccountEntity(Long id, String code, Long balanceAccountLastPartId, String status, LocalDateTime creationDateTime, LocalDateTime lastModificationDateTime, LocalDateTime startDate, LocalDateTime endDate) {
+    public BalanceAccountEntity(Long id, String code, Long balanceAccountLastPartId, String status, LocalDateTime creationDateTime, LocalDateTime lastModificationDateTime, LocalDateTime startOfValidity, LocalDateTime endOfValidity) {
         this.id = id;
         this.code = code;
         this.balanceAccountLastPartId = balanceAccountLastPartId;
         this.status = status;
         this.creationDateTime = creationDateTime;
         this.lastModificationDateTime = lastModificationDateTime;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.startOfValidity = startOfValidity;
+        this.endOfValidity = endOfValidity;
     }
 
     public Long getId() {
@@ -107,20 +107,20 @@ class BalanceAccountEntity {
         this.lastModificationDateTime = lastModificationDateTime;
     }
 
-    public LocalDateTime getStartDate() {
-        return startDate;
+    public LocalDateTime getStartOfValidity() {
+        return startOfValidity;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
-        this.startDate = startDate;
+    public void setStartOfValidity(LocalDateTime startOfValidity) {
+        this.startOfValidity = startOfValidity;
     }
 
-    public LocalDateTime getEndDate() {
-        return endDate;
+    public LocalDateTime getEndOfValidity() {
+        return endOfValidity;
     }
 
-    public void setEndDate(LocalDateTime endDate) {
-        this.endDate = endDate;
+    public void setEndOfValidity(LocalDateTime endOfValidity) {
+        this.endOfValidity = endOfValidity;
     }
 
     public Set<BalanceAccountDescriptionEntity> getDescriptions() {

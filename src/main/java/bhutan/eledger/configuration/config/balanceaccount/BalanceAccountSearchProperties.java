@@ -25,7 +25,7 @@ public class BalanceAccountSearchProperties extends AbstractSearchProperties {
                 Set.of(
                         QBalanceAccountEntity.balanceAccountEntity.id.getMetadata().getName(),
                         QBalanceAccountEntity.balanceAccountEntity.code.getMetadata().getName(),
-                        QBalanceAccountEntity.balanceAccountEntity.startDate.getMetadata().getName(),
+                        QBalanceAccountEntity.balanceAccountEntity.startOfValidity.getMetadata().getName(),
                         QBalanceAccountEntity.balanceAccountEntity.creationDateTime.getMetadata().getName(),
                         QBalanceAccountEntity.balanceAccountEntity.lastModificationDateTime.getMetadata().getName(),
                         QBalanceAccountEntity.balanceAccountEntity.status.getMetadata().getName()

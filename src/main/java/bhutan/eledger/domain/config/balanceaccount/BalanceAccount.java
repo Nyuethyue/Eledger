@@ -16,8 +16,7 @@ public class BalanceAccount {
     private final BalanceAccountStatus status;
     private final LocalDateTime creationDateTime;
     private final LocalDateTime lastModificationDateTime;
-    private final LocalDateTime startDate;
-    private final LocalDateTime endDate;
+    private final ValidityPeriod validityPeriod;
     private final Multilingual description;
     private final Long balanceAccountLastPartId;
 
@@ -26,8 +25,7 @@ public class BalanceAccount {
             BalanceAccountStatus status,
             LocalDateTime creationDateTime,
             LocalDateTime lastModificationDateTime,
-            LocalDateTime startDate,
-            LocalDateTime endDate,
+            ValidityPeriod validityPeriod,
             Multilingual description,
             Long balanceAccountLastPartId
     ) {
@@ -37,8 +35,7 @@ public class BalanceAccount {
                 status,
                 creationDateTime,
                 lastModificationDateTime,
-                startDate,
-                endDate,
+                validityPeriod,
                 description,
                 balanceAccountLastPartId
         );

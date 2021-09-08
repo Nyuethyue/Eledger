@@ -3,6 +3,7 @@ package bhutan.eledger.adapter.persistence.config.balanceaccount;
 import am.iunetworks.lib.multilingual.core.Multilingual;
 import bhutan.eledger.domain.config.balanceaccount.BalanceAccountPart;
 import bhutan.eledger.domain.config.balanceaccount.BalanceAccountPartStatus;
+import bhutan.eledger.domain.config.balanceaccount.ValidityPeriod;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,8 +18,8 @@ class BalanceAccountPartMapper {
                 partDomain.getStatus().getValue(),
                 partDomain.getCreationDateTime(),
                 partDomain.getLastModificationDateTime(),
-                partDomain.getStartDate(),
-                partDomain.getEndDate()
+                partDomain.getValidityPeriod().getStart(),
+                partDomain.getValidityPeriod().getEnd()
         );
 
         partDomain.getDescription()
@@ -44,8 +45,7 @@ class BalanceAccountPartMapper {
                 BalanceAccountPartStatus.of(partEntity.getStatus()),
                 partEntity.getCreationDateTime(),
                 partEntity.getLastModificationDateTime(),
-                partEntity.getStartDate(),
-                partEntity.getEndDate(),
+                ValidityPeriod.of(partEntity.getStartOfValidity(), partEntity.getEndOfValidity()),
                 Multilingual.of(partEntity.getDescriptions()),
                 partEntity.getBalanceAccountPartTypeId()
         );

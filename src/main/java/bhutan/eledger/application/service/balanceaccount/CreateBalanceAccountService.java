@@ -8,10 +8,7 @@ import bhutan.eledger.application.port.in.config.balanceaccount.CreateBalanceAcc
 import bhutan.eledger.application.port.out.config.balanceaccount.BalanceAccountPartRepositoryPort;
 import bhutan.eledger.application.port.out.config.balanceaccount.BalanceAccountPartTypeRepositoryPort;
 import bhutan.eledger.application.port.out.config.balanceaccount.BalanceAccountRepositoryPort;
-import bhutan.eledger.domain.config.balanceaccount.BalanceAccount;
-import bhutan.eledger.domain.config.balanceaccount.BalanceAccountPart;
-import bhutan.eledger.domain.config.balanceaccount.BalanceAccountPartStatus;
-import bhutan.eledger.domain.config.balanceaccount.BalanceAccountStatus;
+import bhutan.eledger.domain.config.balanceaccount.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -73,8 +70,7 @@ class CreateBalanceAccountService implements CreateBalanceAccountUseCase {
                 BalanceAccountStatus.ACTIVE,
                 creationDateTime,
                 creationDateTime,
-                creationDateTime.toLocalDate().atStartOfDay(),
-                null,
+                ValidityPeriod.withOnlyOfValidity(creationDateTime.toLocalDate().atStartOfDay()),
                 Multilingual.fromMap(command.getDescriptions()),
                 lastPartId
         );
@@ -98,8 +94,7 @@ class CreateBalanceAccountService implements CreateBalanceAccountUseCase {
                 BalanceAccountPartStatus.ACTIVE,
                 creationDateTime,
                 creationDateTime,
-                creationDateTime.toLocalDate().atStartOfDay(),
-                null,
+                ValidityPeriod.withOnlyOfValidity(creationDateTime.toLocalDate().atStartOfDay()),
                 Multilingual.fromMap(command.getDescriptions()),
                 balanceAccountPartTypeId
         );

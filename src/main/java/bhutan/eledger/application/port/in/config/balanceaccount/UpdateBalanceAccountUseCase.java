@@ -5,6 +5,7 @@ import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -22,7 +23,7 @@ public interface UpdateBalanceAccountUseCase {
         private final Map<String, String> descriptions;
         @NotNull
         private final BalanceAccountStatus balanceAccountStatus;
-        @NotNull
+        @FutureOrPresent
         private final LocalDateTime actualDate;
     }
 }

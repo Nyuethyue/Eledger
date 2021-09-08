@@ -3,7 +3,7 @@
 CREATE TABLE config.balance_account_part_type
 (
     id                          integer   NOT NULL,
-    level                       integer NULL,
+    level                       integer   NULL,
     creation_date_time          timestamp NOT NULL,
     last_modification_date_time timestamp NOT NULL
 );
@@ -41,8 +41,8 @@ ALTER TABLE config.balance_account_part_type_description
 
 ALTER TABLE ONLY config.balance_account_part_type_description
     ADD CONSTRAINT fk_bal_acc_part_type_dsc_bal_acc_part_type
-    FOREIGN KEY (balance_account_part_type_id)
-    REFERENCES config.balance_account_part_type (id);
+        FOREIGN KEY (balance_account_part_type_id)
+            REFERENCES config.balance_account_part_type (id);
 
 CREATE INDEX IF NOT EXISTS fki_bal_acc_part_type_dsc_bal_acc_part_type
     ON config.balance_account_part_type_description (balance_account_part_type_id);
@@ -60,14 +60,14 @@ CREATE SEQUENCE config.balance_account_part_type_description_id_seq
 CREATE TABLE config.balance_account_part
 (
     id                           bigint    NOT NULL,
-    parent_id                    bigint NULL,
+    parent_id                    bigint    NULL,
     code                         varchar   NOT NULL,
     status                       varchar   NOT NULL,
     creation_date_time           timestamp NOT NULL,
     last_modification_date_time  timestamp NOT NULL,
-    start_date                   timestamp NULL,
-    end_date                     timestamp NULL,
-    balance_account_part_type_id integer NULL
+    start_of_validity            timestamp NULL,
+    end_of_validity              timestamp NULL,
+    balance_account_part_type_id integer   NULL
 );
 
 ALTER TABLE config.balance_account_part
@@ -84,7 +84,7 @@ CREATE INDEX IF NOT EXISTS fki_balance_account_part_balance_account_part_type
     ON config.balance_account_part (balance_account_part_type_id);
 
 CREATE INDEX IF NOT EXISTS idx_balance_account_part_code
-    ON config.balance_account_part(code);
+    ON config.balance_account_part (code);
 
 CREATE SEQUENCE config.balance_account_part_id_seq
     INCREMENT BY 1
@@ -113,7 +113,7 @@ ALTER TABLE config.balance_account_part_description
 
 ALTER TABLE ONLY config.balance_account_part_description
     ADD CONSTRAINT fk_bal_acc_part_dsc_bal_acc_part FOREIGN KEY (balance_account_part_id)
-    REFERENCES config.balance_account_part (id);
+        REFERENCES config.balance_account_part (id);
 
 CREATE INDEX IF NOT EXISTS fki_bal_acc_part_dsc_bal_acc_part
     ON config.balance_account_part_description (balance_account_part_id);
@@ -135,8 +135,8 @@ CREATE TABLE config.balance_account
     status                       varchar   NOT NULL,
     creation_date_time           timestamp NOT NULL,
     last_modification_date_time  timestamp NOT NULL,
-    start_date                   timestamp NULL,
-    end_date                     timestamp NULL,
+    start_of_validity            timestamp NULL,
+    end_of_validity              timestamp NULL,
     balance_account_last_part_id bigint    NOT NULL
 );
 
@@ -149,7 +149,7 @@ ALTER TABLE config.balance_account
             REFERENCES config.balance_account_part (id);
 
 CREATE UNIQUE INDEX IF NOT EXISTS idx_balance_account_code
-    ON config.balance_account(code);
+    ON config.balance_account (code);
 
 CREATE SEQUENCE config.balance_account_id_seq
     INCREMENT BY 1
@@ -179,8 +179,8 @@ ALTER TABLE config.balance_account_description
 
 ALTER TABLE ONLY config.balance_account_description
     ADD CONSTRAINT fk_bal_acc_dsc_bal_acc
-    FOREIGN KEY (balance_account_id)
-    REFERENCES config.balance_account (id);
+        FOREIGN KEY (balance_account_id)
+            REFERENCES config.balance_account (id);
 
 CREATE INDEX IF NOT EXISTS fki_bal_acc_dsc_bal_acc
     ON config.balance_account_description (balance_account_id);
