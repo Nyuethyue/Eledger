@@ -1,6 +1,7 @@
 package bhutan.eledger.adapter.persistence.config.balanceaccount;
 
 import lombok.NoArgsConstructor;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -8,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Audited
 @Table(name = "balance_account_part", schema = "config")
 @NoArgsConstructor
 class BalanceAccountPartEntity {

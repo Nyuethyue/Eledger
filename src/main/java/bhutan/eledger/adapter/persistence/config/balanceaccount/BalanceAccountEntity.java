@@ -2,6 +2,7 @@ package bhutan.eledger.adapter.persistence.config.balanceaccount;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -9,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Audited
 @Table(name = "balance_account", schema = "config")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,7 +30,7 @@ class BalanceAccountEntity {
     @Column(name = "status")
     private String status;
 
-    @Column(name = "creation_date_time")
+    @Column(name = "creation_date_time", nullable = false, updatable = false)
     private LocalDateTime creationDateTime;
 
     @Column(name = "last_modification_date_time")

@@ -3,10 +3,12 @@ package bhutan.eledger.adapter.persistence.config.balanceaccount;
 import am.iunetworks.lib.common.persistence.multilingual.entity.TranslationEntity;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 
 @Entity
+@Audited
 @Table(name = "balance_account_part_description", schema = "config")
 @AllArgsConstructor
 @NoArgsConstructor

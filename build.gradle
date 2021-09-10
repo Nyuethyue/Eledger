@@ -51,6 +51,8 @@ dependencies {
 
     annotationProcessor "com.querydsl:querydsl-apt:${querydslVersion}:jpa"
     annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
+
+    implementation "org.springframework.data:spring-data-envers"
 }
 
 //Use log4j2 instead logback

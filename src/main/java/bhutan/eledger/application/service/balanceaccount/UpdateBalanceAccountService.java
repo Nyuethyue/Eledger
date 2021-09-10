@@ -30,6 +30,8 @@ class UpdateBalanceAccountService implements UpdateBalanceAccountUseCase {
 
         log.trace("Balance account to be updated: {}", balanceAccount);
 
+        //todo apply validation logic
+
         ValidityPeriod validityPeriod = resolveValidityPeriod(balanceAccount, command);
 
         BalanceAccount updatedBalanceAccount = BalanceAccount.withId(

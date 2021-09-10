@@ -11,6 +11,16 @@ spring:
     liquibase-schema: migration
   jpa:
     open-in-view: true
+    properties:
+      org:
+        hibernate:
+          envers:
+            audit_table_suffix: _aud
+            revision_field_name: revision_id
+            revision_type_field_name: rev_type
+            use_revision_entity_with_native_id: false
+            audit_strategy: org.hibernate.envers.strategy.internal.ValidityAuditStrategy
+            audit_strategy_validity_end_rev_field_name: revision_end_id
 
 server:
   servlet:
