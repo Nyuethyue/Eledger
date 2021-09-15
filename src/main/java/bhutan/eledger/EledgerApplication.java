@@ -4,15 +4,15 @@ import am.iunetworks.lib.common.persistence.spring.querydsl.CustomQuerydslJpaRep
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.envers.repository.config.EnableEnversRepositories;
 
 @SpringBootApplication
 @ConfigurationPropertiesScan
-@EnableJpaRepositories(repositoryBaseClass = CustomQuerydslJpaRepositoryImpl.class)
+@EnableEnversRepositories(repositoryBaseClass = CustomQuerydslJpaRepositoryImpl.class)
 public class EledgerApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(EledgerApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(EledgerApplication.class, args);
+    }
 
 }

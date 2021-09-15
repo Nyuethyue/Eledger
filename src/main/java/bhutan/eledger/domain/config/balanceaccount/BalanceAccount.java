@@ -40,4 +40,15 @@ public class BalanceAccount {
                 balanceAccountLastPartId
         );
     }
+
+    public LocalDateTime getActualDateTime() {
+        switch (status) {
+            case ACTIVE:
+                return validityPeriod.getStart();
+            case INACTIVE:
+                return validityPeriod.getEnd();
+            default:
+                throw new IllegalStateException("Unknown status: " + status);
+        }
+    }
 }

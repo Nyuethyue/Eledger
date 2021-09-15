@@ -70,7 +70,7 @@ class CreateBalanceAccountService implements CreateBalanceAccountUseCase {
                 BalanceAccountStatus.ACTIVE,
                 creationDateTime,
                 creationDateTime,
-                ValidityPeriod.withOnlyOfValidity(creationDateTime.toLocalDate().atStartOfDay()),
+                ValidityPeriod.withOnlyStartOfValidity(creationDateTime.toLocalDate().atStartOfDay()),
                 Multilingual.fromMap(command.getDescriptions()),
                 lastPartId
         );
@@ -94,7 +94,7 @@ class CreateBalanceAccountService implements CreateBalanceAccountUseCase {
                 BalanceAccountPartStatus.ACTIVE,
                 creationDateTime,
                 creationDateTime,
-                ValidityPeriod.withOnlyOfValidity(creationDateTime.toLocalDate().atStartOfDay()),
+                ValidityPeriod.withOnlyStartOfValidity(creationDateTime.toLocalDate().atStartOfDay()),
                 Multilingual.fromMap(command.getDescriptions()),
                 balanceAccountPartTypeId
         );

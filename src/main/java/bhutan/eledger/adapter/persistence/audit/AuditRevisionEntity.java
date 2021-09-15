@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "revision")
 @RevisionEntity(AuditRevisionListener.class)
-class AuditRevisionEntity {
+public class AuditRevisionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "revision_id_seq")
     @SequenceGenerator(name = "revision_id_seq", sequenceName = "revision_id_seq", allocationSize = 1)

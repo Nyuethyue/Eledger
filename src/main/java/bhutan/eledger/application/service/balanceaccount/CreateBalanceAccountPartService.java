@@ -9,8 +9,8 @@ import bhutan.eledger.domain.config.balanceaccount.ValidityPeriod;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -67,7 +67,7 @@ class CreateBalanceAccountPartService implements CreateBalanceAccountPartUseCase
                                 BalanceAccountPartStatus.ACTIVE,
                                 creationDateTime,
                                 creationDateTime,
-                                ValidityPeriod.withOnlyOfValidity(creationDateTime.toLocalDate().atStartOfDay()),
+                                ValidityPeriod.withOnlyStartOfValidity(creationDateTime.toLocalDate().atStartOfDay()),
                                 Multilingual.fromMap(balanceAccountPartCommand.getDescriptions()),
                                 command.getBalanceAccountPartTypeId()
                         )

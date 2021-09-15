@@ -9,7 +9,7 @@ public class ValidityPeriod {
     private final LocalDateTime start;
     private final LocalDateTime end;
 
-    public static ValidityPeriod withOnlyOfValidity(LocalDateTime start) {
+    public static ValidityPeriod withOnlyStartOfValidity(LocalDateTime start) {
         return of(start, null);
     }
 }

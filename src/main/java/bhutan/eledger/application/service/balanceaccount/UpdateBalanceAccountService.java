@@ -59,7 +59,7 @@ class UpdateBalanceAccountService implements UpdateBalanceAccountUseCase {
         } else if (command.getBalanceAccountStatus() == BalanceAccountStatus.INACTIVE) {
             result = ValidityPeriod.of(balanceAccount.getValidityPeriod().getStart(), command.getActualDate());
         } else {
-            result = ValidityPeriod.withOnlyOfValidity(command.getActualDate());
+            result = ValidityPeriod.withOnlyStartOfValidity(command.getActualDate());
         }
 
         return result;

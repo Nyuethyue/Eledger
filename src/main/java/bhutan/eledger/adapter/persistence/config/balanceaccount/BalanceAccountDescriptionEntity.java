@@ -2,12 +2,14 @@ package bhutan.eledger.adapter.persistence.config.balanceaccount;
 
 import am.iunetworks.lib.common.persistence.multilingual.entity.TranslationEntity;
 import lombok.NoArgsConstructor;
+import org.hibernate.envers.AuditOverride;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 
 @Entity
 @Audited
+@AuditOverride(forClass = TranslationEntity.class)
 @Table(name = "balance_account_description", schema = "config")
 @NoArgsConstructor
 class BalanceAccountDescriptionEntity extends TranslationEntity {
