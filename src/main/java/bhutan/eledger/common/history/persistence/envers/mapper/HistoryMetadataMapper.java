@@ -2,7 +2,7 @@ package bhutan.eledger.common.history.persistence.envers.mapper;
 
 import bhutan.eledger.common.history.HistoryMetadata;
 import bhutan.eledger.common.history.HistoryType;
-import bhutan.eledger.common.history.persistence.envers.AuditRevisionEntity;
+import bhutan.eledger.common.history.persistence.envers.UsernameAwareRevisionEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.history.RevisionMetadata;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ import static bhutan.eledger.common.history.HistoryType.*;
 public class HistoryMetadataMapper {
 
     public HistoryMetadata fromRevisionMetadata(RevisionMetadata<Long> revisionMetadata) {
-        AuditRevisionEntity revision = revisionMetadata.getDelegate();
+        UsernameAwareRevisionEntity revision = revisionMetadata.getDelegate();
 
         return HistoryMetadata.of(
                 revision.getId(),

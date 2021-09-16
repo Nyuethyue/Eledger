@@ -1,15 +1,12 @@
 package bhutan.eledger.common.history.persistence.envers;
 
-import org.hibernate.envers.RevisionEntity;
 import org.hibernate.envers.RevisionNumber;
 import org.hibernate.envers.RevisionTimestamp;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "revision")
-@RevisionEntity(AuditRevisionListener.class)
-public class AuditRevisionEntity {
+@MappedSuperclass
+public class UsernameAwareRevisionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "revision_id_seq")
     @SequenceGenerator(name = "revision_id_seq", sequenceName = "revision_id_seq", allocationSize = 1)

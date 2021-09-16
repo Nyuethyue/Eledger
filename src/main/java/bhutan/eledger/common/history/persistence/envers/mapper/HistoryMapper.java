@@ -14,17 +14,17 @@ import java.util.stream.Collectors;
 public class HistoryMapper {
     private final HistoryMetadataMapper historyMetadataMapper;
 
-    public <R, T> Histories<R> map(Revisions<Long, T> revisions, Function<T, R> f) {
+    public <R, T> Histories<R> map(Revisions<Long, T> revisions, Function<T, R> entityToDtoMapper) {
         return revisions.stream()
                 .map(r ->
                         History.of(
-                                f.apply(r.getEntity()),
+                                entityToDtoMapper.apply(r.getEntity()),
                                 historyMetadataMapper.fromRevisionMetadata(r.getMetadata())
                         )
                 )
                 .collect(Collectors.collectingAndThen(
-                                Collectors.toUnmodifiableList(),
-                                Histories::of
+                        Collectors.toUnmodifiableList(),
+                        Histories::of
                         )
                 );
 

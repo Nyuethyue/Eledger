@@ -8,14 +8,14 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 @Log4j2
-public class AuditRevisionListener implements RevisionListener, ApplicationContextAware {
+public class UsernameAwareRevisionListener implements RevisionListener, ApplicationContextAware {
     private ApplicationContext applicationContext;
 
     @Override
     public void newRevision(Object revisionEntity) {
 
         if (revisionEntity != null) {
-            AuditRevisionEntity auditRevision = (AuditRevisionEntity) revisionEntity;
+            UsernameAwareRevisionEntity auditRevision = (UsernameAwareRevisionEntity) revisionEntity;
 
             var userDetails = applicationContext.getBean(UserDetailsHolder.class).get();
 
