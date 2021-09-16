@@ -1,4 +1,4 @@
-package bhutan.eledger.adapter.persistence.audit;
+package bhutan.eledger.common.history.persistence.envers;
 
 import org.hibernate.envers.RevisionEntity;
 import org.hibernate.envers.RevisionNumber;

@@ -1,4 +1,4 @@
-package bhutan.eledger.domain.config.balanceaccount.history;
+package bhutan.eledger.common.history;
 
 import lombok.Data;
 import org.springframework.data.util.Streamable;

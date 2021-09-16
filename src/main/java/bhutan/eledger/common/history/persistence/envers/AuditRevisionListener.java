@@ -1,4 +1,4 @@
-package bhutan.eledger.adapter.persistence.audit;
+package bhutan.eledger.common.history.persistence.envers;
 
 import bhutan.eledger.common.userdetails.UserDetailsHolder;
 import lombok.extern.log4j.Log4j2;
@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 @Log4j2
-class AuditRevisionListener implements RevisionListener, ApplicationContextAware {
+public class AuditRevisionListener implements RevisionListener, ApplicationContextAware {
     private ApplicationContext applicationContext;
 
     @Override
