@@ -45,6 +45,9 @@ class UpdateBalanceAccountTest {
     @Autowired
     private UpdateBalanceAccountUseCase updateBalanceAccountUseCase;
 
+    @Autowired
+    private AuditManagementTestHelper auditManagementTestHelper;
+
 
     private Long balanceAccountId;
 
@@ -78,6 +81,7 @@ class UpdateBalanceAccountTest {
         balanceAccountRepositoryPort.deleteAll();
         balanceAccountPartRepositoryPort.deleteAll();
         balanceAccountPartTypeRepositoryPort.deleteAll();
+        auditManagementTestHelper.clearAudTables();
     }
 
     @Test

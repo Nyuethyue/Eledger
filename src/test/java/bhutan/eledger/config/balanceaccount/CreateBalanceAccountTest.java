@@ -38,6 +38,9 @@ class CreateBalanceAccountTest {
     @Autowired
     private CreateBalanceAccountUseCase createBalanceAccountUseCase;
 
+    @Autowired
+    private AuditManagementTestHelper auditManagementTestHelper;
+
     private Collection<Long> partIds;
 
     @BeforeEach
@@ -55,6 +58,7 @@ class CreateBalanceAccountTest {
         balanceAccountRepositoryPort.deleteAll();
         balanceAccountPartRepositoryPort.deleteAll();
         balanceAccountPartTypeRepositoryPort.deleteAll();
+        auditManagementTestHelper.clearAudTables();
     }
 
     @Test

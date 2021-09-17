@@ -2,9 +2,11 @@ package bhutan.eledger.config.balanceaccount;
 
 import bhutan.eledger.application.port.in.config.balanceaccount.CreateBalanceAccountPartTypeUseCase;
 import bhutan.eledger.application.port.in.config.balanceaccount.CreateBalanceAccountPartUseCase;
+import bhutan.eledger.application.port.in.config.balanceaccount.history.GetBalanceAccountPartHistoryUseCase;
 import bhutan.eledger.application.port.out.config.balanceaccount.BalanceAccountPartRepositoryPort;
 import bhutan.eledger.application.port.out.config.balanceaccount.BalanceAccountPartTypeRepositoryPort;
-import bhutan.eledger.domain.config.balanceaccount.BalanceAccountPartStatus;
+import bhutan.eledger.common.history.HistoryType;
+import bhutan.eledger.domain.config.balanceaccount.BalanceAccountPart;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +19,7 @@ import java.util.Set;
 @TestPropertySource(
         properties = {"spring.config.location = classpath:application-test.yml"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class CreateBalanceAccountPartTest {
+class BalanceAccountPartHistoryTest {
 
     @Autowired
     private CreateBalanceAccountPartTypeUseCase createBalanceAccountPartTypeUseCase;
@@ -30,6 +32,9 @@ class CreateBalanceAccountPartTest {
 
     @Autowired
     private BalanceAccountPartRepositoryPort balanceAccountPartRepositoryPort;
+
+    @Autowired
+    private GetBalanceAccountPartHistoryUseCase getBalanceAccountPartHistoryUseCase;
 
     @Autowired
     private AuditManagementTestHelper auditManagementTestHelper;
@@ -46,8 +51,6 @@ class CreateBalanceAccountPartTest {
                         )
                 );
 
-        Assertions.assertEquals(7, balanceAccountPartTypeRepositoryPort.readAll().size());
-
     }
 
     @AfterEach
@@ -58,7 +61,7 @@ class CreateBalanceAccountPartTest {
     }
 
     @Test
-    void createTest() {
+    void historyTest() {
         var balanceAccountParts = createBalanceAccountPartUseCase.create(
                 new CreateBalanceAccountPartUseCase.CreateBalanceAccountPartCommand(
                         null,
@@ -74,53 +77,22 @@ class CreateBalanceAccountPartTest {
                 )
         );
 
-        Assertions.assertNotNull(balanceAccountParts);
-        Assertions.assertFalse(balanceAccountParts.isEmpty());
-        Assertions.assertNotNull(balanceAccountParts.iterator().next().getId());
+        BalanceAccountPart balanceAccountPart = balanceAccountParts.iterator().next();
+
+        var histories = getBalanceAccountPartHistoryUseCase.getHistory(balanceAccountPart.getId());
+
+        Assertions.assertNotNull(histories);
+        Assertions.assertNotNull(histories.getHistories());
+        Assertions.assertFalse(histories.isEmpty());
+
+        Assertions.assertEquals(1, histories.getHistories().size());
+        var balanceAccountPartHistory = histories.iterator().next();
+
+        Assertions.assertNotNull(balanceAccountPartHistory);
+        Assertions.assertNotNull(balanceAccountPartHistory.getMetadata());
+        Assertions.assertEquals(HistoryType.CREATED, balanceAccountPartHistory.getMetadata().getHistoryType());
+
+        //todo updating history will be added after update functionality implementation
     }
 
-    @Test
-    void readTest() {
-        var balanceAccountParts = createBalanceAccountPartUseCase.create(
-                new CreateBalanceAccountPartUseCase.CreateBalanceAccountPartCommand(
-                        null,
-                        balanceAccountPartTypeRepositoryPort.readByLevel(1).get().getId(),
-                        Set.of(
-                                new CreateBalanceAccountPartUseCase.BalanceAccountPartCommand(
-                                        "11",
-                                        Map.of(
-                                                "en", "Revenue",
-                                                "dz", "Revenue"
-                                        )
-                                )
-                        )
-                )
-        );
-
-        var partOptional =
-                balanceAccountPartRepositoryPort.readById(balanceAccountParts.iterator().next().getId());
-
-        Assertions.assertTrue(partOptional.isPresent());
-
-        var part = partOptional.get();
-
-        Assertions.assertEquals("11", part.getCode());
-        Assertions.assertEquals(BalanceAccountPartStatus.ACTIVE, part.getStatus());
-        Assertions.assertNotNull(part.getValidityPeriod().getStart());
-        Assertions.assertNull(part.getValidityPeriod().getEnd());
-        Assertions.assertNotNull(part.getBalanceAccountPartLevelId());
-
-        var description = part.getDescription();
-
-        Assertions.assertNotNull(part.getDescription());
-
-        var enTranslation = description.translationValue("en");
-        var btTranslation = description.translationValue("dz");
-
-        Assertions.assertTrue(enTranslation.isPresent());
-        Assertions.assertTrue(btTranslation.isPresent());
-
-        Assertions.assertEquals("Revenue", enTranslation.get());
-        Assertions.assertEquals("Revenue", btTranslation.get());
-    }
 }
