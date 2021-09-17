@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 @Data(staticConstructor = "of")
-public class Histories<T> implements Streamable<History<T>> {
+public class HistoriesHolder<T> implements Streamable<History<T>> {
     private final List<History<T>> histories;
 
     @Override

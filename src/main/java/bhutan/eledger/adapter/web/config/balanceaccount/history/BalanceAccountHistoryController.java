@@ -21,17 +21,17 @@ class BalanceAccountHistoryController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     public Collection<BalanceAccountHistoryPresentation> historiesById(@PathVariable Long id) {
-        return getBalanceAccountHistoryUseCase.getHistory(id)
+        return getBalanceAccountHistoryUseCase.getHistoriesById(id)
                 .stream()
                 .map(bah -> new BalanceAccountHistoryPresentation(
-                                bah.getDto().getCode(),
-                                bah.getDto().getDescription(),
-                                bah.getDto().getStatus().getValue(),
-                                bah.getDto().getCreationDateTime(),
-                                bah.getDto().getLastModificationDateTime(),
-                                bah.getDto().getActualDateTime(),
-                                bah.getMetadata().getUsername(),
-                                bah.getMetadata().getHistoryType().value()
+                        bah.getDto().getCode(),
+                        bah.getDto().getDescription(),
+                        bah.getDto().getStatus().getValue(),
+                        bah.getDto().getCreationDateTime(),
+                        bah.getDto().getLastModificationDateTime(),
+                        bah.getDto().getActualDateTime(),
+                        bah.getMetadata().getUsername(),
+                        bah.getMetadata().getHistoryType().value()
                         )
                 ).collect(Collectors.toUnmodifiableList());
     }

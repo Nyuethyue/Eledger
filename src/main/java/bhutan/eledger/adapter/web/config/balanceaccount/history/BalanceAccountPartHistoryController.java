@@ -22,17 +22,17 @@ class BalanceAccountPartHistoryController {
     @ResponseStatus(value = HttpStatus.OK)
     public Collection<BalanceAccountPartHistoryPresentation> historiesById(@PathVariable Long id) {
 
-        return getBalanceAccountPartHistoryUseCase.getHistory(id)
+        return getBalanceAccountPartHistoryUseCase.getHistoriesById(id)
                 .stream()
                 .map(bah -> new BalanceAccountPartHistoryPresentation(
-                                bah.getDto().getCode(),
-                                bah.getDto().getDescription(),
-                                bah.getDto().getStatus().getValue(),
-                                bah.getDto().getCreationDateTime(),
-                                bah.getDto().getLastModificationDateTime(),
-                                bah.getDto().getActualDateTime(),
-                                bah.getMetadata().getUsername(),
-                                bah.getMetadata().getHistoryType().value()
+                        bah.getDto().getCode(),
+                        bah.getDto().getDescription(),
+                        bah.getDto().getStatus().getValue(),
+                        bah.getDto().getCreationDateTime(),
+                        bah.getDto().getLastModificationDateTime(),
+                        bah.getDto().getActualDateTime(),
+                        bah.getMetadata().getUsername(),
+                        bah.getMetadata().getHistoryType().value()
                         )
                 ).collect(Collectors.toUnmodifiableList());
     }

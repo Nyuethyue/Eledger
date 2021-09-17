@@ -1,7 +1,7 @@
 package bhutan.eledger.adapter.persistence.config.balanceaccount;
 
 import bhutan.eledger.application.port.out.config.balanceaccount.history.BalanceAccountPartHistoryPort;
-import bhutan.eledger.common.history.Histories;
+import bhutan.eledger.common.history.HistoriesHolder;
 import bhutan.eledger.common.history.persistence.envers.mapper.HistoryMapper;
 import bhutan.eledger.common.history.persistence.envers.mapper.HistoryMetadataMapper;
 import bhutan.eledger.domain.config.balanceaccount.BalanceAccountPart;
@@ -17,9 +17,9 @@ class BalanceAccountPartHistoryAdapter implements BalanceAccountPartHistoryPort 
     private final HistoryMapper historyMapper;
 
     @Override
-    public Histories<BalanceAccountPart> findRevisionsById(Long id) {
+    public HistoriesHolder<BalanceAccountPart> findRevisionsById(Long id) {
         var revisions = balanceAccountPartEntityRepository.findRevisions(id);
 
-        return historyMapper.map(revisions, balanceAccountPartMapper::mapToDomain);
+        return historyMapper.mapToHistoriesHolder(revisions, balanceAccountPartMapper::mapToDomain);
     }
 }

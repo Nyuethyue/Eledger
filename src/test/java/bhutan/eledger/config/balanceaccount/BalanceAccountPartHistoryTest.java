@@ -79,14 +79,14 @@ class BalanceAccountPartHistoryTest {
 
         BalanceAccountPart balanceAccountPart = balanceAccountParts.iterator().next();
 
-        var histories = getBalanceAccountPartHistoryUseCase.getHistory(balanceAccountPart.getId());
+        var historiesHolder = getBalanceAccountPartHistoryUseCase.getHistoriesById(balanceAccountPart.getId());
 
-        Assertions.assertNotNull(histories);
-        Assertions.assertNotNull(histories.getHistories());
-        Assertions.assertFalse(histories.isEmpty());
+        Assertions.assertNotNull(historiesHolder);
+        Assertions.assertNotNull(historiesHolder.getHistories());
+        Assertions.assertFalse(historiesHolder.isEmpty());
 
-        Assertions.assertEquals(1, histories.getHistories().size());
-        var balanceAccountPartHistory = histories.iterator().next();
+        Assertions.assertEquals(1, historiesHolder.getHistories().size());
+        var balanceAccountPartHistory = historiesHolder.iterator().next();
 
         Assertions.assertNotNull(balanceAccountPartHistory);
         Assertions.assertNotNull(balanceAccountPartHistory.getMetadata());
