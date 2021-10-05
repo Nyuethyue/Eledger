@@ -6,10 +6,11 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
 
-    <changeSet id="2021-08-23T16:30" author="Beno Arakelyan" dbms="postgresql">
-        <sqlFile path="db/sql/config_balance_account_schema.sql"/>
+    <changeSet id="test" author="B.A." dbms="postgresql">
         <sqlFile path="db/sql/create_revision_table.sql"/>
+        <sqlFile path="db/sql/config_balance_account_schema.sql"/>
         <sqlFile path="db/sql/config_balance_account_audit_schema.sql"/>
+        <sqlFile path="db/sql/config_transaction_type_schema.sql"/>
     </changeSet>
 
 </databaseChangeLog>
