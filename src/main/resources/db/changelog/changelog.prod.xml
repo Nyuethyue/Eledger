@@ -19,4 +19,8 @@
         <sqlFile path="db/sql/config_transaction_type_schema.sql"/>
     </changeSet>
 
+    <changeSet id="Data types configuration schemas" author="B.A.">
+        <sqlFile path="db/sql/config_data_type_schema.sql"/>
+    </changeSet>
+
 </databaseChangeLog>

@@ -11,6 +11,8 @@
         <sqlFile path="db/sql/config_balance_account_schema.sql"/>
         <sqlFile path="db/sql/config_balance_account_audit_schema.sql"/>
         <sqlFile path="db/sql/config_transaction_type_schema.sql"/>
+        <sqlFile path="db/sql/config_data_type_schema.sql"/>
+        <sqlFile path="db/sql/config_data_type_data.sql"/>
     </changeSet>
 
 </databaseChangeLog>
