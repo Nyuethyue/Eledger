@@ -8,8 +8,8 @@
 
     <changeSet id="test" author="B.A." dbms="postgresql">
         <sqlFile path="db/sql/create_revision_table.sql"/>
-        <sqlFile path="db/sql/config_balance_account_schema.sql"/>
-        <sqlFile path="db/sql/config_balance_account_audit_schema.sql"/>
+        <sqlFile path="db/sql/config_gl_account_schema.sql"/>
+        <sqlFile path="db/sql/config_gl_account_audit_schema.sql"/>
         <sqlFile path="db/sql/config_transaction_type_schema.sql"/>
         <sqlFile path="db/sql/config_data_type_schema.sql"/>
         <sqlFile path="db/sql/config_data_type_data.sql"/>

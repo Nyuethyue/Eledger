@@ -10,9 +10,9 @@
         <sqlFile path="db/sql/create_revision_table.sql"/>
     </changeSet>
 
-    <changeSet id="Balance account configuration schemas" author="B.A." dbms="postgresql">
-        <sqlFile path="db/sql/config_balance_account_schema.sql"/>
-        <sqlFile path="db/sql/config_balance_account_audit_schema.sql"/>
+    <changeSet id="GL account configuration schemas" author="B.A." dbms="postgresql">
+        <sqlFile path="db/sql/config_gl_account_schema.sql"/>
+        <sqlFile path="db/sql/config_gl_account_audit_schema.sql"/>
     </changeSet>
 
     <changeSet id="Transaction types configuration schemas" author="B.A.">

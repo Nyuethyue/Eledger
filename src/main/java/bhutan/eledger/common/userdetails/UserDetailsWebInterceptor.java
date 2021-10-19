@@ -21,7 +21,7 @@ class UserDetailsWebInterceptor implements Interceptor {
     @Override
     public boolean doesMatch(HttpServletRequest request) {
 
-        return ("POST".equalsIgnoreCase(request.getMethod()) || "PUT".equalsIgnoreCase(request.getMethod())) && request.getRequestURI().endsWith("/config/balance/account");
+        return ("POST".equalsIgnoreCase(request.getMethod()) || "PUT".equalsIgnoreCase(request.getMethod())) && request.getRequestURI().endsWith("/config/gl/account");
     }
 
     @Override
