@@ -7,11 +7,11 @@
         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
 
     <changeSet id="test" author="B.A." dbms="postgresql">
-        <sqlFile path="db/sql/create_revision_table.sql"/>
-        <sqlFile path="db/sql/config_gl_account_schema.sql"/>
-        <sqlFile path="db/sql/config_gl_account_audit_schema.sql"/>
-        <sqlFile path="db/sql/config_transaction_type_schema.sql"/>
-        <sqlFile path="db/sql/config_data_type_schema.sql"/>
+        <sqlFile path="db/sql/001_create_revision_table.sql"/>
+        <sqlFile path="db/sql/002_config_gl_account_schema.sql"/>
+        <sqlFile path="db/sql/003_config_gl_account_audit_schema.sql"/>
+        <sqlFile path="db/sql/004_config_transaction_type_schema.sql"/>
+        <sqlFile path="db/sql/005_config_data_type_schema.sql"/>
         <sqlFile path="db/sql/config_data_type_data.sql"/>
     </changeSet>
 
