@@ -37,6 +37,12 @@ class GLAccountPartController {
         return readGLAccountPartUseCase.readById(id);
     }
 
+    @GetMapping(value = "/allByPartType/{partTypeId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.OK)
+    public Collection<GLAccountPart> getAllByPartTypeId(@PathVariable Integer partTypeId) {
+        return readGLAccountPartUseCase.readAllByPartTypeId(partTypeId);
+    }
+
     @GetMapping(value = "/children/{parentId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     public Collection<GLAccountPart> getAllByParentId(@PathVariable Long parentId) {

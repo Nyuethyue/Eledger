@@ -81,10 +81,12 @@ class CreateGLAccountPartTest {
 
     @Test
     void readTest() {
+        Integer firstLevelId = glAccountPartTypeRepositoryPort.readByLevel(1).get().getId();
+
         var glAccountParts = createGLAccountPartUseCase.create(
                 new CreateGLAccountPartUseCase.CreateGLAccountPartCommand(
                         null,
-                        glAccountPartTypeRepositoryPort.readByLevel(1).get().getId(),
+                        firstLevelId,
                         Set.of(
                                 new CreateGLAccountPartUseCase.GLAccountPartCommand(
                                         "11",
@@ -122,5 +124,11 @@ class CreateGLAccountPartTest {
 
         Assertions.assertEquals("Revenue", enTranslation.get());
         Assertions.assertEquals("Revenue", btTranslation.get());
+
+        var partsByPartId = glAccountPartRepositoryPort.readAllByPartTypeId(firstLevelId);
+
+        Assertions.assertNotNull(partsByPartId);
+        Assertions.assertEquals(1, partsByPartId.size());
+        Assertions.assertEquals(part.getId(), partsByPartId.iterator().next().getId());
     }
 }

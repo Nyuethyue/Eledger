@@ -19,5 +19,7 @@ interface GLAccountPartEntityRepository extends CustomQuerydslJpaRepository<GLAc
 
     Collection<GLAccountPartEntity> readAllByParentId(Long parentId);
 
+    Collection<GLAccountPartEntity> readAllByGlAccountPartTypeId(Integer partTypeId);
+
     boolean existsByParentIdAndCodeIn(Long id, Collection<String> codes);
 }

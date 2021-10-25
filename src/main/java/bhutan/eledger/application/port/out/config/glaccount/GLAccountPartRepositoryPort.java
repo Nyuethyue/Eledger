@@ -23,4 +23,6 @@ public interface GLAccountPartRepositoryPort {
     boolean existByParentIdAndCodeInList(Long parentId, Collection<String> codes);
 
     void deleteAll();
+
+    Collection<GLAccountPart> readAllByPartTypeId(Integer partTypeId);
 }

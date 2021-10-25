@@ -77,4 +77,12 @@ class GLAccountPartAdapter implements GLAccountPartRepositoryPort {
     public void deleteAll() {
         glAccountPartEntityRepository.deleteAll();
     }
+
+    @Override
+    public Collection<GLAccountPart> readAllByPartTypeId(Integer partTypeId) {
+        return glAccountPartEntityRepository.readAllByGlAccountPartTypeId(partTypeId)
+                .stream()
+                .map(glAccountPartMapper::mapToDomain)
+                .collect(Collectors.toUnmodifiableList());
+    }
 }
