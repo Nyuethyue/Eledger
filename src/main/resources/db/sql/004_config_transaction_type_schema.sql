@@ -114,3 +114,42 @@ CREATE SEQUENCE config.transaction_type_attribute_description_id_seq
     OWNED BY config.transaction_type_attribute_description.id;
 
 -----------------------------------------------------------------------------------------------------------------------------
+
+
+CREATE TABLE config.transaction_type_transaction_type_attribute
+(
+    id                  			bigint NOT NULL,
+    transaction_type_id 			bigint not null,
+    transaction_type_attribute_id	bigint not  null
+);
+
+ALTER TABLE config.transaction_type_transaction_type_attribute
+    ADD CONSTRAINT pk_transaction_type_transaction_type_attribute PRIMARY KEY (id);
+
+ALTER TABLE config.transaction_type_transaction_type_attribute
+    ADD CONSTRAINT un_transaction_type_transaction_type_attribute_type_id_attr_id UNIQUE (transaction_type_id, transaction_type_attribute_id);
+
+ALTER TABLE config.transaction_type_transaction_type_attribute
+    ADD CONSTRAINT fk_transaction_type_transaction_type_attribute_transaction_type
+        FOREIGN KEY (transaction_type_id)
+            REFERENCES config.transaction_type (id);
+
+ALTER TABLE config.transaction_type_transaction_type_attribute
+    ADD CONSTRAINT fk_transaction_type_transaction_type_attribute_trans_type_attr
+        FOREIGN KEY (transaction_type_attribute_id)
+            REFERENCES config.transaction_type_attribute (id);
+
+CREATE INDEX IF NOT EXISTS fki_transaction_type_transaction_type_attribute_trans_type
+    ON config.transaction_type_transaction_type_attribute (transaction_type_id);
+
+
+CREATE SEQUENCE config.transaction_type_transaction_type_attribute_id_seq
+    INCREMENT BY 1
+    MINVALUE 1
+    START 1
+    CACHE 1
+    NO CYCLE
+    OWNED BY config.transaction_type_transaction_type_attribute.id;
+
+
+-----------------------------------------------------------------------------------------------------------------------------
