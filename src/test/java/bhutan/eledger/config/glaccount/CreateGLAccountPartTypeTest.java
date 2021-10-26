@@ -64,12 +64,12 @@ class CreateGLAccountPartTypeTest {
         Assertions.assertNotNull(partType.getDescription());
 
         var enTranslation = description.translationValue("en");
-        var btTranslation = description.translationValue("dz");
+        var dzTranslation = description.translationValue("dz");
 
         Assertions.assertTrue(enTranslation.isPresent());
-        Assertions.assertTrue(btTranslation.isPresent());
+        Assertions.assertTrue(dzTranslation.isPresent());
 
         Assertions.assertEquals(languageCodeToDescription.get("en"), enTranslation.get());
-        Assertions.assertEquals(languageCodeToDescription.get("dz"), btTranslation.get());
+        Assertions.assertEquals(languageCodeToDescription.get("dz"), dzTranslation.get());
     }
 }

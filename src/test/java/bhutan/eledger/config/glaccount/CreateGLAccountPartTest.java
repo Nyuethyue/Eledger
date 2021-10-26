@@ -117,13 +117,13 @@ class CreateGLAccountPartTest {
         Assertions.assertNotNull(part.getDescription());
 
         var enTranslation = description.translationValue("en");
-        var btTranslation = description.translationValue("dz");
+        var dzTranslation = description.translationValue("dz");
 
         Assertions.assertTrue(enTranslation.isPresent());
-        Assertions.assertTrue(btTranslation.isPresent());
+        Assertions.assertTrue(dzTranslation.isPresent());
 
         Assertions.assertEquals("Revenue", enTranslation.get());
-        Assertions.assertEquals("Revenue", btTranslation.get());
+        Assertions.assertEquals("Revenue", dzTranslation.get());
 
         var partsByPartId = glAccountPartRepositoryPort.readAllByPartTypeId(firstLevelId);
 
