@@ -138,14 +138,4 @@ ALTER TABLE config.transaction_type_transaction_type_attribute
 CREATE INDEX IF NOT EXISTS fki_transaction_type_transaction_type_attribute_trans_type
     ON config.transaction_type_transaction_type_attribute (transaction_type_id);
 
-
-CREATE SEQUENCE config.transaction_type_transaction_type_attribute_id_seq
-    INCREMENT BY 1
-    MINVALUE 1
-    START 1
-    CACHE 1
-    NO CYCLE
-    OWNED BY config.transaction_type_transaction_type_attribute.id;
-
-
 -----------------------------------------------------------------------------------------------------------------------------
