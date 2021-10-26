@@ -25,4 +25,6 @@ select nextval('config.gl_account_part_type_description_id_seq') as id
 	, id as gl_account_part_type_id
 from config.gl_account_part_type;
 
+commit;
+
 -----------------------------------------------------------------------------------------------------------------------------

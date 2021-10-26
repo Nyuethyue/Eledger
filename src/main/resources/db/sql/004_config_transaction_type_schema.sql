@@ -119,8 +119,8 @@ CREATE SEQUENCE config.transaction_type_attribute_description_id_seq
 CREATE TABLE config.transaction_type_transaction_type_attribute
 (
     id                  			bigint NOT NULL,
-    transaction_type_id 			bigint not null,
-    transaction_type_attribute_id	bigint not  null
+    transaction_type_id 			bigint NOT NULL,
+    transaction_type_attribute_id	bigint NOT NULL
 );
 
 ALTER TABLE config.transaction_type_transaction_type_attribute

@@ -23,7 +23,7 @@
         <sqlFile path="db/sql/005_config_data_type_schema.sql"/>
     </changeSet>
 
-    <changeSet id="GL account level data insertion" author="B.A.">
+    <changeSet id="GL account level data insertion" author="V.G.">
         <sqlFile path="db/sql/006_config_gl_account_part_type_data.sql"/>
     </changeSet>
 
