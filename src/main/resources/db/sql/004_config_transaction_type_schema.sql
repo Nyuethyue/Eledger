@@ -118,16 +118,12 @@ CREATE SEQUENCE config.transaction_type_attribute_description_id_seq
 
 CREATE TABLE config.transaction_type_transaction_type_attribute
 (
-    id                  			bigint NOT NULL,
     transaction_type_id 			bigint NOT NULL,
     transaction_type_attribute_id	bigint NOT NULL
 );
 
 ALTER TABLE config.transaction_type_transaction_type_attribute
-    ADD CONSTRAINT pk_transaction_type_transaction_type_attribute PRIMARY KEY (id);
-
-ALTER TABLE config.transaction_type_transaction_type_attribute
-    ADD CONSTRAINT un_transaction_type_transaction_type_attribute_type_id_attr_id UNIQUE (transaction_type_id, transaction_type_attribute_id);
+    ADD CONSTRAINT pk_transaction_type_transaction_type_attribute PRIMARY KEY (transaction_type_id, transaction_type_attribute_id);
 
 ALTER TABLE config.transaction_type_transaction_type_attribute
     ADD CONSTRAINT fk_transaction_type_transaction_type_attribute_transaction_type
