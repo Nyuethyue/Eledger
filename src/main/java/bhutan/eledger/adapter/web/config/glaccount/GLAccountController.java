@@ -41,7 +41,7 @@ class GLAccountController {
 
     @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
-    public SearchResult<GLAccount> search(@RequestBody SearchGLAccountUseCase.SearchGLAccountCommand command) {
+    public SearchResult<GLAccount> search(SearchGLAccountUseCase.SearchGLAccountCommand command) {
         return searchGLAccountUseCase.search(command);
     }
 }
