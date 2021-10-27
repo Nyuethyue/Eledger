@@ -18,11 +18,6 @@ configurations {
     }
 }
 
-repositories {
-    mavenLocal()
-    mavenCentral()
-}
-
 ext {
     set('querydslVersion', "5.0.0")
 }

@@ -1,0 +1,14 @@
+[Unit]
+Description="Eledger Service"
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=root
+ExecStart=/opt/eledger/eledger.sh
+
+[Install]
+WantedBy=multi-user.target
