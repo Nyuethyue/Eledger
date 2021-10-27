@@ -62,4 +62,15 @@ class TransactionTypeAttributeRepositoryAdapter implements TransactionTypeAttrib
                     return transactionTypeAttributeMapper.mapToDomain(entity, dataType);
                 });
     }
+
+    @Override
+    public Collection<TransactionTypeAttribute> readAll() {
+        return transactionTypeAttributeEntityRepository.findAll()
+                .stream()
+                .map(entity -> {
+                    DataType dataType = dataTypeRepositoryPort.requiredReadById(entity.getDataTypeId());
+                    return transactionTypeAttributeMapper.mapToDomain(entity, dataType);
+                })
+                .collect(Collectors.toUnmodifiableList());
+    }
 }

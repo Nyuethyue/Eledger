@@ -5,7 +5,9 @@ import bhutan.eledger.domain.config.transaction.TransactionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -37,5 +39,13 @@ class TransactionTypeRepositoryAdapter implements TransactionTypeRepositoryPort 
     public Optional<TransactionType> readById(Long id) {
         return transactionTypeEntityRepository.findById(id)
                 .map(transactionTypeMapper::mapToDomain);
+    }
+
+    @Override
+    public Collection<TransactionType> readAll() {
+        return transactionTypeEntityRepository.findAll()
+                .stream()
+                .map(transactionTypeMapper::mapToDomain)
+                .collect(Collectors.toUnmodifiableList());
     }
 }

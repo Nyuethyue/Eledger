@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class HexagonalArchitecture extends ArchitectureElement {
+class HexagonalArchitecture extends ArchitectureElement {
 
     private Adapters adapters;
     private ApplicationLayer applicationLayer;

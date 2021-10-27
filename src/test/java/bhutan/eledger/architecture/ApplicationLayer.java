@@ -5,7 +5,7 @@ import com.tngtech.archunit.core.domain.JavaClasses;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ApplicationLayer extends ArchitectureElement {
+class ApplicationLayer extends ArchitectureElement {
 
     private final HexagonalArchitecture parentContext;
     private final List<String> incomingPortsPackages = new ArrayList<>();

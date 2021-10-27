@@ -16,4 +16,6 @@ public interface TransactionTypeAttributeRepositoryPort {
     void deleteAll();
 
     Optional<TransactionTypeAttribute> readById(Long id);
+
+    Collection<TransactionTypeAttribute> readAll();
 }
