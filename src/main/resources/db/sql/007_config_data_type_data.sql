@@ -1,8 +1,8 @@
 
 -----------------------------------------------------------------------------------------------------------------------------
 
-insert into config.data_type(id, type)
-values(1, 'BOOLEAN')
+INSERT INTO config.data_type(id, type)
+VALUES(1, 'BOOLEAN')
 	, (2, 'INT')
 	, (3, 'DECIMAL')
 	, (4, 'DATE')
