@@ -1,8 +1,11 @@
-package bhutan.eledger.application.service.glaccount;
+package bhutan.eledger.application.service.datatype;
 
 import am.iunetworks.lib.common.validation.RecordNotFoundException;
+import bhutan.eledger.application.port.in.config.datatype.ReadDataTypeUseCase;
 import bhutan.eledger.application.port.in.config.glaccount.ReadGLAccountPartTypeUseCase;
+import bhutan.eledger.application.port.out.config.datatype.DataTypeRepositoryPort;
 import bhutan.eledger.application.port.out.config.glaccount.GLAccountPartTypeRepositoryPort;
+import bhutan.eledger.domain.config.datatype.DataType;
 import bhutan.eledger.domain.config.glaccount.GLAccountPartType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -15,23 +18,23 @@ import java.util.Collection;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-class ReadGLAccountPartTypeService implements ReadGLAccountPartTypeUseCase {
-    private final GLAccountPartTypeRepositoryPort glAccountPartTypeRepositoryPort;
+class ReadDataTypeService implements ReadDataTypeUseCase {
+    private final DataTypeRepositoryPort dataTypeRepositoryPort;
 
     @Override
-    public GLAccountPartType readById(Integer id) {
-        log.trace("Reading gl account part type by id: {}", id);
+    public DataType readById(Integer id) {
+        log.trace("Reading data type by id: {}", id);
 
-        return glAccountPartTypeRepositoryPort.readById(id)
+        return dataTypeRepositoryPort.readById(id)
                 .orElseThrow(() ->
                         new RecordNotFoundException("GLAccountPartType by id: [" + id + "] not found.")
                 );
     }
 
     @Override
-    public Collection<GLAccountPartType> readAll() {
-        log.trace("Reading all gl account part types.");
+    public Collection<DataType> readAll() {
+        log.trace("Reading all data types.");
 
-        return glAccountPartTypeRepositoryPort.readAll();
+        return dataTypeRepositoryPort.readAll();
     }
 }

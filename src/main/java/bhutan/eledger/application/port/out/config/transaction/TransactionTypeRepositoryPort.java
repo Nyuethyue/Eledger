@@ -2,6 +2,7 @@ package bhutan.eledger.application.port.out.config.transaction;
 
 import bhutan.eledger.domain.config.transaction.TransactionType;
 
+import java.util.Collection;
 import java.util.Optional;
 
 public interface TransactionTypeRepositoryPort {
@@ -13,4 +14,6 @@ public interface TransactionTypeRepositoryPort {
     void deleteAll();
 
     Optional<TransactionType> readById(Long id);
+
+    Collection<TransactionType> readAll();
 }

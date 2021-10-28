@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Table(name = "data_type", schema = "config")
 @AllArgsConstructor
 @NoArgsConstructor
-public class DataTypeEntity implements DataType {
+class DataTypeEntity implements DataType {
 
     @Id
     @Column(name = "id")
