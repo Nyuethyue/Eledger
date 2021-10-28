@@ -5,10 +5,10 @@ StartLimitIntervalSec=0
 
 [Service]
 Type=simple
-Restart=always
-RestartSec=1
 User=root
-ExecStart=/opt/eledger/eledger.sh
+WorkingDirectory=/opt/eledger
+SuccessExitStatus=143
+ExecStart=java -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager -Xmx768m -jar /opt/eledger/eledger.jar
 
 [Install]
 WantedBy=multi-user.target
