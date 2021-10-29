@@ -31,4 +31,8 @@
         <sqlFile path="db/sql/006_config_gl_account_part_type_data.sql"/>
     </changeSet>
 
+    <changeSet id="Data type data insertion" author="V.G.">
+        <sqlFile path="db/sql/007_config_data_type_data.sql"/>
+    </changeSet>
+
 </databaseChangeLog>
