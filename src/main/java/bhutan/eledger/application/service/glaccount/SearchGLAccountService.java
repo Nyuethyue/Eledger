@@ -31,7 +31,8 @@ class SearchGLAccountService implements SearchGLAccountUseCase {
                 outCommand
         );
 
-        log.debug("Search executed. Result totalCount: {}, totalPages:  {}, out command: {}", searchResult.getTotalCount(), searchResult.getTotalPages(), outCommand);
+        log.debug("Search executed. Result totalCount: {}, totalPages: {}, contentCount {}, out port command: {}", searchResult.getTotalCount(), searchResult.getTotalPages(), searchResult.getContent().size(), outCommand);
+        log.trace("Search result content: {}, out port command: {}", searchResult.getContent(), outCommand);
 
         return searchResult;
     }
