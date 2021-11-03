@@ -2,13 +2,12 @@ spring:
   application:
     name: eledger
   datasource:
-    url: jdbc:postgresql://localhost:5432/eledger
-    username: postgres
-    password: 123456
+    url: jdbc:postgresql://localhost:5432/eledger_test
+    username: eledger
+    password: eledger
   liquibase:
     change-log: classpath:db/changelog/changelog.test.xml
     clear-checksums: true
-    liquibase-schema: migration
   jpa:
     open-in-view: true
     show-sql: true

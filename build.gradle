@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.5.6'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'org.liquibase.gradle' version '2.0.4'
 }
 
 group = 'bhutan'
@@ -22,6 +23,8 @@ ext {
     set('querydslVersion', "5.0.0")
 }
 
+apply from: 'database.gradle'
+
 dependencies {
 //	implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
@@ -29,13 +32,13 @@ dependencies {
     implementation 'org.springframework.data:spring-data-envers'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.liquibase:liquibase-core'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.liquibase:liquibase-core'
 
     //custom
     implementation "am.iunetworks:multilingual-core:0.0.1"

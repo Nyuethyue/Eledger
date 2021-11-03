@@ -1,0 +1,57 @@
+dependencies {
+    liquibaseRuntime 'org.liquibase:liquibase-core:4.5.0'
+    liquibaseRuntime 'org.postgresql:postgresql:42.2.24'
+}
+
+task liquibase() {
+    def changeLog
+
+    def props = project.properties
+
+    if (project.hasProperty("changelogFile")) {
+        changeLog = props.get("changelogFile")
+    } else {
+        String changeLogFileName = props.getOrDefault("changelogFileName", props.getOrDefault("defaultChangelogFileName", "changelog.prod.xml"))
+
+        String slash = "/"
+
+        String changelogFileDir = props.getOrDefault("changelogFileDir", props.getOrDefault("defaultChangelogFileDir", 'src/main/resources/db/changelog/'))
+
+        if (!changelogFileDir.endsWith(slash) && !changeLogFileName.startsWith(slash)) {
+            changeLog = changelogFileDir + slash + changeLogFileName
+        } else {
+            changeLog = changelogFileDir + changeLogFileName
+        }
+    }
+
+    def dbUrl
+
+    if (project.hasProperty("url")) {
+        dbUrl = props.get("url")
+    } else {
+
+        def hostname = props.getOrDefault("hostname", props.getOrDefault("defaultHostname", "localhost"))
+        def port = props.getOrDefault("port", props.getOrDefault("defaultPort", "5432"))
+        def dbname = props.getOrDefault("dbname", props.getOrDefault("defaultDbname", project.name))
+
+        dbUrl = "jdbc:postgresql://$hostname:$port/$dbname"
+    }
+
+    def dbUsername = props.getOrDefault("user", props.getOrDefault("defaultUser", project.name))
+    def dbPassword = props.getOrDefault("pass", props.getOrDefault("defaultPass", project.name))
+    def dbSchema = props.getOrDefault("schemaName", props.getOrDefault("defaultSchemaName", "public"))
+    def lbSchema = props.getOrDefault("lbSchemaName", props.getOrDefault("defaultLbSchemaName", "public"))
+
+    liquibase {
+        activities {
+            main {
+                changeLogFile changeLog
+                url dbUrl
+                username dbUsername
+                password dbPassword
+                liquibaseSchemaName lbSchema
+                defaultSchemaName dbSchema
+            }
+        }
+    }
+}

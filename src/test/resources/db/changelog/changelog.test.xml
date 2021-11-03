@@ -4,15 +4,16 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
 
     <changeSet id="test" author="B.A." dbms="postgresql">
-        <sqlFile path="db/sql/001_create_revision_table.sql"/>
-        <sqlFile path="db/sql/002_config_gl_account_schema.sql"/>
-        <sqlFile path="db/sql/003_config_gl_account_audit_schema.sql"/>
-        <sqlFile path="db/sql/004_config_transaction_type_schema.sql"/>
-        <sqlFile path="db/sql/005_config_data_type_schema.sql"/>
-        <sqlFile path="db/sql/config_data_type_data.sql"/>
+        <sqlFile path="../sql/000_init_db.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../sql/001_create_revision_table.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../sql/002_config_gl_account_schema.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../sql/003_config_gl_account_audit_schema.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../sql/004_config_transaction_type_schema.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../sql/005_config_data_type_schema.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../sql/config_data_type_data.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
 </databaseChangeLog>
