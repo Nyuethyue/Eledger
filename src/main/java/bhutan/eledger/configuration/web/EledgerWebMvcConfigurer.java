@@ -1,5 +1,6 @@
 package bhutan.eledger.configuration.web;
 
+import bhutan.eledger.common.interceptor.ExecutionDurationWebInterceptor;
 import bhutan.eledger.common.interceptor.InterceptorHandlerInterceptorAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -14,5 +15,6 @@ public class EledgerWebMvcConfigurer implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(interceptorHandlerInterceptorAdapter);
+        registry.addWebRequestInterceptor(new ExecutionDurationWebInterceptor());
     }
 }

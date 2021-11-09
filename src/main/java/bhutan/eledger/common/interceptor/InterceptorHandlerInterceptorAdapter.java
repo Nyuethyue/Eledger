@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Component
 public class InterceptorHandlerInterceptorAdapter implements HandlerInterceptor {
 
-    private static final String ATTRIBUTE_MATCHED_INTERCEPTORS = "bhutan.eledger.common.MATCHED_INTERCEPTORS";
+    private static final String ATTRIBUTE_MATCHED_INTERCEPTORS = InterceptorHandlerInterceptorAdapter.class.getName() + ".MATCHED_INTERCEPTORS";
 
     private final List<Interceptor> interceptors;
 
