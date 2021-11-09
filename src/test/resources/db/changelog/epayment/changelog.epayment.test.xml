@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+
+    <changeSet id="Payment advice schemas" author="B.A." dbms="postgresql">
+        <sqlFile path="../../sql/epayment/001_create_payment_advice_schema.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/epayment/002_create_payment_advice_number_sequence.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+</databaseChangeLog>

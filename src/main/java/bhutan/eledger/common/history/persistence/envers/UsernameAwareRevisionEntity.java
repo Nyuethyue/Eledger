@@ -9,7 +9,7 @@ import javax.persistence.*;
 public class UsernameAwareRevisionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "revision_id_seq")
-    @SequenceGenerator(name = "revision_id_seq", sequenceName = "revision_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "revision_id_seq", sequenceName = "revision_id_seq", schema = "public", allocationSize = 1)
     @Column(name = "id", nullable = false)
     @RevisionNumber
     private Long id;

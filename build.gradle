@@ -51,6 +51,8 @@ dependencies {
     annotationProcessor "com.querydsl:querydsl-apt:${querydslVersion}:jpa"
     annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
 
+    implementation 'com.google.guava:guava:31.0.1-jre'
+
     testImplementation 'com.tngtech.archunit:archunit:0.21.0'
 }
 

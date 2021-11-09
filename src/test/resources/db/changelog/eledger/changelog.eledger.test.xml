@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+
+    <changeSet id="test" author="B.A." dbms="postgresql">
+        <sqlFile path="../../sql/eledger/000_init_db.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/eledger/001_create_revision_table.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/eledger/002_config_gl_account_schema.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/eledger/003_config_gl_account_audit_schema.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/eledger/004_config_transaction_type_schema.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/eledger/005_config_data_type_schema.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/eledger/config_data_type_data.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+</databaseChangeLog>

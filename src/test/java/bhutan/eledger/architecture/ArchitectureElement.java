@@ -1,5 +1,6 @@
 package bhutan.eledger.architecture;
 
+import bhutan.eledger.EledgerApplication;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 
@@ -25,10 +26,10 @@ abstract class ArchitectureElement {
     static void denyDependency(String fromPackageName, String toPackageName, JavaClasses classes) {
         noClasses()
                 .that()
-                .resideInAPackage("io.reflectoring.reviewapp.domain..")
+                .resideInAPackage(EledgerApplication.class.getPackageName() + ".domain..")
                 .should()
                 .dependOnClassesThat()
-                .resideInAnyPackage("io.reflectoring.reviewapp.application..")
+                .resideInAnyPackage(EledgerApplication.class.getPackageName() + ".application..")
                 .check(classes);
     }
 

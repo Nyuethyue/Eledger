@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "revision")
+@Table(name = "revision", schema = "public")
 @RevisionEntity(UsernameAwareRevisionListener.class)
 class AuditRevisionEntity extends UsernameAwareRevisionEntity {
 }

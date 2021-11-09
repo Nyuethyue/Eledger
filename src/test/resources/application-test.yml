@@ -8,6 +8,7 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/changelog.test.xml
     clear-checksums: true
+    liquibase-schema: public
   jpa:
     open-in-view: true
     show-sql: true

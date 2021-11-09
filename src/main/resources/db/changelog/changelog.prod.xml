@@ -6,33 +6,8 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
 
-    <changeSet id="Init db" author="A.N.">
-        <sqlFile path="../sql/000_init_db.sql" relativeToChangelogFile="true"/>
-    </changeSet>
 
-    <changeSet id="Create Revision Table" author="B.A.">
-        <sqlFile path="../sql/001_create_revision_table.sql" relativeToChangelogFile="true"/>
-    </changeSet>
-
-    <changeSet id="GL account configuration schemas" author="B.A." dbms="postgresql">
-        <sqlFile path="../sql/002_config_gl_account_schema.sql" relativeToChangelogFile="true"/>
-        <sqlFile path="../sql/003_config_gl_account_audit_schema.sql" relativeToChangelogFile="true"/>
-    </changeSet>
-
-    <changeSet id="Transaction types configuration schemas" author="B.A.">
-        <sqlFile path="../sql/004_config_transaction_type_schema.sql" relativeToChangelogFile="true"/>
-    </changeSet>
-
-    <changeSet id="Data types configuration schemas" author="B.A.">
-        <sqlFile path="../sql/005_config_data_type_schema.sql" relativeToChangelogFile="true"/>
-    </changeSet>
-
-    <changeSet id="GL account level data insertion" author="V.G.">
-        <sqlFile path="../sql/006_config_gl_account_part_type_data.sql" relativeToChangelogFile="true"/>
-    </changeSet>
-
-    <changeSet id="Data type data insertion" author="V.G.">
-        <sqlFile path="../sql/007_config_data_type_data.sql" relativeToChangelogFile="true"/>
-    </changeSet>
+    <include file="eledger/changelog.eledger.prod.xml" relativeToChangelogFile="true"/>
+    <include file="epayment/changelog.epayment.prod.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
