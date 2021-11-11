@@ -118,8 +118,8 @@ CREATE SEQUENCE eledger_config.transaction_type_attribute_description_id_seq
 
 CREATE TABLE eledger_config.transaction_type_transaction_type_attribute
 (
-    transaction_type_id 			bigint NOT NULL,
-    transaction_type_attribute_id	bigint NOT NULL
+    transaction_type_id           bigint NOT NULL,
+    transaction_type_attribute_id bigint NOT NULL
 );
 
 ALTER TABLE eledger_config.transaction_type_transaction_type_attribute

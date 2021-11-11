@@ -7,6 +7,7 @@
         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
 
     <changeSet id="Payment advice schemas" author="B.A." dbms="postgresql">
+        <sqlFile path="../../sql/epayment/000_init_db.sql" relativeToChangelogFile="true"/>
         <sqlFile path="../../sql/epayment/001_create_payment_advice_schema.sql" relativeToChangelogFile="true"/>
         <sqlFile path="../../sql/epayment/002_create_payment_advice_number_sequence.sql" relativeToChangelogFile="true"/>
     </changeSet>

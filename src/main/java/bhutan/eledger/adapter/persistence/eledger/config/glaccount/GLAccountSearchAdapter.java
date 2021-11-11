@@ -3,8 +3,6 @@ package bhutan.eledger.adapter.persistence.eledger.config.glaccount;
 import am.iunetworks.lib.common.persistence.search.PageableResolver;
 import am.iunetworks.lib.common.persistence.search.PagedSearchResult;
 import am.iunetworks.lib.common.persistence.search.SearchResult;
-import bhutan.eledger.adapter.persistence.eledger.config.glaccount.QGLAccountDescriptionEntity;
-import bhutan.eledger.adapter.persistence.eledger.config.glaccount.QGLAccountEntity;
 import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountSearchPort;
 import bhutan.eledger.domain.eledger.config.glaccount.GLAccount;
 import com.querydsl.core.BooleanBuilder;

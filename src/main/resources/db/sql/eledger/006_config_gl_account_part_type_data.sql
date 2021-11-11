@@ -12,7 +12,7 @@ VALUES (NEXTVAL('eledger_config.gl_account_part_type_id_seq'), 1, CURRENT_TIMEST
 
 INSERT INTO eledger_config.gl_account_part_type_description(id, language_code, value, gl_account_part_type_id)
 SELECT NEXTVAL('eledger_config.gl_account_part_type_description_id_seq') AS id
-     , 'en'                                                      AS lang
+     , 'en'                                                              AS lang
      , CASE level
            WHEN 1 THEN 'Major group'
            WHEN 2 THEN 'Revenue group'
@@ -20,8 +20,8 @@ SELECT NEXTVAL('eledger_config.gl_account_part_type_description_id_seq') AS id
            WHEN 4 THEN 'Revenue Sub-type'
            WHEN 5 THEN 'Functional group'
            WHEN 6 THEN 'Functional type'
-           WHEN 7 THEN 'Revenue Head/GL Head' END                AS level_description
-     , id                                                        AS gl_account_part_type_id
+           WHEN 7 THEN 'Revenue Head/GL Head' END                        AS level_description
+     , id                                                                AS gl_account_part_type_id
 FROM eledger_config.gl_account_part_type;
 
 -----------------------------------------------------------------------------------------------------------------------------

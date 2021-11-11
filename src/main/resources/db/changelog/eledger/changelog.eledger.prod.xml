@@ -6,7 +6,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
 
-    <changeSet id="Init db" author="A.N.">
+    <changeSet id="Init eledger db" author="A.N.">
         <sqlFile path="../../sql/eledger/000_init_db.sql" relativeToChangelogFile="true"/>
     </changeSet>
 

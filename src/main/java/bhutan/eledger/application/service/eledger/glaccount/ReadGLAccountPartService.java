@@ -36,7 +36,7 @@ class ReadGLAccountPartService implements ReadGLAccountPartUseCase {
     }
 
     @Override
-    public Collection<GLAccountPart> readAllByPartTypeId(Integer partTypeId){
+    public Collection<GLAccountPart> readAllByPartTypeId(Integer partTypeId) {
         log.trace("Reading all gl accounts by part type id.");
 
         return glAccountPartRepositoryPort.readAllByPartTypeId(partTypeId);

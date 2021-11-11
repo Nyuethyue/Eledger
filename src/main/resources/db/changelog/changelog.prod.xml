@@ -9,5 +9,6 @@
 
     <include file="eledger/changelog.eledger.prod.xml" relativeToChangelogFile="true"/>
     <include file="epayment/changelog.epayment.prod.xml" relativeToChangelogFile="true"/>
+    <include file="ref/changelog.ref.prod.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
