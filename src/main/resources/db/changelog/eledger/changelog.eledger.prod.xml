@@ -35,5 +35,12 @@
         <sqlFile path="../../sql/eledger/007_config_data_type_data.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <changeSet id="Create taxpayer schema" author="B.A.">
+        <sqlFile path="../../sql/eledger/008_taxpayer_schema.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="Create transaction schema" author="B.A.">
+        <sqlFile path="../../sql/eledger/009_transaction_schema.sql" relativeToChangelogFile="true"/>
+    </changeSet>
 
 </databaseChangeLog>
