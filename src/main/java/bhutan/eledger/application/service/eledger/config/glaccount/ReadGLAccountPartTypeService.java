@@ -1,4 +1,4 @@
-package bhutan.eledger.application.service.eledger.glaccount;
+package bhutan.eledger.application.service.eledger.config.glaccount;
 
 import am.iunetworks.lib.common.validation.RecordNotFoundException;
 import bhutan.eledger.application.port.in.eledger.config.glaccount.ReadGLAccountPartTypeUseCase;

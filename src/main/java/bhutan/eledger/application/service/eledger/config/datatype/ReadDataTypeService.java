@@ -1,4 +1,4 @@
-package bhutan.eledger.application.service.eledger.datatype;
+package bhutan.eledger.application.service.eledger.config.datatype;
 
 import am.iunetworks.lib.common.validation.RecordNotFoundException;
 import bhutan.eledger.application.port.in.eledger.config.datatype.ReadDataTypeUseCase;

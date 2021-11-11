@@ -1,4 +1,4 @@
-package bhutan.eledger.application.service.eledger.transaction;
+package bhutan.eledger.application.service.eledger.config.transaction;
 
 import am.iunetworks.lib.common.validation.RecordNotFoundException;
 import bhutan.eledger.application.port.in.eledger.config.transaction.ReadTransactionTypeAttributeUseCase;

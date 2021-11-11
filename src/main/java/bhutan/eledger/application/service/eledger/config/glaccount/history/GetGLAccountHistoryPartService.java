@@ -1,4 +1,4 @@
-package bhutan.eledger.application.service.eledger.glaccount.history;
+package bhutan.eledger.application.service.eledger.config.glaccount.history;
 
 import bhutan.eledger.application.port.in.eledger.config.glaccount.history.GetGLAccountPartHistoryUseCase;
 import bhutan.eledger.application.port.out.eledger.config.glaccount.history.GLAccountPartHistoryPort;

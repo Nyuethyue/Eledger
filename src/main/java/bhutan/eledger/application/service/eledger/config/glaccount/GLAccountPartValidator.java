@@ -1,4 +1,4 @@
-package bhutan.eledger.application.service.eledger.glaccount;
+package bhutan.eledger.application.service.eledger.config.glaccount;
 
 import am.iunetworks.lib.common.validation.ValidationError;
 import am.iunetworks.lib.common.validation.ViolationException;

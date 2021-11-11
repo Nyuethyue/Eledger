@@ -1,4 +1,4 @@
-package bhutan.eledger.application.service.eledger.transaction;
+package bhutan.eledger.application.service.eledger.config.transaction;
 
 import am.iunetworks.lib.common.validation.ValidationError;
 import am.iunetworks.lib.common.validation.ViolationException;

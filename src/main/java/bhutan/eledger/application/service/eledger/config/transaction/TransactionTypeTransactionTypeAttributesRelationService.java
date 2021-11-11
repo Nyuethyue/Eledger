@@ -1,4 +1,4 @@
-package bhutan.eledger.application.service.eledger.transaction;
+package bhutan.eledger.application.service.eledger.config.transaction;
 
 import bhutan.eledger.application.port.in.eledger.config.transaction.TransactionTypeTransactionTypeAttributesRelationUseCase;
 import bhutan.eledger.application.port.out.eledger.config.transaction.TransactionTypeTransactionTypeAttributeRepositoryPort;
