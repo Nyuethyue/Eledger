@@ -1,7 +1,10 @@
 package bhutan.eledger.epayment.paymentadvice;
 
+import am.iunetworks.lib.common.persistence.search.SearchResult;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAdviceUseCase;
+import bhutan.eledger.application.port.in.epayment.paymentadvice.SearchPaymentAdviceUseCase;
 import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceRepositoryPort;
+import bhutan.eledger.domain.epayment.PaymentAdvice;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,6 +15,7 @@ import org.springframework.test.context.TestPropertySource;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,6 +29,9 @@ class CreatePaymentAdviceTest {
     private CreatePaymentAdviceUseCase createPaymentAdviceUseCase;
 
     @Autowired
+    private SearchPaymentAdviceUseCase searchPaymentAdviceUseCase;
+
+    @Autowired
     private PaymentAdviceRepositoryPort paymentAdviceRepositoryPort;
 
     @AfterEach
@@ -34,8 +41,7 @@ class CreatePaymentAdviceTest {
 
     @Test
     void createTest() {
-
-        Long id = createPaymentAdviceUseCase.create(
+        CreatePaymentAdviceUseCase.CreatePaymentAdviceCommand createCommand =
                 new CreatePaymentAdviceUseCase.CreatePaymentAdviceCommand(
                         "TestDrn",
                         "TestTpn",
@@ -55,9 +61,18 @@ class CreatePaymentAdviceTest {
                                         )
                                 )
                         )
-                )
-        );
+                );
+        Long id = createPaymentAdviceUseCase.create(createCommand);
 
         Assertions.assertNotNull(id);
+
+        SearchPaymentAdviceUseCase.SearchPaymentAdviseCommand command =
+                new SearchPaymentAdviceUseCase.SearchPaymentAdviseCommand(0, 10, "tpn", null, "PIT", createCommand.getTpn(), null);
+        SearchResult<PaymentAdvice> searchResult = searchPaymentAdviceUseCase.search(command);
+        Assertions.assertNotNull(searchResult);
+        List<PaymentAdvice> content = searchResult.getContent();
+        Assertions.assertNotNull(content);
+        Assertions.assertEquals(content.size(), 1);
+        Assertions.assertEquals(content.get(0).getDrn(), createCommand.getDrn());
     }
 }

@@ -16,4 +16,9 @@
                  relativeToChangelogFile="true"/>
     </changeSet>
 
+    <changeSet id="Payment mode schemas and data" author="A.A." dbms="postgresql">
+        <sqlFile path="../../sql/epayment/003_create_payment_mode_table.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/epayment/004_insert_payment_mode_data.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog>
