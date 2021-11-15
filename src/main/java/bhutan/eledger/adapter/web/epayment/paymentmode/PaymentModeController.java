@@ -22,7 +22,6 @@ class PaymentModeController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     public Collection<PaymentMode> getAll() {
-
         return readPaymentModeUseCase.readAll();
     }
 }
