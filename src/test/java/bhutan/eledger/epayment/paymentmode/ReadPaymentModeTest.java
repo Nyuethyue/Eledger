@@ -23,6 +23,6 @@ class ReadPaymentModeTest {
     @Test
     void readAllTest(){
         Collection<PaymentMode> existedPaymentModes = paymentModeRepositoryPort.readAll();
-        Assertions.assertEquals(7, existedPaymentModes.size());
+        Assertions.assertEquals(6, existedPaymentModes.size());
     }
 }

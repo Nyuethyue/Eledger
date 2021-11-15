@@ -2,8 +2,7 @@
 CREATE TABLE IF NOT EXISTS ref.payment_mode
 (
     id   bigint  NOT NULL,
-    code char(32) NOT NULL,
-    PRIMARY KEY (id)
+    code char(32) NOT NULL
 );
 
 ALTER TABLE ref.payment_mode

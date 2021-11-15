@@ -17,7 +17,7 @@
 
     <changeSet id="Payment mode schemas" author="A.A." dbms="postgresql">
         <sqlFile path="../../sql/ref/003_create_payment_mode_ref_table.sql" relativeToChangelogFile="true"/>
-        <sqlFile path="../../sql/ref/003_create_payment_mode_ref_table.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/ref/004_insert_payment_mode_ref_data.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
 </databaseChangeLog>

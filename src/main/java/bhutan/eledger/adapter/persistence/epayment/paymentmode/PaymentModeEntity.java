@@ -10,12 +10,12 @@ import java.util.Set;
 
 @Entity
 @NoArgsConstructor
-@Table(name = "payment_mode")
+@Table(name = "payment_mode", schema = "ref")
 @Getter
 @Setter
 class PaymentModeEntity {
     @Id
-    @SequenceGenerator(name = "payment_mode_id_seq", sequenceName = "payment_mode_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "payment_mode_id_seq", schema = "ref", sequenceName = "payment_mode_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "payment_mode_id_seq")
     @Column(name = "id")
     private Long id;

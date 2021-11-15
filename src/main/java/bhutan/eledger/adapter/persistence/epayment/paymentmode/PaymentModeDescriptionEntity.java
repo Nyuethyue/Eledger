@@ -9,14 +9,14 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "payment_mode_description")
+@Table(name = "payment_mode_description", schema = "ref")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 class PaymentModeDescriptionEntity extends TranslationEntity {
     @Id
-    @SequenceGenerator(name = "payment_mode_description_id_seq", sequenceName = "payment_mode_description_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "payment_mode_description_id_seq", schema = "ref", sequenceName = "payment_mode_description_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "payment_mode_description_id_seq")
     @Column(name = "id")
     private Long id;
