@@ -15,5 +15,4 @@
         <sqlFile path="../../sql/epayment/002_create_payment_advice_number_sequence.sql"
                  relativeToChangelogFile="true"/>
     </changeSet>
-
 </databaseChangeLog>
