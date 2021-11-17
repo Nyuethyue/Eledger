@@ -1,8 +1,8 @@
-package bhutan.eledger.application.service.epayment.paymentmode;
+package bhutan.eledger.application.service.ref.paymentmode;
 
-import bhutan.eledger.application.port.in.epayment.paymentmode.ReadPaymentModeUseCase;
-import bhutan.eledger.application.port.out.epayment.paymentmode.PaymentModeRepositoryPort;
-import bhutan.eledger.domain.epayment.PaymentMode;
+import bhutan.eledger.application.port.in.ref.paymentmode.ReadPaymentModeUseCase;
+import bhutan.eledger.application.port.out.ref.paymentmode.PaymentModeRepositoryPort;
+import bhutan.eledger.domain.ref.paymentmode.PaymentMode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;

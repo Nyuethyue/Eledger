@@ -1,7 +1,7 @@
-package bhutan.eledger.adapter.web.epayment.paymentmode;
+package bhutan.eledger.adapter.web.ref.paymentmode;
 
-import bhutan.eledger.application.port.in.epayment.paymentmode.ReadPaymentModeUseCase;
-import bhutan.eledger.domain.epayment.PaymentMode;
+import bhutan.eledger.application.port.in.ref.paymentmode.ReadPaymentModeUseCase;
+import bhutan.eledger.domain.ref.paymentmode.PaymentMode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

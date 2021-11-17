@@ -1,4 +1,4 @@
-package bhutan.eledger.domain.epayment;
+package bhutan.eledger.domain.ref.paymentmode;
 
 import am.iunetworks.lib.multilingual.core.Multilingual;
 import lombok.Data;

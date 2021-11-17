@@ -1,6 +1,6 @@
-package bhutan.eledger.application.port.in.epayment.paymentmode;
+package bhutan.eledger.application.port.in.ref.paymentmode;
 
-import bhutan.eledger.domain.epayment.PaymentMode;
+import bhutan.eledger.domain.ref.paymentmode.PaymentMode;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.Collection;
