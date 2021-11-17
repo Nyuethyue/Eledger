@@ -1,4 +1,4 @@
-CREATE TABLE eledger_config.gl_account_aud
+CREATE TABLE eledger_config.el_gl_account_aud
 (
     revision_id                 bigint   NOT NULL,
     revision_end_id             bigint,
@@ -13,22 +13,22 @@ CREATE TABLE eledger_config.gl_account_aud
     gl_account_last_part_id     bigint
 );
 
-ALTER TABLE eledger_config.gl_account_aud
+ALTER TABLE eledger_config.el_gl_account_aud
     ADD CONSTRAINT pk_gl_account_aud
         PRIMARY KEY (id, revision_id);
 
-ALTER TABLE eledger_config.gl_account_aud
+ALTER TABLE eledger_config.el_gl_account_aud
     ADD CONSTRAINT fk_gl_account_aud_revision
         FOREIGN KEY (revision_id)
             REFERENCES public.revision (id)
                 MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-ALTER TABLE eledger_config.gl_account_aud
+ALTER TABLE eledger_config.el_gl_account_aud
     ADD CONSTRAINT fk_gl_account_aud_revision_end
         FOREIGN KEY (revision_end_id)
             REFERENCES public.revision (id);
 
-CREATE TABLE eledger_config.gl_account_description_aud
+CREATE TABLE eledger_config.el_gl_account_description_aud
 (
     revision_id     bigint   NOT NULL,
     revision_end_id bigint,
@@ -39,24 +39,24 @@ CREATE TABLE eledger_config.gl_account_description_aud
     gl_account_id   integer
 );
 
-ALTER TABLE eledger_config.gl_account_description_aud
+ALTER TABLE eledger_config.el_gl_account_description_aud
     ADD CONSTRAINT pk_gl_account_description_aud
         PRIMARY KEY (id, revision_id);
 
-ALTER TABLE eledger_config.gl_account_description_aud
+ALTER TABLE eledger_config.el_gl_account_description_aud
     ADD CONSTRAINT fk_gl_account_description_aud_revision
         FOREIGN KEY (revision_id)
             REFERENCES public.revision (id)
                 MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-ALTER TABLE eledger_config.gl_account_description_aud
+ALTER TABLE eledger_config.el_gl_account_description_aud
     ADD CONSTRAINT fk_gl_account_description_aud_revision_end
         FOREIGN KEY (revision_end_id)
             REFERENCES public.revision (id);
 
 
 
-CREATE TABLE eledger_config.gl_account_part_aud
+CREATE TABLE eledger_config.el_gl_account_part_aud
 (
     revision_id                 bigint   NOT NULL,
     revision_end_id             bigint,
@@ -72,22 +72,22 @@ CREATE TABLE eledger_config.gl_account_part_aud
     gl_account_part_type_id     integer
 );
 
-ALTER TABLE eledger_config.gl_account_part_aud
+ALTER TABLE eledger_config.el_gl_account_part_aud
     ADD CONSTRAINT pk_gl_account_part_aud
         PRIMARY KEY (id, revision_id);
 
-ALTER TABLE eledger_config.gl_account_part_aud
+ALTER TABLE eledger_config.el_gl_account_part_aud
     ADD CONSTRAINT fk_gl_account_part_aud_revision
         FOREIGN KEY (revision_id)
             REFERENCES public.revision (id)
                 MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-ALTER TABLE eledger_config.gl_account_part_aud
+ALTER TABLE eledger_config.el_gl_account_part_aud
     ADD CONSTRAINT fk_gl_account_part_aud_revision_end
         FOREIGN KEY (revision_end_id)
             REFERENCES public.revision (id);
 
-CREATE TABLE eledger_config.gl_account_part_description_aud
+CREATE TABLE eledger_config.el_gl_account_part_description_aud
 (
     revision_id        bigint   NOT NULL,
     revision_end_id    bigint,
@@ -98,17 +98,17 @@ CREATE TABLE eledger_config.gl_account_part_description_aud
     gl_account_part_id integer
 );
 
-ALTER TABLE eledger_config.gl_account_part_description_aud
+ALTER TABLE eledger_config.el_gl_account_part_description_aud
     ADD CONSTRAINT pk_gl_account_part_description_aud
         PRIMARY KEY (id, revision_id);
 
-ALTER TABLE eledger_config.gl_account_part_description_aud
+ALTER TABLE eledger_config.el_gl_account_part_description_aud
     ADD CONSTRAINT fk_gl_account_part_description_aud_revision
         FOREIGN KEY (revision_id)
             REFERENCES public.revision (id)
                 MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-ALTER TABLE eledger_config.gl_account_part_description_aud
+ALTER TABLE eledger_config.el_gl_account_part_description_aud
     ADD CONSTRAINT fk_gl_account_part_description_aud_revision_end
         FOREIGN KEY (revision_end_id)
             REFERENCES public.revision (id);

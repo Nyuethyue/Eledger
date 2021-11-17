@@ -13,13 +13,13 @@ import java.util.Set;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "payment_advice", schema = "epayment")
+@Table(name = "ep_payment_advice", schema = "epayment")
 @Getter
 @Setter
 class PaymentAdviceEntity {
     @Id
-    @SequenceGenerator(name = "payment_advice_id_seq", sequenceName = "payment_advice_id_seq", schema = "epayment", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "payment_advice_id_seq")
+    @SequenceGenerator(name = "ep_payment_advice_id_seq", sequenceName = "ep_payment_advice_id_seq", schema = "epayment", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ep_payment_advice_id_seq")
     @Column(name = "id")
     private Long id;
 

@@ -6,12 +6,12 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "transaction_type_description", schema = "eledger_config")
+@Table(name = "el_transaction_type_description", schema = "eledger_config")
 @NoArgsConstructor
 class TransactionTypeDescriptionEntity extends TranslationEntity {
     @Id
-    @SequenceGenerator(name = "transaction_type_description_id_seq", schema = "eledger_config", sequenceName = "transaction_type_description_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaction_type_description_id_seq")
+    @SequenceGenerator(name = "el_transaction_type_description_id_seq", schema = "eledger_config", sequenceName = "el_transaction_type_description_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "el_transaction_type_description_id_seq")
     @Column(name = "id")
     private Long id;
 

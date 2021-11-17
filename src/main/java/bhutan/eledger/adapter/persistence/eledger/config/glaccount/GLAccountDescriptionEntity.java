@@ -10,12 +10,12 @@ import javax.persistence.*;
 @Entity
 @Audited
 @AuditOverride(forClass = TranslationEntity.class)
-@Table(name = "gl_account_description", schema = "eledger_config")
+@Table(name = "el_gl_account_description", schema = "eledger_config")
 @NoArgsConstructor
 class GLAccountDescriptionEntity extends TranslationEntity {
     @Id
-    @SequenceGenerator(name = "gl_account_description_id_seq", schema = "eledger_config", sequenceName = "gl_account_description_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gl_account_description_id_seq")
+    @SequenceGenerator(name = "el_gl_account_description_id_seq", schema = "eledger_config", sequenceName = "el_gl_account_description_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "el_gl_account_description_id_seq")
     @Column(name = "id")
     private Long id;
 

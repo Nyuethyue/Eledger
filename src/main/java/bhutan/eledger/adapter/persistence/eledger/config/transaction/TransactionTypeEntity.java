@@ -7,14 +7,14 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "transaction_type", schema = "eledger_config")
+@Table(name = "el_transaction_type", schema = "eledger_config")
 @AllArgsConstructor
 @NoArgsConstructor
 class TransactionTypeEntity {
 
     @Id
-    @SequenceGenerator(name = "transaction_type_id_seq", schema = "eledger_config", sequenceName = "transaction_type_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaction_type_id_seq")
+    @SequenceGenerator(name = "el_transaction_type_id_seq", schema = "eledger_config", sequenceName = "el_transaction_type_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "el_transaction_type_id_seq")
     @Column(name = "id")
     private Long id;
 

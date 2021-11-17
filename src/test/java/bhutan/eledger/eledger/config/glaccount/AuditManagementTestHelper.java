@@ -14,10 +14,10 @@ class AuditManagementTestHelper {
 
     void clearAudTables() {
         jdbcTemplate.execute(
-                "DELETE FROM eledger_config.gl_account_description_aud; "
-                        + "DELETE FROM eledger_config.gl_account_aud; "
-                        + "DELETE FROM eledger_config.gl_account_part_description_aud; "
-                        + "DELETE FROM eledger_config.gl_account_part_aud; "
+                "DELETE FROM eledger_config.el_gl_account_description_aud; "
+                        + "DELETE FROM eledger_config.el_gl_account_aud; "
+                        + "DELETE FROM eledger_config.el_gl_account_part_description_aud; "
+                        + "DELETE FROM eledger_config.el_gl_account_part_aud; "
                         + "DELETE FROM public.revision; "
         );
     }
