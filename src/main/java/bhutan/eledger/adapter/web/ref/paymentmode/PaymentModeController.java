@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/payment/mode")
+@RequestMapping("/ref/payment/mode")
 @RequiredArgsConstructor
 class PaymentModeController {
 
