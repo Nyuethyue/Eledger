@@ -12,4 +12,8 @@
         <sqlFile path="../../sql/ref/002_insert_currency_ref_data.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <changeSet id="Bank schemas" author="P.L." dbms="postgresql">
+        <sqlFile path="../../sql/ref/003_create_bank_ref_table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog>
