@@ -1,4 +1,4 @@
-package bhutan.eledger.adapter.persistence.epayment.paymentmode;
+package bhutan.eledger.adapter.persistence.ref.paymentmode;
 
 import am.iunetworks.lib.common.persistence.multilingual.entity.TranslationEntity;
 import lombok.AllArgsConstructor;

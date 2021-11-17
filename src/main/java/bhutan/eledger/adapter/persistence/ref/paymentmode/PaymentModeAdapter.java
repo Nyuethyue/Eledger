@@ -1,7 +1,7 @@
-package bhutan.eledger.adapter.persistence.epayment.paymentmode;
+package bhutan.eledger.adapter.persistence.ref.paymentmode;
 
-import bhutan.eledger.application.port.out.epayment.paymentmode.PaymentModeRepositoryPort;
-import bhutan.eledger.domain.epayment.PaymentMode;
+import bhutan.eledger.application.port.out.ref.paymentmode.PaymentModeRepositoryPort;
+import bhutan.eledger.domain.ref.paymentmode.PaymentMode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

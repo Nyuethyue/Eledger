@@ -1,7 +1,7 @@
-package bhutan.eledger.epayment.paymentmode;
+package bhutan.eledger.ref.paymentmode;
 
-import bhutan.eledger.application.port.out.epayment.paymentmode.PaymentModeRepositoryPort;
-import bhutan.eledger.domain.epayment.PaymentMode;
+import bhutan.eledger.application.port.out.ref.paymentmode.PaymentModeRepositoryPort;
+import bhutan.eledger.domain.ref.paymentmode.PaymentMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

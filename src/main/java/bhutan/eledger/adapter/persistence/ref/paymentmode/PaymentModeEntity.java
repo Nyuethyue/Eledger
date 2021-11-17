@@ -1,4 +1,4 @@
-package bhutan.eledger.adapter.persistence.epayment.paymentmode;
+package bhutan.eledger.adapter.persistence.ref.paymentmode;
 
 
 import lombok.Getter;
