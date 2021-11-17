@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class RefBankAdapter implements RefBankRepositoryPort {
+class RefBankAdapter implements RefBankRepositoryPort {
 
     private final RefBankMapper refBankMapper;
     private final RefBankEntityRepository refBankEntityRepository;

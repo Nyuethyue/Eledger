@@ -14,7 +14,7 @@ import java.util.Collection;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class ReadRefBankService implements ReadRefBankUseCase {
+class ReadRefBankService implements ReadRefBankUseCase {
     private final RefBankRepositoryPort refBankRepositoryPort;
 
     @Override

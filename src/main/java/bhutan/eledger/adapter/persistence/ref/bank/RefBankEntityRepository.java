@@ -3,7 +3,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface RefBankEntityRepository extends JpaRepository<RefBankEntity, Long> {
+interface RefBankEntityRepository extends JpaRepository<RefBankEntity, Long> {
 
     boolean existsByBfscCode(String bfscCode);
 

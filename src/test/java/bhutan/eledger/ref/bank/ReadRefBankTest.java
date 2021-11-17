@@ -15,7 +15,7 @@ import java.util.Collection;
 @TestPropertySource(
         properties = {"spring.config.location = classpath:application-test.yml"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class ReadRefBankTest {
+class ReadRefBankTest {
     @Autowired
     private RefBankRepositoryPort refBankRepositoryPort;
 

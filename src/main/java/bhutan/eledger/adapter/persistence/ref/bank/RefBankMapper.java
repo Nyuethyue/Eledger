@@ -5,7 +5,7 @@ import bhutan.eledger.domain.ref.bank.RefBank;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RefBankMapper {
+class RefBankMapper {
 
     RefBankEntity mapToEntity(RefBank refBank) {
         RefBankEntity refBankEntity =

@@ -15,7 +15,7 @@ import java.util.Collection;
 @RestController
 @RequestMapping("/ref/bank")
 @RequiredArgsConstructor
-public class RefBankController {
+class RefBankController {
 
     private final CreateRefBankUseCase createRefBankUseCase;
     private final ReadRefBankUseCase readRefBankUseCase;

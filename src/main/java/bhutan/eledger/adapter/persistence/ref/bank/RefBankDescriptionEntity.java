@@ -14,7 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
-public class RefBankDescriptionEntity extends TranslationEntity {
+class RefBankDescriptionEntity extends TranslationEntity {
     @Id
     @SequenceGenerator(name = "bank_description_id_seq", schema = "ref", sequenceName = "bank_description_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bank_description_id_seq")

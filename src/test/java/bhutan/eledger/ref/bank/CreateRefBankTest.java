@@ -14,7 +14,7 @@ import java.util.Map;
 @TestPropertySource(
         properties = {"spring.config.location = classpath:application-test.yml"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class CreateRefBankTest {
+class CreateRefBankTest {
 
     @Autowired
     private CreateRefBankUseCase createRefBankUseCase;

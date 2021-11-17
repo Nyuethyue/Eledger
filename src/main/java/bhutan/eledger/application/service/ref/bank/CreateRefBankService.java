@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class CreateRefBankService implements CreateRefBankUseCase {
+class CreateRefBankService implements CreateRefBankUseCase {
 
     private final RefBankRepositoryPort refBankRepositoryPort;
 
