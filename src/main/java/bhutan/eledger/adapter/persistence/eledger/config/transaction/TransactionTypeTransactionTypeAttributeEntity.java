@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "transaction_type_transaction_type_attribute", schema = "eledger_config")
+@Table(name = "el_transaction_type_transaction_type_attribute", schema = "eledger_config")
 @NoArgsConstructor
 class TransactionTypeTransactionTypeAttributeEntity {
     @EmbeddedId

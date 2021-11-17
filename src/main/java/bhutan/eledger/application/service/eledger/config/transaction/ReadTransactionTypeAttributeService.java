@@ -26,7 +26,7 @@ class ReadTransactionTypeAttributeService implements ReadTransactionTypeAttribut
 
         return transactionTypeAttributeRepositoryPort.readById(id)
                 .orElseThrow(() ->
-                        new RecordNotFoundException("Transaction type by id: [" + id + "] not found.")
+                        new RecordNotFoundException("Transaction type attribute by id: [" + id + "] not found.")
                 );
     }
 

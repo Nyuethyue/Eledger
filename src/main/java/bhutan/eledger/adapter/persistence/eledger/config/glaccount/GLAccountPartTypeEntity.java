@@ -8,13 +8,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "gl_account_part_type", schema = "eledger_config")
+@Table(name = "el_gl_account_part_type", schema = "eledger_config")
 @NoArgsConstructor
 class GLAccountPartTypeEntity {
 
     @Id
-    @SequenceGenerator(name = "gl_account_part_type_id_seq", schema = "eledger_config", sequenceName = "gl_account_part_type_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gl_account_part_type_id_seq")
+    @SequenceGenerator(name = "el_gl_account_part_type_id_seq", schema = "eledger_config", sequenceName = "el_gl_account_part_type_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "el_gl_account_part_type_id_seq")
     @Column(name = "id")
     private Integer id;
 

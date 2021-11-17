@@ -7,13 +7,13 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "gl_account_part_type_description", schema = "eledger_config")
+@Table(name = "el_gl_account_part_type_description", schema = "eledger_config")
 @AllArgsConstructor
 @NoArgsConstructor
 class GLAccountPartTypeDescriptionEntity extends TranslationEntity {
     @Id
-    @SequenceGenerator(name = "gl_account_part_type_description_id_seq", schema = "eledger_config", sequenceName = "gl_account_part_type_description_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gl_account_part_type_description_id_seq")
+    @SequenceGenerator(name = "el_gl_account_part_type_description_id_seq", schema = "eledger_config", sequenceName = "el_gl_account_part_type_description_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "el_gl_account_part_type_description_id_seq")
     @Column(name = "id")
     private Long id;
 

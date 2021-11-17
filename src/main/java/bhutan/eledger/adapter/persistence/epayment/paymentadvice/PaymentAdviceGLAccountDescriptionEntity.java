@@ -6,12 +6,12 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "pa_gl_account_description", schema = "epayment")
+@Table(name = "ep_pa_gl_account_description", schema = "epayment")
 @NoArgsConstructor
 class PaymentAdviceGLAccountDescriptionEntity extends TranslationEntity {
     @Id
-    @SequenceGenerator(name = "pa_gl_account_description_id_seq", sequenceName = "pa_gl_account_description_id_seq", schema = "epayment", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pa_gl_account_description_id_seq")
+    @SequenceGenerator(name = "ep_pa_gl_account_description_id_seq", sequenceName = "ep_pa_gl_account_description_id_seq", schema = "epayment", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ep_pa_gl_account_description_id_seq")
     @Column(name = "id")
     private Long id;
 

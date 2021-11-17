@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "data_type", schema = "eledger_config")
+@Table(name = "el_data_type", schema = "eledger_config")
 @AllArgsConstructor
 @NoArgsConstructor
 class DataTypeEntity implements DataType {

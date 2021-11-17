@@ -24,7 +24,7 @@ ALTER TABLE eledger.el_transaction
 ALTER TABLE eledger.el_transaction
     ADD CONSTRAINT fk_transaction_transaction_type
         FOREIGN KEY (transaction_type_id)
-            REFERENCES eledger_config.transaction_type (id);
+            REFERENCES eledger_config.el_transaction_type (id);
 
 CREATE INDEX IF NOT EXISTS fki_transaction_taxpayer
     ON eledger.el_transaction (taxpayer_id);
@@ -57,7 +57,7 @@ ALTER TABLE eledger.el_transaction_attribute
 ALTER TABLE eledger.el_transaction_attribute
     ADD CONSTRAINT fk_transaction_attribute_transaction_type_attribute
         FOREIGN KEY (transaction_type_attribute_id)
-            REFERENCES eledger_config.transaction_type_attribute (id);
+            REFERENCES eledger_config.el_transaction_type_attribute (id);
 
 ALTER TABLE eledger.el_transaction_attribute
     ADD CONSTRAINT fk_transaction_attribute_transaction
