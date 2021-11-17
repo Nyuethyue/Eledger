@@ -1,4 +1,4 @@
-package bhutan.eledger.configuration.epayment.config.paymentadvice;
+package bhutan.eledger.configuration.epayment.paymentadvice;
 
 import am.iunetworks.lib.common.persistence.search.AbstractSearchProperties;
 import bhutan.eledger.adapter.persistence.epayment.paymentadvice.QPaymentAdviceEntity;

@@ -1,6 +1,7 @@
 package bhutan.eledger.adapter.persistence.eledger.config.property;
 
 import am.iunetworks.lib.multilingual.core.Multilingual;
+import bhutan.eledger.common.dto.ValidityPeriod;
 import bhutan.eledger.domain.eledger.config.datatype.DataType;
 import bhutan.eledger.domain.eledger.config.property.Property;
 import org.springframework.stereotype.Component;
@@ -15,7 +16,10 @@ class PropertyMapper {
         var propertyEntity = new PropertyEntity(
                 property.getId(),
                 property.getCode(),
-                property.getDataType().getId()
+                property.getDataType().getId(),
+                property.getValue(),
+                property.getValidityPeriod().getStart(),
+                property.getValidityPeriod().getEnd()
         );
 
         propertyEntity.setDescriptions(
@@ -41,6 +45,11 @@ class PropertyMapper {
                 propertyEntity.getId(),
                 propertyEntity.getCode(),
                 dataType,
+                propertyEntity.getValue(),
+                ValidityPeriod.of(
+                        propertyEntity.getStartOfValidity(),
+                        propertyEntity.getEndOfValidity()
+                ),
                 Multilingual.of(propertyEntity.getDescriptions())
         );
     }

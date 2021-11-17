@@ -3,9 +3,9 @@ package bhutan.eledger.application.service.eledger.config.glaccount;
 import am.iunetworks.lib.common.validation.RecordNotFoundException;
 import bhutan.eledger.application.port.in.eledger.config.glaccount.UpdateGLAccountUseCase;
 import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountRepositoryPort;
+import bhutan.eledger.common.dto.ValidityPeriod;
 import bhutan.eledger.domain.eledger.config.glaccount.GLAccount;
 import bhutan.eledger.domain.eledger.config.glaccount.GLAccountStatus;
-import bhutan.eledger.domain.eledger.config.glaccount.ValidityPeriod;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -32,7 +32,7 @@ class UpdateGLAccountService implements UpdateGLAccountUseCase {
 
         //todo apply validation logic
 
-        ValidityPeriod validityPeriod = resolveValidityPeriod(glAccount, command);
+        var validityPeriod = resolveValidityPeriod(glAccount, command);
 
         GLAccount updatedGLAccount = GLAccount.withId(
                 glAccount.getId(),
@@ -50,9 +50,9 @@ class UpdateGLAccountService implements UpdateGLAccountUseCase {
         glAccountRepositoryPort.update(updatedGLAccount);
     }
 
-    private ValidityPeriod resolveValidityPeriod(GLAccount glAccount, UpdateGLAccountCommand command) {
+    private ValidityPeriod<LocalDateTime> resolveValidityPeriod(GLAccount glAccount, UpdateGLAccountCommand command) {
 
-        ValidityPeriod result;
+        ValidityPeriod<LocalDateTime> result;
 
         if (glAccount.getStatus() == command.getGlAccountStatus()) {
             result = glAccount.getValidityPeriod();

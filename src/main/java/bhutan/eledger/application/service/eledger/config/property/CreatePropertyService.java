@@ -6,6 +6,7 @@ import am.iunetworks.lib.multilingual.core.Multilingual;
 import bhutan.eledger.application.port.in.eledger.config.property.CreatePropertyUseCase;
 import bhutan.eledger.application.port.out.eledger.config.datatype.DataTypeRepositoryPort;
 import bhutan.eledger.application.port.out.eledger.config.property.PropertyRepositoryPort;
+import bhutan.eledger.common.dto.ValidityPeriod;
 import bhutan.eledger.domain.eledger.config.datatype.DataType;
 import bhutan.eledger.domain.eledger.config.property.Property;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ class CreatePropertyService implements CreatePropertyUseCase {
 
         var properties = commandToProperties(command);
 
-        checkPropertyExistenceByCode(properties);
+        checkPropertyExistence(properties);
 
         log.trace("Persisting properties: {}", properties);
 
@@ -42,18 +43,16 @@ class CreatePropertyService implements CreatePropertyUseCase {
         return persistedProperties;
     }
 
-    private void checkPropertyExistenceByCode(Collection<Property> properties) {
-        var propertyCodes = properties
-                .stream()
-                .map(Property::getCode)
-                .collect(Collectors.toUnmodifiableList());
-
-        if (propertyRepositoryPort.existsByAnyCode(propertyCodes)) {
-            throw new ViolationException(
-                    new ValidationError()
-                            .addViolation("properties", "Property with one of these codes: [" + propertyCodes + "] already exists.")
-            );
-        }
+    private void checkPropertyExistence(Collection<Property> properties) {
+        properties
+                .forEach(property -> {
+                    if (propertyRepositoryPort.isOpenPropertyExists(property)) {
+                        throw new ViolationException(
+                                new ValidationError()
+                                        .addViolation("properties", "Property: [" + property + "] already exists.")
+                        );
+                    }
+                });
     }
 
     private Collection<Property> commandToProperties(CreatePropertiesCommand command) {
@@ -74,6 +73,11 @@ class CreatePropertyService implements CreatePropertyUseCase {
         return Property.withoutId(
                 command.getCode(),
                 dataType,
+                command.getValue(),
+                ValidityPeriod.of(
+                        command.getStartOfValidity(),
+                        command.getEndOfValidity()
+                ),
                 Multilingual.fromMap(command.getDescriptions())
         );
     }

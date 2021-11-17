@@ -4,16 +4,14 @@ import am.iunetworks.lib.common.persistence.search.SearchResult;
 import am.iunetworks.lib.common.persistence.search.SearchValidationUtils;
 import am.iunetworks.lib.common.validation.ValidationError;
 import am.iunetworks.lib.common.validation.ViolationException;
-
 import bhutan.eledger.application.port.in.epayment.paymentadvice.SearchPaymentAdvicePort;
-import bhutan.eledger.configuration.epayment.config.paymentadvice.SearchPaymentAdviceProperties;
+import bhutan.eledger.application.port.in.epayment.paymentadvice.SearchPaymentAdviceUseCase;
+import bhutan.eledger.configuration.epayment.paymentadvice.SearchPaymentAdviceProperties;
 import bhutan.eledger.domain.epayment.PaymentAdvice;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import bhutan.eledger.application.port.in.epayment.paymentadvice.SearchPaymentAdviceUseCase;
 
 @Log4j2
 @Service

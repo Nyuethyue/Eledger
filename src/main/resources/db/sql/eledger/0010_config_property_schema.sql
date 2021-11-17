@@ -2,16 +2,19 @@
 
 CREATE TABLE eledger_config.el_property
 (
-    id           bigint  NOT NULL,
-    code         varchar NOT NULL,
-    data_type_id integer NOT NULL
+    id                bigint  NOT NULL,
+    code              varchar NOT NULL,
+    data_type_id      integer NOT NULL,
+    value             varchar NOT NULL,
+    start_of_validity date    NOT NULL,
+    end_of_validity   date    NULL
 );
 
 ALTER TABLE eledger_config.el_property
     ADD CONSTRAINT pk_property PRIMARY KEY (id);
 
 ALTER TABLE eledger_config.el_property
-    ADD CONSTRAINT un_property_code UNIQUE (code);
+    ADD CONSTRAINT un_property_code_start_of_validity UNIQUE (start_of_validity, code);
 
 CREATE SEQUENCE eledger_config.el_property_id_seq
     INCREMENT BY 1

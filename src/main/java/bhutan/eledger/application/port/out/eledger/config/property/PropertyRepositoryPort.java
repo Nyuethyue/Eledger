@@ -11,7 +11,7 @@ public interface PropertyRepositoryPort {
 
     Collection<Property> create(Collection<Property> properties);
 
-    boolean existsByAnyCode(Collection<String> codes);
+    boolean isOpenPropertyExists(Property property);
 
     void deleteAll();
 

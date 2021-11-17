@@ -1,9 +1,9 @@
 package bhutan.eledger.adapter.persistence.eledger.config.glaccount;
 
 import am.iunetworks.lib.multilingual.core.Multilingual;
+import bhutan.eledger.common.dto.ValidityPeriod;
 import bhutan.eledger.domain.eledger.config.glaccount.GLAccount;
 import bhutan.eledger.domain.eledger.config.glaccount.GLAccountStatus;
-import bhutan.eledger.domain.eledger.config.glaccount.ValidityPeriod;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;

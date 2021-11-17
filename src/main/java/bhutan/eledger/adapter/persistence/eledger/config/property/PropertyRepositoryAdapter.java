@@ -7,6 +7,7 @@ import bhutan.eledger.domain.eledger.config.property.Property;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -45,8 +46,8 @@ class PropertyRepositoryAdapter implements PropertyRepositoryPort {
     }
 
     @Override
-    public boolean existsByAnyCode(Collection<String> codes) {
-        return propertyEntityRepository.existsByCodeIn(codes);
+    public boolean isOpenPropertyExists(Property property) {
+        return propertyEntityRepository.existsByCodeAndEndOfValidityNullOrEndOfValidityGeAndEndOfValidityGe(property.getCode(), LocalDate.now(), property.getValidityPeriod().getStart());
     }
 
     @Override

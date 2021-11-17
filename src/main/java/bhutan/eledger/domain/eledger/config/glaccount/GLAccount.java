@@ -1,6 +1,7 @@
 package bhutan.eledger.domain.eledger.config.glaccount;
 
 import am.iunetworks.lib.multilingual.core.Multilingual;
+import bhutan.eledger.common.dto.ValidityPeriod;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -16,7 +17,7 @@ public class GLAccount {
     private final GLAccountStatus status;
     private final LocalDateTime creationDateTime;
     private final LocalDateTime lastModificationDateTime;
-    private final ValidityPeriod validityPeriod;
+    private final ValidityPeriod<LocalDateTime> validityPeriod;
     private final Multilingual description;
     private final Long glAccountLastPartId;
 
@@ -25,7 +26,7 @@ public class GLAccount {
             GLAccountStatus status,
             LocalDateTime creationDateTime,
             LocalDateTime lastModificationDateTime,
-            ValidityPeriod validityPeriod,
+            ValidityPeriod<LocalDateTime> validityPeriod,
             Multilingual description,
             Long glAccountLastPartId
     ) {

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -42,10 +43,10 @@ class CreatePropertyTest {
                 new CreatePropertyUseCase.CreatePropertiesCommand(
                         List.of(
                                 new CreatePropertyUseCase.PropertyCommand(
-                                        propertyCode1, descriptionMap, 1
+                                        propertyCode1, "TEST", LocalDate.now(), LocalDate.now().plusDays(1), descriptionMap, 1
                                 ),
                                 new CreatePropertyUseCase.PropertyCommand(
-                                        propertyCode2, descriptionMap, 3
+                                        propertyCode2, "TEST", LocalDate.now(), LocalDate.now().plusDays(1), descriptionMap, 3
                                 )
                         )
                 )
@@ -63,10 +64,10 @@ class CreatePropertyTest {
                 new CreatePropertyUseCase.CreatePropertiesCommand(
                         List.of(
                                 new CreatePropertyUseCase.PropertyCommand(
-                                        propertyCode1, descriptionMap, 1
+                                        propertyCode1, "TEST", LocalDate.now(), LocalDate.now().plusDays(1), descriptionMap, 1
                                 ),
                                 new CreatePropertyUseCase.PropertyCommand(
-                                        propertyCode2, descriptionMap, 3
+                                        propertyCode2, "TEST", LocalDate.now(), LocalDate.now().plusDays(1), descriptionMap, 3
                                 )
                         )
                 )

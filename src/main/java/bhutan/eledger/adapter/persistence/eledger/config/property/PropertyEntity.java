@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -24,6 +25,15 @@ class PropertyEntity {
     @Column(name = "data_type_id")
     private Integer dataTypeId;
 
+    @Column(name = "value")
+    private String value;
+
+    @Column(name = "start_of_validity")
+    private LocalDate startOfValidity;
+
+    @Column(name = "end_of_validity")
+    private LocalDate endOfValidity;
+
     @OneToMany(
             mappedBy = "property",
             cascade = CascadeType.ALL,
@@ -32,10 +42,13 @@ class PropertyEntity {
     )
     private Set<PropertyDescriptionEntity> descriptions;
 
-    public PropertyEntity(Long id, String code, Integer dataTypeId) {
+    public PropertyEntity(Long id, String code, Integer dataTypeId, String value, LocalDate startOfValidity, LocalDate endOfValidity) {
         this.id = id;
         this.code = code;
         this.dataTypeId = dataTypeId;
+        this.value = value;
+        this.startOfValidity = startOfValidity;
+        this.endOfValidity = endOfValidity;
     }
 
     public Long getId() {
@@ -60,6 +73,30 @@ class PropertyEntity {
 
     public void setDataTypeId(Integer dataTypeId) {
         this.dataTypeId = dataTypeId;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public LocalDate getStartOfValidity() {
+        return startOfValidity;
+    }
+
+    public void setStartOfValidity(LocalDate startOfValidity) {
+        this.startOfValidity = startOfValidity;
+    }
+
+    public LocalDate getEndOfValidity() {
+        return endOfValidity;
+    }
+
+    public void setEndOfValidity(LocalDate endOfValidity) {
+        this.endOfValidity = endOfValidity;
     }
 
     public Set<PropertyDescriptionEntity> getDescriptions() {
