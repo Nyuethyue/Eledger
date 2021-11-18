@@ -3,12 +3,18 @@ package bhutan.eledger.application.port.in.epayment.reconciliation;
 import bhutan.eledger.domain.epayment.BankStatementImportReconciliationInfo;
 import lombok.Data;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.List;
+import javax.validation.constraints.PositiveOrZero;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Map;
 
 public interface BankStatementImportUseCase {
-    List<BankStatementImportReconciliationInfo> importStatements(ImportBankStatementsCommand command);
+
+    BankStatementImportReconciliationInfo importStatements(ImportBankStatementsCommand command);
 
     @Data
     class ImportBankStatementsCommand {
