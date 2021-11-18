@@ -21,7 +21,7 @@ public class XLSXLoader extends DefaultHandler {
     private String cellType;
     private boolean nextIsString;
     private String sheetId;
-    public void load(InputStream io, String sheetId, ExcelCellReceiver receiver) throws Exception {
+    public void load(InputStream io, String sheetId, ExcelCellReceiver receiver) {
         try(OPCPackage pkg = OPCPackage.open(io)) {
             this.receiver = receiver;
             XSSFReader r = new XSSFReader(pkg);
@@ -34,6 +34,8 @@ public class XLSXLoader extends DefaultHandler {
             InputSource sheetSource = new InputSource(sheet);
             parser.parse(sheetSource);
             sheet.close();
+        } catch (Exception e) {
+            log.error(e);
         }
     }
 
@@ -42,6 +44,7 @@ public class XLSXLoader extends DefaultHandler {
                              Attributes attributes) throws SAXException {
         if(name.equals("c")) {
             String cellReference = attributes.getValue("r");
+            // Print the cell reference
             cellReferenceObject = new CellReference(cellReference);
             // Figure out if the value is an index in the SST
             cellType = attributes.getValue("t");
@@ -71,19 +74,5 @@ public class XLSXLoader extends DefaultHandler {
     @Override
     public void characters(char[] ch, int start, int length) {
         lastContents += new String(ch, start, length);
-    }
-
-    @Override
-    public void startDocument ()
-            throws SAXException
-    {
-        receiver.startDocument();
-    }
-
-    @Override
-    public void endDocument ()
-            throws SAXException
-    {
-        receiver.endDocument();
     }
 }
