@@ -74,9 +74,8 @@ class CreatePropertyService implements CreatePropertyUseCase {
                 command.getCode(),
                 dataType,
                 command.getValue(),
-                ValidityPeriod.of(
-                        command.getStartOfValidity(),
-                        command.getEndOfValidity()
+                ValidityPeriod.withOnlyStartOfValidity(
+                        command.getStartOfValidity()
                 ),
                 Multilingual.fromMap(command.getDescriptions())
         );

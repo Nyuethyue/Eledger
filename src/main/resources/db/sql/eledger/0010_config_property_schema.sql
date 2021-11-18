@@ -13,9 +13,6 @@ CREATE TABLE eledger_config.el_property
 ALTER TABLE eledger_config.el_property
     ADD CONSTRAINT pk_property PRIMARY KEY (id);
 
-ALTER TABLE eledger_config.el_property
-    ADD CONSTRAINT un_property_code_start_of_validity UNIQUE (start_of_validity, code);
-
 CREATE SEQUENCE eledger_config.el_property_id_seq
     INCREMENT BY 1
     MINVALUE 1

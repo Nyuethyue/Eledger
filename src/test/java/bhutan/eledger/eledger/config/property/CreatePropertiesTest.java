@@ -18,7 +18,7 @@ import java.util.Map;
 @TestPropertySource(
         properties = {"spring.config.location = classpath:application-test.yml"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class CreatePropertyTest {
+class CreatePropertiesTest {
 
     private final String propertyCode1 = "DAILY_PERCENT";
     private final String propertyCode2 = "T_R_GST";
@@ -43,10 +43,10 @@ class CreatePropertyTest {
                 new CreatePropertyUseCase.CreatePropertiesCommand(
                         List.of(
                                 new CreatePropertyUseCase.PropertyCommand(
-                                        propertyCode1, "TEST", LocalDate.now(), LocalDate.now().plusDays(1), descriptionMap, 1
+                                        propertyCode1, "TEST", LocalDate.now().plusDays(1), descriptionMap, 1
                                 ),
                                 new CreatePropertyUseCase.PropertyCommand(
-                                        propertyCode2, "TEST", LocalDate.now(), LocalDate.now().plusDays(1), descriptionMap, 3
+                                        propertyCode2, "TEST", LocalDate.now().plusDays(1), descriptionMap, 3
                                 )
                         )
                 )
@@ -55,6 +55,8 @@ class CreatePropertyTest {
         Assertions.assertNotNull(properties);
 
         Assertions.assertFalse(properties.isEmpty());
+
+        Assertions.assertEquals(2, properties.size());
     }
 
     @Test
@@ -64,10 +66,10 @@ class CreatePropertyTest {
                 new CreatePropertyUseCase.CreatePropertiesCommand(
                         List.of(
                                 new CreatePropertyUseCase.PropertyCommand(
-                                        propertyCode1, "TEST", LocalDate.now(), LocalDate.now().plusDays(1), descriptionMap, 1
+                                        propertyCode1, "TEST", LocalDate.now().plusDays(1), descriptionMap, 1
                                 ),
                                 new CreatePropertyUseCase.PropertyCommand(
-                                        propertyCode2, "TEST", LocalDate.now(), LocalDate.now().plusDays(1), descriptionMap, 3
+                                        propertyCode2, "TEST", LocalDate.now().plusDays(1), descriptionMap, 3
                                 )
                         )
                 )

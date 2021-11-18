@@ -10,6 +10,10 @@ public interface ValidityPeriod<T extends Temporal> {
 
     T getEnd();
 
+    ValidityPeriod<T> start(T start);
+
+    ValidityPeriod<T> end(T end);
+
     static ValidityPeriod<LocalDateTime> of(LocalDateTime start, LocalDateTime end) {
         return DateTimeValidityPeriod.of(start, end);
     }

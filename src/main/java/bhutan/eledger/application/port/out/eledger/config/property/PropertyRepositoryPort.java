@@ -18,4 +18,6 @@ public interface PropertyRepositoryPort {
     Optional<Property> readById(Long id);
 
     Collection<Property> readAll();
+
+    Property update(Property property);
 }

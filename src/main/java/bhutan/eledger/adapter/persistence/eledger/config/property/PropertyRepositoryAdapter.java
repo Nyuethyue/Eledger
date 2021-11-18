@@ -74,4 +74,13 @@ class PropertyRepositoryAdapter implements PropertyRepositoryPort {
                 })
                 .collect(Collectors.toUnmodifiableList());
     }
+
+    @Override
+    public Property update(Property property) {
+        PropertyEntity propertyEntity = propertyMapper.mapToEntity(property);
+
+        var updatedPropertyEntity = propertyEntityRepository.save(propertyEntity);
+
+        return propertyMapper.mapToDomain(updatedPropertyEntity, property.getDataType());
+    }
 }

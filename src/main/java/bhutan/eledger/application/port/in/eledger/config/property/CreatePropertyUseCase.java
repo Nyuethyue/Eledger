@@ -1,6 +1,5 @@
 package bhutan.eledger.application.port.in.eledger.config.property;
 
-import am.iunetworks.lib.common.validation.constraints.CompareFields;
 import bhutan.eledger.domain.eledger.config.property.Property;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
@@ -27,7 +26,6 @@ public interface CreatePropertyUseCase {
     }
 
     @Data
-    @CompareFields(type = PropertyCommand.class, leftField = "startOfValidity", operator = "<", rightField = "endOfValidity")
     class PropertyCommand {
         @NotNull
         private final String code;
@@ -36,9 +34,8 @@ public interface CreatePropertyUseCase {
         private final String value;
 
         @NotNull
-        private final LocalDate startOfValidity;
         @Future
-        private final LocalDate endOfValidity;
+        private final LocalDate startOfValidity;
 
         @NotEmpty
         private final Map<String, String> descriptions;
