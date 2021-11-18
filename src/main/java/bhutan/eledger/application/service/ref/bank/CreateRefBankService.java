@@ -38,17 +38,16 @@ class CreateRefBankService implements CreateRefBankUseCase {
 
     private RefBank mapCommandToRefBank(CreateRefBankUseCase.CreateRefBankCommand command) {
         return RefBank.withoutId(
-                command.getBankName(),
-                command.getBfscCode(),
+                command.getCode(),
                 Multilingual.fromMap(command.getDescriptions())
         );
     }
 
     void validate(RefBank refBank) {
-        if (refBankRepositoryPort.existByBfscCode(refBank.getBfscCode())) {
+        if (refBankRepositoryPort.existByCode(refBank.getCode())) {
             throw new ViolationException(
                     new ValidationError()
-                            .addViolation("BfscCode", "Bank with BFSC code: [" + refBank.getBfscCode() + "] already exists.")
+                            .addViolation("Code", "Bank with BFSC code: [" + refBank.getCode() + "] already exists.")
             );
         }
     }

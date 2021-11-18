@@ -21,32 +21,29 @@ class RefBankEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "bank_name")
-    private String bankName;
-
-    @Column(name = "bfsc_code")
-    private String bfscCode;
+    @Column(name = "code")
+    private String code;
 
 
     @OneToMany(
-            mappedBy = "refBankEntity",
+            mappedBy = "bank",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
     private Set<RefBankDescriptionEntity> descriptions;
 
-    public RefBankEntity(Long id, String bankName,String bfscCode) {
+    public RefBankEntity(Long id,String code) {
         this.id = id;
-        this.bankName = bankName;
-        this.bfscCode = bfscCode;
+        this.code = code;
     }
+
     public void addToDescriptions(RefBankDescriptionEntity description) {
         if (descriptions == null) {
             descriptions = new HashSet<>();
         }
 
-        description.setRefBankEntity(this);
+        description.setBank(this);
         descriptions.add(description);
     }
 }

@@ -5,11 +5,9 @@ import java.util.Optional;
 
 interface RefBankEntityRepository extends JpaRepository<RefBankEntity, Long> {
 
-    boolean existsByBfscCode(String bfscCode);
+    boolean existsByCode(String code);
 
-    Optional<RefBankEntity> findByBankName(String bankName);
-
-    Optional<RefBankEntity> findByBfscCode(String bfscCode);
+    Optional<RefBankEntity> findByCode(String code);
 
 
 }

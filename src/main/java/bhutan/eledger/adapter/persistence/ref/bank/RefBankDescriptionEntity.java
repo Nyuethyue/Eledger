@@ -23,7 +23,7 @@ class RefBankDescriptionEntity extends TranslationEntity {
 
     @ManyToOne
     @JoinColumn(name = "bank_id", nullable = false)
-    private RefBankEntity refBankEntity;
+    private RefBankEntity bank;
 
     public RefBankDescriptionEntity(Long id, String languageCode, String value) {
         super(languageCode, value);

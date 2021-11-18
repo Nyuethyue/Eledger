@@ -45,20 +45,15 @@ class RefBankAdapter implements RefBankRepositoryPort {
                 .map(refBankMapper::mapToDomain);
     }
 
+
     @Override
-    public Optional<RefBank> readByBankName(String bankName) {
-        return refBankEntityRepository.findByBankName(bankName)
+    public Optional<RefBank> readByCode(String code) {
+        return refBankEntityRepository.findByCode(code)
                 .map(refBankMapper::mapToDomain);
     }
 
     @Override
-    public Optional<RefBank> readByBfscCode(String bfscCode) {
-        return refBankEntityRepository.findByBfscCode(bfscCode)
-                .map(refBankMapper::mapToDomain);
-    }
-
-    @Override
-    public boolean existByBfscCode(String bfscCode) {
-        return refBankEntityRepository.existsByBfscCode(bfscCode);
+    public boolean existByCode(String code) {
+        return refBankEntityRepository.existsByCode(code);
     }
 }

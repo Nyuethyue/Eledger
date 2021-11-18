@@ -11,8 +11,7 @@ class RefBankMapper {
         RefBankEntity refBankEntity =
                 new RefBankEntity(
                         refBank.getId(),
-                        refBank.getBankName(),
-                        refBank.getBfscCode()
+                        refBank.getCode()
                 );
 
         refBank.getDescription()
@@ -33,8 +32,7 @@ class RefBankMapper {
     RefBank mapToDomain(RefBankEntity refBankEntity) {
         return RefBank.withId(
                 refBankEntity.getId(),
-                refBankEntity.getBankName(),
-                refBankEntity.getBfscCode(),
+                refBankEntity.getCode(),
                 Multilingual.of(refBankEntity.getDescriptions())
         );
     }

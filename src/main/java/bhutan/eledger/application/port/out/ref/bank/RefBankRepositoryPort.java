@@ -15,9 +15,7 @@ public interface RefBankRepositoryPort {
 
     Optional<RefBank> readById(Long id);
 
-    Optional<RefBank> readByBankName(String bankName);
+    Optional<RefBank> readByCode(String code);
 
-    Optional<RefBank> readByBfscCode(String bfscCode);
-
-    boolean existByBfscCode(String bfscCode);
+    boolean existByCode(String code);
 }

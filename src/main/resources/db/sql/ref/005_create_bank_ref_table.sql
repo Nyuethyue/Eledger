@@ -2,8 +2,7 @@
 CREATE TABLE IF NOT EXISTS ref.bank
 (
     id        bigint  NOT NULL,
-    bank_name varchar NOT NULL,
-    bfsc_code varchar NOT NULL
+    code      varchar NOT NULL
 );
 
 ALTER TABLE ref.bank
@@ -11,7 +10,7 @@ ALTER TABLE ref.bank
         PRIMARY KEY (id);
 
 ALTER TABLE ref.bank
-    ADD CONSTRAINT un_ref_bank_bfsc_code UNIQUE (bfsc_code);
+    ADD CONSTRAINT un_ref_bank_code UNIQUE (code);
 
 CREATE SEQUENCE ref.bank_id_seq
     INCREMENT BY 1

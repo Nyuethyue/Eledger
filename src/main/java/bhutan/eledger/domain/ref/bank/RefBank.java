@@ -7,19 +7,16 @@ import lombok.Data;
 public class RefBank {
 
     private final Long id;
-    private final String bankName;
-    private final String bfscCode;
+    private final String code;
     private final Multilingual description;
 
     public static RefBank withoutId(
-            String bankName,
-            String bfscCode,
+            String code,
             Multilingual description
     ) {
         return new RefBank(
                 null,
-                bankName,
-                bfscCode,
+                code,
                 description
         );
     }

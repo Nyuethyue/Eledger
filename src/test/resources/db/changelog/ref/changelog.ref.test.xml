@@ -18,7 +18,11 @@
     </changeSet>
 
     <changeSet id="Bank schemas" author="P.L." dbms="postgresql">
-        <sqlFile path="../../sql/ref/003_create_bank_ref_table.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/ref/005_create_bank_ref_table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="Bank Branch schemas" author="P.L." dbms="postgresql">
+        <sqlFile path="../../sql/ref/006_create_bank_branch_ref_table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
 </databaseChangeLog>

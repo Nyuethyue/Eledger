@@ -15,11 +15,7 @@ public interface CreateRefBankUseCase {
     class CreateRefBankCommand {
         @NotNull
         @NotEmpty
-        private final String bankName;
-
-        @NotNull
-        @NotEmpty
-        private final String bfscCode;
+        private final String code;
 
         @NotEmpty
         private final Map<String, String> descriptions;
