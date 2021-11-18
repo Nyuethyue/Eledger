@@ -45,7 +45,7 @@ class CreatePaymentAdviceTest {
                 new CreatePaymentAdviceUseCase.CreatePaymentAdviceCommand(
                         "TestDrn",
                         new CreatePaymentAdviceUseCase.TaxpayerCommand(
-                                "TestTpn",
+                                "TAB12345",
                                 "TaxPayerName"
                         ),
                         LocalDate.now().plusMonths(1),
