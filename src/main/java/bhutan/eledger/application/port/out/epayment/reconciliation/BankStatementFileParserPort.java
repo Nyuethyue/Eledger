@@ -1,7 +1,9 @@
 package bhutan.eledger.application.port.out.epayment.reconciliation;
 
-public interface BankStatementFileParserPort {
+import bhutan.eledger.domain.epayment.BankStatementImportReconciliationInfo;
 
-    //todo for Aleksandr define return domain object
-    void getStatements(String fileId);
+import java.util.List;
+
+public interface BankStatementFileParserPort {
+    List<BankStatementImportReconciliationInfo> getStatements(String filePath);
 }
