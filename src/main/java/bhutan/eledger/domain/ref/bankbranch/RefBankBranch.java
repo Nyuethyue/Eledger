@@ -5,29 +5,26 @@ import lombok.Data;
 
 @Data(staticConstructor = "withId")
 public class RefBankBranch {
-    private final Long id;
-    private final String branchCode;
-    private final String branchName;
-    private final String branchBfscCode;
-    private final String location;
+    private final Long    id;
+    private final String  code;
+    private final String  bfscCode;
+    private final String  address;
     private final Long    bankId;
     private final Multilingual description;
 
     public static RefBankBranch withoutId(
-            String branchCode,
-            String branchName,
-            String branchBfscCode,
-            String location,
-            Long    bankId,
+            String code,
+            String bfscCode,
+            String address,
+            Long   bankId,
             Multilingual description
     ) {
 
         return new RefBankBranch(
                 null,
-                branchCode,
-                branchName,
-                branchBfscCode,
-                location,
+                code,
+                bfscCode,
+                address,
                 bankId,
                 description
         );

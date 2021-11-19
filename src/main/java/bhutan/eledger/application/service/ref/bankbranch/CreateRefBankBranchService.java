@@ -1,0 +1,64 @@
+package bhutan.eledger.application.service.ref.bankbranch;
+
+import am.iunetworks.lib.common.validation.ValidationError;
+import am.iunetworks.lib.common.validation.ViolationException;
+import am.iunetworks.lib.multilingual.core.Multilingual;
+import bhutan.eledger.application.port.in.ref.bankbranch.CreateRefBankBranchUseCase;
+import bhutan.eledger.application.port.out.ref.bankbranch.RefBankBranchRepositoryPort;
+import bhutan.eledger.domain.ref.bankbranch.RefBankBranch;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Log4j2
+@Service
+@Transactional
+@RequiredArgsConstructor
+class CreateRefBankBranchService implements CreateRefBankBranchUseCase{
+
+    private final RefBankBranchRepositoryPort refBankBranchRepositoryPort;
+
+    @Override
+    public Long create(CreateRefBankBranchUseCase.CreateBranchCommand command) {
+        log.trace("Creating bank and branch with command: {}", command);
+
+        RefBankBranch refBankBranch = mapCommandToRefBankBranch(command);
+
+        validate(refBankBranch);
+
+        log.trace("Persisting bank and branch: {}", refBankBranch);
+
+        Long id = refBankBranchRepositoryPort.create(refBankBranch);
+
+        log.debug("Branch with id: {} successfully created.", id);
+
+        return id;
+    }
+
+    private RefBankBranch mapCommandToRefBankBranch(CreateRefBankBranchUseCase.CreateBranchCommand command) {
+        return RefBankBranch.withoutId(
+                command.getCode(),
+                command.getBfscCode(),
+                command.getAddress(),
+                command.getBankId(),
+                Multilingual.fromMap(command.getDescription())
+        );
+    }
+
+    void validate(RefBankBranch refBankBranch) {
+        if (refBankBranchRepositoryPort.existsByCode(refBankBranch.getCode())) {
+            throw new ViolationException(
+                    new ValidationError()
+                            .addViolation("Code", "Branch with branch code: [" + refBankBranch.getCode() + "] already exists.")
+            );
+        }
+        if (refBankBranchRepositoryPort.existsByBfscCode(refBankBranch.getBfscCode())) {
+            throw new ViolationException(
+                    new ValidationError()
+                            .addViolation("BfscCode", "Branch with BFSC code: [" + refBankBranch.getBfscCode() + "] already exists.")
+            );
+        }
+    }
+
+}

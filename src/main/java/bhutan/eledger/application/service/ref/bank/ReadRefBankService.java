@@ -1,5 +1,6 @@
 package bhutan.eledger.application.service.ref.bank;
 
+import am.iunetworks.lib.common.validation.RecordNotFoundException;
 import bhutan.eledger.application.port.in.ref.bank.ReadRefBankUseCase;
 import bhutan.eledger.application.port.out.ref.bank.RefBankRepositoryPort;
 import bhutan.eledger.domain.ref.bank.RefBank;
@@ -22,5 +23,15 @@ class ReadRefBankService implements ReadRefBankUseCase {
         log.trace("Reading all bank list.");
 
         return refBankRepositoryPort.readAll();
+    }
+
+    @Override
+    public RefBank readById(Long id) {
+        log.trace("Reading bank by id: {}", id);
+
+        return refBankRepositoryPort.readById(id)
+                .orElseThrow(() ->
+                        new RecordNotFoundException("Bank by id: [" + id + "] not found.")
+                );
     }
 }

@@ -20,36 +20,32 @@ class RefBankBranchEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "branch_code")
-    private String branchCode;
+    @Column(name = "code")
+    private String code;
 
-    @Column(name = "branch_name")
-    private String branchName;
+    @Column(name = "bfsc_code")
+    private String bfscCode;
 
-    @Column(name = "branch_bfsc_code")
-    private String branchBfscCode;
-
-    @Column(name = "location")
-    private String location;
+    @Column(name = "address")
+    private String address;
 
     @Column(name = "bank_id")
     private Long bankId;
 
     @OneToMany(
-            mappedBy = "refBankBranch",
+            mappedBy = "bankBranch",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
     private Set<RefBankBranchDescriptionEntity> descriptions;
 
-    public RefBankBranchEntity(Long id, String branchCode,String branchName,String branchBfscCode,
-                               String location,Long bankId) {
+    public RefBankBranchEntity(Long id, String code,String bfscCode,
+                               String address,Long bankId) {
         this.id = id;
-        this.branchCode = branchCode;
-        this.branchName = branchName;
-        this.branchBfscCode = branchBfscCode;
-        this.location = location;
+        this.code = code;
+        this.bfscCode = bfscCode;
+        this.address = address;
         this.bankId = bankId;
     }
     public void addToDescriptions(RefBankBranchDescriptionEntity description) {
@@ -57,7 +53,7 @@ class RefBankBranchEntity {
             descriptions = new HashSet<>();
         }
 
-        description.setRefBankBranch(this);
+        description.setBankBranch(this);
         descriptions.add(description);
     }
 }

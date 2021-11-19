@@ -1,6 +1,7 @@
 package bhutan.eledger.ref.bank;
 
 import bhutan.eledger.application.port.in.ref.bank.CreateRefBankUseCase;
+import bhutan.eledger.application.port.in.ref.bank.ReadRefBankUseCase;
 import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountPartTypeRepositoryPort;
 import bhutan.eledger.application.port.out.ref.bank.RefBankRepositoryPort;
 import bhutan.eledger.domain.ref.bank.RefBank;
@@ -28,6 +29,9 @@ class CreateRefBankTest {
     @Autowired
     private RefBankRepositoryPort refBankRepositoryPort;
 
+    @Autowired
+    private ReadRefBankUseCase readRefBankUseCase;
+
     @AfterEach
     void afterEach() {
         refBankRepositoryPort.deleteAll();
@@ -37,19 +41,21 @@ class CreateRefBankTest {
     void createTest() {
         Long id = createRefBankUseCase.create(
                 new CreateRefBankUseCase.CreateRefBankCommand(
-                        "1235656566",
+                        "55555",
                         Map.of("en", "Bank of Bhutan")
 
                         )
 
         );
         Assertions.assertNotNull(id);
+
+        RefBank refBank = readRefBankUseCase.readById(id);
+        Assertions.assertNotNull(refBank);
     }
 
     @Test
     void readAllTest() {
         Collection<RefBank> existedCurrencies = refBankRepositoryPort.readAll();
-        System.out.println(existedCurrencies.size());
         Assertions.assertNotEquals(0, existedCurrencies.size());
     }
 }

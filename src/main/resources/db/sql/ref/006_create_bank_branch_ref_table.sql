@@ -2,10 +2,9 @@
 CREATE TABLE IF NOT EXISTS ref.bank_branch
 (
     id               bigint  NOT NULL,
-    branch_code      varchar NOT NULL,
-    branch_name      varchar NOT NULL,
-    branch_bfsc_code varchar NOT NULL,
-    location         varchar NOT NULL,
+    code             varchar NOT NULL,
+    bfsc_code        varchar NOT NULL,
+    address          varchar NOT NULL,
     bank_id           bigint NOT NULL
 );
 
@@ -14,13 +13,9 @@ ALTER TABLE ref.bank_branch
         PRIMARY KEY (id);
 
 ALTER TABLE ref.bank_branch
-    ADD CONSTRAINT un_ref_bank_branch_ref_brn_code_brn_bfsc_code
-        UNIQUE (branch_code, branch_bfsc_code);
-
-ALTER TABLE ref.bank_branch
-    ADD CONSTRAINT fk_bank_branch_description_currency
+    ADD CONSTRAINT fk_bank_branch_description_bank
         FOREIGN KEY (bank_id)
-            REFERENCES ref.bank (id);
+            REFERENCES ref.bank(id);
 
 CREATE SEQUENCE ref.bank_branch_id_seq
     INCREMENT BY 1

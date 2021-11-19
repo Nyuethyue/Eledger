@@ -2,6 +2,7 @@ package bhutan.eledger.adapter.web.ref.bank;
 
 import bhutan.eledger.application.port.in.ref.bank.CreateRefBankUseCase;
 import bhutan.eledger.application.port.in.ref.bank.ReadRefBankUseCase;
+import bhutan.eledger.domain.eledger.config.glaccount.GLAccountPartType;
 import bhutan.eledger.domain.ref.bank.RefBank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,5 +34,11 @@ class RefBankController {
     @ResponseStatus(value = HttpStatus.OK)
     public Collection<RefBank> getAll() {
         return readRefBankUseCase.readAll();
+    }
+
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.OK)
+    public RefBank getById(@PathVariable Long id) {
+        return readRefBankUseCase.readById(id);
     }
 }

@@ -14,7 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
-public class RefBankBranchDescriptionEntity extends TranslationEntity {
+class RefBankBranchDescriptionEntity extends TranslationEntity {
     @Id
     @SequenceGenerator(name = "bank_branch_description_id_seq", schema = "ref", sequenceName = "bank_branch_description_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bank_branch_description_id_seq")
@@ -23,7 +23,7 @@ public class RefBankBranchDescriptionEntity extends TranslationEntity {
 
     @ManyToOne
     @JoinColumn(name = "bank_branch_id", nullable = false)
-    private RefBankBranchEntity refBankBranch;
+    private RefBankBranchEntity bankBranch;
 
     public RefBankBranchDescriptionEntity(Long id, String languageCode, String value) {
         super(languageCode, value);
