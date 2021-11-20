@@ -4,7 +4,6 @@ import bhutan.eledger.application.port.out.ref.currency.RefCurrencyRepositoryPor
 import bhutan.eledger.domain.ref.currency.RefCurrency;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
 import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -14,6 +13,14 @@ import java.util.stream.Collectors;
 class RefCurrencyAdapter implements RefCurrencyRepositoryPort {
     private final RefCurrencyEntityRepository refCurrencyEntityRepository;
     private final RefCurrencyMapper refCurrencyMapper;
+
+    @Override
+    public Long create(RefCurrency refCurrency) {
+        RefCurrencyEntity refCurrencyEntity =
+                refCurrencyMapper.mapToEntity(refCurrency);
+
+        return refCurrencyEntityRepository.save(refCurrencyEntity).getId();
+    }
 
     @Override
     public Collection<RefCurrency> readAll() {

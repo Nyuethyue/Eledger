@@ -6,6 +6,9 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface RefCurrencyRepositoryPort {
+
+    Long create(RefCurrency refCurrency);
+
     Collection<RefCurrency> readAll();
 
     void deleteAll();
