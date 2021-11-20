@@ -1,15 +1,15 @@
 package bhutan.eledger.adapter.web.ref.currency;
 
+import bhutan.eledger.application.port.in.ref.currency.CreateRefCurrencyUseCase;
 import bhutan.eledger.application.port.in.ref.currency.ReadRefCurrencyUseCase;
 import bhutan.eledger.domain.ref.currency.RefCurrency;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.Collection;
 
 @RestController
@@ -18,6 +18,16 @@ import java.util.Collection;
 class RefCurrencyController {
 
     private final ReadRefCurrencyUseCase readRefCurrencyUseCase;
+    private final CreateRefCurrencyUseCase createRefCurrencyUseCase;
+
+    @PostMapping
+    public ResponseEntity<Object> create(@RequestBody CreateRefCurrencyUseCase.CreateCurrencyCommand command) {
+        Long id = createRefCurrencyUseCase.create(command);
+
+        return ResponseEntity
+                .created(URI.create("/" + id))
+                .build();
+    }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)

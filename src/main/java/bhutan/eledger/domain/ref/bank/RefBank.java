@@ -1,24 +1,22 @@
-package bhutan.eledger.domain.ref.currency;
+package bhutan.eledger.domain.ref.bank;
 
 import am.iunetworks.lib.multilingual.core.Multilingual;
 import lombok.Data;
 
 @Data(staticConstructor = "withId")
-public class RefCurrency {
+public class RefBank {
+
     private final Long id;
     private final String code;
-    private final String symbol;
     private final Multilingual description;
 
-    public static RefCurrency withoutId(
+    public static RefBank withoutId(
             String code,
-            String symbol,
             Multilingual description
     ) {
-        return new RefCurrency(
+        return new RefBank(
                 null,
                 code,
-                symbol,
                 description
         );
     }
