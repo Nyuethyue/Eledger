@@ -44,7 +44,7 @@ class CreateRefBankService implements CreateRefBankUseCase {
     }
 
     void validate(RefBank refBank) {
-        if (refBankRepositoryPort.existByCode(refBank.getCode())) {
+        if (refBankRepositoryPort.existsByCode(refBank.getCode())) {
             throw new ViolationException(
                     new ValidationError()
                             .addViolation("Code", "Bank with BFSC code: [" + refBank.getCode() + "] already exists.")

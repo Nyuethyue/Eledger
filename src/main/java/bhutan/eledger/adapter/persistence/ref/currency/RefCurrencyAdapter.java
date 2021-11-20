@@ -47,4 +47,9 @@ class RefCurrencyAdapter implements RefCurrencyRepositoryPort {
                 .map(refCurrencyMapper::mapToDomain);
     }
 
+    @Override
+    public boolean existsByCode(String code) {
+        return refCurrencyEntityRepository.existsByCode(code);
+    }
+
 }

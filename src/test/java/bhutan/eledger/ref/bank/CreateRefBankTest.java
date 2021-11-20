@@ -41,7 +41,7 @@ class CreateRefBankTest {
     void createTest() {
         Long id = createRefBankUseCase.create(
                 new CreateRefBankUseCase.CreateRefBankCommand(
-                        "55555",
+                        "66666",
                         Map.of("en", "Bank of Bhutan")
 
                         )

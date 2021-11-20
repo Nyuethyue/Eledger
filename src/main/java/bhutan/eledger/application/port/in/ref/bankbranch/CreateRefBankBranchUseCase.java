@@ -2,12 +2,15 @@ package bhutan.eledger.application.port.in.ref.bankbranch;
 
 
 import lombok.Data;
+import org.springframework.validation.annotation.Validated;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.Map;
 
+@Validated
 public interface CreateRefBankBranchUseCase {
     Long create(@Valid CreateRefBankBranchUseCase.CreateBranchCommand command);
 
@@ -15,7 +18,7 @@ public interface CreateRefBankBranchUseCase {
     class CreateBranchCommand {
         @NotNull
         @NotEmpty
-        @Pattern(regexp="\"[0-9]+\"")
+        @Pattern(regexp = "\\d+")
         private final String code;
         @NotNull
         @NotEmpty
@@ -24,7 +27,6 @@ public interface CreateRefBankBranchUseCase {
         @NotEmpty
         private final String address;
         @NotNull
-        @NotEmpty
         private final Long bankId;
         @NotEmpty
         private final Map<String, String> description;

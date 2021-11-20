@@ -17,5 +17,7 @@ public interface RefBankRepositoryPort {
 
     Optional<RefBank> readByCode(String code);
 
-    boolean existByCode(String code);
+    boolean existsByCode(String code);
+
+    boolean existsById(Long id);
 }

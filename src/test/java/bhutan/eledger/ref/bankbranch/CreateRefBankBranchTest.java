@@ -1,6 +1,7 @@
 package bhutan.eledger.ref.bankbranch;
 
 import bhutan.eledger.application.port.in.ref.bankbranch.CreateRefBankBranchUseCase;
+import bhutan.eledger.application.port.in.ref.bankbranch.ReadRefBankBranchUseCase;
 import bhutan.eledger.application.port.out.ref.bankbranch.RefBankBranchRepositoryPort;
 import bhutan.eledger.domain.ref.bankbranch.RefBankBranch;
 import org.junit.jupiter.api.AfterEach;
@@ -24,27 +25,32 @@ class CreateRefBankBranchTest {
     private CreateRefBankBranchUseCase createRefBankBranchUseCase;
 
     @Autowired
+    private ReadRefBankBranchUseCase refBankBranchUseCase;
+
+    @Autowired
     private RefBankBranchRepositoryPort refBankBranchRepositoryPort;
 
     @AfterEach
     void afterEach() {
         refBankBranchRepositoryPort.deleteAll();
     }
-
     @Test
     void createTest() {
         Long id = createRefBankBranchUseCase.create(
                 new CreateRefBankBranchUseCase.CreateBranchCommand(
-                        "0002",
-                        "111112",
+                        "8888",
+                        "111114",
                         "0000000",
-                        1L,
+                        2L,
                         Map.of("en", "Branch A")
 
                 )
 
         );
         Assertions.assertNotNull(id);
+
+        RefBankBranch refBankBranch = refBankBranchUseCase.readById(id);
+        Assertions.assertNotNull(refBankBranch);
     }
 
     @Test

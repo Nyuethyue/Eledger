@@ -1,8 +1,8 @@
 package bhutan.eledger.application.service.ref.bankbranch;
 
+import am.iunetworks.lib.common.validation.RecordNotFoundException;
 import bhutan.eledger.application.port.in.ref.bankbranch.ReadRefBankBranchUseCase;
 import bhutan.eledger.application.port.out.ref.bankbranch.RefBankBranchRepositoryPort;
-import bhutan.eledger.domain.ref.bank.RefBank;
 import bhutan.eledger.domain.ref.bankbranch.RefBankBranch;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -19,8 +19,18 @@ class ReadRefBankBranchService implements ReadRefBankBranchUseCase {
 
     @Override
     public Collection<RefBankBranch> readAll() {
-        log.trace("Reading all bank list.");
+        log.trace("Reading all bank's branch list.");
 
         return refBankBranchRepositoryPort.readAll();
+    }
+
+    @Override
+    public RefBankBranch readById(Long id) {
+        log.trace("Reading bank's branch by id: {}", id);
+
+        return refBankBranchRepositoryPort.readById(id)
+                .orElseThrow(() ->
+                        new RecordNotFoundException("Bank's branch by id: [" + id + "] not found.")
+                );
     }
 }

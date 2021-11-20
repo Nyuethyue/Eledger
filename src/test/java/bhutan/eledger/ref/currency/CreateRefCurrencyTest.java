@@ -34,7 +34,7 @@ class CreateRefCurrencyTest {
     void createTest() {
         Long id = createRefCurrencyUseCase.create(
                 new CreateRefCurrencyUseCase.CreateCurrencyCommand(
-                        "BTN",
+                        "DOL",
                         "Nu.",
                         Map.of("en", "BTN")
 

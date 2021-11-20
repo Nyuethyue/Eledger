@@ -34,4 +34,10 @@ class RefBankBranchController {
     public Collection<RefBankBranch> getAll() {
         return readRefBankBranchUseCase.readAll();
     }
+
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.OK)
+    public RefBankBranch getById(@PathVariable Long id) {
+        return readRefBankBranchUseCase.readById(id);
+    }
 }

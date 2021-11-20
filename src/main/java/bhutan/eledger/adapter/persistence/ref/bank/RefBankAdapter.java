@@ -53,7 +53,12 @@ class RefBankAdapter implements RefBankRepositoryPort {
     }
 
     @Override
-    public boolean existByCode(String code) {
+    public boolean existsByCode(String code) {
         return refBankEntityRepository.existsByCode(code);
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return refBankEntityRepository.existsById(id);
     }
 }

@@ -16,4 +16,7 @@ public interface RefCurrencyRepositoryPort {
     Optional<RefCurrency> readById(Long id);
 
     Optional<RefCurrency> readByCode(String code);
+
+    boolean existsByCode(String code);
+
 }
