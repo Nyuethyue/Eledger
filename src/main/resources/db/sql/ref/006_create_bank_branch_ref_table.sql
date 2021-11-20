@@ -13,11 +13,11 @@ ALTER TABLE ref.bank_branch
         PRIMARY KEY (id);
 
 ALTER TABLE ref.bank_branch
-    ADD CONSTRAINT fk_bank_branch
+    ADD CONSTRAINT fk_bank_branch_bank
         FOREIGN KEY (bank_id)
             REFERENCES ref.bank(id);
 
-CREATE INDEX IF NOT EXISTS fk_bank_branch
+CREATE INDEX IF NOT EXISTS fk_bank_branch_bank
     ON ref.bank_branch(bank_id);
 
 CREATE SEQUENCE ref.bank_branch_id_seq
