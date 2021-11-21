@@ -5,6 +5,7 @@ import bhutan.eledger.domain.eledger.config.glaccount.GLAccountPart;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
@@ -12,7 +13,7 @@ import javax.validation.constraints.PositiveOrZero;
 @Validated
 public interface SearchGLAccountPartUseCase {
 
-    SearchResult<GLAccountPart> search(SearchGLAccountPartCommand command);
+    SearchResult<GLAccountPart> search(@Valid SearchGLAccountPartCommand command);
 
     @Data
     class SearchGLAccountPartCommand {

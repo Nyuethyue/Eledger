@@ -1,16 +1,19 @@
 package bhutan.eledger.application.port.in.epayment.paymentadvice;
 
+import am.iunetworks.lib.common.persistence.search.SearchResult;
+import bhutan.eledger.domain.epayment.PaymentAdvice;
 import lombok.Data;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 
-import bhutan.eledger.domain.epayment.PaymentAdvice;
-import am.iunetworks.lib.common.persistence.search.SearchResult;
-
+@Validated
 public interface SearchPaymentAdviceUseCase {
-    SearchResult<PaymentAdvice> search(SearchPaymentAdviseCommand command);
+    SearchResult<PaymentAdvice> search(@Valid SearchPaymentAdviseCommand command);
 
     @Data
     class SearchPaymentAdviseCommand {

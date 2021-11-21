@@ -1,6 +1,7 @@
 package bhutan.eledger.application.port.in.epayment.paymentadvice;
 
 import lombok.Data;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -11,9 +12,10 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Map;
 
+@Validated
 public interface CreatePaymentAdviceUseCase {
 
-    Long create(CreatePaymentAdviceCommand command);
+    Long create(@Valid CreatePaymentAdviceCommand command);
 
     @Data
     class CreatePaymentAdviceCommand {

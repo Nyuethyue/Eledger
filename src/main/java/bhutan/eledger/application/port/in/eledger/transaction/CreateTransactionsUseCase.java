@@ -1,6 +1,7 @@
 package bhutan.eledger.application.port.in.eledger.transaction;
 
 import lombok.Data;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -11,6 +12,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collection;
 
+@Validated
 public interface CreateTransactionsUseCase {
     void create(@Valid CreateTransactionsUseCase.CreateTransactionsCommand command);
 

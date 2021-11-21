@@ -13,5 +13,5 @@ public interface ReadGLAccountPartUseCase {
 
     Collection<GLAccountPart> readAllByParentId(@NotNull Long parentId);
 
-    Collection<GLAccountPart> readAllByPartTypeId(Integer partTypeId);
+    Collection<GLAccountPart> readAllByPartTypeId(@NotNull Integer partTypeId);
 }
