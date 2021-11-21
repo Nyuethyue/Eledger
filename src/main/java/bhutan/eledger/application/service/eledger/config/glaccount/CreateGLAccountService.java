@@ -8,6 +8,7 @@ import bhutan.eledger.application.port.in.eledger.config.glaccount.CreateGLAccou
 import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountPartRepositoryPort;
 import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountPartTypeRepositoryPort;
 import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountRepositoryPort;
+import bhutan.eledger.application.port.out.eledger.config.glaccount.GetGlAccountPartFullCodeOnlyPort;
 import bhutan.eledger.common.dto.ValidityPeriod;
 import bhutan.eledger.domain.eledger.config.glaccount.GLAccount;
 import bhutan.eledger.domain.eledger.config.glaccount.GLAccountPart;
@@ -21,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -31,23 +31,15 @@ class CreateGLAccountService implements CreateGLAccountUseCase {
     private final GLAccountRepositoryPort glAccountRepositoryPort;
     private final GLAccountPartRepositoryPort glAccountPartRepositoryPort;
     private final GLAccountPartTypeRepositoryPort glAccountPartTypeRepositoryPort;
+    private final GetGlAccountPartFullCodeOnlyPort getGlAccountPartParentFullCodePort;
 
     @Override
     public Long create(CreateGLAccountCommand command) {
         log.trace("Creating gl account with command: {}", command);
 
-        List<GLAccountPart> glAccountParts =
-                glAccountPartRepositoryPort.readAllByIdInSortedByLevel(command.getGlAccountPartIds());
-        //todo validate ids count and result count matching
+        var parentOfLastPart = resolveParentOfLastType(command);
 
-        String bankAccountCodeWithoutLastPart = glAccountParts
-                .stream()
-                .map(GLAccountPart::getCode)
-                .collect(Collectors.joining());
-
-        var parentOfLastPart = glAccountParts.get(glAccountParts.size() - 1);
-
-        GLAccountPart lastPart = mapCommandToGLAccount(
+        GLAccountPart lastPart = makeGLAccountPart(
                 command.getGlAccountLastPart(),
                 parentOfLastPart.getId(),
                 glAccountPartTypeRepositoryPort.getIdOfNextPartType(parentOfLastPart.getGlAccountPartLevelId())
@@ -70,7 +62,7 @@ class CreateGLAccountService implements CreateGLAccountUseCase {
         LocalDateTime creationDateTime = LocalDateTime.now();
 
         GLAccount glAccount = GLAccount.withoutId(
-                bankAccountCodeWithoutLastPart + lastPart.getCode(),
+                lastPart.getFullCode(),
                 GLAccountStatus.ACTIVE,
                 creationDateTime,
                 creationDateTime,
@@ -88,12 +80,16 @@ class CreateGLAccountService implements CreateGLAccountUseCase {
         return id;
     }
 
-    private GLAccountPart mapCommandToGLAccount(GLAccountLastPartCommand command, Long parentId, Integer gleAccountPartTypeId) {
+    private GLAccountPart makeGLAccountPart(GLAccountLastPartCommand command, Long parentId, Integer gleAccountPartTypeId) {
 
         LocalDateTime creationDateTime = LocalDateTime.now();
 
+        String parentFullCode = getGlAccountPartParentFullCodePort.getGlAccountPartFullCodeOnly(parentId)
+                .getFullCode();
+
         return GLAccountPart.withoutId(
                 command.getCode(),
+                parentFullCode + command.getCode(),
                 parentId,
                 GLAccountPartStatus.ACTIVE,
                 creationDateTime,
@@ -102,5 +98,28 @@ class CreateGLAccountService implements CreateGLAccountUseCase {
                 Multilingual.fromMap(command.getDescriptions()),
                 gleAccountPartTypeId
         );
+    }
+
+    private GLAccountPart resolveParentOfLastType(CreateGLAccountCommand command) {
+        Long parentId = command.getGlAccountLastPart().getParentId();
+
+        //todo remove when parent id will be not nullable
+        if (parentId == null) {
+            List<GLAccountPart> glAccountParts =
+                    glAccountPartRepositoryPort.readAllByIdInSortedByLevel(command.getGlAccountPartIds());
+
+            return glAccountParts.get(glAccountParts.size() - 1);
+        }
+
+        return glAccountPartRepositoryPort.readById(parentId)
+                .orElseThrow(() ->
+                        new ViolationException(
+                                new ValidationError(
+                                        Set.of(
+                                                new Violation("glAccountLastPart.parentId", "Gl account part not found by id: " + parentId)
+                                        )
+                                )
+                        )
+                );
     }
 }

@@ -18,6 +18,7 @@ public interface CreateGLAccountUseCase {
     class CreateGLAccountCommand {
         @NotEmpty
         @Valid
+        //todo remove
         private final Collection<Long> glAccountPartIds;
         @NotNull
         @Valid
@@ -31,6 +32,9 @@ public interface CreateGLAccountUseCase {
     class GLAccountLastPartCommand {
         @NotNull
         private final String code;
+
+        //todo make not null
+        private final Long parentId;
 
         @NotEmpty
         private final Map<String, String> descriptions;

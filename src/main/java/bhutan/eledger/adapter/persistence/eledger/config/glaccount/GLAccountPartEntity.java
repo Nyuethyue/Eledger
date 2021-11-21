@@ -22,6 +22,9 @@ class GLAccountPartEntity {
     @Column(name = "code")
     private String code;
 
+    @Column(name = "full_code")
+    private String fullCode;
+
     @Column(name = "parent_id")
     private Long parentId;
 
@@ -51,9 +54,10 @@ class GLAccountPartEntity {
     )
     private Set<GLAccountPartDescriptionEntity> descriptions;
 
-    public GLAccountPartEntity(Long id, String code, Long parentId, Integer glAccountPartTypeId, String status, LocalDateTime creationDateTime, LocalDateTime lastModificationDateTime, LocalDateTime startOfValidity, LocalDateTime endOfValidity) {
+    public GLAccountPartEntity(Long id, String code, String fullCode, Long parentId, Integer glAccountPartTypeId, String status, LocalDateTime creationDateTime, LocalDateTime lastModificationDateTime, LocalDateTime startOfValidity, LocalDateTime endOfValidity) {
         this.id = id;
         this.code = code;
+        this.fullCode = fullCode;
         this.parentId = parentId;
         this.glAccountPartTypeId = glAccountPartTypeId;
         this.status = status;
@@ -77,6 +81,14 @@ class GLAccountPartEntity {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getFullCode() {
+        return fullCode;
+    }
+
+    public void setFullCode(String fullCode) {
+        this.fullCode = fullCode;
     }
 
     public Long getParentId() {

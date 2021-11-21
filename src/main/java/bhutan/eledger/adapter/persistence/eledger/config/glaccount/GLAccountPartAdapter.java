@@ -1,6 +1,8 @@
 package bhutan.eledger.adapter.persistence.eledger.config.glaccount;
 
+import am.iunetworks.lib.common.validation.RecordNotFoundException;
 import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountPartRepositoryPort;
+import bhutan.eledger.application.port.out.eledger.config.glaccount.GetGlAccountPartFullCodeOnlyPort;
 import bhutan.eledger.domain.eledger.config.glaccount.GLAccountPart;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-class GLAccountPartAdapter implements GLAccountPartRepositoryPort {
+class GLAccountPartAdapter implements GLAccountPartRepositoryPort, GetGlAccountPartFullCodeOnlyPort {
     private final GLAccountPartMapper glAccountPartMapper;
     private final GLAccountPartEntityRepository glAccountPartEntityRepository;
 
@@ -84,5 +86,14 @@ class GLAccountPartAdapter implements GLAccountPartRepositoryPort {
                 .stream()
                 .map(glAccountPartMapper::mapToDomain)
                 .collect(Collectors.toUnmodifiableList());
+    }
+
+    @Override
+    public GlAccountPartFullCodeOnly getGlAccountPartFullCodeOnly(Long id) {
+
+        return id == null ? () -> "" : glAccountPartEntityRepository.readById(id)
+                .orElseThrow(() ->
+                        new RecordNotFoundException("GLAccountPart by id: [" + id + "] not found.")
+                );
     }
 }

@@ -62,6 +62,7 @@ CREATE TABLE eledger_config.el_gl_account_part
     id                          bigint    NOT NULL,
     parent_id                   bigint    NULL,
     code                        varchar   NOT NULL,
+    full_code                   varchar   NOT NULL,
     status                      varchar   NOT NULL,
     creation_date_time          timestamp NOT NULL,
     last_modification_date_time timestamp NOT NULL,

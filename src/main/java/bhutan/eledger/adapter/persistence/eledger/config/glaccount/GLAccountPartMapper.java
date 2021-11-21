@@ -10,9 +10,11 @@ import org.springframework.stereotype.Component;
 class GLAccountPartMapper {
 
     GLAccountPartEntity mapToEntity(GLAccountPart partDomain) {
+
         GLAccountPartEntity glAccountPartEntity = new GLAccountPartEntity(
                 partDomain.getId(),
                 partDomain.getCode(),
+                partDomain.getFullCode(),
                 partDomain.getParentId(),
                 partDomain.getGlAccountPartLevelId(),
                 partDomain.getStatus().getValue(),
@@ -41,6 +43,7 @@ class GLAccountPartMapper {
         return GLAccountPart.withId(
                 partEntity.getId(),
                 partEntity.getCode(),
+                partEntity.getFullCode(),
                 partEntity.getParentId(),
                 GLAccountPartStatus.of(partEntity.getStatus()),
                 partEntity.getCreationDateTime(),

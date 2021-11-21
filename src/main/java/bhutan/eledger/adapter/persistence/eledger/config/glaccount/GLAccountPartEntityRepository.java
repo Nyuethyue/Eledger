@@ -1,11 +1,13 @@
 package bhutan.eledger.adapter.persistence.eledger.config.glaccount;
 
 import am.iunetworks.lib.common.persistence.spring.querydsl.CustomQuerydslJpaRepository;
+import bhutan.eledger.application.port.out.eledger.config.glaccount.GetGlAccountPartFullCodeOnlyPort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.history.RevisionRepository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 interface GLAccountPartEntityRepository extends CustomQuerydslJpaRepository<GLAccountPartEntity, Long>, RevisionRepository<GLAccountPartEntity, Long, Long> {
 
@@ -22,4 +24,6 @@ interface GLAccountPartEntityRepository extends CustomQuerydslJpaRepository<GLAc
     Collection<GLAccountPartEntity> readAllByGlAccountPartTypeId(Integer partTypeId);
 
     boolean existsByParentIdAndCodeIn(Long id, Collection<String> codes);
+
+    Optional<GetGlAccountPartFullCodeOnlyPort.GlAccountPartFullCodeOnly> readById(Long id);
 }

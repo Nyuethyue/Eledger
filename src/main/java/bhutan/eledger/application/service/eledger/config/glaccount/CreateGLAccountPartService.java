@@ -3,6 +3,7 @@ package bhutan.eledger.application.service.eledger.config.glaccount;
 import am.iunetworks.lib.multilingual.core.Multilingual;
 import bhutan.eledger.application.port.in.eledger.config.glaccount.CreateGLAccountPartUseCase;
 import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountPartRepositoryPort;
+import bhutan.eledger.application.port.out.eledger.config.glaccount.GetGlAccountPartFullCodeOnlyPort;
 import bhutan.eledger.common.dto.ValidityPeriod;
 import bhutan.eledger.domain.eledger.config.glaccount.GLAccountPart;
 import bhutan.eledger.domain.eledger.config.glaccount.GLAccountPartStatus;
@@ -23,6 +24,7 @@ class CreateGLAccountPartService implements CreateGLAccountPartUseCase {
     private final GLAccountPartRepositoryPort glAccountPartRepositoryPort;
     private final GLAccountPartTypeValidator glAccountPartTypeValidator;
     private final GLAccountPartValidator glAccountPartValidator;
+    private final GetGlAccountPartFullCodeOnlyPort getGlAccountPartParentFullCodePort;
 
     @Override
     public Collection<GLAccountPart> create(CreateGLAccountPartCommand command) {
@@ -31,7 +33,7 @@ class CreateGLAccountPartService implements CreateGLAccountPartUseCase {
 
         validate(command);
 
-        var glAccountParts = mapCommandToGLAccountParts(command);
+        var glAccountParts = makeGLAccountParts(command);
 
         log.trace("Persisting gl account parts: {}", glAccountParts);
 
@@ -54,24 +56,32 @@ class CreateGLAccountPartService implements CreateGLAccountPartUseCase {
         );
     }
 
-    private Collection<GLAccountPart> mapCommandToGLAccountParts(CreateGLAccountPartCommand command) {
+    private Collection<GLAccountPart> makeGLAccountParts(CreateGLAccountPartCommand command) {
 
         LocalDateTime creationDateTime = LocalDateTime.now();
 
+        String parentFullCode = getGlAccountPartParentFullCodePort.getGlAccountPartFullCodeOnly(command.getParentId())
+                .getFullCode();
+
         return command.getGlAccountParts()
                 .stream()
-                .map(glAccountPartCommand ->
-                        GLAccountPart.withoutId(
-                                glAccountPartCommand.getCode(),
-                                command.getParentId(),
-                                GLAccountPartStatus.ACTIVE,
-                                creationDateTime,
-                                creationDateTime,
-                                ValidityPeriod.withOnlyStartOfValidity(creationDateTime.toLocalDate().atStartOfDay()),
-                                Multilingual.fromMap(glAccountPartCommand.getDescriptions()),
-                                command.getGlAccountPartTypeId()
-                        )
-                )
+                .map(glAccountPartCommand -> {
+                    String code = glAccountPartCommand.getCode();
+
+                    String fullCode = parentFullCode.isEmpty() ? code : parentFullCode + code;
+
+                    return GLAccountPart.withoutId(
+                            glAccountPartCommand.getCode(),
+                            fullCode,
+                            command.getParentId(),
+                            GLAccountPartStatus.ACTIVE,
+                            creationDateTime,
+                            creationDateTime,
+                            ValidityPeriod.withOnlyStartOfValidity(creationDateTime.toLocalDate().atStartOfDay()),
+                            Multilingual.fromMap(glAccountPartCommand.getDescriptions()),
+                            command.getGlAccountPartTypeId()
+                    );
+                })
                 .collect(Collectors.toUnmodifiableList());
     }
 }

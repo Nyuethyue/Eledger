@@ -42,6 +42,7 @@ class CreateGLAccountTest {
     private AuditManagementTestHelper auditManagementTestHelper;
 
     private Collection<Long> partIds;
+    private Long lastPartId;
 
     @BeforeEach
     void beforeEach() {
@@ -51,6 +52,8 @@ class CreateGLAccountTest {
                 createGLAccountPartUseCase,
                 glAccountPartTypeRepositoryPort
         );
+
+        lastPartId = partIds.stream().max(Long::compareTo).get();
     }
 
     @AfterEach
@@ -68,6 +71,7 @@ class CreateGLAccountTest {
                         partIds,
                         new CreateGLAccountUseCase.GLAccountLastPartCommand(
                                 "1002",
+                                lastPartId,
                                 Map.of(
                                         "en", "TDS on other source of income"
                                 )

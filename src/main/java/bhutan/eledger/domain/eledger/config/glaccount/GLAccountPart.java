@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 public class GLAccountPart {
     private final Long id;
     private final String code;
+    private final String fullCode;
     private final Long parentId;
     private final GLAccountPartStatus status;
     private final LocalDateTime creationDateTime;
@@ -20,6 +21,7 @@ public class GLAccountPart {
 
     public static GLAccountPart withoutId(
             String code,
+            String fullCode,
             Long parentId,
             GLAccountPartStatus status,
             LocalDateTime creationDateTime,
@@ -32,6 +34,7 @@ public class GLAccountPart {
         return new GLAccountPart(
                 null,
                 code,
+                fullCode,
                 parentId,
                 status,
                 creationDateTime,

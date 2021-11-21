@@ -16,7 +16,7 @@
         <sqlFile path="../../sql/eledger/008_taxpayer_schema.sql" relativeToChangelogFile="true"/>
         <sqlFile path="../../sql/eledger/009_transaction_schema.sql" relativeToChangelogFile="true"/>
         <sqlFile path="../../sql/eledger/config_data_type_data.sql" relativeToChangelogFile="true"/>
-        <sqlFile path="../../sql/eledger/0010_config_property_schema.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/eledger/010_config_property_schema.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
 </databaseChangeLog>

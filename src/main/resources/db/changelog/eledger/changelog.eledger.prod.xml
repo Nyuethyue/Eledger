@@ -44,7 +44,7 @@
     </changeSet>
 
     <changeSet id="Create property schema" author="B.A.">
-        <sqlFile path="../../sql/eledger/0010_config_property_schema.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/eledger/010_config_property_schema.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
 </databaseChangeLog>

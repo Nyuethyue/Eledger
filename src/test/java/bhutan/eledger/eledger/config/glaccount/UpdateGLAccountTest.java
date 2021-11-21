@@ -59,12 +59,15 @@ class UpdateGLAccountTest {
                 glAccountPartTypeRepositoryPort
         );
 
+        Long lastPartId = partIds.stream().max(Long::compareTo).get();
+
 
         glAccountId = createGLAccountUseCase.create(
                 new CreateGLAccountUseCase.CreateGLAccountCommand(
                         partIds,
                         new CreateGLAccountUseCase.GLAccountLastPartCommand(
                                 "1002",
+                                lastPartId,
                                 Map.of(
                                         "en", "TDS on other source of income"
                                 )
