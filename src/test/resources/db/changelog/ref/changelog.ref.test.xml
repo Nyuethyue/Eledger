@@ -12,16 +12,16 @@
     </changeSet>
 
     <changeSet id="Payment mode schemas" author="A.A." dbms="postgresql">
-        <sqlFile path="../../../../../main/resources/db/sql/ref/002_create_payment_mode_ref_table.sql" relativeToChangelogFile="true"/>
-        <sqlFile path="../../../../../main/resources/db/sql/ref/003_insert_payment_mode_ref_data.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/ref/002_create_payment_mode_ref_table.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/ref/003_insert_payment_mode_ref_data.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
     <changeSet id="Bank schemas" author="P.L." dbms="postgresql">
-        <sqlFile path="../../../../../main/resources/db/sql/ref/004_create_bank_ref_table.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/ref/004_create_bank_ref_table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
     <changeSet id="Bank Branch schemas" author="P.L." dbms="postgresql">
-        <sqlFile path="../../../../../main/resources/db/sql/ref/005_create_bank_branch_ref_table.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/ref/005_create_bank_branch_ref_table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
 </databaseChangeLog>
