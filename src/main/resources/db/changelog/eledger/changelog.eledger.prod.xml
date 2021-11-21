@@ -47,4 +47,8 @@
         <sqlFile path="../../sql/eledger/0010_config_property_schema.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <changeSet id="Create function to get GL accounts parts by level " author="V.G.">
+        <sqlFile path="../../sql/eledger/0011_function_fn_gl_account_part_by_level.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog>
