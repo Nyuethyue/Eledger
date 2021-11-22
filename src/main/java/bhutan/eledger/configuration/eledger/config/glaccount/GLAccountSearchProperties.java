@@ -1,7 +1,7 @@
 package bhutan.eledger.configuration.eledger.config.glaccount;
 
 import am.iunetworks.lib.common.persistence.search.AbstractSearchProperties;
-import bhutan.eledger.adapter.persistence.eledger.config.glaccount.QGLAccountEntity;
+import bhutan.eledger.adapter.out.persistence.eledger.config.glaccount.QGLAccountEntity;
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;

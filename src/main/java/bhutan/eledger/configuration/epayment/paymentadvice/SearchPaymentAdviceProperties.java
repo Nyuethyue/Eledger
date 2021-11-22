@@ -1,7 +1,7 @@
 package bhutan.eledger.configuration.epayment.paymentadvice;
 
 import am.iunetworks.lib.common.persistence.search.AbstractSearchProperties;
-import bhutan.eledger.adapter.persistence.epayment.paymentadvice.QPaymentAdviceEntity;
+import bhutan.eledger.adapter.out.persistence.epayment.paymentadvice.QPaymentAdviceEntity;
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;

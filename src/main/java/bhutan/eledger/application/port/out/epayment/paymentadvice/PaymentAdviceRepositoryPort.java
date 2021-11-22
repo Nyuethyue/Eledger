@@ -1,7 +1,7 @@
 package bhutan.eledger.application.port.out.epayment.paymentadvice;
 
 
-import bhutan.eledger.domain.epayment.PaymentAdvice;
+import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
 
 import java.util.Collection;
 import java.util.Optional;

@@ -5,10 +5,10 @@ import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAd
 import bhutan.eledger.application.port.out.epayment.config.bank.GetBankInfoByGLCodeAccountPort;
 import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceNumberGeneratorPort;
 import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceRepositoryPort;
-import bhutan.eledger.domain.epayment.PaymentAdvice;
-import bhutan.eledger.domain.epayment.PaymentAdviceBankInfo;
-import bhutan.eledger.domain.epayment.PaymentAdviceStatus;
-import bhutan.eledger.domain.epayment.PaymentLine;
+import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
+import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdviceBankInfo;
+import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdviceStatus;
+import bhutan.eledger.domain.epayment.paymentadvice.PaymentLine;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;

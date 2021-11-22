@@ -1,6 +1,6 @@
 package bhutan.eledger.application.port.out.epayment.config.bank;
 
-import bhutan.eledger.domain.epayment.PaymentAdviceBankInfo;
+import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdviceBankInfo;
 
 public interface GetBankInfoByGLCodeAccountPort {
 

@@ -1,7 +1,7 @@
 package bhutan.eledger.application.port.in.epayment.paymentadvice;
 
 import am.iunetworks.lib.common.persistence.search.SearchResult;
-import bhutan.eledger.domain.epayment.PaymentAdvice;
+import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 

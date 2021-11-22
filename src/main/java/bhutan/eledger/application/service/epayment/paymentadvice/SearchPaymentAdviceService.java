@@ -7,7 +7,7 @@ import am.iunetworks.lib.common.validation.ViolationException;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.SearchPaymentAdvicePort;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.SearchPaymentAdviceUseCase;
 import bhutan.eledger.configuration.epayment.paymentadvice.SearchPaymentAdviceProperties;
-import bhutan.eledger.domain.epayment.PaymentAdvice;
+import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;

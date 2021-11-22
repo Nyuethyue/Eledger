@@ -4,7 +4,7 @@ import am.iunetworks.lib.common.persistence.search.SearchResult;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAdviceUseCase;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.SearchPaymentAdviceUseCase;
 import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceRepositoryPort;
-import bhutan.eledger.domain.epayment.PaymentAdvice;
+import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

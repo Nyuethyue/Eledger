@@ -2,8 +2,7 @@ package bhutan.eledger.application.port.in.epayment.paymentadvice;
 
 import am.iunetworks.lib.common.persistence.search.AbstractSearchCommand;
 import am.iunetworks.lib.common.persistence.search.SearchResult;
-
-import bhutan.eledger.domain.epayment.PaymentAdvice;
+import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
 import lombok.Getter;
 import lombok.ToString;
 
