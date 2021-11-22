@@ -19,6 +19,6 @@ public class BankStatementImportService implements BankStatementImportUseCase {
 
     @Override
     public List<BankStatementImportReconciliationInfo> importStatements(ImportBankStatementsCommand command) {
-        return bankStatementFileParserPort.getStatements(command.getExcelFilePath());
+        return bankStatementFileParserPort.getStatements(command);
     }
 }
