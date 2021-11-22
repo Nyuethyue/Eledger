@@ -12,10 +12,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import java.io.InputStream;
 
 @Log4j2
-public class ExcelLoader extends DefaultHandler {
-    public interface ExcelCellReceiver {
-        void newCell(int row, int column, String type, String value);
-    }
+public class XLSXLoader extends DefaultHandler {
 
     private ExcelCellReceiver receiver;
     private SharedStringsTable sst;
@@ -23,6 +20,7 @@ public class ExcelLoader extends DefaultHandler {
     private CellReference cellReferenceObject;
     private String cellType;
     private boolean nextIsString;
+    private String sheetId;
     public void load(InputStream io, String sheetId, ExcelCellReceiver receiver) {
         try(OPCPackage pkg = OPCPackage.open(io)) {
             this.receiver = receiver;
@@ -69,7 +67,7 @@ public class ExcelLoader extends DefaultHandler {
         }
 
         if(name.equals("v")) {
-            receiver.newCell(cellReferenceObject.getRow(), cellReferenceObject.getCol(), cellType, lastContents);
+            receiver.newCell(sheetId, cellReferenceObject.getRow(), cellReferenceObject.getCol(), cellType, lastContents);
         }
     }
 
