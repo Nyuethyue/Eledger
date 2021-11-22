@@ -1,7 +1,10 @@
 package bhutan.eledger.adapter.out.fms.epayment.reconciliation;
 
+import bhutan.eledger.application.port.in.epayment.reconciliation.BankStatementImportUseCase;
 import bhutan.eledger.application.port.out.epayment.reconciliation.BankStatementFileParserPort;
+import bhutan.eledger.common.excel.ReconciliationExcelLoader;
 import bhutan.eledger.configuration.fms.FmsProperties;
+import bhutan.eledger.domain.epayment.BankStatementImportReconciliationInfo;
 import com.jsunsoft.http.HttpRequest;
 import com.jsunsoft.http.HttpRequestBuilder;
 import com.jsunsoft.http.Response;
@@ -12,6 +15,8 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
+import java.security.InvalidParameterException;
+import java.util.List;
 
 @Component
 class BankStatementFileParserAdapter implements BankStatementFileParserPort {
@@ -27,22 +32,26 @@ class BankStatementFileParserAdapter implements BankStatementFileParserPort {
     }
 
     @Override
-    public void getStatements(String fileId) {
-
+    public List<BankStatementImportReconciliationInfo> getStatements(BankStatementImportUseCase.ImportBankStatementsCommand command) {
+        String fileRelativePath = command.getExcelFilePath();
         WebTarget webTarget = httpRequest.target(fmsProperties.getUri())
-                .path("path")//todo for Aleksandr specify real path
-                .addParameter("key", "Value") //todo for Aleksandr specify parameters if needed or remove
-                ;
+                .path(fileRelativePath);
 
         try (Response response = webTarget.get()) {
-            if (response.isSuccess() && response.hasEntity()) {
-                InputStream inputStream = response.getEntity().getContent();
-
-                //todo for Aleksandr parse input stream
+            String filePath = fileRelativePath.toLowerCase();
+            if (!filePath.endsWith(".xls") && filePath.endsWith(".xlsx")) {
+                throw new InvalidParameterException("Invalid excel file type extension:" + fileRelativePath);
             }
 
+            if (response.isSuccess() && response.hasEntity()) {
+                try (InputStream inputStream = response.getEntity().getContent()) {
+                    ReconciliationExcelLoader loader = new ReconciliationExcelLoader();
+                    return loader.load(inputStream, filePath.endsWith(".xlsx"));
+                }
+            }
         } catch (IOException e) {
             throw new UncheckedIOException("Failed to read file from: " + webTarget.getURIString(), e);
         }
+        return null;
     }
 }
