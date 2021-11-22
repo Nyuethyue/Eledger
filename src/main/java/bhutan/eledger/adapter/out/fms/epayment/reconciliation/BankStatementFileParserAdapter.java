@@ -32,15 +32,14 @@ class BankStatementFileParserAdapter implements BankStatementFileParserPort {
     }
 
     @Override
-    public List<BankStatementImportReconciliationInfo> getStatements(BankStatementImportUseCase.ImportBankStatementsCommand command) {
-        String fileRelativePath = command.getExcelFilePath();
+    public List<BankStatementImportReconciliationInfo> getStatements(String filePath) {
         WebTarget webTarget = httpRequest.target(fmsProperties.getUri())
-                .path(fileRelativePath);
+                .path(filePath);
 
         try (Response response = webTarget.get()) {
-            String filePath = fileRelativePath.toLowerCase();
+            filePath = filePath.toLowerCase();
             if (!filePath.endsWith(".xls") && filePath.endsWith(".xlsx")) {
-                throw new InvalidParameterException("Invalid excel file type extension:" + fileRelativePath);
+                throw new InvalidParameterException("Invalid excel file type extension:" + filePath);
             }
 
             if (response.isSuccess() && response.hasEntity()) {
