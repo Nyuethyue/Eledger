@@ -16,7 +16,7 @@ class RefBankBranchMapper {
                         refBankBranch.getBankId()
                 );
 
-        refBankBranch.getDescription()
+        refBankBranch.getDescriptions()
                 .getTranslations()
                 .stream()
                 .map(t ->

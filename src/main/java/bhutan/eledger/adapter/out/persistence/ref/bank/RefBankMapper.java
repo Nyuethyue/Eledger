@@ -14,7 +14,7 @@ class RefBankMapper {
                         refBank.getCode()
                 );
 
-        refBank.getDescription()
+        refBank.getDescriptions()
                 .getTranslations()
                 .stream()
                 .map(t ->

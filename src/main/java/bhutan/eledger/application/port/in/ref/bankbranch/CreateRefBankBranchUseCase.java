@@ -18,7 +18,7 @@ public interface CreateRefBankBranchUseCase {
     class CreateBranchCommand {
         @NotNull
         @NotEmpty
-        @Pattern(regexp = "\\d+")
+        @Pattern(regexp = "\\d+",message = "Branch code accept only numbers.")
         private final String code;
         @NotNull
         @NotEmpty
@@ -29,7 +29,7 @@ public interface CreateRefBankBranchUseCase {
         @NotNull
         private final Long bankId;
         @NotEmpty
-        private final Map<String, String> description;
+        private final Map<String, String> descriptions;
 
     }
 

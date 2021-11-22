@@ -10,14 +10,14 @@ public class RefBankBranch {
     private final String  bfscCode;
     private final String  address;
     private final Long    bankId;
-    private final Multilingual description;
+    private final Multilingual descriptions;
 
     public static RefBankBranch withoutId(
             String code,
             String bfscCode,
             String address,
             Long   bankId,
-            Multilingual description
+            Multilingual descriptions
     ) {
 
         return new RefBankBranch(
@@ -26,7 +26,7 @@ public class RefBankBranch {
                 bfscCode,
                 address,
                 bankId,
-                description
+                descriptions
         );
     }
 
