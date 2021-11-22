@@ -14,8 +14,8 @@ class DependencyRuleTests {
                 .withDomainLayer("domain")
 
                 .withAdaptersLayer("adapter")
-                .incoming("web")
-                .outgoing("persistence")
+                .incoming("in.web")
+                .outgoing("out.persistence")
                 .and()
 
                 .withApplicationLayer("application")
@@ -60,7 +60,7 @@ class DependencyRuleTests {
 
         noClasses()
                 .that()
-                .resideInAPackage("bhutan.eledger.adapter.persistence..")
+                .resideInAPackage("bhutan.eledger.adapter.out.persistence..")
                 .should()
                 .dependOnClassesThat()
                 .resideInAnyPackage("bhutan.eledger.web..")
