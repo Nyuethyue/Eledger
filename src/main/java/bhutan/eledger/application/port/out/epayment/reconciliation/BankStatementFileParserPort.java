@@ -6,5 +6,5 @@ import bhutan.eledger.domain.epayment.BankStatementImportReconciliationInfo;
 import java.util.List;
 
 public interface BankStatementFileParserPort {
-    List<BankStatementImportReconciliationInfo> getStatements(String filePath);
+    List<BankStatementImportReconciliationInfo> getStatements(BankStatementImportUseCase.ImportBankStatementsCommand command);
 }
