@@ -1,6 +1,7 @@
 package bhutan.eledger.epayment.payment;
 
-import bhutan.eledger.common.excel.ExcelLoader;
+import bhutan.eledger.common.excel.ReconciliationExcelLoader;
+import bhutan.eledger.common.excel.XLSXLoader;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -24,14 +25,13 @@ class ReconciliationUploadTest {
 
     @Test
     void excelLoadTest() {
-        ExcelLoader loader = new ExcelLoader();
+        ReconciliationExcelLoader loader = new ReconciliationExcelLoader();
         try {
             Path resourceDirectory = Paths.get("src","test","resources", "files");
             String absolutePath = resourceDirectory.toFile().getAbsolutePath();
 
-            FileInputStream fis = new FileInputStream( absolutePath + "\\" + "Reconciliation upload file.xlsx");
-            loader.load(fis, "rId1", (row, column, type, value) ->
-                    System.out.println("Row:" + row + " Col:" + column + " Value:" + value + " Type:" + type));
+            FileInputStream fis = new FileInputStream( absolutePath + "\\" + "Reconciliation.xlsx");
+            loader.load(fis, true);
         } catch (Exception e) {
             e.printStackTrace();
         }

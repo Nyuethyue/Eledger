@@ -1,6 +1,5 @@
 package bhutan.eledger.adapter.out.fms.epayment.reconciliation;
 
-import bhutan.eledger.application.port.in.epayment.reconciliation.BankStatementImportUseCase;
 import bhutan.eledger.application.port.out.epayment.reconciliation.BankStatementFileParserPort;
 import bhutan.eledger.common.excel.ReconciliationExcelLoader;
 import bhutan.eledger.configuration.fms.FmsProperties;
