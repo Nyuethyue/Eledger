@@ -30,7 +30,7 @@ logging:
 bhutan:
   eledger:
     fms:
-      uri: http://10.11.1.13
+      uri: http://10.11.1.72:8096
     glaccount:
       search:
         sort-property: code
