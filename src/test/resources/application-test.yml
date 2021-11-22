@@ -26,3 +26,11 @@ spring:
 logging:
   level:
     bhutan.eledger: trace
+
+bhutan:
+  eledger:
+    fms:
+      uri: http://10.11.1.72:8096
+    glaccount:
+      search:
+        sort-property: code
