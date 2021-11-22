@@ -22,9 +22,11 @@ public interface CreatePaymentAdviceUseCase {
         @NotNull
         @NotEmpty
         private final String drn;
+
+        @Valid
         @NotNull
-        @NotEmpty
-        private final String tpn;
+        private final TaxpayerCommand taxpayer;
+
         @NotNull
         private final LocalDate dueDate;
         @NotNull
@@ -33,11 +35,11 @@ public interface CreatePaymentAdviceUseCase {
         @NotNull
         @NotEmpty
         @Valid
-        private final Collection<PaymentLineCommand> paymentLines;
+        private final Collection<PayableLineCommand> payableLines;
     }
 
     @Data
-    class PaymentLineCommand {
+    class PayableLineCommand {
         @NotNull
         @PositiveOrZero
         private final BigDecimal amount;
@@ -53,14 +55,25 @@ public interface CreatePaymentAdviceUseCase {
 
         @NotNull
         @NotEmpty
-        private final Map<String, String> description;
+        private final Map<String, String> descriptions;
     }
 
     @Data
     class PeriodCommand {
         @NotNull
-        private final LocalDate start;
+        private final String year;
         @NotNull
-        private final LocalDate end;
+        private final String segment;
+    }
+
+    @Data
+    class TaxpayerCommand {
+        @NotNull
+        @NotEmpty
+        private final String tpn;
+
+        @NotNull
+        @NotEmpty
+        private final String name;
     }
 }

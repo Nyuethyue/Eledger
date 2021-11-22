@@ -1,8 +1,8 @@
 package bhutan.eledger.adapter.out.persistence.eledger.taxpayer;
 
 
-import bhutan.eledger.application.port.out.eledger.taxpayer.TaxpayerRepositoryPort;
-import bhutan.eledger.domain.eledger.taxpayer.Taxpayer;
+import bhutan.eledger.application.port.out.eledger.taxpayer.ElTaxpayerRepositoryPort;
+import bhutan.eledger.domain.eledger.taxpayer.ElTaxpayer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -10,22 +10,22 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-class TaxpayerAdapter implements TaxpayerRepositoryPort {
+class ElTaxpayerAdapter implements ElTaxpayerRepositoryPort {
 
     private final TaxpayerEntityRepository taxpayerEntityRepository;
 
     @Override
-    public Long create(Taxpayer taxpayer) {
+    public Long create(ElTaxpayer taxpayer) {
         return taxpayerEntityRepository.save(taxpayer).getId();
     }
 
     @Override
-    public Optional<Taxpayer> readById(Long id) {
+    public Optional<ElTaxpayer> readById(Long id) {
         return taxpayerEntityRepository.findById(id);
     }
 
     @Override
-    public Optional<Taxpayer> readByTpn(String tpn) {
+    public Optional<ElTaxpayer> readByTpn(String tpn) {
         return taxpayerEntityRepository.findByTpn(tpn);
     }
 

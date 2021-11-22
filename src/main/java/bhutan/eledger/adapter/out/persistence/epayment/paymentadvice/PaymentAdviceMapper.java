@@ -1,15 +1,13 @@
 package bhutan.eledger.adapter.out.persistence.epayment.paymentadvice;
 
 import am.iunetworks.lib.multilingual.core.Multilingual;
+import bhutan.eledger.domain.epayment.paymentadvice.PayableLine;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdviceBankInfo;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdviceStatus;
-import bhutan.eledger.domain.epayment.paymentadvice.PaymentLine;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -40,49 +38,28 @@ class PaymentAdviceMapper {
         var paymentAdviceEntity = new PaymentAdviceEntity(
                 paymentAdvice.getId(),
                 paymentAdvice.getDrn(),
-                paymentAdvice.getTpn(),
                 paymentAdvice.getDueDate(),
-                paymentAdvice.getPeriod().getStart(),
-                paymentAdvice.getPeriod().getEnd(),
+                paymentAdvice.getPeriod().getYear(),
+                paymentAdvice.getPeriod().getSegment(),
                 paymentAdvice.getCreationDateTime(),
                 paymentAdvice.getPan(),
                 paymentAdvice.getStatus().getValue(),
+                paymentAdvice.getTaxpayer(),
                 bankInfoEntity
         );
 
-        paymentAdviceEntity.setPaymentLines(
-                paymentAdvice.getPaymentLines()
+        paymentAdviceEntity.setPayableLines(
+                paymentAdvice.getPayableLines()
                         .stream()
-                        .map(pl -> {
-
-                            var paGlAccEntity = new PaymentAdviceGLAccountEntity(
-                                    pl.getGlAccount().getId(),
-                                    pl.getGlAccount().getCode()
-                            );
-
-                            paGlAccEntity.setDescriptions(
-                                    pl.getGlAccount().getDescription().getTranslations()
-                                            .stream()
-                                            .map(t ->
-                                                    new PaymentAdviceGLAccountDescriptionEntity(
-                                                            t.getId(),
-                                                            t.getLanguageCode(),
-                                                            t.getValue(),
-                                                            paGlAccEntity
-                                                    )
-                                            )
-                                            .collect(Collectors.toSet())
-                            );
-
-                            return new PaymentLineEntity(
-                                    pl.getId(),
-                                    pl.getPaidAmount(),
-                                    pl.getAmount(),
-                                    paymentAdviceEntity,
-                                    paGlAccEntity
-                            );
-
-                        })
+                        .map(pl ->
+                                new PayableLineEntity(
+                                        pl.getId(),
+                                        pl.getPaidAmount(),
+                                        pl.getAmount(),
+                                        paymentAdviceEntity,
+                                        pl.getGlAccount()
+                                )
+                        )
                         .collect(Collectors.toSet())
         );
 
@@ -92,43 +69,43 @@ class PaymentAdviceMapper {
 
     public PaymentAdvice mapToDomain(PaymentAdviceEntity paymentAdviceEntity) {
         PaymentAdvice.Period period = PaymentAdvice.Period.of(
-                paymentAdviceEntity.getPeriodStartDate(),
-                paymentAdviceEntity.getPeriodEndDate());
+                paymentAdviceEntity.getPeriodYear(),
+                paymentAdviceEntity.getPeriodSegment()
+        );
+
         PaymentAdviceBankInfoEntity bankInfoEntity = paymentAdviceEntity.getBankInfo();
+
         PaymentAdviceBankInfo bankInfo = PaymentAdviceBankInfo.withId(
                 bankInfoEntity.getId(),
                 bankInfoEntity.getBankAccountNumber(),
                 Multilingual.of(bankInfoEntity.getDescriptions()
-                ));
+                )
+        );
 
-        Collection<PaymentLine> paymentLines = new LinkedList<>();
-        Set<PaymentLineEntity> plines = paymentAdviceEntity.getPaymentLines();
-
-        if(null != plines) {
-            for (PaymentLineEntity pl : plines) {
-                paymentLines.add(
-                        PaymentLine.of(
+        Collection<PayableLine> payableLines = paymentAdviceEntity.getPayableLines()
+                .stream()
+                .map(pl ->
+                        PayableLine.of(
                                 pl.getId(),
-                                PaymentLine.GLAccount.withId(
-                                        pl.getGlAccount().getId(),
-                                        pl.getGlAccount().getCode(),
-                                        Multilingual.of(pl.getGlAccount().getDescriptions())),
+                                pl.getGlAccount(),
                                 pl.getPaidAmount(),
-                                pl.getAmount()));
-            }
-        }
+                                pl.getAmount()
+                        )
+                )
+                .collect(Collectors.toUnmodifiableList());
+
 
         return PaymentAdvice.withId(
                 paymentAdviceEntity.getId(),
                 paymentAdviceEntity.getDrn(),
-                paymentAdviceEntity.getTpn(),
                 paymentAdviceEntity.getDueDate(),
                 period,
                 paymentAdviceEntity.getCreationDateTime(),
                 paymentAdviceEntity.getPan(),
                 PaymentAdviceStatus.valueOf(paymentAdviceEntity.getStatus()),
+                paymentAdviceEntity.getTaxpayer(),
                 bankInfo,
-                paymentLines);
+                payableLines
+        );
     }
-
 }

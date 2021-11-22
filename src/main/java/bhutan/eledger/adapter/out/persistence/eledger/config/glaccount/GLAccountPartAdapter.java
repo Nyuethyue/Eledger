@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static bhutan.eledger.common.constants.CharSequenceConstants.EMPTY;
+
 @Component
 @RequiredArgsConstructor
 class GLAccountPartAdapter implements GLAccountPartRepositoryPort, GetGlAccountPartFullCodeOnlyPort {
@@ -91,7 +93,7 @@ class GLAccountPartAdapter implements GLAccountPartRepositoryPort, GetGlAccountP
     @Override
     public GlAccountPartFullCodeOnly getGlAccountPartFullCodeOnly(Long id) {
 
-        return id == null ? () -> "" : glAccountPartEntityRepository.readById(id)
+        return id == null ? () -> EMPTY : glAccountPartEntityRepository.readById(id)
                 .orElseThrow(() ->
                         new RecordNotFoundException("GLAccountPart by id: [" + id + "] not found.")
                 );

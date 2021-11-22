@@ -44,7 +44,9 @@ class PaymentAdviceSearchAdapter implements SearchPaymentAdvicePort {
             predicate.and(qPaymentAdvice.pan.eq(command.getPan()));
         } else
         if (command.getTpn() != null) {
-            predicate.and(qPaymentAdvice.tpn.eq(command.getTpn()));
+            jpqlQuery = jpqlQuery.innerJoin(qPaymentAdvice.taxpayer);
+
+            predicate.and(qPaymentAdvice.taxpayer.tpn.eq(command.getTpn()));
         }
 
         return jpqlQuery.where(predicate);

@@ -44,14 +44,17 @@ class CreatePaymentAdviceTest {
         CreatePaymentAdviceUseCase.CreatePaymentAdviceCommand createCommand =
                 new CreatePaymentAdviceUseCase.CreatePaymentAdviceCommand(
                         "TestDrn",
-                        "TestTpn",
+                        new CreatePaymentAdviceUseCase.TaxpayerCommand(
+                                "TestTpn",
+                                "TaxPayerName"
+                        ),
                         LocalDate.now().plusMonths(1),
                         new CreatePaymentAdviceUseCase.PeriodCommand(
-                                LocalDate.now(),
-                                LocalDate.now().plusMonths(1)
+                                "2021",
+                                "M04"
                         ),
                         Set.of(
-                                new CreatePaymentAdviceUseCase.PaymentLineCommand(
+                                new CreatePaymentAdviceUseCase.PayableLineCommand(
                                         new BigDecimal("9999.99"),
                                         new CreatePaymentAdviceUseCase.GLAccountCommand(
                                                 "12345678901",
@@ -67,12 +70,12 @@ class CreatePaymentAdviceTest {
         Assertions.assertNotNull(id);
 
         SearchPaymentAdviceUseCase.SearchPaymentAdviseCommand command =
-                new SearchPaymentAdviceUseCase.SearchPaymentAdviseCommand(0, 10, "tpn", null, "PIT", createCommand.getTpn(), null);
+                new SearchPaymentAdviceUseCase.SearchPaymentAdviseCommand(0, 10, "taxpayer.tpn", null, "PIT", createCommand.getTaxpayer().getTpn(), null);
         SearchResult<PaymentAdvice> searchResult = searchPaymentAdviceUseCase.search(command);
         Assertions.assertNotNull(searchResult);
         List<PaymentAdvice> content = searchResult.getContent();
         Assertions.assertNotNull(content);
-        Assertions.assertEquals(content.size(), 1);
+        Assertions.assertEquals(1, content.size());
         Assertions.assertEquals(content.get(0).getDrn(), createCommand.getDrn());
     }
 }

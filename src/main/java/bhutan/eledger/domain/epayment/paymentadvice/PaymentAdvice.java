@@ -1,6 +1,7 @@
 package bhutan.eledger.domain.epayment.paymentadvice;
 
 
+import bhutan.eledger.domain.epayment.taxpayer.EpTaxpayer;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -13,55 +14,55 @@ public class PaymentAdvice {
 
     private final Long id;
     private final String drn;
-    private final String tpn;
     private final LocalDate dueDate;
     private final Period period;
     private final LocalDateTime creationDateTime;
     private final String pan;
     private final PaymentAdviceStatus status;
+    private final EpTaxpayer taxpayer;
     private final PaymentAdviceBankInfo bankInfo;
-    private final Collection<PaymentLine> paymentLines;
+    private final Collection<PayableLine> payableLines;
 
     public BigDecimal getTotalLiabilityAmount() {
-        return paymentLines
+        return payableLines
                 .stream()
-                .map(PaymentLine::getAmount)
+                .map(PayableLine::getAmount)
 //                .map(PaymentLine.GLAccount::getAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public BigDecimal getTotalPaidAmountAmount() {
-        return paymentLines
+        return payableLines
                 .stream()
-                .map(PaymentLine::getPaidAmount)
+                .map(PayableLine::getPaidAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public BigDecimal getTotalToBePaidAmountAmount() {
-        return paymentLines
+        return payableLines
                 .stream()
-                .map(PaymentLine::getAmountToBePaid)
+                .map(PayableLine::getAmountToBePaid)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     @Data(staticConstructor = "of")
     public static class Period {
-        private final LocalDate start;
-        private final LocalDate end;
+        private final String year;
+        private final String segment;
     }
 
-    public static PaymentAdvice withoutId(String drn, String tpn, LocalDate dueDate, Period period, LocalDateTime creationDateTime, String pan, PaymentAdviceStatus status, PaymentAdviceBankInfo bankInfo, Collection<PaymentLine> paymentLines) {
+    public static PaymentAdvice withoutId(String drn, LocalDate dueDate, Period period, LocalDateTime creationDateTime, String pan, PaymentAdviceStatus status, EpTaxpayer taxpayer, PaymentAdviceBankInfo bankInfo, Collection<PayableLine> payableLines) {
         return new PaymentAdvice(
                 null,
                 drn,
-                tpn,
                 dueDate,
                 period,
                 creationDateTime,
                 pan,
                 status,
+                taxpayer,
                 bankInfo,
-                paymentLines
+                payableLines
         );
     }
 }

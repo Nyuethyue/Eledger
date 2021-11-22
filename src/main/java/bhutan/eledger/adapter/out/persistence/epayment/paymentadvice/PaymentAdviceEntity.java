@@ -1,5 +1,6 @@
 package bhutan.eledger.adapter.out.persistence.epayment.paymentadvice;
 
+import bhutan.eledger.domain.epayment.taxpayer.EpTaxpayer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,17 +27,14 @@ class PaymentAdviceEntity {
     @Column(name = "drn")
     private String drn;
 
-    @Column(name = "tpn")
-    private String tpn;
-
     @Column(name = "due_date")
     private LocalDate dueDate;
 
-    @Column(name = "period_start_date")
-    private LocalDate periodStartDate;
+    @Column(name = "period_year")
+    private String periodYear;
 
-    @Column(name = "period_end_date")
-    private LocalDate periodEndDate;
+    @Column(name = "period_segment")
+    private String periodSegment;
 
     @Column(name = "creation_date_time", nullable = false, updatable = false)
     private LocalDateTime creationDateTime;
@@ -46,6 +44,10 @@ class PaymentAdviceEntity {
 
     @Column(name = "status")
     private String status;
+
+    @OneToOne
+    @JoinColumn(name = "taxpayer_id", nullable = false)
+    private EpTaxpayer taxpayer;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pa_bank_info_id", nullable = false)
@@ -57,18 +59,18 @@ class PaymentAdviceEntity {
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
-    private Set<PaymentLineEntity> paymentLines;
+    private Set<PayableLineEntity> payableLines;
 
-    public PaymentAdviceEntity(Long id, String drn, String tpn, LocalDate dueDate, LocalDate periodStartDate, LocalDate periodEndDate, LocalDateTime creationDateTime, String pan, String status, PaymentAdviceBankInfoEntity bankInfo) {
+    public PaymentAdviceEntity(Long id, String drn, LocalDate dueDate, String periodYear, String periodSegment, LocalDateTime creationDateTime, String pan, String status, EpTaxpayer taxpayer, PaymentAdviceBankInfoEntity bankInfo) {
         this.id = id;
         this.drn = drn;
-        this.tpn = tpn;
         this.dueDate = dueDate;
-        this.periodStartDate = periodStartDate;
-        this.periodEndDate = periodEndDate;
+        this.periodYear = periodYear;
+        this.periodSegment = periodSegment;
         this.creationDateTime = creationDateTime;
         this.pan = pan;
         this.status = status;
+        this.taxpayer = taxpayer;
         this.bankInfo = bankInfo;
     }
 }

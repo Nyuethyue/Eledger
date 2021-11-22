@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -21,7 +22,10 @@ class PaymentAdviceAdapter implements PaymentAdviceRepositoryPort {
 
     @Override
     public Collection<PaymentAdvice> readAll() {
-        return null;
+        return paymentAdviceEntityRepository.findAll()
+                .stream()
+                .map(paymentAdviceMapper::mapToDomain)
+                .collect(Collectors.toUnmodifiableList());
     }
 
     @Override

@@ -21,8 +21,8 @@ public interface CreateTransactionsUseCase {
         @NotNull
         private final String drn;
         @NotNull
-        private final String tpn;
-
+        @Valid
+        private final TaxpayerCommand taxpayer;
         @Valid
         @NotNull
         @NotEmpty
@@ -52,5 +52,11 @@ public interface CreateTransactionsUseCase {
         private final Long transactionTypeAttributeId;
         @NotNull
         private final String value;
+    }
+
+    @Data
+    class TaxpayerCommand {
+        private final String tpn;
+        private final String name;
     }
 }

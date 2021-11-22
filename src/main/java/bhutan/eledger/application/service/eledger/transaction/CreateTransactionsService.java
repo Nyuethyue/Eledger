@@ -2,10 +2,10 @@ package bhutan.eledger.application.service.eledger.transaction;
 
 import bhutan.eledger.application.port.in.eledger.transaction.CreateTransactionsUseCase;
 import bhutan.eledger.application.port.out.eledger.config.transaction.TransactionTypeTransactionTypeAttributeRepositoryPort;
-import bhutan.eledger.application.port.out.eledger.taxpayer.TaxpayerRepositoryPort;
+import bhutan.eledger.application.port.out.eledger.taxpayer.ElTaxpayerRepositoryPort;
 import bhutan.eledger.application.port.out.eledger.transaction.TransactionRepositoryPort;
 import bhutan.eledger.domain.eledger.config.transaction.TransactionTypeWithAttributes;
-import bhutan.eledger.domain.eledger.taxpayer.Taxpayer;
+import bhutan.eledger.domain.eledger.taxpayer.ElTaxpayer;
 import bhutan.eledger.domain.eledger.transaction.Transaction;
 import bhutan.eledger.domain.eledger.transaction.TransactionAttribute;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 class CreateTransactionsService implements CreateTransactionsUseCase {
     private final TransactionTypeTransactionTypeAttributeRepositoryPort transactionTypeTransactionTypeAttributeRepositoryPort;
-    private final TaxpayerRepositoryPort taxpayerRepositoryPort;
+    private final ElTaxpayerRepositoryPort taxpayerRepositoryPort;
     private final TransactionRepositoryPort transactionRepositoryPort;
 
     @Override
@@ -40,7 +40,7 @@ class CreateTransactionsService implements CreateTransactionsUseCase {
     }
 
     private Collection<Transaction> makeTransactions(CreateTransactionsCommand transactionsCommand) {
-        Long taxpayerId = resolveTaxpayerId(transactionsCommand.getTpn());
+        Long taxpayerId = resolveTaxpayerId(transactionsCommand.getTaxpayer());
 
         return transactionsCommand.getTransactions()
                 .stream()
@@ -85,16 +85,17 @@ class CreateTransactionsService implements CreateTransactionsUseCase {
         );
     }
 
-    private Long resolveTaxpayerId(String tpn) {
+    private Long resolveTaxpayerId(TaxpayerCommand taxpayerCommand) {
         Long taxpayerId;
 
-        var taxpayerOptional = taxpayerRepositoryPort.readByTpn(tpn);
+        var taxpayerOptional = taxpayerRepositoryPort.readByTpn(taxpayerCommand.getTpn());
 
         if (taxpayerOptional.isPresent()) {
             taxpayerId = taxpayerOptional.get().getId();
         } else {
-            var taxpayer = Taxpayer.withoutId(
-                    tpn,
+            var taxpayer = ElTaxpayer.withoutId(
+                    taxpayerCommand.getTpn(),
+                    taxpayerCommand.getName(),
                     LocalDateTime.now()
             );
 
