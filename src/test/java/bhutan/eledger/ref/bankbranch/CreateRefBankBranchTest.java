@@ -87,6 +87,6 @@ class CreateRefBankBranchTest {
 
         var bankBranch = bankBranchOptional.get();
         Assertions.assertNotNull(bankBranch);
-        Assertions.assertNotNull(bankBranch.getDescriptions());
+        Assertions.assertNotNull(bankBranch.getDescription());
     }
 }

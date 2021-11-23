@@ -1,7 +1,6 @@
 package bhutan.eledger.ref.bank;
 
 import bhutan.eledger.application.port.in.ref.bank.CreateRefBankUseCase;
-import bhutan.eledger.application.port.in.ref.bank.ReadRefBankUseCase;
 import bhutan.eledger.application.port.out.ref.bank.RefBankRepositoryPort;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -25,8 +24,6 @@ class CreateRefBankTest {
     @Autowired
     private RefBankRepositoryPort refBankRepositoryPort;
 
-    @Autowired
-    private ReadRefBankUseCase readRefBankUseCase;
 
     @AfterEach
     void afterEach() {
@@ -61,7 +58,7 @@ class CreateRefBankTest {
 
         var bank = bankOptional.get();
         Assertions.assertNotNull(bank);
-        Assertions.assertNotNull(bank.getDescriptions());
+        Assertions.assertNotNull(bank.getDescription());
 
     }
 }

@@ -8,16 +8,16 @@ public class RefBank {
 
     private final Long id;
     private final String code;
-    private final Multilingual descriptions;
+    private final Multilingual description;
 
     public static RefBank withoutId(
             String code,
-            Multilingual descriptions
+            Multilingual description
     ) {
         return new RefBank(
                 null,
                 code,
-                descriptions
+                description
         );
     }
 }

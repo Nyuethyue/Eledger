@@ -15,7 +15,7 @@ class RefCurrencyMapper {
                         refCurrency.getSymbol()
                 );
 
-        refCurrency.getDescriptions()
+        refCurrency.getDescription()
                 .getTranslations()
                 .stream()
                 .map(t ->

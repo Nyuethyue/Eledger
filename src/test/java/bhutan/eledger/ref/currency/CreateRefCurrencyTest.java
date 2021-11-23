@@ -57,6 +57,6 @@ class CreateRefCurrencyTest {
 
         var currency = currencyOptional.get();
         Assertions.assertNotNull(currency);
-        Assertions.assertNotNull(currency.getDescriptions());
+        Assertions.assertNotNull(currency.getDescription());
     }
 }

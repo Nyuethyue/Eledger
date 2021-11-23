@@ -8,18 +8,18 @@ public class RefCurrency {
     private final Long id;
     private final String code;
     private final String symbol;
-    private final Multilingual descriptions;
+    private final Multilingual description;
 
     public static RefCurrency withoutId(
             String code,
             String symbol,
-            Multilingual descriptions
+            Multilingual description
     ) {
         return new RefCurrency(
                 null,
                 code,
                 symbol,
-                descriptions
+                description
         );
     }
 }
