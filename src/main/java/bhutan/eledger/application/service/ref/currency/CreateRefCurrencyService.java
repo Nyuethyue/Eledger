@@ -40,7 +40,7 @@ class CreateRefCurrencyService implements CreateRefCurrencyUseCase {
         return RefCurrency.withoutId(
                 command.getCode(),
                 command.getSymbol(),
-                Multilingual.fromMap(command.getDescription())
+                Multilingual.fromMap(command.getDescriptions())
         );
     }
 

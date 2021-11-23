@@ -22,7 +22,7 @@ public interface CreateRefCurrencyUseCase {
         @NotEmpty
         private final String symbol;
         @NotEmpty
-        private final Map<String, String> description;
+        private final Map<String, String> descriptions;
     }
 
 }

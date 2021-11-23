@@ -1,10 +1,7 @@
 package bhutan.eledger.ref.bank;
 
 import bhutan.eledger.application.port.in.ref.bank.CreateRefBankUseCase;
-import bhutan.eledger.application.port.in.ref.bank.ReadRefBankUseCase;
-import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountPartTypeRepositoryPort;
 import bhutan.eledger.application.port.out.ref.bank.RefBankRepositoryPort;
-import bhutan.eledger.domain.ref.bank.RefBank;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,8 +9,6 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
-
-import java.util.Collection;
 import java.util.Map;
 
 
@@ -29,8 +24,6 @@ class CreateRefBankTest {
     @Autowired
     private RefBankRepositoryPort refBankRepositoryPort;
 
-    @Autowired
-    private ReadRefBankUseCase readRefBankUseCase;
 
     @AfterEach
     void afterEach() {
@@ -44,18 +37,28 @@ class CreateRefBankTest {
                         "66666",
                         Map.of("en", "Bank of Bhutan")
 
-                        )
+                )
 
         );
         Assertions.assertNotNull(id);
-
-        RefBank refBank = readRefBankUseCase.readById(id);
-        Assertions.assertNotNull(refBank);
     }
 
     @Test
-    void readAllTest() {
-        Collection<RefBank> existedCurrencies = refBankRepositoryPort.readAll();
-        Assertions.assertNotEquals(0, existedCurrencies.size());
+    void readTest() {
+        Long id = createRefBankUseCase.create(
+                new CreateRefBankUseCase.CreateRefBankCommand(
+                        "9999",
+                        Map.of("en", "Bank of Bhutan")
+
+                )
+
+        );
+
+        var bankOptional = refBankRepositoryPort.readById(id);
+
+        var bank = bankOptional.get();
+        Assertions.assertNotNull(bank);
+        Assertions.assertNotNull(bank.getDescription());
+
     }
 }

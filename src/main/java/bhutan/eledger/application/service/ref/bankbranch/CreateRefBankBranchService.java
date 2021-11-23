@@ -44,7 +44,7 @@ class CreateRefBankBranchService implements CreateRefBankBranchUseCase{
                 command.getBfscCode(),
                 command.getAddress(),
                 command.getBankId(),
-                Multilingual.fromMap(command.getDescription())
+                Multilingual.fromMap(command.getDescriptions())
         );
     }
 
