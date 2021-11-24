@@ -46,6 +46,8 @@ public interface CreatePaymentAdviceUseCase {
         @NotNull
         @Valid
         private final GLAccountCommand glAccount;
+        @NotNull
+        private final Long transactionId;
     }
 
     @Data

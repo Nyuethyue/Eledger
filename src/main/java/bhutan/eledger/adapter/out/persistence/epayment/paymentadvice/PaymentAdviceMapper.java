@@ -56,6 +56,7 @@ class PaymentAdviceMapper {
                                         pl.getId(),
                                         pl.getPaidAmount(),
                                         pl.getAmount(),
+                                        pl.getElTransactionId(),
                                         paymentAdviceEntity,
                                         pl.getGlAccount()
                                 )
@@ -85,11 +86,12 @@ class PaymentAdviceMapper {
         Collection<PayableLine> payableLines = paymentAdviceEntity.getPayableLines()
                 .stream()
                 .map(pl ->
-                        PayableLine.of(
+                        PayableLine.withId(
                                 pl.getId(),
                                 pl.getGlAccount(),
                                 pl.getPaidAmount(),
-                                pl.getAmount()
+                                pl.getAmount(),
+                                pl.getElTransactionId()
                         )
                 )
                 .collect(Collectors.toUnmodifiableList());

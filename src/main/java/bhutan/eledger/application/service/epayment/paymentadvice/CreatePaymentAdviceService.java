@@ -89,7 +89,8 @@ class CreatePaymentAdviceService implements CreatePaymentAdviceUseCase {
                                 PayableLine.withoutId(
                                         resolveGlAccount(plc.getGlAccount()),
                                         BigDecimal.ZERO,
-                                        plc.getAmount()
+                                        plc.getAmount(),
+                                        plc.getTransactionId()
                                 )
                         )
                         .collect(Collectors.toUnmodifiableSet())

@@ -30,7 +30,7 @@ class PaymentAdviceNumberGeneratorAdapter implements PaymentAdviceNumberGenerato
         var seqVal = jdbcTemplate.queryForObject("SELECT NEXTVAL('epayment.ep_payment_advice_number_seq')", Long.class);
 
         if (seqVal == null) {
-            throw new IllegalStateException("The NEXTVAL of sequence 'epayment.ep_payment_advice_number_seq' returned 0.");
+            throw new IllegalStateException("The NEXTVAL of sequence 'epayment.ep_payment_advice_number_seq' returned null.");
         }
 
         return Strings.padStart(seqVal.toString(), 6, '0');

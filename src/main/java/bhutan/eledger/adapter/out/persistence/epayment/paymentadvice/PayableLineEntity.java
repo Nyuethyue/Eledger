@@ -29,6 +29,9 @@ class PayableLineEntity {
     @Column(name = "amount")
     private BigDecimal amount;
 
+    @Column(name = "el_transaction_id")
+    private Long elTransactionId;
+
     @ManyToOne
     @JoinColumn(name = "payment_advice_id")
     private PaymentAdviceEntity paymentAdvice;

@@ -17,7 +17,8 @@ class PaymentAdviceAdapter implements PaymentAdviceRepositoryPort {
 
     @Override
     public Optional<PaymentAdvice> readById(Long id) {
-        return Optional.empty();
+        return paymentAdviceEntityRepository.findById(id)
+                .map(paymentAdviceMapper::mapToDomain);
     }
 
     @Override
@@ -40,5 +41,12 @@ class PaymentAdviceAdapter implements PaymentAdviceRepositoryPort {
     @Override
     public void deleteAll() {
         paymentAdviceEntityRepository.deleteAll();
+    }
+
+    @Override
+    public void update(PaymentAdvice updatedPaymentAdvice) {
+        paymentAdviceEntityRepository.save(
+                paymentAdviceMapper.mapToEntity(updatedPaymentAdvice)
+        );
     }
 }
