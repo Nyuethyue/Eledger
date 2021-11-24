@@ -13,6 +13,8 @@
         <sqlFile path="../../sql/epayment/003_create_payment_advice_schema.sql" relativeToChangelogFile="true"/>
         <sqlFile path="../../sql/epayment/004_create_payment_advice_number_sequence.sql"
                  relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/epayment/005_create_receipt_schema.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/epayment/006_create_receipt_number_sequence.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
 </databaseChangeLog>

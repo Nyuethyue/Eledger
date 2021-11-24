@@ -1,21 +1,20 @@
-package bhutan.eledger.epayment.paymentadvice;
+package bhutan.eledger.epayment.generatereceipt;
 
-import am.iunetworks.lib.common.persistence.search.SearchResult;
+import bhutan.eledger.application.port.in.epayment.generatereceipt.GenerateCashReceiptUseCase;
+import bhutan.eledger.application.port.in.epayment.generatereceipt.GenerateReceiptCommonCommand;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAdviceUseCase;
-import bhutan.eledger.application.port.in.epayment.paymentadvice.SearchPaymentAdviceUseCase;
+import bhutan.eledger.application.port.out.epayment.generatereceipt.CashReceiptRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceRepositoryPort;
+import bhutan.eledger.domain.epayment.generatereceipt.Receipt;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,24 +22,27 @@ import java.util.Set;
 @TestPropertySource(
         properties = {"spring.config.location = classpath:application-test.yml"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class CreatePaymentAdviceTest {
+class GenerateReceiptTest {
 
     @Autowired
     private CreatePaymentAdviceUseCase createPaymentAdviceUseCase;
 
     @Autowired
-    private SearchPaymentAdviceUseCase searchPaymentAdviceUseCase;
-
-    @Autowired
     private PaymentAdviceRepositoryPort paymentAdviceRepositoryPort;
 
-    @AfterEach
-    void afterEach() {
-        paymentAdviceRepositoryPort.deleteAll();
-    }
+    @Autowired
+    private GenerateCashReceiptUseCase generateCashReceiptUseCase;
 
-    @Test
-    void createTest() {
+    @Autowired
+    private CashReceiptRepositoryPort cashReceiptRepositoryPort;
+
+    @Autowired
+    private TransactionTemplate transactionTemplate;
+
+    private PaymentAdvice paymentAdvice;
+
+    @BeforeEach
+    void beforeEach() {
         CreatePaymentAdviceUseCase.CreatePaymentAdviceCommand createCommand =
                 new CreatePaymentAdviceUseCase.CreatePaymentAdviceCommand(
                         "TestDrn",
@@ -67,16 +69,31 @@ class CreatePaymentAdviceTest {
                         )
                 );
         Long id = createPaymentAdviceUseCase.create(createCommand);
+        paymentAdvice = transactionTemplate.execute(status -> paymentAdviceRepositoryPort.readById(id).get());
+    }
 
-        Assertions.assertNotNull(id);
+    @AfterEach
+    void afterEach() {
+        cashReceiptRepositoryPort.deleteAll();
+        paymentAdviceRepositoryPort.deleteAll();
+    }
 
-        SearchPaymentAdviceUseCase.SearchPaymentAdviseCommand command =
-                new SearchPaymentAdviceUseCase.SearchPaymentAdviseCommand(0, 10, "taxpayer.tpn", null, "PIT", createCommand.getTaxpayer().getTpn(), null);
-        SearchResult<PaymentAdvice> searchResult = searchPaymentAdviceUseCase.search(command);
-        Assertions.assertNotNull(searchResult);
-        List<PaymentAdvice> content = searchResult.getContent();
-        Assertions.assertNotNull(content);
-        Assertions.assertEquals(1, content.size());
-        Assertions.assertEquals(content.get(0).getDrn(), createCommand.getDrn());
+    @Test
+    void createTest() {
+
+        var command = new GenerateCashReceiptUseCase.GenerateCashReceiptCommand(
+                paymentAdvice.getId(),
+                "USD",
+                Set.of(
+                        new GenerateReceiptCommonCommand.PaymentCommand(
+                                paymentAdvice.getPayableLines().stream().findAny().get().getId(),
+                                new BigDecimal("9999.99")
+                        )
+                )
+        );
+
+        Receipt receipt = generateCashReceiptUseCase.generate(command);
+
+        Assertions.assertNotNull(receipt);
     }
 }

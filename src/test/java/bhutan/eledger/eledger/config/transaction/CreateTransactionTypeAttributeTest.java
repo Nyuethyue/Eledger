@@ -1,7 +1,11 @@
 package bhutan.eledger.eledger.config.transaction;
 
+import bhutan.eledger.application.port.in.eledger.config.property.CreatePropertyUseCase;
 import bhutan.eledger.application.port.in.eledger.config.transaction.CreateTransactionTypeAttributeUseCase;
+import bhutan.eledger.application.port.in.eledger.transaction.CreateTransactionsUseCase;
 import bhutan.eledger.application.port.out.eledger.config.transaction.TransactionTypeAttributeRepositoryPort;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -10,8 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(
@@ -38,8 +45,61 @@ class CreateTransactionTypeAttributeTest {
         transactionTypeAttributeRepositoryPort.deleteAll();
     }
 
+    @Autowired
+    ObjectMapper objectMapper;
+
     @Test
-    void createTest() {
+    void createTest() throws JsonProcessingException {
+
+        System.out.println("*********************************");
+
+        System.out.println(
+                objectMapper
+                        .writerWithDefaultPrettyPrinter()
+                        .writeValueAsString(
+                                new CreateTransactionsUseCase.CreateTransactionsCommand(
+                                        "The drn",
+                                        new CreateTransactionsUseCase.TaxpayerCommand(
+                                                "The tpn",
+                                                "The taxpayer name"
+                                        ),
+                                        Set.of(
+                                                new CreateTransactionsUseCase.TransactionCommand(
+                                                        "The gl aaccount code",
+                                                        LocalDate.now(),
+                                                        BigDecimal.TEN,
+                                                        1L,
+                                                        Set.of(
+                                                                new CreateTransactionsUseCase.TransactionAttributeCommand(
+                                                                        1L,
+                                                                        "Transaction attribute value"
+                                                                )
+                                                        )
+                                                )
+                                        )
+                                )
+                        )
+        );
+
+        System.out.println(
+                objectMapper
+                        .writerWithDefaultPrettyPrinter()
+                        .writeValueAsString(
+                                new CreatePropertyUseCase.CreatePropertiesCommand(
+                                        Set.of(
+                                                new CreatePropertyUseCase.PropertyCommand(
+                                                        "The code",
+                                                        "The value",
+                                                        LocalDate.now(),
+                                                        Map.of("en", "English dsc"),
+                                                        1
+                                                )
+                                        )
+                                )
+                        )
+        );
+
+        System.out.println("*********************************");
 
         var transactionTypeAttributes = createTransactionTypeAttributeUseCase.create(
                 new CreateTransactionTypeAttributeUseCase.CreateTransactionTypeAttributesCommand(
