@@ -107,7 +107,8 @@ CREATE TABLE IF NOT EXISTS epayment.ep_pa_payable_line
     amount            numeric(20, 2) NOT NULL,
     paid_amount       numeric(20, 2) NOT NULL DEFAULT 0,
     gl_account_id     bigint         NOT NULL,
-    payment_advice_id bigint         NOT NULL
+    payment_advice_id bigint         NOT NULL,
+    el_transaction_id bigint         NOT NULL
 );
 
 ALTER TABLE epayment.ep_pa_payable_line
