@@ -23,8 +23,8 @@ class RefBankBranchEntity {
     @Column(name = "code")
     private String code;
 
-    @Column(name = "bfsc_code")
-    private String bfscCode;
+    @Column(name = "branch_code")
+    private String branchCode;
 
     @Column(name = "address")
     private String address;
@@ -40,11 +40,11 @@ class RefBankBranchEntity {
     )
     private Set<RefBankBranchDescriptionEntity> descriptions;
 
-    public RefBankBranchEntity(Long id, String code,String bfscCode,
+    public RefBankBranchEntity(Long id, String code,String branchCode,
                                String address,Long bankId) {
         this.id = id;
         this.code = code;
-        this.bfscCode = bfscCode;
+        this.branchCode = branchCode;
         this.address = address;
         this.bankId = bankId;
     }

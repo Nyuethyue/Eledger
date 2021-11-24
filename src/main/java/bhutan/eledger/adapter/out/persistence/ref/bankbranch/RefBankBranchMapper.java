@@ -11,7 +11,7 @@ class RefBankBranchMapper {
                 new RefBankBranchEntity(
                         refBankBranch.getId(),
                         refBankBranch.getCode(),
-                        refBankBranch.getBfscCode(),
+                        refBankBranch.getBranchCode(),
                         refBankBranch.getAddress(),
                         refBankBranch.getBankId()
                 );
@@ -35,7 +35,7 @@ class RefBankBranchMapper {
         return RefBankBranch.withId(
                 refBankBranchEntity.getId(),
                 refBankBranchEntity.getCode(),
-                refBankBranchEntity.getBfscCode(),
+                refBankBranchEntity.getBranchCode(),
                 refBankBranchEntity.getAddress(),
                 refBankBranchEntity.getBankId(),
                 Multilingual.of(refBankBranchEntity.getDescriptions())

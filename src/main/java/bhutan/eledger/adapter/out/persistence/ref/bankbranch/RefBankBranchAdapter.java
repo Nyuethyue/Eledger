@@ -1,6 +1,7 @@
 package bhutan.eledger.adapter.out.persistence.ref.bankbranch;
 
 import bhutan.eledger.application.port.out.ref.bankbranch.RefBankBranchRepositoryPort;
+import bhutan.eledger.domain.eledger.config.glaccount.GLAccountPart;
 import bhutan.eledger.domain.ref.bankbranch.RefBankBranch;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -48,8 +49,17 @@ class RefBankBranchAdapter implements RefBankBranchRepositoryPort {
         return refBankBranchRepository.existsByCode(code);
     }
 
+
     @Override
-    public boolean existsByBfscCode(String BfscCode) {
-        return refBankBranchRepository.existsByBfscCode(BfscCode);
+    public Collection<RefBankBranch> readAllByBankId(Long bankId) {
+        return refBankBranchRepository.readAllByBankId(bankId)
+                .stream()
+                .map(refBankBranchMapper::mapToDomain)
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return refBankBranchRepository.existsById(id);
     }
 }

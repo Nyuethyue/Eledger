@@ -33,4 +33,11 @@ class ReadRefBankBranchService implements ReadRefBankBranchUseCase {
                         new RecordNotFoundException("Bank's branch by id: [" + id + "] not found.")
                 );
     }
+
+    @Override
+    public Collection<RefBankBranch> readAllByBankId(Long bankId) {
+        log.trace("Reading all branch information by bank id.");
+
+        return refBankBranchRepositoryPort.readAllByBankId(bankId);
+    }
 }

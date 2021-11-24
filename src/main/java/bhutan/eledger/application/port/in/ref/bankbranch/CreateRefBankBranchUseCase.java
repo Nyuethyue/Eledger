@@ -3,11 +3,9 @@ package bhutan.eledger.application.port.in.ref.bankbranch;
 
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.util.Map;
 
 @Validated
@@ -18,11 +16,8 @@ public interface CreateRefBankBranchUseCase {
     class CreateBranchCommand {
         @NotNull
         @NotEmpty
-        @Pattern(regexp = "\\d+",message = "Branch code accept only numbers.")
         private final String code;
-        @NotNull
-        @NotEmpty
-        private final String bfscCode;
+        private final String branchCode;
         @NotNull
         @NotEmpty
         private final String address;
