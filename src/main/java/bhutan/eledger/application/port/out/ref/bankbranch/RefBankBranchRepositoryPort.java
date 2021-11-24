@@ -16,5 +16,7 @@ public interface RefBankBranchRepositoryPort {
 
     boolean existsByCode(String code);
 
-    boolean existsByBfscCode(String bfscCode);
+    Collection<RefBankBranch> readAllByBankId(Long bankId);
+
+    boolean existsById(Long id);
 }

@@ -7,14 +7,14 @@ import lombok.Data;
 public class RefBankBranch {
     private final Long    id;
     private final String  code;
-    private final String  bfscCode;
+    private final String  branchCode;
     private final String  address;
     private final Long    bankId;
     private final Multilingual description;
 
     public static RefBankBranch withoutId(
             String code,
-            String bfscCode,
+            String branchCode,
             String address,
             Long   bankId,
             Multilingual description
@@ -23,7 +23,7 @@ public class RefBankBranch {
         return new RefBankBranch(
                 null,
                 code,
-                bfscCode,
+                branchCode,
                 address,
                 bankId,
                 description

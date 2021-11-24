@@ -41,7 +41,7 @@ class CreateRefBankBranchService implements CreateRefBankBranchUseCase{
     private RefBankBranch mapCommandToRefBankBranch(CreateRefBankBranchUseCase.CreateBranchCommand command) {
         return RefBankBranch.withoutId(
                 command.getCode(),
-                command.getBfscCode(),
+                command.getBranchCode(),
                 command.getAddress(),
                 command.getBankId(),
                 Multilingual.fromMap(command.getDescriptions())
@@ -53,13 +53,7 @@ class CreateRefBankBranchService implements CreateRefBankBranchUseCase{
         if (refBankBranchRepositoryPort.existsByCode(refBankBranch.getCode())) {
             throw new ViolationException(
                     new ValidationError()
-                            .addViolation("Code", "Bank's branch with code: [" + refBankBranch.getCode() + "] already exists.")
-            );
-        }
-        if (refBankBranchRepositoryPort.existsByBfscCode(refBankBranch.getBfscCode())) {
-            throw new ViolationException(
-                    new ValidationError()
-                            .addViolation("BfscCode", "Bank's branch with BFSC code: [" + refBankBranch.getBfscCode() + "] already exists.")
+                            .addViolation("BfscCode", "Bank's branch with BFSC code: [" + refBankBranch.getCode() + "] already exists.")
             );
         }
         if (!refBankRepositoryPort.existsById(refBankBranch.getBankId())) {

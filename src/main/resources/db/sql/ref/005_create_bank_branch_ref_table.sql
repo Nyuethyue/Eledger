@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS ref.bank_branch
 (
     id               bigint  NOT NULL,
     code             varchar NOT NULL,
-    bfsc_code        varchar NOT NULL,
+    branch_code      varchar ,
     address          varchar NOT NULL,
     bank_id           bigint NOT NULL
 );

@@ -27,4 +27,8 @@
         <sqlFile path="../../sql/ref/005_create_bank_branch_ref_table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <changeSet id="Bank Account schemas" author="P.L." dbms="postgresql">
+        <sqlFile path="../../sql/ref/006_create_bank_account_ref_table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog>
