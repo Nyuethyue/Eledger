@@ -56,4 +56,10 @@ class RefBankAccountAdapter implements RefBankAccountRepositoryPort {
                 .collect(Collectors.toUnmodifiableList());
     }
 
+    @Override
+    public Optional<RefBankAccount> readByAccNumber(String accNumber) {
+        return refBankAccountRepository.findByAccNumber(accNumber)
+                .map(refBankAccountMapper::mapToDomain);
+    }
+
 }

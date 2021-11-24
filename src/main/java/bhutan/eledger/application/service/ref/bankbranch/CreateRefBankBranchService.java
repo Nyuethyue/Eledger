@@ -53,13 +53,13 @@ class CreateRefBankBranchService implements CreateRefBankBranchUseCase{
         if (refBankBranchRepositoryPort.existsByCode(refBankBranch.getCode())) {
             throw new ViolationException(
                     new ValidationError()
-                            .addViolation("BfscCode", "Bank's branch with BFSC code: [" + refBankBranch.getCode() + "] already exists.")
+                            .addViolation("code", "Bank's branch with code: [" + refBankBranch.getCode() + "] already exists.")
             );
         }
         if (!refBankRepositoryPort.existsById(refBankBranch.getBankId())) {
             throw new ViolationException(
                     new ValidationError()
-                            .addViolation("BankId", "Bank with Id: [" + refBankBranch.getBankId() + "] does not exists.")
+                            .addViolation("bankId", "Bank with Id: [" + refBankBranch.getBankId() + "] does not exists.")
             );
         }
     }

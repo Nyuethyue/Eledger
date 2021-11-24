@@ -16,4 +16,6 @@ public interface RefBankAccountRepositoryPort {
     boolean existsByAccNumber(String accNumber);
 
     Collection<RefBankAccount> readAllByBranchId(Long branchId);
+
+    Optional<RefBankAccount> readByAccNumber(String accNumber);
 }

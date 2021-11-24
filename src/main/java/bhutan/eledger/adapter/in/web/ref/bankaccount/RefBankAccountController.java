@@ -46,4 +46,10 @@ class RefBankAccountController {
     public Collection<RefBankAccount> readAllByBranchId(@PathVariable Long branchId) {
         return readRefBankAccountUseCase.readAllByBranchId(branchId);
     }
+
+    @GetMapping(value = "/readByAccNumber/{accNumber}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.OK)
+    public RefBankAccount readByAccNumber(@PathVariable String accNumber) {
+        return readRefBankAccountUseCase.readByAccNumber(accNumber);
+    }
 }

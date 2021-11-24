@@ -1,9 +1,9 @@
 ------------------------------------------------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS ref.bank_account
 (
-    id               bigint  NOT NULL,
-    branch_id        bigint NOT NULL,
-    acc_number       varchar NOT NULL
+    id         bigint  NOT NULL,
+    branch_id  bigint  NOT NULL,
+    acc_number varchar NOT NULL
 );
 
 ALTER TABLE ref.bank_account
@@ -13,10 +13,10 @@ ALTER TABLE ref.bank_account
 ALTER TABLE ref.bank_account
     ADD CONSTRAINT fk_bank_account
         FOREIGN KEY (branch_id)
-            REFERENCES ref.bank_branch(id);
+            REFERENCES ref.bank_branch (id);
 
 CREATE INDEX IF NOT EXISTS fki_bank_branch_account
-    ON ref.bank_account(branch_id);
+    ON ref.bank_account (branch_id);
 
 CREATE SEQUENCE ref.bank_account_id_seq
     INCREMENT BY 1
@@ -28,10 +28,10 @@ CREATE SEQUENCE ref.bank_account_id_seq
 ---------------------------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS ref.bank_account_description
 (
-    id                bigint  NOT NULL,
-    language_code     varchar NOT NULL,
-    value             varchar NOT NULL,
-    bank_account_id   bigint  NOT NULL
+    id              bigint  NOT NULL,
+    language_code   varchar NOT NULL,
+    value           varchar NOT NULL,
+    bank_account_id bigint  NOT NULL
 );
 
 ALTER TABLE ref.bank_account_description
@@ -45,10 +45,10 @@ ALTER TABLE ref.bank_account_description
 ALTER TABLE ref.bank_account_description
     ADD CONSTRAINT fk_bank_account_description_bank
         FOREIGN KEY (bank_account_id)
-            REFERENCES ref.bank_account(id);
+            REFERENCES ref.bank_account (id);
 
 CREATE INDEX IF NOT EXISTS fki_bank_account_description_bank_account
-    ON ref.bank_account_description(bank_account_id);
+    ON ref.bank_account_description (bank_account_id);
 
 CREATE SEQUENCE ref.bank_account_description_id_seq
     INCREMENT BY 1
