@@ -40,16 +40,16 @@ public interface CreateTransactionsUseCase {
         @PositiveOrZero
         private final BigDecimal amount;
         @NotNull
-        private final Long transactionTypeId;
+        private final String transactionTypeCode;
         @Valid
-        private final Collection<TransactionAttributeCommand> transactionAttributeCommands;
+        private final Collection<TransactionAttributeCommand> transactionAttributes;
     }
 
     @Data
     class TransactionAttributeCommand {
         @NotNull
         @Positive
-        private final Long transactionTypeAttributeId;
+        private final String transactionTypeAttributeCode;
         @NotNull
         private final String value;
     }

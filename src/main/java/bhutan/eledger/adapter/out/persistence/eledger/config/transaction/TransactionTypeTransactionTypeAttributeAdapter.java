@@ -60,7 +60,16 @@ class TransactionTypeTransactionTypeAttributeAdapter implements TransactionTypeT
     public Optional<TransactionTypeWithAttributes> readTransactionWithAttributesById(Long id) {
         return transactionTypeRepositoryPort.readById(id)
                 .map(transactionType -> transactionType.withAttributes(
-                                readAllTransactionTypeAttributesByTransactionTypeId(id)
+                                readAllTransactionTypeAttributesByTransactionTypeId(transactionType.getId())
+                        )
+                );
+    }
+
+    @Override
+    public Optional<TransactionTypeWithAttributes> readTransactionWithAttributesByName(String name) {
+        return transactionTypeRepositoryPort.readByName(name)
+                .map(transactionType -> transactionType.withAttributes(
+                                readAllTransactionTypeAttributesByTransactionTypeId(transactionType.getId())
                         )
                 );
     }
@@ -69,6 +78,12 @@ class TransactionTypeTransactionTypeAttributeAdapter implements TransactionTypeT
     public TransactionTypeWithAttributes requiredReadTransactionWithAttributesById(Long id) {
         return readTransactionWithAttributesById(id)
                 .orElseThrow(() -> new RecordNotFoundException("TransactionType by id: [" + id + "] not found."));
+    }
+
+    @Override
+    public TransactionTypeWithAttributes requiredReadTransactionWithAttributesByName(String name) {
+        return readTransactionWithAttributesByName(name)
+                .orElseThrow(() -> new RecordNotFoundException("TransactionType by name: [" + name + "] not found."));
     }
 
     @Override

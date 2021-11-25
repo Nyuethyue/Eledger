@@ -42,6 +42,12 @@ class TransactionTypeRepositoryAdapter implements TransactionTypeRepositoryPort 
     }
 
     @Override
+    public Optional<TransactionType> readByName(String name) {
+        return transactionTypeEntityRepository.findByName(name)
+                .map(transactionTypeMapper::mapToDomain);
+    }
+
+    @Override
     public Collection<TransactionType> readAll() {
         return transactionTypeEntityRepository.findAll()
                 .stream()

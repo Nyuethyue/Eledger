@@ -1,5 +1,6 @@
 package bhutan.eledger.adapter.out.persistence.eledger.config.transaction;
 
+import am.iunetworks.lib.common.validation.RecordNotFoundException;
 import bhutan.eledger.application.port.out.eledger.config.datatype.DataTypeRepositoryPort;
 import bhutan.eledger.application.port.out.eledger.config.transaction.TransactionTypeAttributeRepositoryPort;
 import bhutan.eledger.domain.eledger.config.datatype.DataType;
@@ -61,6 +62,16 @@ class TransactionTypeAttributeRepositoryAdapter implements TransactionTypeAttrib
                     DataType dataType = dataTypeRepositoryPort.requiredReadById(entity.getDataTypeId());
                     return transactionTypeAttributeMapper.mapToDomain(entity, dataType);
                 });
+    }
+
+    @Override
+    public TransactionTypeAttribute requiredReadByName(String name) {
+        return transactionTypeAttributeEntityRepository.findByName(name)
+                .map(entity -> {
+                    DataType dataType = dataTypeRepositoryPort.requiredReadById(entity.getDataTypeId());
+                    return transactionTypeAttributeMapper.mapToDomain(entity, dataType);
+                })
+                .orElseThrow(() -> new RecordNotFoundException("TransactionTypeAttribute by name: " + name + " not found."));
     }
 
     @Override

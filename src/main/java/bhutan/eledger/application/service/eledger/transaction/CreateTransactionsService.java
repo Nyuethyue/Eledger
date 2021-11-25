@@ -1,6 +1,7 @@
 package bhutan.eledger.application.service.eledger.transaction;
 
 import bhutan.eledger.application.port.in.eledger.transaction.CreateTransactionsUseCase;
+import bhutan.eledger.application.port.out.eledger.config.transaction.TransactionTypeAttributeRepositoryPort;
 import bhutan.eledger.application.port.out.eledger.config.transaction.TransactionTypeTransactionTypeAttributeRepositoryPort;
 import bhutan.eledger.application.port.out.eledger.taxpayer.ElTaxpayerRepositoryPort;
 import bhutan.eledger.application.port.out.eledger.transaction.TransactionRepositoryPort;
@@ -25,6 +26,7 @@ class CreateTransactionsService implements CreateTransactionsUseCase {
     private final TransactionTypeTransactionTypeAttributeRepositoryPort transactionTypeTransactionTypeAttributeRepositoryPort;
     private final ElTaxpayerRepositoryPort taxpayerRepositoryPort;
     private final TransactionRepositoryPort transactionRepositoryPort;
+    private final TransactionTypeAttributeRepositoryPort transactionTypeAttributeRepositoryPort;
 
     @Override
     public void create(CreateTransactionsCommand transactionsCommand) {
@@ -46,15 +48,15 @@ class CreateTransactionsService implements CreateTransactionsUseCase {
                 .stream()
                 .map(command -> {
                     TransactionTypeWithAttributes transactionType =
-                            transactionTypeTransactionTypeAttributeRepositoryPort.requiredReadTransactionWithAttributesById(
-                                    command.getTransactionTypeId()
+                            transactionTypeTransactionTypeAttributeRepositoryPort.requiredReadTransactionWithAttributesByName(
+                                    command.getTransactionTypeCode()
                             );
 
                     validateTransactionTypeAttributes(command, transactionType);
 
                     LocalDateTime currentDateTime = LocalDateTime.now();
 
-                    return makeTransactionDomain(command, transactionsCommand.getDrn(), taxpayerId, currentDateTime);
+                    return makeTransactionDomain(command, transactionsCommand.getDrn(), transactionType.getId(), taxpayerId, currentDateTime);
                 })
                 .collect(Collectors.toUnmodifiableList());
     }
@@ -62,6 +64,7 @@ class CreateTransactionsService implements CreateTransactionsUseCase {
     private Transaction makeTransactionDomain(
             TransactionCommand command,
             String drn,
+            Long transactionTypeId,
             Long taxpayerId,
             LocalDateTime currentDateTime
     ) {
@@ -72,12 +75,12 @@ class CreateTransactionsService implements CreateTransactionsUseCase {
                 command.getSettlementDate(),
                 command.getAmount(),
                 currentDateTime,
-                command.getTransactionTypeId(),
-                command.getTransactionAttributeCommands()
+                transactionTypeId,
+                command.getTransactionAttributes()
                         .stream()
                         .map(tac ->
                                 TransactionAttribute.withoutId(
-                                        tac.getTransactionTypeAttributeId(),
+                                        transactionTypeAttributeRepositoryPort.requiredReadByName(tac.getTransactionTypeAttributeCode()).getId(),
                                         tac.getValue()
                                 )
                         )

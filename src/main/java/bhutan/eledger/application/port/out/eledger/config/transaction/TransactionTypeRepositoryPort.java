@@ -15,5 +15,7 @@ public interface TransactionTypeRepositoryPort {
 
     Optional<TransactionType> readById(Long id);
 
+    Optional<TransactionType> readByName(String name);
+
     Collection<TransactionType> readAll();
 }
