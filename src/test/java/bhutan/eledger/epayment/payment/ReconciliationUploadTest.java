@@ -1,9 +1,7 @@
 package bhutan.eledger.epayment.payment;
 
-import bhutan.eledger.application.port.in.epayment.paymentadvice.SearchPaymentAdviceUseCase;
 import bhutan.eledger.application.port.in.epayment.reconciliation.BankStatementImportUseCase;
 import bhutan.eledger.common.excel.ReconciliationExcelLoader;
-import bhutan.eledger.common.excel.XLSXLoader;
 import bhutan.eledger.domain.epayment.BankStatementImportReconciliationInfo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -48,14 +46,15 @@ class ReconciliationUploadTest {
         }
     }
 
-//    @Test
+    @Test
     void excelDownloadTest() {
         String filePath = "/resources/file/reports/ee9c1eeb-cef2-472d-b6d0-ddeb015a370b/profiles.xlsx";
+        //String filePath = "/resources/file/sources.pdf";
         BankStatementImportUseCase.ImportBankStatementsCommand command =
                 new BankStatementImportUseCase.ImportBankStatementsCommand(
                         "TAB12345", filePath);
 
         List<BankStatementImportReconciliationInfo> result = bankStatementImportUseCase.importStatements(command);
-        Assertions.assertEquals(1, 1);
+        Assertions.assertTrue(result.size() > 0, "Empty result for excel file!");
     }
 }
