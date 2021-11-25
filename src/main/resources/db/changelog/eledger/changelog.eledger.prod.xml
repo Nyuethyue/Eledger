@@ -72,7 +72,11 @@
     </changeSet>
 
     <changeSet id="Create functions parse configuration lines" author="V.G.">
-        <sqlFile path="../../sql/eledger/016_calculated_interest_info_schema.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/eledger/017_functions_parse_configuration_lines_to_sql.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="Create trigger config interest_calculation" author="V.G.">
+        <sqlFile path="../../sql/eledger/018_trigger_interest_calculation.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
 </databaseChangeLog>
