@@ -156,4 +156,3 @@ VALUES ( nextval('eledger_config.el_transaction_couples_id_seq'), (SELECT id
                               ON ega.id = ettga.gl_account_id
           WHERE ett.name = 'LIABILITY'
             AND ega.code = '11421990002'));
-		
