@@ -39,4 +39,12 @@
         <sqlFile path="../../sql/eledger/dev/007_transaction_couples_data.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <changeSet id="Data property" author="V.G.">
+        <sqlFile path="../../sql/eledger/dev/008_property_data.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="Data interest_calculation late filling data" author="V.G.">
+        <sqlFile path="../../sql/eledger/dev/009_config_interest_calculation_late_filling_data.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog>
