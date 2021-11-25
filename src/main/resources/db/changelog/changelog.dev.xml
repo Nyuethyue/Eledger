@@ -11,4 +11,8 @@
     <include file="epayment/changelog.epayment.dev.xml" relativeToChangelogFile="true"/>
     <include file="ref/changelog.ref.dev.xml" relativeToChangelogFile="true"/>
 
+    <changeSet id="Data transaction_type liability" author="V.G.">
+        <sqlFile path="../../sql/eledger/dev/001_type_liability_data.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog>
