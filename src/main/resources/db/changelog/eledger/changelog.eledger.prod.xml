@@ -71,4 +71,8 @@
         <sqlFile path="../../sql/eledger/016_calculated_interest_info_schema.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <changeSet id="Create functions parse configuration lines" author="V.G.">
+        <sqlFile path="../../sql/eledger/016_calculated_interest_info_schema.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog>
