@@ -11,44 +11,4 @@
     <include file="epayment/changelog.epayment.dev.xml" relativeToChangelogFile="true"/>
     <include file="ref/changelog.ref.dev.xml" relativeToChangelogFile="true"/>
 
-    <changeSet id="Data transaction_type liability" author="V.G.">
-        <sqlFile path="../../sql/eledger/dev/001_type_liability_data.sql" relativeToChangelogFile="true"/>
-    </changeSet>
-
-    <changeSet id="Data transaction_type overpayment" author="V.G.">
-        <sqlFile path="../../sql/eledger/dev/002_type_overpayment_data.sql" relativeToChangelogFile="true"/>
-    </changeSet>
-
-    <changeSet id="Data transaction_type payment" author="V.G.">
-        <sqlFile path="../../sql/eledger/dev/003_type_payment_data.sql" relativeToChangelogFile="true"/>
-    </changeSet>
-
-    <changeSet id="Data gl_account_tables" author="V.G.">
-        <sqlFile path="../../sql/eledger/dev/004_gl_account_tables_data.sql" relativeToChangelogFile="true"/>
-    </changeSet>
-
-    <changeSet id="Data transaction_type_gl_account" author="V.G.">
-        <sqlFile path="../../sql/eledger/dev/005_transaction_type_gl_account_data.sql" relativeToChangelogFile="true"/>
-    </changeSet>
-
-    <changeSet id="Data accounting_action" author="V.G.">
-        <sqlFile path="../../sql/eledger/dev/006_accounting_action_data.sql" relativeToChangelogFile="true"/>
-    </changeSet>
-
-    <changeSet id="Data transaction_couples" author="V.G.">
-        <sqlFile path="../../sql/eledger/dev/007_transaction_couples_data.sql" relativeToChangelogFile="true"/>
-    </changeSet>
-
-    <changeSet id="Data property" author="V.G.">
-        <sqlFile path="../../sql/eledger/dev/008_property_data.sql" relativeToChangelogFile="true"/>
-    </changeSet>
-
-    <changeSet id="Data interest_calculation late filling data" author="V.G.">
-        <sqlFile path="../../sql/eledger/dev/009_config_interest_calculation_late_filling_data.sql" relativeToChangelogFile="true"/>
-    </changeSet>
-
-    <changeSet id="Data interest_calculation late payment data" author="V.G.">
-        <sqlFile path="../../sql/eledger/dev/010_config_interest_calculation_late_payment_data.sql" relativeToChangelogFile="true"/>
-    </changeSet>
-
 </databaseChangeLog>
