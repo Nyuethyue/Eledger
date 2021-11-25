@@ -79,4 +79,8 @@
         <sqlFile path="../../sql/eledger/018_trigger_interest_calculation.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <changeSet id="Create procedure to calculate interest based on config" author="V.G.">
+        <sqlFile path="../../sql/eledger/019_procedure_sp_transaction_interest_info.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog>
