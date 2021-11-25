@@ -1,4 +1,4 @@
-package bhutan.eledger.adapter.fms.epayment.reconciliation;
+package bhutan.eledger.adapter.out.fms.epayment.reconciliation;
 
 import bhutan.eledger.application.port.out.epayment.reconciliation.BankStatementFileParserPort;
 import bhutan.eledger.common.excel.ReconciliationExcelLoader;
@@ -11,9 +11,7 @@ import com.jsunsoft.http.WebTarget;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.UncheckedIOException;
 import java.security.InvalidParameterException;
 import java.util.List;
 
@@ -25,7 +23,6 @@ class BankStatementFileParserAdapter implements BankStatementFileParserPort {
 
     BankStatementFileParserAdapter(CloseableHttpClient httpClient, FmsProperties fmsProperties) {
         httpRequest = HttpRequestBuilder.create(httpClient)
-//                .addDefaultHeader() todo for Aleksandr add header or remove
                 .build();
         this.fmsProperties = fmsProperties;
     }
