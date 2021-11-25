@@ -2,8 +2,6 @@ package bhutan.eledger.common.excel;
 
 import bhutan.eledger.domain.epayment.BankStatementImportReconciliationInfo;
 import lombok.extern.log4j.Log4j2;
-import org.apache.poi.hssf.record.CellRecord;
-import org.apache.poi.hssf.record.NumberRecord;
 import org.apache.poi.ss.usermodel.DateUtil;
 
 import java.io.InputStream;
@@ -25,10 +23,10 @@ public class ReconciliationExcelLoader  implements ExcelCellReceiver {
         try {
             if (isXLSX) {
                 XLSXLoader xlsxLoader = new XLSXLoader();
-                xlsxLoader.load(inputStream, "rId1", this);
+                xlsxLoader.load(inputStream,0,this);
             } else {
                 XLSLoader xlsLoader = new XLSLoader();
-                xlsLoader.load(inputStream, "rId1", this);
+                xlsLoader.load(inputStream, 0, this);
             }
         } catch (Exception e) {
             log.error("Failed to parse excel file");
@@ -38,7 +36,7 @@ public class ReconciliationExcelLoader  implements ExcelCellReceiver {
     }
 
     @Override
-    public void newCell(String sheetId, int row, int column, String type, String value) {
+    public void newCell(int sheetIndex, int row, int column, String value) {
         if (row > 0) { // 0 is table header
             if (currentRowIndex != row) {
                 if (null != currentRowValue) {
@@ -74,35 +72,6 @@ public class ReconciliationExcelLoader  implements ExcelCellReceiver {
         currentRowIndex = -1;
         currentRowValue = null;
         result = new LinkedList<>();
-    }
-
-    @Override
-    public void newCell(String sheetId, CellRecord record) {
-        int row = record.getRow();
-        int column = record.getColumn();
-        if (row > 0) { // 0 is table header
-            if (currentRowIndex != row) {
-                if (null != currentRowValue) {
-                    result.add(currentRowValue);
-                }
-                currentRowValue = new BankStatementImportReconciliationInfo();
-            }
-
-            if (0 == column) {
-                currentRowValue.setTransactionId(Double.toString(((NumberRecord)record).getValue()));
-            } else if (1 == column) {
-                currentRowValue.setBankId(Double.toString(((NumberRecord)record).getValue()));
-            } else if (2 == column) {
-                double value = ((NumberRecord)record).getValue();
-                currentRowValue.setRefNo(Double.toString(value));
-            } else if (3 == column) {
-                double excelDate = ((NumberRecord)record).getValue();
-                currentRowValue.setPaymentDate(DateUtil.getLocalDateTime(excelDate).toLocalDate());
-            } else if (4 == column) {
-                currentRowValue.setAmount(new BigDecimal(((NumberRecord)record).getValue()));
-            }
-            currentRowIndex = row;
-        }
     }
 
     @Override
