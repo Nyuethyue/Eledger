@@ -19,4 +19,8 @@
         <sqlFile path="../../sql/eledger/dev/002_type_overpayment_data.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <changeSet id="Data transaction_type overpayment" author="V.G.">
+        <sqlFile path="../../sql/eledger/dev/003_type_payment_data.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog>
