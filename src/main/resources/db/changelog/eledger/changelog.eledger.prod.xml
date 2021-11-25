@@ -72,31 +72,31 @@
     </changeSet>
 
     <changeSet id="Create functions parse configuration lines" author="V.G.">
-        <sqlFile path="../../sql/eledger/017_functions_parse_configuration_lines_to_sql.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/eledger/017_functions_parse_configuration_lines_to_sql.sql" relativeToChangelogFile="true" splitStatements="false"/>
     </changeSet>
 
     <changeSet id="Create trigger config interest_calculation" author="V.G.">
-        <sqlFile path="../../sql/eledger/018_trigger_interest_calculation.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/eledger/018_trigger_interest_calculation.sql" relativeToChangelogFile="true" splitStatements="false"/>
     </changeSet>
 
     <changeSet id="Create procedure to calculate interest based on config" author="V.G.">
-        <sqlFile path="../../sql/eledger/019_procedure_sp_transaction_interest_info.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/eledger/019_procedure_sp_transaction_interest_info.sql" relativeToChangelogFile="true" splitStatements="false"/>
     </changeSet>
 
     <changeSet id="Create procedure sp_formulation_transaction" author="V.G.">
-        <sqlFile path="../../sql/eledger/020_procedure_sp_formulation_transaction.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/eledger/020_procedure_sp_formulation_transaction.sql" relativeToChangelogFile="true" splitStatements="false"/>
     </changeSet>
 
     <changeSet id="Create procedure sp_move_interet_to_accounting" author="V.G.">
-        <sqlFile path="../../sql/eledger/021_procedure_sp_move_interet_to_accounting.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/eledger/021_procedure_sp_move_interet_to_accounting.sql" relativeToChangelogFile="true" splitStatements="false"/>
     </changeSet>
 
     <changeSet id="Create procedure sp_update_taxpayer_calculation_date" author="V.G.">
-        <sqlFile path="../../sql/eledger/022_procedure_sp_update_taxpayer_calculation_date.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/eledger/022_procedure_sp_update_taxpayer_calculation_date.sql" relativeToChangelogFile="true" splitStatements="false"/>
     </changeSet>
 
     <changeSet id="Create procedure sp_process_pac_for_date" author="V.G.">
-        <sqlFile path="../../sql/eledger/023_procedure_sp_process_pac_for_date.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/eledger/023_procedure_sp_process_pac_for_date.sql" relativeToChangelogFile="true" splitStatements="false"/>
     </changeSet>
 
 </databaseChangeLog>
