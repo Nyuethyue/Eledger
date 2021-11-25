@@ -1,23 +1,26 @@
 package bhutan.eledger.common.excel;
 
+import org.apache.poi.hssf.eventusermodel.FormatTrackingHSSFListener;
 import org.apache.poi.hssf.eventusermodel.HSSFEventFactory;
 import org.apache.poi.hssf.eventusermodel.HSSFListener;
 import org.apache.poi.hssf.eventusermodel.HSSFRequest;
 import org.apache.poi.hssf.record.*;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-import org.apache.poi.ss.util.CellReference;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 public class XLSLoader implements HSSFListener {
+    private FormatTrackingHSSFListener formatListener;
     private String sheetName;
-    private CellReference cellReferenceObject;
     private ExcelCellReceiver receiver;
     private SSTRecord sstrec;
+    private String sheetId;
 
-    public void load(InputStream io, String sheetId, ExcelCellReceiver receiver) {
+    public void load(InputStream io, String sheetId, ExcelCellReceiver receiver) throws IOException {
+        this.sheetId = sheetId;
         this.receiver = receiver;
+        this.formatListener = new FormatTrackingHSSFListener(this);
         try (POIFSFileSystem poifs = new POIFSFileSystem(io)) {
             // get the Workbook (excel part) stream in a InputStream
             InputStream din = poifs.createDocumentInputStream("Workbook");
@@ -28,12 +31,14 @@ public class XLSLoader implements HSSFListener {
             // create our event factory
             HSSFEventFactory factory = new HSSFEventFactory();
             // process our events based on the document input stream
+
+            receiver.startDocument();
             factory.processEvents(req, din);
+            receiver.endDocument();
+
             // and our document input stream (don't want to leak these!)
             din.close();
-            System.out.println("done.");
-        } catch (IOException e) {
-            e.printStackTrace();
+
         }
     }
 
@@ -68,7 +73,11 @@ public class XLSLoader implements HSSFListener {
                 break;
             case NumberRecord.sid:
                 NumberRecord numrec = (NumberRecord) record;
-                receiver.newCell(sheetName, numrec.getRow(), numrec.getColumn(), "i", Double.toString(numrec.getValue()));
+                try {
+                    receiver.newCell(sheetName, numrec);
+                } catch (Exception ignore) {
+
+                }
                 System.out.println("Cell found with value " + numrec.getValue()
                         + " at row " + numrec.getRow() + " and column " + numrec.getColumn());
                 break;
