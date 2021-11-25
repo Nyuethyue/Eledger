@@ -19,8 +19,16 @@
         <sqlFile path="../../sql/eledger/dev/002_type_overpayment_data.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="Data transaction_type overpayment" author="V.G.">
+    <changeSet id="Data transaction_type payment" author="V.G.">
         <sqlFile path="../../sql/eledger/dev/003_type_payment_data.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="Data gl_account_tables" author="V.G.">
+        <sqlFile path="../../sql/eledger/dev/004_gl_account_tables_data.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="Data transaction_type_gl_account" author="V.G.">
+        <sqlFile path="../../sql/eledger/dev/005_transaction_type_gl_account_data.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
 </databaseChangeLog>
