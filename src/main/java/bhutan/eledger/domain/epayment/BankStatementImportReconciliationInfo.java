@@ -5,11 +5,11 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Data(staticConstructor = "of")
+@Data()
 public class BankStatementImportReconciliationInfo {
-
-    private final String transactionId;
-    private final String bankId;
-    private final LocalDate paymentDate;
-    private final BigDecimal amount;
+    private String transactionId;
+    private String bankId;
+    private String refNo;
+    private LocalDate paymentDate;
+    private BigDecimal amount;
 }
