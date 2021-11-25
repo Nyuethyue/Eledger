@@ -60,7 +60,11 @@
     </changeSet>
 
     <changeSet id="Create accounting, taxpayer_calc schema" author="V.G.">
-        <sqlFile path="../../sql/eledger/013_config_el_transaction_couples_schema.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/eledger/014_config_accounting_taxpayer_calc_schema.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="Create accounting, taxpayer_calc schema" author="V.G.">
+        <sqlFile path="../../sql/eledger/015_config_interest_calculation_schema.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
 </databaseChangeLog>
