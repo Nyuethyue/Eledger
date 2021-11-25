@@ -1,20 +1,20 @@
 package bhutan.eledger.common.excel;
 
-import am.iunetworks.lib.common.validation.ViolationException;
 import bhutan.eledger.domain.epayment.BankStatementImportReconciliationInfo;
 import lombok.extern.log4j.Log4j2;
 import org.apache.poi.hssf.record.CellRecord;
 import org.apache.poi.hssf.record.NumberRecord;
-import org.apache.poi.hssf.record.Record;
 import org.apache.poi.ss.usermodel.DateUtil;
 
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 @Log4j2
 public class ReconciliationExcelLoader  implements ExcelCellReceiver {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern( "d/M/yy" );
     private int currentRowIndex;
     private BankStatementImportReconciliationInfo currentRowValue;
 
@@ -54,8 +54,14 @@ public class ReconciliationExcelLoader  implements ExcelCellReceiver {
             } else if (2 == column) {
                 currentRowValue.setRefNo(value);
             } else if (3 == column) {
-                double excelDate = Double.parseDouble(value);
-                currentRowValue.setPaymentDate(DateUtil.getLocalDateTime(excelDate).toLocalDate());
+                if(value.contains("/")) {
+                    currentRowValue.setPaymentDate(LocalDate.parse( value , formatter ));
+                } else
+                {
+                    double excelDate = Double.parseDouble(value);
+                    currentRowValue.setPaymentDate(DateUtil.getLocalDateTime(excelDate).toLocalDate());
+                }
+
             } else if (4 == column) {
                 currentRowValue.setAmount(new BigDecimal(value));
             }
