@@ -35,4 +35,8 @@
         <sqlFile path="../../sql/eledger/dev/006_accounting_action_data.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <changeSet id="Data transaction_couples" author="V.G.">
+        <sqlFile path="../../sql/eledger/dev/007_transaction_couples_data.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog>
