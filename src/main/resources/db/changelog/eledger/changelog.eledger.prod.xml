@@ -51,8 +51,12 @@
         <sqlFile path="../../sql/eledger/011_config_transaction_type_gl_account_schema.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="Create transaction type to GL account join table" author="V.G.">
+    <changeSet id="Create accounting actions schema" author="V.G.">
         <sqlFile path="../../sql/eledger/012_config_accounting_action_schema.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="Create transaction type couples" author="V.G.">
+        <sqlFile path="../../sql/eledger/013_config_el_transaction_couples_schema.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
 </databaseChangeLog>
