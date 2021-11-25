@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+
+
+    <include file="eledger/changelog.eledger.dev.xml" relativeToChangelogFile="true"/>
+    <include file="epayment/changelog.epayment.dev.xml" relativeToChangelogFile="true"/>
+    <include file="ref/changelog.ref.dev.xml" relativeToChangelogFile="true"/>
+
+</databaseChangeLog>
