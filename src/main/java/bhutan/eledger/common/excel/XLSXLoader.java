@@ -13,16 +13,16 @@ import java.io.InputStream;
 
 @Log4j2
 public class XLSXLoader extends DefaultHandler {
-
+    private int sheetIndex;
     private ExcelCellReceiver receiver;
     private SharedStringsTable sst;
     private String lastContents;
     private CellReference cellReferenceObject;
     private String cellType;
     private boolean nextIsString;
-    private String sheetId;
-    public void load(InputStream io, String sheetId, ExcelCellReceiver receiver) throws Exception {
+    public void load(InputStream io, int sheetIndex, ExcelCellReceiver receiver) throws Exception {
         try(OPCPackage pkg = OPCPackage.open(io)) {
+            this.sheetIndex = sheetIndex;
             this.receiver = receiver;
             XSSFReader r = new XSSFReader(pkg);
             sst = r.getSharedStringsTable();
@@ -30,7 +30,7 @@ public class XLSXLoader extends DefaultHandler {
             XMLReader parser = XMLHelper.newXMLReader();
 
             parser.setContentHandler(this);
-            InputStream sheet = r.getSheet(sheetId);
+            InputStream sheet = r.getSheet("rId" + (sheetIndex + 1));
             InputSource sheetSource = new InputSource(sheet);
             parser.parse(sheetSource);
             sheet.close();
@@ -64,7 +64,7 @@ public class XLSXLoader extends DefaultHandler {
         }
 
         if(name.equals("v")) {
-            receiver.newCell(sheetId, cellReferenceObject.getRow(), cellReferenceObject.getCol(), cellType, lastContents);
+            receiver.newCell(sheetIndex, cellReferenceObject.getRow(), cellReferenceObject.getCol(), lastContents);
         }
     }
 
