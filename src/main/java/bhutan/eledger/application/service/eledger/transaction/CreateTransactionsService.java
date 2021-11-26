@@ -13,9 +13,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -76,7 +78,8 @@ class CreateTransactionsService implements CreateTransactionsUseCase {
                 command.getAmount(),
                 currentDateTime,
                 transactionTypeId,
-                command.getTransactionAttributes()
+                CollectionUtils.isEmpty(command.getTransactionAttributes()) ?
+                        Collections.emptySet() : command.getTransactionAttributes()
                         .stream()
                         .map(tac ->
                                 TransactionAttribute.withoutId(
