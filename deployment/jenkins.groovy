@@ -3,6 +3,7 @@ def branchToDeploy = env.branch ?: 'master'
 def targetEnv = env.ENV ?: 'dev'
 def dbUser = env.dbUser ?: 'bu_eledger'
 def dbName = env.dbName ?: dbUser
+def changelogFileName = env.changelogFileName ?: 'changelog.prod.xml'
 def dbPassword = null
 
 try {
@@ -44,7 +45,7 @@ pipeline {
             }
             steps {
                 script {
-                    hideShell "./gradlew status -Pdbname='${dbName}' -Puser='${dbUser}' -Ppass='${dbPassword}' -Phostname='${dbHost}'"
+                    hideShell "./gradlew status -Pdbname='${dbName}' -Puser='${dbUser}' -Ppass='${dbPassword}' -Phostname='${dbHost}' -PchangelogFileName=${changelogFileName}"
                 }
             }
         }
@@ -69,7 +70,7 @@ pipeline {
             }
             steps {
                 script {
-                    hideShell "./gradlew update -Pdbname='${dbName}' -Puser='${dbUser}' -Ppass='${dbPassword}' -Phostname='${dbHost}'"
+                    hideShell "./gradlew update -Pdbname='${dbName}' -Puser='${dbUser}' -Ppass='${dbPassword}' -Phostname='${dbHost}' -PchangelogFileName=${changelogFileName}"
                 }
             }
         }
