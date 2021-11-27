@@ -78,17 +78,21 @@ class CreateTransactionsService implements CreateTransactionsUseCase {
                 command.getAmount(),
                 currentDateTime,
                 transactionTypeId,
-                CollectionUtils.isEmpty(command.getTransactionAttributes()) ?
-                        Collections.emptySet() : command.getTransactionAttributes()
-                        .stream()
-                        .map(tac ->
-                                TransactionAttribute.withoutId(
-                                        transactionTypeAttributeRepositoryPort.requiredReadByName(tac.getTransactionTypeAttributeCode()).getId(),
-                                        tac.getValue()
-                                )
-                        )
-                        .collect(Collectors.toUnmodifiableSet())
+                makeTransactionAttributes(command)
         );
+    }
+
+    private Collection<TransactionAttribute> makeTransactionAttributes(TransactionCommand command) {
+        return CollectionUtils.isEmpty(command.getTransactionAttributes()) ?
+                Collections.emptySet() : command.getTransactionAttributes()
+                .stream()
+                .map(tac ->
+                        TransactionAttribute.withoutId(
+                                transactionTypeAttributeRepositoryPort.requiredReadByName(tac.getTransactionTypeAttributeCode()).getId(),
+                                tac.getValue()
+                        )
+                )
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     private Long resolveTaxpayerId(TaxpayerCommand taxpayerCommand) {

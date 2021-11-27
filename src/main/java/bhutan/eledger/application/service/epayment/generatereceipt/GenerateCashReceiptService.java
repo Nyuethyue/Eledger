@@ -79,8 +79,14 @@ class GenerateCashReceiptService implements GenerateCashReceiptUseCase {
                 .forEach(pc -> {
                     PayableLine payableLine = paymentAdvice.getRequiredPayableLineById(pc.getPayableLineId());
 
-                    if (!payableLine.getAmount().equals(pc.getPaidAmount())) {
-                        throw new ViolationException(new ValidationError().addViolation("paidAmount", "Paid amount must be equal to be paid amount."));
+                    if (payableLine.getAmount().compareTo(pc.getPaidAmount()) != 0) {
+                        throw new ViolationException(
+                                new ValidationError()
+                                        .addViolation(
+                                                "paidAmount",
+                                                "Paid amount must be equal to be paid amount. Amount to be paid: " + payableLine.getAmount() + ", Paid amount: " + pc.getPaidAmount()
+                                        )
+                        );
                     }
 
                     payableLine.pay(pc.getPaidAmount());

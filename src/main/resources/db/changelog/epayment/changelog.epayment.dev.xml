@@ -9,4 +9,9 @@
 
     <include file="changelog.epayment.prod.xml" relativeToChangelogFile="true"/>
 
+    <changeSet id="Insert payment advice data" author="B.A.">
+        <sqlFile path="../../sql/epayment/dev/001_insert_payment_advice_data.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+
 </databaseChangeLog>
