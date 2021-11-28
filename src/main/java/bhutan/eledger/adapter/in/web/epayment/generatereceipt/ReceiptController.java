@@ -3,7 +3,6 @@ package bhutan.eledger.adapter.in.web.epayment.generatereceipt;
 import bhutan.eledger.application.port.in.epayment.generatereceipt.GenerateCashReceiptUseCase;
 import bhutan.eledger.domain.epayment.generatereceipt.Receipt;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +21,6 @@ public class ReceiptController {
         Receipt receipt = generateCashReceiptUseCase.generate(command);
 
         return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(receipt);
+                .ok(receipt);
     }
 }
