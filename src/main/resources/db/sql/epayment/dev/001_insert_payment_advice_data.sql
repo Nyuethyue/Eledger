@@ -22,7 +22,7 @@ VALUES (NEXTVAL('epayment.ep_payment_advice_number_seq'), 'DRN1', 'INITIAL', CUR
         CURRENT_DATE, 'PAN1', CURRVAL('epayment.ep_taxpayer_id_seq'), CURRVAL('epayment.ep_pa_bank_info_id_seq'));
 
 INSERT INTO epayment.ep_pa_payable_line(id, amount, paid_amount, gl_account_id, payment_advice_id, el_transaction_id)
-VALUES (NEXTVAL('epayment.ep_pa_payable_line_id_seq'), 300, 500, CURRVAL('epayment.ep_gl_account_id_seq'),
+VALUES (NEXTVAL('epayment.ep_pa_payable_line_id_seq'), 300, 0, CURRVAL('epayment.ep_gl_account_id_seq'),
         CURRVAL('epayment.ep_payment_advice_number_seq'), 1);
 
 ---
@@ -47,7 +47,7 @@ VALUES (NEXTVAL('epayment.ep_payment_advice_number_seq'), 'DRN2', 'INITIAL', CUR
         CURRENT_DATE, 'PAN2', CURRVAL('epayment.ep_taxpayer_id_seq'), CURRVAL('epayment.ep_pa_bank_info_id_seq'));
 
 INSERT INTO epayment.ep_pa_payable_line(id, amount, paid_amount, gl_account_id, payment_advice_id, el_transaction_id)
-VALUES (NEXTVAL('epayment.ep_pa_payable_line_id_seq'), 400, 600, CURRVAL('epayment.ep_gl_account_id_seq'),
+VALUES (NEXTVAL('epayment.ep_pa_payable_line_id_seq'), 400, 0, CURRVAL('epayment.ep_gl_account_id_seq'),
         CURRVAL('epayment.ep_payment_advice_number_seq'), 2);
 
 ---
@@ -72,6 +72,6 @@ VALUES (NEXTVAL('epayment.ep_payment_advice_number_seq'), 'DRN3', 'INITIAL', CUR
         CURRENT_DATE, 'PAN3', CURRVAL('epayment.ep_taxpayer_id_seq'), CURRVAL('epayment.ep_pa_bank_info_id_seq'));
 
 INSERT INTO epayment.ep_pa_payable_line(id, amount, paid_amount, gl_account_id, payment_advice_id, el_transaction_id)
-VALUES (NEXTVAL('epayment.ep_pa_payable_line_id_seq'), 240, 480, CURRVAL('epayment.ep_gl_account_id_seq'),
+VALUES (NEXTVAL('epayment.ep_pa_payable_line_id_seq'), 240, 0, CURRVAL('epayment.ep_gl_account_id_seq'),
         CURRVAL('epayment.ep_payment_advice_number_seq'), 3);
 

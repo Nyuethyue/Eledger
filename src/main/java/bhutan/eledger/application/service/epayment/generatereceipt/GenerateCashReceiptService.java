@@ -3,6 +3,7 @@ package bhutan.eledger.application.service.epayment.generatereceipt;
 import am.iunetworks.lib.common.validation.ValidationError;
 import am.iunetworks.lib.common.validation.ViolationException;
 import bhutan.eledger.application.port.in.epayment.generatereceipt.GenerateCashReceiptUseCase;
+import bhutan.eledger.application.port.in.epayment.generatereceipt.GenerateReceiptCommonCommand;
 import bhutan.eledger.application.port.out.epayment.generatereceipt.CashReceiptRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.generatereceipt.EledgerPaymentTransactionPort;
 import bhutan.eledger.application.port.out.epayment.generatereceipt.ReceiptNumberGeneratorPort;
@@ -75,19 +76,14 @@ class GenerateCashReceiptService implements GenerateCashReceiptUseCase {
 
         PaymentAdvice paymentAdvice = paymentAdviceRepositoryPort.requiredReadById(command.getPaymentAdviceId());
 
+        checkStatus(paymentAdvice);
+
         command.getPayments()
                 .forEach(pc -> {
                     PayableLine payableLine = paymentAdvice.getRequiredPayableLineById(pc.getPayableLineId());
 
-                    if (payableLine.getAmount().compareTo(pc.getPaidAmount()) != 0) {
-                        throw new ViolationException(
-                                new ValidationError()
-                                        .addViolation(
-                                                "paidAmount",
-                                                "Paid amount must be equal to be paid amount. Amount to be paid: " + payableLine.getAmount() + ", Paid amount: " + pc.getPaidAmount()
-                                        )
-                        );
-                    }
+                    checkPayableLine(payableLine, pc);
+
 
                     payableLine.pay(pc.getPaidAmount());
                 });
@@ -120,5 +116,39 @@ class GenerateCashReceiptService implements GenerateCashReceiptUseCase {
                     );
                 })
                 .collect(Collectors.toUnmodifiableList());
+    }
+
+    private void checkPayableLine(PayableLine payableLine, GenerateReceiptCommonCommand.PaymentCommand paymentCommand) {
+        if (payableLine.isPaid()) {
+            throw new ViolationException(
+                    new ValidationError()
+                            .addViolation(
+                                    "payments.payableLineId",
+                                    "The payable line by GL code: [" + payableLine.getGlAccount().getCode() + "] has been already payed."
+                            )
+            );
+        }
+
+        if (payableLine.getAmountToBePaid().compareTo(paymentCommand.getPaidAmount()) != 0) {
+            throw new ViolationException(
+                    new ValidationError()
+                            .addViolation(
+                                    "paidAmount",
+                                    "Paid amount must be equal to be paid amount. Amount to be paid: " + payableLine.getAmountToBePaid() + ", Paid amount: " + paymentCommand.getPaidAmount()
+                            )
+            );
+        }
+    }
+
+    private void checkStatus(PaymentAdvice paymentAdvice) {
+        if (paymentAdvice.isPaid()) {
+            throw new ViolationException(
+                    new ValidationError()
+                            .addViolation(
+                                    "paymentAdviceId",
+                                    "Payment advice by pan: [" + paymentAdvice.getPan() + "] has been already paid."
+                            )
+            );
+        }
     }
 }

@@ -52,6 +52,10 @@ public class PayableLine {
         return amount.compareTo(paidAmount) > 0 ? amount.subtract(paidAmount) : BigDecimal.ZERO;
     }
 
+    public boolean isPaid() {
+        return amount.compareTo(paidAmount) == 0;
+    }
+
     public void pay(BigDecimal paidAmount) {
         this.paidAmount = paidAmount;
     }
