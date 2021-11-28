@@ -26,8 +26,8 @@ class CreateTransactionTypeAttributeTest {
     @Autowired
     private TransactionTypeAttributeRepositoryPort transactionTypeAttributeRepositoryPort;
 
-    private final String transactionTypeAttrTpnName = "TPN";
-    private final String transactionTypeAttrDeadLineName = "DEADLINE";
+    private final String transactionTypeAttrTpnCode = "TPN";
+    private final String transactionTypeAttrDeadLineCode = "DEADLINE";
 
     private final Map<String, String> descriptionMap = Map.of(
             "en", "Text en",
@@ -49,10 +49,10 @@ class CreateTransactionTypeAttributeTest {
                 new CreateTransactionTypeAttributeUseCase.CreateTransactionTypeAttributesCommand(
                         List.of(
                                 new CreateTransactionTypeAttributeUseCase.TransactionTypeAttributeCommand(
-                                        transactionTypeAttrTpnName, descriptionMap, 1
+                                        transactionTypeAttrTpnCode, descriptionMap, 1
                                 ),
                                 new CreateTransactionTypeAttributeUseCase.TransactionTypeAttributeCommand(
-                                        transactionTypeAttrDeadLineName, descriptionMap, 3
+                                        transactionTypeAttrDeadLineCode, descriptionMap, 3
                                 )
                         )
                 )
@@ -70,10 +70,10 @@ class CreateTransactionTypeAttributeTest {
                 new CreateTransactionTypeAttributeUseCase.CreateTransactionTypeAttributesCommand(
                         List.of(
                                 new CreateTransactionTypeAttributeUseCase.TransactionTypeAttributeCommand(
-                                        transactionTypeAttrTpnName, descriptionMap, 1
+                                        transactionTypeAttrTpnCode, descriptionMap, 1
                                 ),
                                 new CreateTransactionTypeAttributeUseCase.TransactionTypeAttributeCommand(
-                                        transactionTypeAttrDeadLineName, descriptionMap, 3
+                                        transactionTypeAttrDeadLineCode, descriptionMap, 3
                                 )
                         )
                 )
@@ -110,7 +110,7 @@ class CreateTransactionTypeAttributeTest {
 
         Long secondId = transactionTypeAttributeIterator.next().getId();
 
-        Assertions.assertEquals(transactionTypeAttrTpnName, transactionTypeAttributeRepositoryPort.readById(firstId).get().getName());
-        Assertions.assertEquals(transactionTypeAttrDeadLineName, transactionTypeAttributeRepositoryPort.readById(secondId).get().getName());
+        Assertions.assertEquals(transactionTypeAttrTpnCode, transactionTypeAttributeRepositoryPort.readById(firstId).get().getCode());
+        Assertions.assertEquals(transactionTypeAttrDeadLineCode, transactionTypeAttributeRepositoryPort.readById(secondId).get().getCode());
     }
 }

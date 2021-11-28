@@ -3,14 +3,14 @@
 CREATE TABLE eledger_config.el_transaction_type
 (
     id   bigint  NOT NULL,
-    name varchar NOT NULL
+    code varchar NOT NULL
 );
 
 ALTER TABLE eledger_config.el_transaction_type
     ADD CONSTRAINT pk_transaction_type PRIMARY KEY (id);
 
 ALTER TABLE eledger_config.el_transaction_type
-    ADD CONSTRAINT un_transaction_type_name UNIQUE (name);
+    ADD CONSTRAINT un_transaction_type_code UNIQUE (code);
 
 CREATE SEQUENCE eledger_config.el_transaction_type_id_seq
     INCREMENT BY 1
@@ -61,7 +61,7 @@ CREATE SEQUENCE eledger_config.el_transaction_type_description_id_seq
 CREATE TABLE eledger_config.el_transaction_type_attribute
 (
     id           bigint  NOT NULL,
-    name         varchar NOT NULL,
+    code         varchar NOT NULL,
     data_type_id integer NOT NULL
 );
 
@@ -69,7 +69,7 @@ ALTER TABLE eledger_config.el_transaction_type_attribute
     ADD CONSTRAINT pk_transaction_type_attribute PRIMARY KEY (id);
 
 ALTER TABLE eledger_config.el_transaction_type_attribute
-    ADD CONSTRAINT un_transaction_type_attribute_name UNIQUE (name);
+    ADD CONSTRAINT un_transaction_type_attribute_code UNIQUE (code);
 
 CREATE SEQUENCE eledger_config.el_transaction_type_attribute_id_seq
     INCREMENT BY 1

@@ -9,13 +9,13 @@ public interface TransactionTypeRepositoryPort {
 
     Long create(TransactionType transactionType);
 
-    boolean existsByName(String name);
+    boolean existsByCode(String code);
 
     void deleteAll();
 
     Optional<TransactionType> readById(Long id);
 
-    Optional<TransactionType> readByName(String name);
+    Optional<TransactionType> readByCode(String code);
 
     Collection<TransactionType> readAll();
 }

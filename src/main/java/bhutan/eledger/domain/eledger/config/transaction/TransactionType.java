@@ -14,22 +14,22 @@ import java.util.Collection;
 public class TransactionType {
     private final Long id;
 
-    private final String name;
+    private final String code;
 
     private final Multilingual description;
 
-    public static TransactionType withId(Long id, String name, Multilingual description) {
+    public static TransactionType withId(Long id, String code, Multilingual description) {
         return new TransactionType(
                 id,
-                name,
+                code,
                 description
         );
     }
 
-    public static TransactionType withoutId(String name, Multilingual description) {
+    public static TransactionType withoutId(String code, Multilingual description) {
         return new TransactionType(
                 null,
-                name,
+                code,
                 description
         );
     }

@@ -26,8 +26,8 @@ class TransactionTypeRepositoryAdapter implements TransactionTypeRepositoryPort 
     }
 
     @Override
-    public boolean existsByName(String name) {
-        return transactionTypeEntityRepository.existsByName(name);
+    public boolean existsByCode(String code) {
+        return transactionTypeEntityRepository.existsByCode(code);
     }
 
     @Override
@@ -42,8 +42,8 @@ class TransactionTypeRepositoryAdapter implements TransactionTypeRepositoryPort 
     }
 
     @Override
-    public Optional<TransactionType> readByName(String name) {
-        return transactionTypeEntityRepository.findByName(name)
+    public Optional<TransactionType> readByCode(String code) {
+        return transactionTypeEntityRepository.findByCode(code)
                 .map(transactionTypeMapper::mapToDomain);
     }
 

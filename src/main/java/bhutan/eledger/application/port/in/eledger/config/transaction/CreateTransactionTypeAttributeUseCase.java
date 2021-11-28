@@ -26,7 +26,7 @@ public interface CreateTransactionTypeAttributeUseCase {
     @Data
     class TransactionTypeAttributeCommand {
         @NotNull
-        private final String name;
+        private final String code;
 
         @NotEmpty
         private final Map<String, String> descriptions;

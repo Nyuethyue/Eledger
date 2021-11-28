@@ -21,11 +21,11 @@ public interface TransactionTypeTransactionTypeAttributeRepositoryPort {
 
     Optional<TransactionTypeWithAttributes> readTransactionWithAttributesById(Long id);
 
-    Optional<TransactionTypeWithAttributes> readTransactionWithAttributesByName(String name);
+    Optional<TransactionTypeWithAttributes> readTransactionWithAttributesByCode(String code);
 
     TransactionTypeWithAttributes requiredReadTransactionWithAttributesById(Long id);
 
-    TransactionTypeWithAttributes requiredReadTransactionWithAttributesByName(String name);
+    TransactionTypeWithAttributes requiredReadTransactionWithAttributesByCode(String code);
 
     void removeAllFromTransactionTypeByTransactionTypeAttributeIds(Long transactionTypeId, Collection<Long> transactionTypeAttrIds);
 

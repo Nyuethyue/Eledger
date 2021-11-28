@@ -6,9 +6,9 @@ import java.util.Collection;
 import java.util.Optional;
 
 interface TransactionTypeAttributeEntityRepository extends JpaRepository<TransactionTypeAttributeEntity, Long> {
-    boolean existsByName(String name);
+    boolean existsByCode(String code);
 
-    Optional<TransactionTypeAttributeEntity> findByName(String name);
+    Optional<TransactionTypeAttributeEntity> findByCode(String code);
 
-    boolean existsByNameIn(Collection<String> name);
+    boolean existsByCodeIn(Collection<String> code);
 }

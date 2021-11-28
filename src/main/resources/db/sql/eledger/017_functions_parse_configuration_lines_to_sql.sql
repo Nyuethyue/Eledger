@@ -141,9 +141,9 @@ BEGIN
     SELECT a.data_type_id
     INTO v_ret_val
     FROM eledger_config.el_transaction_type_attribute a
-    WHERE upper(a.name) = upper(p_type);
+    WHERE UPPER(a.code) = UPPER(p_type);
 
-    RETURN coalesce(v_ret_val, 0);
+    RETURN COALESCE(v_ret_val, 0);
 
 END;
 $function$
@@ -162,10 +162,10 @@ DECLARE
     v_is_attribute    int;
 BEGIN
 
-    SELECT count(*)
+    SELECT COUNT(*)
     INTO v_is_attribute
     FROM eledger_config.el_transaction_type_attribute tta
-    WHERE upper(tta.name) = upper(p_attribute_type);
+    WHERE UPPER(tta.code) = UPPER(p_attribute_type);
 
     IF v_is_attribute > 0
     THEN
@@ -177,7 +177,7 @@ BEGIN
                  INNER JOIN eledger_config.el_transaction_type_attribute tta
                             ON tta.id = ta.transaction_type_attribute_id
         WHERE t.id = p_transaction_id
-          AND upper(tta.name) = upper(p_attribute_type)
+          AND UPPER(tta.code) = UPPER(p_attribute_type)
         LIMIT 1;
         RETURN v_ret_val;
     END IF;

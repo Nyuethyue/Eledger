@@ -11,13 +11,13 @@ public interface TransactionTypeAttributeRepositoryPort {
 
     Collection<TransactionTypeAttribute> create(Collection<TransactionTypeAttribute> transactionTypeAttributes);
 
-    boolean existsByAnyName(Collection<String> names);
+    boolean existsByAnyCode(Collection<String> codes);
 
     void deleteAll();
 
     Optional<TransactionTypeAttribute> readById(Long id);
 
-    TransactionTypeAttribute requiredReadByName(String name);
+    TransactionTypeAttribute requiredReadByCode(String code);
 
     Collection<TransactionTypeAttribute> readAll();
 }

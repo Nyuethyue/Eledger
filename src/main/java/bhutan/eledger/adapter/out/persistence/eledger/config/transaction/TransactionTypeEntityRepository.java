@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 interface TransactionTypeEntityRepository extends JpaRepository<TransactionTypeEntity, Long> {
-    boolean existsByName(String name);
+    boolean existsByCode(String code);
 
-    Optional<TransactionTypeEntity> findByName(String name);
+    Optional<TransactionTypeEntity> findByCode(String code);
 }

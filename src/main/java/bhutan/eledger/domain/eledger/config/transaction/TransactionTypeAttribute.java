@@ -11,14 +11,14 @@ import lombok.ToString;
 @RequiredArgsConstructor(staticName = "withId")
 public class TransactionTypeAttribute {
     private final Long id;
-    private final String name;
+    private final String code;
     private final DataType dataType;
     private final Multilingual description;
 
-    public static TransactionTypeAttribute withoutId(String name, DataType dataType, Multilingual description) {
+    public static TransactionTypeAttribute withoutId(String code, DataType dataType, Multilingual description) {
         return new TransactionTypeAttribute(
                 null,
-                name,
+                code,
                 dataType,
                 description
         );

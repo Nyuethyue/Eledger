@@ -66,8 +66,8 @@ class TransactionTypeTransactionTypeAttributeAdapter implements TransactionTypeT
     }
 
     @Override
-    public Optional<TransactionTypeWithAttributes> readTransactionWithAttributesByName(String name) {
-        return transactionTypeRepositoryPort.readByName(name)
+    public Optional<TransactionTypeWithAttributes> readTransactionWithAttributesByCode(String code) {
+        return transactionTypeRepositoryPort.readByCode(code)
                 .map(transactionType -> transactionType.withAttributes(
                                 readAllTransactionTypeAttributesByTransactionTypeId(transactionType.getId())
                         )
@@ -81,9 +81,9 @@ class TransactionTypeTransactionTypeAttributeAdapter implements TransactionTypeT
     }
 
     @Override
-    public TransactionTypeWithAttributes requiredReadTransactionWithAttributesByName(String name) {
-        return readTransactionWithAttributesByName(name)
-                .orElseThrow(() -> new RecordNotFoundException("TransactionType by name: [" + name + "] not found."));
+    public TransactionTypeWithAttributes requiredReadTransactionWithAttributesByCode(String code) {
+        return readTransactionWithAttributesByCode(code)
+                .orElseThrow(() -> new RecordNotFoundException("TransactionType by code: [" + code + "] not found."));
     }
 
     @Override

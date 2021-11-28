@@ -36,17 +36,17 @@ class CreateTransactionTypeService implements CreateTransactionTypeUseCase {
     }
 
     private void validate(TransactionType transactionType) {
-        if (transactionTypeRepositoryPort.existsByName(transactionType.getName())) {
+        if (transactionTypeRepositoryPort.existsByCode(transactionType.getCode())) {
             throw new ViolationException(
                     new ValidationError()
-                            .addViolation("transactionType", "Transaction type with name: [" + transactionType.getName() + "] already exists.")
+                            .addViolation("transactionType", "Transaction type with code: [" + transactionType.getCode() + "] already exists.")
             );
         }
     }
 
     private TransactionType commandToTransactionType(CreateTransactionTypeCommand command) {
         return TransactionType.withoutId(
-                command.getName(),
+                command.getCode(),
                 Multilingual.fromMap(command.getDescriptions())
         );
     }

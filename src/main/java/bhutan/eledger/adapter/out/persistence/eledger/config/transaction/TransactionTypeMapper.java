@@ -13,7 +13,7 @@ class TransactionTypeMapper {
 
         var transactionTypeEntity = new TransactionTypeEntity(
                 transactionType.getId(),
-                transactionType.getName()
+                transactionType.getCode()
         );
 
         transactionTypeEntity.setDescriptions(
@@ -37,7 +37,7 @@ class TransactionTypeMapper {
     TransactionType mapToDomain(TransactionTypeEntity transactionTypeEntity) {
         return TransactionType.withId(
                 transactionTypeEntity.getId(),
-                transactionTypeEntity.getName(),
+                transactionTypeEntity.getCode(),
                 Multilingual.of(transactionTypeEntity.getDescriptions())
         );
     }

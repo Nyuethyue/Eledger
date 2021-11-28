@@ -24,7 +24,7 @@ class CreateTransactionTypeTest {
     @Autowired
     private TransactionTypeRepositoryPort transactionTypeRepositoryPort;
 
-    private final String transactionTypeName = "LIABD";
+    private final String transactionTypeCode = "LIABD";
 
     private final Map<String, String> descriptionMap = Map.of(
             "en", "Liability en",
@@ -41,7 +41,7 @@ class CreateTransactionTypeTest {
 
         Long id = createTransactionTypeUseCase.create(
                 new CreateTransactionTypeUseCase.CreateTransactionTypeCommand(
-                        transactionTypeName,
+                        transactionTypeCode,
                         descriptionMap
                 )
         );
@@ -54,7 +54,7 @@ class CreateTransactionTypeTest {
 
         Long id = createTransactionTypeUseCase.create(
                 new CreateTransactionTypeUseCase.CreateTransactionTypeCommand(
-                        transactionTypeName,
+                        transactionTypeCode,
                         descriptionMap
                 )
         );
@@ -65,7 +65,7 @@ class CreateTransactionTypeTest {
 
         var partType = transactionTypeOptional.get();
 
-        Assertions.assertEquals(transactionTypeName, partType.getName());
+        Assertions.assertEquals(transactionTypeCode, partType.getCode());
 
         var description = partType.getDescription();
 

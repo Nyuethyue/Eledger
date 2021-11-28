@@ -50,7 +50,7 @@ class CreateTransactionsService implements CreateTransactionsUseCase {
                 .stream()
                 .map(command -> {
                     TransactionTypeWithAttributes transactionType =
-                            transactionTypeTransactionTypeAttributeRepositoryPort.requiredReadTransactionWithAttributesByName(
+                            transactionTypeTransactionTypeAttributeRepositoryPort.requiredReadTransactionWithAttributesByCode(
                                     command.getTransactionTypeCode()
                             );
 
@@ -88,7 +88,7 @@ class CreateTransactionsService implements CreateTransactionsUseCase {
                 .stream()
                 .map(tac ->
                         TransactionAttribute.withoutId(
-                                transactionTypeAttributeRepositoryPort.requiredReadByName(tac.getTransactionTypeAttributeCode()).getId(),
+                                transactionTypeAttributeRepositoryPort.requiredReadByCode(tac.getTransactionTypeAttributeCode()).getId(),
                                 tac.getValue()
                         )
                 )

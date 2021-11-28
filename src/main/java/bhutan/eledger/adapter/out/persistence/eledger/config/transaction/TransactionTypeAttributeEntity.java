@@ -18,8 +18,8 @@ class TransactionTypeAttributeEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "code")
+    private String code;
 
     @Column(name = "data_type_id")
     private Integer dataTypeId;
@@ -32,9 +32,9 @@ class TransactionTypeAttributeEntity {
     )
     private Set<TransactionTypeAttributeDescriptionEntity> descriptions;
 
-    public TransactionTypeAttributeEntity(Long id, String name, Integer dataTypeId) {
+    public TransactionTypeAttributeEntity(Long id, String code, Integer dataTypeId) {
         this.id = id;
-        this.name = name;
+        this.code = code;
         this.dataTypeId = dataTypeId;
     }
 
@@ -46,12 +46,12 @@ class TransactionTypeAttributeEntity {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getCode() {
+        return code;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public Integer getDataTypeId() {

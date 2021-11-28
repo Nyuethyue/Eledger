@@ -9,8 +9,8 @@ INSERT INTO eledger_config.el_interest_calculation( id
                                                   , case_condition
                                                   , description
                                                   , start_of_validity)
-VALUES ( nextval('eledger_config.el_interest_calculation_id_seq')
-       , (SELECT id FROM eledger_config.el_transaction_type WHERE name = 'LIABILITY')
+VALUES ( NEXTVAL('eledger_config.el_interest_calculation_id_seq')
+       , (SELECT id FROM eledger_config.el_transaction_type WHERE code = 'LIABILITY')
        , (SELECT id FROM eledger_config.el_accounting_action_type WHERE name = 'INTEREST')
        , '[transaction].[deadline]'
            --, '10000'

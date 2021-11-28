@@ -18,8 +18,8 @@ class TransactionTypeEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "code")
+    private String code;
 
     @OneToMany(
             mappedBy = "transactionType",
@@ -29,9 +29,9 @@ class TransactionTypeEntity {
     )
     private Set<TransactionTypeDescriptionEntity> descriptions;
 
-    public TransactionTypeEntity(Long id, String name) {
+    public TransactionTypeEntity(Long id, String code) {
         this.id = id;
-        this.name = name;
+        this.code = code;
     }
 
     public Long getId() {
@@ -42,12 +42,12 @@ class TransactionTypeEntity {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getCode() {
+        return code;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public Set<TransactionTypeDescriptionEntity> getDescriptions() {

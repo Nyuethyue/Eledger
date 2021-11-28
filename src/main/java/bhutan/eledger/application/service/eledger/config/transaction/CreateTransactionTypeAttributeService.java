@@ -31,7 +31,7 @@ class CreateTransactionTypeAttributeService implements CreateTransactionTypeAttr
 
         var transactionTypeAttributes = commandToTransactionTypeAttributes(command);
 
-        checkAttributeExistenceByName(transactionTypeAttributes);
+        checkAttributeExistenceByCode(transactionTypeAttributes);
 
         log.trace("Persisting transaction type attributes: {}", transactionTypeAttributes);
 
@@ -42,16 +42,16 @@ class CreateTransactionTypeAttributeService implements CreateTransactionTypeAttr
         return persistedTransactionTypeAttributes;
     }
 
-    private void checkAttributeExistenceByName(Collection<TransactionTypeAttribute> transactionTypeAttributes) {
-        var attrNames = transactionTypeAttributes
+    private void checkAttributeExistenceByCode(Collection<TransactionTypeAttribute> transactionTypeAttributes) {
+        var attrCodes = transactionTypeAttributes
                 .stream()
-                .map(TransactionTypeAttribute::getName)
+                .map(TransactionTypeAttribute::getCode)
                 .collect(Collectors.toUnmodifiableList());
 
-        if (transactionTypeAttributeRepositoryPort.existsByAnyName(attrNames)) {
+        if (transactionTypeAttributeRepositoryPort.existsByAnyCode(attrCodes)) {
             throw new ViolationException(
                     new ValidationError()
-                            .addViolation("transactionTypeAttributes", "Transaction type attribute with one of these names: [" + attrNames + "] already exists.")
+                            .addViolation("transactionTypeAttributes", "Transaction type attribute with one of these codes: [" + attrCodes + "] already exists.")
             );
         }
     }
@@ -72,7 +72,7 @@ class CreateTransactionTypeAttributeService implements CreateTransactionTypeAttr
                 );
 
         return TransactionTypeAttribute.withoutId(
-                command.getName(),
+                command.getCode(),
                 dataType,
                 Multilingual.fromMap(command.getDescriptions())
         );

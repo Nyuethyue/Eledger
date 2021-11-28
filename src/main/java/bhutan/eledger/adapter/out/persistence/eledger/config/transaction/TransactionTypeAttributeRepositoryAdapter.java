@@ -46,8 +46,8 @@ class TransactionTypeAttributeRepositoryAdapter implements TransactionTypeAttrib
     }
 
     @Override
-    public boolean existsByAnyName(Collection<String> names) {
-        return transactionTypeAttributeEntityRepository.existsByNameIn(names);
+    public boolean existsByAnyCode(Collection<String> codes) {
+        return transactionTypeAttributeEntityRepository.existsByCodeIn(codes);
     }
 
     @Override
@@ -65,13 +65,13 @@ class TransactionTypeAttributeRepositoryAdapter implements TransactionTypeAttrib
     }
 
     @Override
-    public TransactionTypeAttribute requiredReadByName(String name) {
-        return transactionTypeAttributeEntityRepository.findByName(name)
+    public TransactionTypeAttribute requiredReadByCode(String code) {
+        return transactionTypeAttributeEntityRepository.findByCode(code)
                 .map(entity -> {
                     DataType dataType = dataTypeRepositoryPort.requiredReadById(entity.getDataTypeId());
                     return transactionTypeAttributeMapper.mapToDomain(entity, dataType);
                 })
-                .orElseThrow(() -> new RecordNotFoundException("TransactionTypeAttribute by name: " + name + " not found."));
+                .orElseThrow(() -> new RecordNotFoundException("TransactionTypeAttribute by code: " + code + " not found."));
     }
 
     @Override
