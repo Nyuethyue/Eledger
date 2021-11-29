@@ -37,13 +37,20 @@ class GenerateCashReceiptService implements GenerateCashReceiptUseCase {
     public Receipt generate(GenerateCashReceiptCommand command) {
         log.trace("Generating cash receipt by command: {}", command);
 
-        PaymentAdvice updatedPaymentAdvice = updatePaymentAdvice(command);
-
         LocalDateTime creationDateTime = LocalDateTime.now();
 
         String receiptNumber = receiptNumberGeneratorPort.generate(creationDateTime.toLocalDate());
 
         log.trace("Receipt number: [{}], generated in: {}", receiptNumber, creationDateTime.toLocalDate());
+
+        return generate(receiptNumber, creationDateTime, command);
+    }
+
+    @Override
+    public Receipt generate(String receiptNumber, LocalDateTime creationDateTime, GenerateCashReceiptCommand command) {
+        log.trace("Generating cash receipt by command: {}", command);
+
+        PaymentAdvice updatedPaymentAdvice = updatePaymentAdvice(command);
 
         var payments =
                 resolvePayments(command, updatedPaymentAdvice);

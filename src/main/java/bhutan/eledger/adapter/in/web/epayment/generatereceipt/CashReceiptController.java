@@ -27,7 +27,7 @@ public class CashReceiptController {
                 .body(receipt);
     }
 
-    @PostMapping("/several")
+    @PostMapping("/multiple")
     public ResponseEntity<Object> createSeveral(@RequestBody GenerateCashReceiptsUseCase.GenerateCashReceiptsCommand command) {
         var receipts = generateCashReceiptsUseCase.generate(command);
 
