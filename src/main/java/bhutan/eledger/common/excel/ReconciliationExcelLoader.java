@@ -18,20 +18,8 @@ public class ReconciliationExcelLoader  implements ExcelCellReceiver {
 
     private List<BankStatementImportReconciliationInfo> result;
 
-
     public List<BankStatementImportReconciliationInfo> load(InputStream inputStream, boolean isXLSX) throws Exception {
-        try {
-            if (isXLSX) {
-                XLSXLoader xlsxLoader = new XLSXLoader();
-                xlsxLoader.load(inputStream,0,this);
-            } else {
-                XLSLoader xlsLoader = new XLSLoader();
-                xlsLoader.load(inputStream, 0, this);
-            }
-        } catch (Exception e) {
-            log.error("Failed to parse excel file");
-            throw new Exception("Error loading excel file", e);
-        }
+        ExcelLoader.load(inputStream, this, isXLSX);
         return result;
     }
 
