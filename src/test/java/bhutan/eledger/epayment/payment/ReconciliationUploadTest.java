@@ -1,7 +1,7 @@
 package bhutan.eledger.epayment.payment;
 
-import bhutan.eledger.adapter.out.fms.epayment.reconciliation.ReconciliationExcelLoader;
 import bhutan.eledger.application.port.in.epayment.reconciliation.BankStatementImportUseCase;
+import bhutan.eledger.adapter.out.fms.epayment.reconciliation.ReconciliationExcelLoader;
 import bhutan.eledger.domain.epayment.BankStatementImportReconciliationInfo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -36,9 +36,9 @@ class ReconciliationUploadTest {
         Path resourceDirectory = Paths.get("src","test","resources", "files");
         String absolutePath = resourceDirectory.toFile().getAbsolutePath();
 
-        List<BankStatementImportReconciliationInfo> resOld = loader.load(new FileInputStream(absolutePath + "/" + "Reconciliation.xls"), false);
+        List<BankStatementImportReconciliationInfo> resOld = loader.load(new FileInputStream( absolutePath + "\\" + "Reconciliation.xls"), false);
         Assertions.assertTrue(resOld.size() > 0, "Empty result for old!");
-        List<BankStatementImportReconciliationInfo> resNew = loader.load(new FileInputStream(absolutePath + "/" + "Reconciliation.xlsx"), true);
+        List<BankStatementImportReconciliationInfo> resNew = loader.load(new FileInputStream( absolutePath + "\\" + "Reconciliation.xlsx"), true);
         Assertions.assertTrue(resNew.size() > 0, "Empty result for new!");
     }
 
