@@ -23,8 +23,9 @@ public class XLSXLoader extends DefaultHandler {
     private CellReference cellReferenceObject;
     private String cellType;
     private boolean nextIsString;
+
     public void load(InputStream io, int sheetIndex, ExcelCellReceiver receiver) throws IOException, SAXException, ParserConfigurationException, OpenXML4JException {
-        try(OPCPackage pkg = OPCPackage.open(io)) {
+        try (OPCPackage pkg = OPCPackage.open(io)) {
             this.sheetIndex = sheetIndex;
             this.receiver = receiver;
             XSSFReader r = new XSSFReader(pkg);
@@ -41,12 +42,12 @@ public class XLSXLoader extends DefaultHandler {
     @Override
     public void startElement(String uri, String localName, String name,
                              Attributes attributes) throws SAXException {
-        if(name.equals("c")) {
+        if (name.equals("c")) {
             String cellReference = attributes.getValue("r");
             cellReferenceObject = new CellReference(cellReference);
             // Figure out if the value is an index in the SST
             cellType = attributes.getValue("t");
-            if(cellType != null && cellType.equals("s")) {
+            if (cellType != null && cellType.equals("s")) {
                 nextIsString = true;
             } else {
                 nextIsString = false;
@@ -55,15 +56,16 @@ public class XLSXLoader extends DefaultHandler {
         // Clear contents cache
         lastContents = "";
     }
+
     @Override
     public void endElement(String uri, String localName, String name)
             throws SAXException {
-        if(nextIsString) {
+        if (nextIsString) {
             int idx = Integer.parseInt(lastContents);
             lastContents = sst.getItemAt(idx).getString();
             nextIsString = false;
         }
-        if(name.equals("v")) {
+        if (name.equals("v")) {
             receiver.newCell(sheetIndex, cellReferenceObject.getRow(), cellReferenceObject.getCol(), lastContents);
         }
     }
@@ -74,12 +76,12 @@ public class XLSXLoader extends DefaultHandler {
     }
 
     @Override
-    public void startDocument () throws SAXException {
+    public void startDocument() throws SAXException {
         receiver.startDocument();
     }
 
     @Override
-    public void endDocument () throws SAXException {
+    public void endDocument() throws SAXException {
         receiver.endDocument();
     }
 }
