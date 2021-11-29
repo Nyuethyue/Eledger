@@ -49,14 +49,14 @@ class BankStatementFileParserAdapter implements BankStatementFileParserPort {
                     ReconciliationExcelLoader loader = new ReconciliationExcelLoader();
                     return loader.load(inputStream, filePath.endsWith(".xlsx"));
                 } catch (SAXException | ParserConfigurationException | OpenXML4JException e) {
-                    throw new RuntimeException(MessageFormat.format("Invalid excel file from:{}" , webTarget.getURIString()), e);
+                    throw new RuntimeException(MessageFormat.format("Invalid excel file from:{0}" , webTarget.getURIString()), e);
                 }
             } else {
-                throw new RuntimeException(MessageFormat.format("Cant read excel file from:{}, Http.status:{}", webTarget.getURIString(), response.getStatusCode()));
+                throw new RuntimeException(MessageFormat.format("Cant read excel file from:{0}, Http.status:{1}", webTarget.getURIString(), response.getStatusCode()));
             }
         }
         catch (IOException e) {
-            throw new RuntimeException(MessageFormat.format("Failed to retrieve file from:{}" ,  webTarget.getURIString()), e);
+            throw new RuntimeException(MessageFormat.format("Failed to retrieve file from:{0}" ,  webTarget.getURIString()), e);
         }
     }
 }

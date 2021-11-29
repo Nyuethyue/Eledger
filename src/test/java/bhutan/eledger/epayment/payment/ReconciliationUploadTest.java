@@ -46,7 +46,7 @@ class ReconciliationUploadTest {
         Assertions.assertTrue(resNew.size() > 0, "Empty result for new!");
     }
 
-    //@Test
+    @Test
     void excelDownloadTest() {
         String filePath = "/resources/file/reports/ee9c1eeb-cef2-472d-b6d0-ddeb015a370b/profiles.xlsx";
         //String filePath = "/resources/file/sources.pdf";
