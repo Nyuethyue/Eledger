@@ -1,9 +1,15 @@
-package bhutan.eledger.common.excel;
+package bhutan.eledger.adapter.out.fms.epayment.reconciliation;
 
+import bhutan.eledger.common.excel.ExcelCellReceiver;
+import bhutan.eledger.common.excel.ExcelLoader;
 import bhutan.eledger.domain.epayment.BankStatementImportReconciliationInfo;
 import lombok.extern.log4j.Log4j2;
+import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 import org.apache.poi.ss.usermodel.DateUtil;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,13 +18,14 @@ import java.util.LinkedList;
 import java.util.List;
 @Log4j2
 public class ReconciliationExcelLoader  implements ExcelCellReceiver {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern( "d/M/yy" );
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yy");
     private int currentRowIndex;
     private BankStatementImportReconciliationInfo currentRowValue;
 
     private List<BankStatementImportReconciliationInfo> result;
 
-    public List<BankStatementImportReconciliationInfo> load(InputStream inputStream, boolean isXLSX) throws Exception {
+    public List<BankStatementImportReconciliationInfo> load(InputStream inputStream, boolean isXLSX)
+            throws IOException, SAXException, OpenXML4JException, ParserConfigurationException {
         ExcelLoader.load(inputStream, this, isXLSX);
         return result;
     }
@@ -40,14 +47,12 @@ public class ReconciliationExcelLoader  implements ExcelCellReceiver {
             } else if (2 == column) {
                 currentRowValue.setRefNo(value);
             } else if (3 == column) {
-                if(value.contains("/")) {
-                    currentRowValue.setPaymentDate(LocalDate.parse( value , formatter ));
-                } else
-                {
+                if (value.contains("/")) {
+                    currentRowValue.setPaymentDate(LocalDate.parse(value, formatter));
+                } else {
                     double excelDate = Double.parseDouble(value);
                     currentRowValue.setPaymentDate(DateUtil.getLocalDateTime(excelDate).toLocalDate());
                 }
-
             } else if (4 == column) {
                 currentRowValue.setAmount(new BigDecimal(value));
             }

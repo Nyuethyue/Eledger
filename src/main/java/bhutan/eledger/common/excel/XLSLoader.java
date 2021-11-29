@@ -21,17 +21,13 @@ public class XLSLoader {
             HSSFSheet sheet = workbook.getSheetAt(sheetIndex);
             HSSFRow row;
             HSSFCell cell;
-
             //Iterating all the rows in the sheet
             Iterator rows = sheet.rowIterator();
-
             receiver.startDocument();
             while (rows.hasNext()) {
                 row = (HSSFRow) rows.next();
-
                 //Iterating all the cells of the current row
                 Iterator cells = row.cellIterator();
-
                 while (cells.hasNext()) {
                     cell = (HSSFCell) cells.next();
                     if (cell.getCellType() == CellType.STRING) {
