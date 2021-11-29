@@ -1,11 +1,11 @@
-package bhutan.eledger.epayment.generatereceipt;
+package bhutan.eledger.epayment.payment;
 
-import bhutan.eledger.application.port.in.epayment.generatereceipt.GenerateCashReceiptUseCase;
-import bhutan.eledger.application.port.in.epayment.generatereceipt.GenerateReceiptCommonCommand;
+import bhutan.eledger.application.port.in.epayment.payment.CreateCashPaymentUseCase;
+import bhutan.eledger.application.port.in.epayment.payment.CreatePaymentCommonCommand;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAdviceUseCase;
-import bhutan.eledger.application.port.out.epayment.generatereceipt.CashReceiptRepositoryPort;
+import bhutan.eledger.application.port.out.epayment.payment.CashReceiptRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceRepositoryPort;
-import bhutan.eledger.domain.epayment.generatereceipt.Receipt;
+import bhutan.eledger.domain.epayment.payment.Receipt;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import java.util.Set;
 @TestPropertySource(
         properties = {"spring.config.location = classpath:application-test.yml"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class GenerateReceiptTest {
+class CreatePaymentTest {
 
     @Autowired
     private CreatePaymentAdviceUseCase createPaymentAdviceUseCase;
@@ -31,7 +31,7 @@ class GenerateReceiptTest {
     private PaymentAdviceRepositoryPort paymentAdviceRepositoryPort;
 
     @Autowired
-    private GenerateCashReceiptUseCase generateCashReceiptUseCase;
+    private CreateCashPaymentUseCase createCashPaymentUseCase;
 
     @Autowired
     private CashReceiptRepositoryPort cashReceiptRepositoryPort;
@@ -81,18 +81,18 @@ class GenerateReceiptTest {
     @Test
     void createTest() {
 
-        var command = new GenerateCashReceiptUseCase.GenerateCashReceiptCommand(
+        var command = new CreateCashPaymentUseCase.CreateCashPaymentCommand(
                 paymentAdvice.getId(),
                 "USD",
                 Set.of(
-                        new GenerateReceiptCommonCommand.PaymentCommand(
+                        new CreatePaymentCommonCommand.PaymentCommand(
                                 paymentAdvice.getPayableLines().stream().findAny().get().getId(),
                                 new BigDecimal("9999.99")
                         )
                 )
         );
 
-        Receipt receipt = generateCashReceiptUseCase.generate(command);
+        Receipt receipt = createCashPaymentUseCase.create(command);
 
         Assertions.assertNotNull(receipt);
     }

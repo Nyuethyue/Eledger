@@ -1,4 +1,4 @@
-package bhutan.eledger.domain.epayment.generatereceipt;
+package bhutan.eledger.domain.epayment.payment;
 
 import bhutan.eledger.domain.epayment.taxpayer.EpTaxpayer;
 import lombok.Data;

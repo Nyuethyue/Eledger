@@ -1,6 +1,6 @@
-package bhutan.eledger.adapter.out.persistence.epayment.generatereceipt;
+package bhutan.eledger.adapter.out.persistence.epayment.payment;
 
-import bhutan.eledger.application.port.out.epayment.generatereceipt.ReceiptNumberGeneratorPort;
+import bhutan.eledger.application.port.out.epayment.payment.ReceiptNumberGeneratorPort;
 import com.google.common.base.Strings;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;

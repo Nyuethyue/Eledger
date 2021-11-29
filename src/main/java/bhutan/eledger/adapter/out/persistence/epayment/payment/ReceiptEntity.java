@@ -1,4 +1,4 @@
-package bhutan.eledger.adapter.out.persistence.epayment.generatereceipt;
+package bhutan.eledger.adapter.out.persistence.epayment.payment;
 
 import bhutan.eledger.domain.epayment.taxpayer.EpTaxpayer;
 import lombok.AllArgsConstructor;

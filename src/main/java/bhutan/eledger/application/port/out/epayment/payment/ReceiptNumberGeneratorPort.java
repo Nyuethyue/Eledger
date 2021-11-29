@@ -1,4 +1,4 @@
-package bhutan.eledger.application.port.out.epayment.generatereceipt;
+package bhutan.eledger.application.port.out.epayment.payment;
 
 import java.time.LocalDate;
 

@@ -1,4 +1,4 @@
-package bhutan.eledger.application.port.in.epayment.generatereceipt;
+package bhutan.eledger.application.port.in.epayment.payment;
 
 import lombok.Data;
 
@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.Collection;
 
 @Data
-public class GenerateReceiptCommonCommand {
+public class CreatePaymentCommonCommand {
     @NotNull
     private final Long paymentAdviceId;
     @NotNull

@@ -1,15 +1,15 @@
-package bhutan.eledger.application.service.epayment.generatereceipt;
+package bhutan.eledger.application.service.epayment.payment;
 
 import am.iunetworks.lib.common.validation.ValidationError;
 import am.iunetworks.lib.common.validation.ViolationException;
-import bhutan.eledger.application.port.in.epayment.generatereceipt.GenerateCashReceiptUseCase;
-import bhutan.eledger.application.port.in.epayment.generatereceipt.GenerateReceiptCommonCommand;
-import bhutan.eledger.application.port.out.epayment.generatereceipt.CashReceiptRepositoryPort;
-import bhutan.eledger.application.port.out.epayment.generatereceipt.EledgerPaymentTransactionPort;
-import bhutan.eledger.application.port.out.epayment.generatereceipt.ReceiptNumberGeneratorPort;
+import bhutan.eledger.application.port.in.epayment.payment.CreateCashPaymentUseCase;
+import bhutan.eledger.application.port.in.epayment.payment.CreatePaymentCommonCommand;
+import bhutan.eledger.application.port.out.epayment.payment.CashReceiptRepositoryPort;
+import bhutan.eledger.application.port.out.epayment.payment.EledgerPaymentTransactionPort;
+import bhutan.eledger.application.port.out.epayment.payment.ReceiptNumberGeneratorPort;
 import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.taxpayer.EpTaxpayerRepositoryPort;
-import bhutan.eledger.domain.epayment.generatereceipt.*;
+import bhutan.eledger.domain.epayment.payment.*;
 import bhutan.eledger.domain.epayment.paymentadvice.PayableLine;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdviceStatus;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @RequiredArgsConstructor
-class GenerateCashReceiptService implements GenerateCashReceiptUseCase {
+class CreateCashPaymentService implements CreateCashPaymentUseCase {
     private final PaymentAdviceRepositoryPort paymentAdviceRepositoryPort;
     private final ReceiptNumberGeneratorPort receiptNumberGeneratorPort;
     private final CashReceiptRepositoryPort cashReceiptRepositoryPort;
@@ -34,7 +34,7 @@ class GenerateCashReceiptService implements GenerateCashReceiptUseCase {
     private final EledgerPaymentTransactionPort eledgerPaymentTransactionPort;
 
     @Override
-    public Receipt generate(GenerateCashReceiptCommand command) {
+    public Receipt create(CreateCashPaymentCommand command) {
         log.trace("Generating cash receipt by command: {}", command);
 
         PaymentAdvice updatedPaymentAdvice = updatePaymentAdvice(command);
@@ -72,7 +72,7 @@ class GenerateCashReceiptService implements GenerateCashReceiptUseCase {
         return persistedCashReceipt;
     }
 
-    private PaymentAdvice updatePaymentAdvice(GenerateCashReceiptCommand command) {
+    private PaymentAdvice updatePaymentAdvice(CreateCashPaymentCommand command) {
 
         PaymentAdvice paymentAdvice = paymentAdviceRepositoryPort.requiredReadById(command.getPaymentAdviceId());
 
@@ -101,7 +101,7 @@ class GenerateCashReceiptService implements GenerateCashReceiptUseCase {
         return paymentAdvice;
     }
 
-    private Collection<Payment> resolvePayments(GenerateCashReceiptCommand command, PaymentAdvice paymentAdvice) {
+    private Collection<Payment> resolvePayments(CreateCashPaymentCommand command, PaymentAdvice paymentAdvice) {
         return command.getPayments()
                 .stream()
                 .map(pc -> {
@@ -118,7 +118,7 @@ class GenerateCashReceiptService implements GenerateCashReceiptUseCase {
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    private void checkPayableLine(PayableLine payableLine, GenerateReceiptCommonCommand.PaymentCommand paymentCommand) {
+    private void checkPayableLine(PayableLine payableLine, CreatePaymentCommonCommand.PaymentCommand paymentCommand) {
         if (payableLine.isPaid()) {
             throw new ViolationException(
                     new ValidationError()

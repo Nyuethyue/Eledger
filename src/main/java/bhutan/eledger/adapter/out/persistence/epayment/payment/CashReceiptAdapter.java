@@ -1,7 +1,7 @@
-package bhutan.eledger.adapter.out.persistence.epayment.generatereceipt;
+package bhutan.eledger.adapter.out.persistence.epayment.payment;
 
-import bhutan.eledger.application.port.out.epayment.generatereceipt.CashReceiptRepositoryPort;
-import bhutan.eledger.domain.epayment.generatereceipt.CashReceipt;
+import bhutan.eledger.application.port.out.epayment.payment.CashReceiptRepositoryPort;
+import bhutan.eledger.domain.epayment.payment.CashReceipt;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

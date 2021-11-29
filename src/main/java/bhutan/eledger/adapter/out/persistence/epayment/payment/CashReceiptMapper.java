@@ -1,9 +1,9 @@
-package bhutan.eledger.adapter.out.persistence.epayment.generatereceipt;
+package bhutan.eledger.adapter.out.persistence.epayment.payment;
 
-import bhutan.eledger.domain.epayment.generatereceipt.CashReceipt;
-import bhutan.eledger.domain.epayment.generatereceipt.Payment;
-import bhutan.eledger.domain.epayment.generatereceipt.PaymentMode;
-import bhutan.eledger.domain.epayment.generatereceipt.ReceiptStatus;
+import bhutan.eledger.domain.epayment.payment.CashReceipt;
+import bhutan.eledger.domain.epayment.payment.Payment;
+import bhutan.eledger.domain.epayment.payment.PaymentMode;
+import bhutan.eledger.domain.epayment.payment.ReceiptStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
