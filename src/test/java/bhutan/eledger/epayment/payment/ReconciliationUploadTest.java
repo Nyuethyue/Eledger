@@ -10,8 +10,12 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -30,20 +34,16 @@ class ReconciliationUploadTest {
     }
 
     @Test
-    void excelLoadFromFileTest() {
+    void excelLoadFromFileTest() throws Exception {
         ReconciliationExcelLoader loader = new ReconciliationExcelLoader();
-        try {
-            Path resourceDirectory = Paths.get("src","test","resources", "files");
-            String absolutePath = resourceDirectory.toFile().getAbsolutePath();
 
-            List<BankStatementImportReconciliationInfo> resOld = loader.load(new FileInputStream( absolutePath + "\\" + "Reconciliation.xls"), false);
-            Assertions.assertTrue(resOld.size() > 0, "Empty result for old!");
-            List<BankStatementImportReconciliationInfo> resNew = loader.load(new FileInputStream( absolutePath + "\\" + "Reconciliation.xlsx"), true);
-            Assertions.assertTrue(resNew.size() > 0, "Empty result for new!");
-        } catch (Exception e) {
-            e.printStackTrace();
-            Assertions.assertTrue(false);
-        }
+        Path resourceDirectory = Paths.get("src","test","resources", "files");
+        String absolutePath = resourceDirectory.toFile().getAbsolutePath();
+
+        List<BankStatementImportReconciliationInfo> resOld = loader.load(new FileInputStream( absolutePath + "\\" + "Reconciliation.xls"), false);
+        Assertions.assertTrue(resOld.size() > 0, "Empty result for old!");
+        List<BankStatementImportReconciliationInfo> resNew = loader.load(new FileInputStream( absolutePath + "\\" + "Reconciliation.xlsx"), true);
+        Assertions.assertTrue(resNew.size() > 0, "Empty result for new!");
     }
 
     //@Test
