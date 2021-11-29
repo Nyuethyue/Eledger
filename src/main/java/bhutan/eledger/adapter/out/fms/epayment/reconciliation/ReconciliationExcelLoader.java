@@ -26,8 +26,7 @@ public class ReconciliationExcelLoader  implements ExcelCellReceiver {
 
     public List<BankStatementImportReconciliationInfo> load(InputStream inputStream, boolean isXLSX)
             throws IOException, SAXException, OpenXML4JException, ParserConfigurationException {
-        ExcelLoader loader = new ExcelLoader();
-        loader.load(inputStream, this, isXLSX);
+        ExcelLoader.getInstance().load(inputStream, this, isXLSX);
         return result;
     }
 

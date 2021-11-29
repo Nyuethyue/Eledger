@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @Log4j2
-@NoArgsConstructor
+@NoArgsConstructor(staticName = "getInstance")
 public  class ExcelLoader {
     public void load(InputStream inputStream, ExcelCellReceiver receiver, boolean isXLSX)
             throws IOException, SAXException, OpenXML4JException, ParserConfigurationException {
