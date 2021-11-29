@@ -44,13 +44,20 @@ class ReconciliationUploadTest {
 
 //    @Test
     void excelDownloadTest() {
-        //String filePath = "/resources/file/reports/ee9c1eeb-cef2-472d-b6d0-ddeb015a370b/profiles.xlsx";
-        String filePath = "/resources/file/accounts.xlsx";
-        BankStatementImportUseCase.ImportBankStatementsCommand command =
+        String filePathOld = "/resources/file/files/drc-users/00/00/00/00000000-0000-0000-0000-000000000001/2021/11/29/1638187692518/attachments/Reconciliation.xls";
+        BankStatementImportUseCase.ImportBankStatementsCommand commandOld =
                 new BankStatementImportUseCase.ImportBankStatementsCommand(
-                        "TAB12345", filePath);
+                        "TAB12345", filePathOld);
 
-        List<BankStatementImportReconciliationInfo> result = bankStatementImportUseCase.importStatements(command);
-        Assertions.assertTrue(result.size() > 0, "Empty result for excel file!");
+        List<BankStatementImportReconciliationInfo> resultOld = bankStatementImportUseCase.importStatements(commandOld);
+        Assertions.assertTrue(resultOld.size() > 0, "Empty result for excel file!");
+
+        String filePathNew = "resources/file/files/drc-users/00/00/00/00000000-0000-0000-0000-000000000001/2021/11/29/1638187871846/attachments/Reconciliation.xlsx";
+        BankStatementImportUseCase.ImportBankStatementsCommand commandNew =
+                new BankStatementImportUseCase.ImportBankStatementsCommand(
+                        "TAB12345", filePathNew);
+
+        List<BankStatementImportReconciliationInfo> resultNew = bankStatementImportUseCase.importStatements(commandNew);
+        Assertions.assertTrue(resultNew.size() > 0, "Empty result for excel file!");
     }
 }
