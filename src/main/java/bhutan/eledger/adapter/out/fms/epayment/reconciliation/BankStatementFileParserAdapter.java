@@ -35,8 +35,8 @@ class BankStatementFileParserAdapter implements BankStatementFileParserPort {
 
     @Override
     public List<BankStatementImportReconciliationInfo> getStatements(String filePath) {
-        filePath = filePath.toLowerCase();
-        if (!filePath.endsWith(".xls") && !filePath.endsWith(".xlsx")) {
+        String lcFilePath = filePath.toLowerCase();
+        if (!lcFilePath.endsWith(".xls") && !lcFilePath.endsWith(".xlsx")) {
             throw new InvalidParameterException("Invalid excel file type extension:" + filePath);
         }
 
@@ -47,7 +47,7 @@ class BankStatementFileParserAdapter implements BankStatementFileParserPort {
             if (response.isSuccess() && response.hasEntity()) {
                 try (InputStream inputStream = response.getEntity().getContent()) {
                     ReconciliationExcelLoader loader = new ReconciliationExcelLoader();
-                    return loader.load(inputStream, filePath.endsWith(".xlsx"));
+                    return loader.load(inputStream, lcFilePath.endsWith(".xlsx"));
                 } catch (SAXException | ParserConfigurationException | OpenXML4JException e) {
                     throw new RuntimeException(MessageFormat.format("Invalid excel file from:{0}" , webTarget.getURIString()), e);
                 }
