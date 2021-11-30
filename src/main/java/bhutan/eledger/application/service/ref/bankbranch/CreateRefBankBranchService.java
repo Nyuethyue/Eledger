@@ -54,7 +54,7 @@ class CreateRefBankBranchService implements CreateRefBankBranchUseCase{
 
     void validate(RefBankBranch refBankBranch) {
         //todo replace existence checks by one method
-        if (refBankBranchRepositoryPort.existsByCode(refBankBranch.getCode())) {
+        if (refBankBranchRepositoryPort.isOpenBranchExists(refBankBranch)) {
             throw new ViolationException(
                     new ValidationError()
                             .addViolation("code", "Bank's branch with code: [" + refBankBranch.getCode() + "] already exists.")
