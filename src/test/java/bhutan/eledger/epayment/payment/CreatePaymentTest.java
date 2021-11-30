@@ -2,6 +2,7 @@ package bhutan.eledger.epayment.payment;
 
 import bhutan.eledger.application.port.in.epayment.payment.CreateCashPaymentUseCase;
 import bhutan.eledger.application.port.in.epayment.payment.CreatePaymentCommonCommand;
+import bhutan.eledger.application.port.in.epayment.payment.SearchReceiptUseCase;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAdviceUseCase;
 import bhutan.eledger.application.port.out.epayment.payment.CashReceiptRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceRepositoryPort;
@@ -38,6 +39,9 @@ class CreatePaymentTest {
 
     @Autowired
     private TransactionTemplate transactionTemplate;
+
+    @Autowired
+    private SearchReceiptUseCase searchReceiptUseCase;
 
     private PaymentAdvice paymentAdvice;
 
@@ -95,5 +99,19 @@ class CreatePaymentTest {
         Receipt receipt = createCashPaymentUseCase.create(command);
 
         Assertions.assertNotNull(receipt);
+        Assertions.assertNotNull(receipt.getReceiptNumber());
+
+        var searchResult = searchReceiptUseCase.search(new SearchReceiptUseCase.SearchReceiptCommand(
+                0,
+                10,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        ));
+
+        Assertions.assertEquals(1, searchResult.getTotalCount());
     }
 }
