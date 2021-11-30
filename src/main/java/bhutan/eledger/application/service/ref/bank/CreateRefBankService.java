@@ -40,8 +40,9 @@ class CreateRefBankService implements CreateRefBankUseCase {
     private RefBank mapCommandToRefBank(CreateRefBankUseCase.CreateRefBankCommand command) {
         return RefBank.withoutId(
                 command.getCode(),
-                ValidityPeriod.withOnlyStartOfValidity(
-                  command.getStartOfValidity()
+                ValidityPeriod.of(
+                  command.getStartOfValidity(),
+                  command.getEndOfValidity()
                 ),
                 Multilingual.fromMap(command.getDescriptions())
         );

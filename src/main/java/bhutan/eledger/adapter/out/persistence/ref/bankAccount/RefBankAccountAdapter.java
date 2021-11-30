@@ -5,6 +5,7 @@ import bhutan.eledger.application.port.out.ref.bankaccount.RefBankAccountReposit
 import bhutan.eledger.domain.ref.bankaccount.RefBankAccount;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -44,8 +45,8 @@ class RefBankAccountAdapter implements RefBankAccountRepositoryPort {
     }
 
     @Override
-    public boolean existsByAccNumber(String accNumber) {
-        return refBankAccountRepository.existsByAccNumber(accNumber);
+    public boolean isOpenBankAccountExists(RefBankAccount refBankAccount) {
+        return refBankAccountRepository.existsByCodeAndEndOfValidityNullOrEndOfValidity(refBankAccount.getCode(), LocalDate.now(), refBankAccount.getValidityPeriod().getStart());
     }
 
     @Override
@@ -58,7 +59,7 @@ class RefBankAccountAdapter implements RefBankAccountRepositoryPort {
 
     @Override
     public Optional<RefBankAccount> readByAccNumber(String accNumber) {
-        return refBankAccountRepository.findByAccNumber(accNumber)
+        return refBankAccountRepository.findByCode(accNumber)
                 .map(refBankAccountMapper::mapToDomain);
     }
 

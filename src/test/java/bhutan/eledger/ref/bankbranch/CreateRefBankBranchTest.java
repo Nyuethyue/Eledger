@@ -46,6 +46,7 @@ class CreateRefBankBranchTest {
                 new CreateRefBankUseCase.CreateRefBankCommand(
                         "020202",
                         LocalDate.now().plusDays(1),
+                        null,
                         Map.of("en", "Bank of Bhutan")
 
                 )
@@ -57,6 +58,7 @@ class CreateRefBankBranchTest {
                         null,
                         "0000000",
                         LocalDate.now().plusDays(1),
+                        null,
                         bankId,
                         Map.of("en", "Branch A")
 
@@ -72,6 +74,7 @@ class CreateRefBankBranchTest {
                 new CreateRefBankUseCase.CreateRefBankCommand(
                         "020202",
                         LocalDate.now().plusDays(1),
+                        null,
                         Map.of("en", "Bank of Bhutan")
 
                 )
@@ -83,6 +86,7 @@ class CreateRefBankBranchTest {
                         null,
                         "0000000",
                         LocalDate.now().plusDays(1),
+                        null,
                         bankId,
                         Map.of("en", "Branch A")
 

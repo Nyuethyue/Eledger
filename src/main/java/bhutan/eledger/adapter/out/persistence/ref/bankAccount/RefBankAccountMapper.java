@@ -12,7 +12,7 @@ class RefBankAccountMapper {
                 new RefBankAccountEntity(
                         refBankAccount.getId(),
                         refBankAccount.getBranchId(),
-                        refBankAccount.getAccNumber(),
+                        refBankAccount.getCode(),
                         refBankAccount.getValidityPeriod().getStart(),
                         refBankAccount.getValidityPeriod().getEnd()
                 );
@@ -36,7 +36,7 @@ class RefBankAccountMapper {
         return RefBankAccount.withId(
                 refBankAccountEntity.getId(),
                 refBankAccountEntity.getBranchId(),
-                refBankAccountEntity.getAccNumber(),
+                refBankAccountEntity.getCode(),
                 ValidityPeriod.of(
                         refBankAccountEntity.getStartOfValidity(),
                         refBankAccountEntity.getEndOfValidity()

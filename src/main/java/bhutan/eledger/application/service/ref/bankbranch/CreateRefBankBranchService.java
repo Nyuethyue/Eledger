@@ -44,8 +44,9 @@ class CreateRefBankBranchService implements CreateRefBankBranchUseCase{
                 command.getCode(),
                 command.getBranchCode(),
                 command.getAddress(),
-                ValidityPeriod.withOnlyStartOfValidity(
-                        command.getStartOfValidity()
+                ValidityPeriod.of(
+                        command.getStartOfValidity(),
+                        command.getEndOfValidity()
                 ),
                 command.getBankId(),
                 Multilingual.fromMap(command.getDescriptions())

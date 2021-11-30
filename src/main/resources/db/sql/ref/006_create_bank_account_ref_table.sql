@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS ref.bank_account
 (
     id                bigint  NOT NULL,
     branch_id         bigint  NOT NULL,
-    acc_number        varchar NOT NULL,
+    code        varchar NOT NULL,
     start_of_validity date    NOT NULL,
     end_of_validity   date    NULL
 );
@@ -11,6 +11,12 @@ CREATE TABLE IF NOT EXISTS ref.bank_account
 ALTER TABLE ref.bank_account
     ADD CONSTRAINT pk_bank_account
         PRIMARY KEY (id);
+
+ALTER TABLE ref.bank_account
+    ADD CONSTRAINT un_ref_bank_account_code UNIQUE (code);
+--to do : need to add unique code for period
+CREATE UNIQUE INDEX IF NOT EXISTS idx_bank_account_code
+    ON ref.bank_account (code);
 
 ALTER TABLE ref.bank_account
     ADD CONSTRAINT fk_bank_account

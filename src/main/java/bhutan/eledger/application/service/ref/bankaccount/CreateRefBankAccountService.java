@@ -53,10 +53,10 @@ class CreateRefBankAccountService implements CreateRefBankAccountUseCase {
     }
     void validate(RefBankAccount refBankAccount) {
         //todo replace existence checks by one method
-        if (refBankAccountRepositoryPort.existsByAccNumber(refBankAccount.getAccNumber())) {
+        if (refBankAccountRepositoryPort.isOpenBankAccountExists(refBankAccount)) {
             throw new ViolationException(
                     new ValidationError()
-                            .addViolation("AccNumber", "Bank's branch with account number: [" + refBankAccount.getAccNumber() + "] already exists.")
+                            .addViolation("AccNumber", "Bank's branch with account number: [" + refBankAccount.getCode() + "] already exists.")
             );
         }
         if (!refBankBranchRepositoryPort.existsById(refBankAccount.getBranchId())) {

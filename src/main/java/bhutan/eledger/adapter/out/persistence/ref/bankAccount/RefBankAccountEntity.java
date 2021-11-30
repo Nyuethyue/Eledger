@@ -24,8 +24,8 @@ class RefBankAccountEntity {
     @Column(name = "branch_id")
     private Long branchId;
 
-    @Column(name = "acc_number")
-    private String accNumber;
+    @Column(name = "code")
+    private String code;
 
     @Column(name = "start_of_validity")
     private LocalDate startOfValidity;
@@ -41,11 +41,11 @@ class RefBankAccountEntity {
     )
     private Set<RefBankAccountDescriptionEntity> descriptions;
 
-    public RefBankAccountEntity(Long id, Long branchId, String accNumber,
+    public RefBankAccountEntity(Long id, Long branchId, String code,
                                 LocalDate startOfValidity, LocalDate endOfValidity) {
         this.id = id;
         this.branchId = branchId;
-        this.accNumber = accNumber;
+        this.code = code;
         this.startOfValidity = startOfValidity;
         this.endOfValidity = endOfValidity;
     }

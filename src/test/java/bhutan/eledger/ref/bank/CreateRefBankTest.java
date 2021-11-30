@@ -38,6 +38,7 @@ class CreateRefBankTest {
                 new CreateRefBankUseCase.CreateRefBankCommand(
                         "66666",
                         LocalDate.now().plusDays(1),
+                        null,
                         Map.of("en", "Bank of Bhutan")
 
                 )
@@ -52,6 +53,7 @@ class CreateRefBankTest {
                 new CreateRefBankUseCase.CreateRefBankCommand(
                         "9999",
                         LocalDate.now().plusDays(1),
+                        null,
                         Map.of("en", "Bank of Bhutan")
 
                 )

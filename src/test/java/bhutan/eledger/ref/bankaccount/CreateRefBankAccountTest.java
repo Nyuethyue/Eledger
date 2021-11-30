@@ -55,6 +55,7 @@ class CreateRefBankAccountTest {
                 new CreateRefBankUseCase.CreateRefBankCommand(
                         "4444",
                         LocalDate.now().plusDays(1),
+                        null,
                         Map.of("en", "Bank of Bhutan")
 
                 )
@@ -66,6 +67,7 @@ class CreateRefBankAccountTest {
                         "111115",
                         "0000000",
                         LocalDate.now().plusDays(1),
+                        null,
                         bankId,
                         Map.of("en", "Branch A")
 
@@ -91,6 +93,7 @@ class CreateRefBankAccountTest {
                 new CreateRefBankUseCase.CreateRefBankCommand(
                         "4444",
                         LocalDate.now().plusDays(1),
+                        null,
                         Map.of("en", "Bank of Bhutan")
 
                 )
@@ -102,6 +105,7 @@ class CreateRefBankAccountTest {
                         "111115",
                         "0000000",
                         LocalDate.now().plusDays(1),
+                        null,
                         bankId,
                         Map.of("en", "Branch A")
 
@@ -124,7 +128,7 @@ class CreateRefBankAccountTest {
         Assertions.assertNotNull(bankAccount);
         Assertions.assertNotNull(bankAccount.getDescription());
 
-        var bankAccountByAccNumber = refBankAccountRepositoryPort.readByAccNumber(bankAccount.getAccNumber()).get();
+        var bankAccountByAccNumber = refBankAccountRepositoryPort.readByAccNumber(bankAccount.getCode()).get();
         Assertions.assertNotNull(bankAccountByAccNumber);
 
         var bankAccountByBranchId = refBankAccountRepositoryPort.readAllByBranchId(branchId);

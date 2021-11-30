@@ -15,6 +15,12 @@ ALTER TABLE ref.bank_branch
         PRIMARY KEY (id);
 
 ALTER TABLE ref.bank_branch
+    ADD CONSTRAINT un_ref_bank_branch_code UNIQUE (code);
+--to do : need to add unique code for period
+CREATE UNIQUE INDEX IF NOT EXISTS idx_bank_branch_code
+    ON ref.bank_branch (code);
+
+ALTER TABLE ref.bank_branch
     ADD CONSTRAINT fk_bank_branch_bank
         FOREIGN KEY (bank_id)
             REFERENCES ref.bank(id);

@@ -29,6 +29,8 @@ public interface CreateRefBankBranchUseCase {
         @NotNull
         private final LocalDate startOfValidity;
 
+        private final LocalDate endOfValidity;
+
         @NotNull
         private final Long bankId;
 
