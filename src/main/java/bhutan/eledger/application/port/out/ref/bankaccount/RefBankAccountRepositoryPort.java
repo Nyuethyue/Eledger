@@ -17,5 +17,5 @@ public interface RefBankAccountRepositoryPort {
 
     Collection<RefBankAccount> readAllByBranchId(Long branchId);
 
-    Optional<RefBankAccount> readByAccNumber(String accNumber);
+    Optional<RefBankAccount> readByCode(String code);
 }

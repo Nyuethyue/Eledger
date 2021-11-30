@@ -45,8 +45,9 @@ class CreateRefBankAccountService implements CreateRefBankAccountUseCase {
         return RefBankAccount.withoutId(
                 command.getBranchId(),
                 command.getAccNumber(),
-                ValidityPeriod.withOnlyStartOfValidity(
-                        command.getStartOfValidity()
+                ValidityPeriod.of(
+                        command.getStartOfValidity(),
+                        command.getEndOfValidity()
                 ),
                 Multilingual.fromMap(command.getDescriptions())
         );

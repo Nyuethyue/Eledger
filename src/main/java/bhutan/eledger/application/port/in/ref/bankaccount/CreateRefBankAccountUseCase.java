@@ -27,6 +27,8 @@ public interface CreateRefBankAccountUseCase {
         @NotNull
         private final LocalDate startOfValidity;
 
+        private final LocalDate endOfValidity;
+
         @NotEmpty
         private final Map<String, String> descriptions;
 
