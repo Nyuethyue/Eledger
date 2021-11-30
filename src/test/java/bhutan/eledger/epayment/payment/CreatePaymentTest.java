@@ -7,6 +7,7 @@ import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAd
 import bhutan.eledger.application.port.out.epayment.payment.CashReceiptRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceRepositoryPort;
 import bhutan.eledger.domain.epayment.payment.Receipt;
+import bhutan.eledger.domain.epayment.payment.ReceiptStatus;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +70,16 @@ class CreatePaymentTest {
                                                 )
                                         ),
                                         1L
+                                ),
+                                new CreatePaymentAdviceUseCase.PayableLineCommand(
+                                        new BigDecimal("500.99"),
+                                        new CreatePaymentAdviceUseCase.GLAccountCommand(
+                                                "12109876543",
+                                                Map.of(
+                                                        "en", "Test value fine"
+                                                )
+                                        ),
+                                        1L
                                 )
                         )
                 );
@@ -90,8 +101,18 @@ class CreatePaymentTest {
                 "USD",
                 Set.of(
                         new CreatePaymentCommonCommand.PaymentCommand(
-                                paymentAdvice.getPayableLines().stream().findAny().get().getId(),
+                                paymentAdvice.getPayableLines()
+                                        .stream()
+                                        .filter(pl -> pl.getGlAccount().getCode().equals("12345678901"))
+                                        .findAny().get().getId(),
                                 new BigDecimal("9999.99")
+                        ),
+                        new CreatePaymentCommonCommand.PaymentCommand(
+                                paymentAdvice.getPayableLines()
+                                        .stream()
+                                        .filter(pl -> pl.getGlAccount().getCode().equals("12109876543"))
+                                        .findAny().get().getId(),
+                                new BigDecimal("500.99")
                         )
                 )
         );
@@ -100,6 +121,7 @@ class CreatePaymentTest {
 
         Assertions.assertNotNull(receipt);
         Assertions.assertNotNull(receipt.getReceiptNumber());
+        Assertions.assertEquals(ReceiptStatus.PAID, receipt.getStatus());
 
         var searchResult = searchReceiptUseCase.search(new SearchReceiptUseCase.SearchReceiptCommand(
                 0,
@@ -109,7 +131,7 @@ class CreatePaymentTest {
                 null,
                 null,
                 null,
-                null
+                "12"
         ));
 
         Assertions.assertEquals(1, searchResult.getTotalCount());

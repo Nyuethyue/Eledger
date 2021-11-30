@@ -50,7 +50,17 @@ class ReceiptSearchAdapter implements ReceiptSearchPort {
             predicate.and(qReceiptEntity.paymentMode.eq(command.getPaymentMode().getValue()));
         }
 
-        //todo add by acc type
+        if (command.getGlAccountPartFullCode() != null) {
+// todo for future to check performance this way can be used instead joins which will generate subselect instead of distinct and join
+//  predicate.and(qReceiptEntity.payments.any().glAccount.code.startsWith(command.getGlAccountPartFullCode()));
+
+            jpqlQuery.innerJoin(QPaymentEntity.paymentEntity)
+                    .on(qReceiptEntity.id.eq(QPaymentEntity.paymentEntity.receipt.id))
+                    .innerJoin(QPaymentEntity.paymentEntity.glAccount)
+                    .distinct();
+
+            predicate.and(QPaymentEntity.paymentEntity.glAccount.code.startsWith(command.getGlAccountPartFullCode()));
+        }
 
         return jpqlQuery.where(predicate);
     }
