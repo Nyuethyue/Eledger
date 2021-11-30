@@ -6,6 +6,7 @@ import am.iunetworks.lib.multilingual.core.Multilingual;
 import bhutan.eledger.application.port.in.ref.bankbranch.CreateRefBankBranchUseCase;
 import bhutan.eledger.application.port.out.ref.bank.RefBankRepositoryPort;
 import bhutan.eledger.application.port.out.ref.bankbranch.RefBankBranchRepositoryPort;
+import bhutan.eledger.common.dto.ValidityPeriod;
 import bhutan.eledger.domain.ref.bankbranch.RefBankBranch;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -43,6 +44,9 @@ class CreateRefBankBranchService implements CreateRefBankBranchUseCase{
                 command.getCode(),
                 command.getBranchCode(),
                 command.getAddress(),
+                ValidityPeriod.withOnlyStartOfValidity(
+                        command.getStartOfValidity()
+                ),
                 command.getBankId(),
                 Multilingual.fromMap(command.getDescriptions())
         );

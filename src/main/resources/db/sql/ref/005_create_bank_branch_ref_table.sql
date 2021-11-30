@@ -5,6 +5,8 @@ CREATE TABLE IF NOT EXISTS ref.bank_branch
     code             varchar NOT NULL,
     branch_code      varchar ,
     address          varchar NOT NULL,
+    start_of_validity date    NOT NULL,
+    end_of_validity   date    NULL,
     bank_id           bigint NOT NULL
 );
 

@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,6 +26,12 @@ class RefCurrencyEntity {
 
     @Column(name = "symbol")
     private String symbol;
+
+    @Column(name = "start_of_validity")
+    private LocalDate startOfValidity;
+
+    @Column(name = "end_of_validity")
+    private LocalDate endOfValidity;
 
     @OneToMany(
             mappedBy = "currency",

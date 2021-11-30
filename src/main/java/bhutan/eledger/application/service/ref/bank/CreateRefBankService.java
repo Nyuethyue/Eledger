@@ -5,11 +5,14 @@ import am.iunetworks.lib.common.validation.ViolationException;
 import am.iunetworks.lib.multilingual.core.Multilingual;
 import bhutan.eledger.application.port.in.ref.bank.CreateRefBankUseCase;
 import bhutan.eledger.application.port.out.ref.bank.RefBankRepositoryPort;
+import bhutan.eledger.common.dto.ValidityPeriod;
 import bhutan.eledger.domain.ref.bank.RefBank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
 
 @Log4j2
 @Service
@@ -39,6 +42,9 @@ class CreateRefBankService implements CreateRefBankUseCase {
     private RefBank mapCommandToRefBank(CreateRefBankUseCase.CreateRefBankCommand command) {
         return RefBank.withoutId(
                 command.getCode(),
+                ValidityPeriod.withOnlyStartOfValidity(
+                  command.getStartOfValidity()
+                ),
                 Multilingual.fromMap(command.getDescriptions())
         );
     }
@@ -50,5 +56,12 @@ class CreateRefBankService implements CreateRefBankUseCase {
                             .addViolation("Code", "Bank with BFSC code: [" + refBank.getCode() + "] already exists.")
             );
         }
+        if (refBankRepositoryPort.existsByCode(refBank.getCode())) {
+            throw new ViolationException(
+                    new ValidationError()
+                            .addViolation("Code", "Bank with BFSC code: [" + refBank.getCode() + "] already exists.")
+            );
+        }
+
     }
 }

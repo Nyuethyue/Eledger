@@ -9,6 +9,8 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
+
+import java.time.LocalDate;
 import java.util.Map;
 
 
@@ -35,6 +37,7 @@ class CreateRefBankTest {
         Long id = createRefBankUseCase.create(
                 new CreateRefBankUseCase.CreateRefBankCommand(
                         "66666",
+                        LocalDate.now().plusDays(1),
                         Map.of("en", "Bank of Bhutan")
 
                 )
@@ -48,6 +51,7 @@ class CreateRefBankTest {
         Long id = createRefBankUseCase.create(
                 new CreateRefBankUseCase.CreateRefBankCommand(
                         "9999",
+                        LocalDate.now().plusDays(1),
                         Map.of("en", "Bank of Bhutan")
 
                 )
@@ -55,6 +59,8 @@ class CreateRefBankTest {
         );
 
         var bankOptional = refBankRepositoryPort.readById(id);
+
+        Assertions.assertTrue(bankOptional.isPresent());
 
         var bank = bankOptional.get();
         Assertions.assertNotNull(bank);

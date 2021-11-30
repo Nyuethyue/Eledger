@@ -1,9 +1,11 @@
 ------------------------------------------------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS ref.bank_account
 (
-    id         bigint  NOT NULL,
-    branch_id  bigint  NOT NULL,
-    acc_number varchar NOT NULL
+    id                bigint  NOT NULL,
+    branch_id         bigint  NOT NULL,
+    acc_number        varchar NOT NULL,
+    start_of_validity date    NOT NULL,
+    end_of_validity   date    NULL
 );
 
 ALTER TABLE ref.bank_account

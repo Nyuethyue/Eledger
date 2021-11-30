@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,6 +25,11 @@ class RefBankEntity {
     @Column(name = "code")
     private String code;
 
+    @Column(name = "start_of_validity")
+    private LocalDate startOfValidity;
+
+    @Column(name = "end_of_validity")
+    private LocalDate endOfValidity;
 
     @OneToMany(
             mappedBy = "bank",
@@ -33,9 +39,11 @@ class RefBankEntity {
     )
     private Set<RefBankDescriptionEntity> descriptions;
 
-    public RefBankEntity(Long id,String code) {
+    public RefBankEntity(Long id,String code,LocalDate startOfValidity, LocalDate endOfValidity) {
         this.id = id;
         this.code = code;
+        this.startOfValidity = startOfValidity;
+        this.endOfValidity = endOfValidity;
     }
 
     public void addToDescriptions(RefBankDescriptionEntity description) {

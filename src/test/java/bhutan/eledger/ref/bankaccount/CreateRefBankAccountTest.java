@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
+import java.time.LocalDate;
 import java.util.Map;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -53,6 +54,7 @@ class CreateRefBankAccountTest {
         Long bankId = createRefBankUseCase.create(
                 new CreateRefBankUseCase.CreateRefBankCommand(
                         "4444",
+                        LocalDate.now().plusDays(1),
                         Map.of("en", "Bank of Bhutan")
 
                 )
@@ -63,6 +65,7 @@ class CreateRefBankAccountTest {
                         "0000",
                         "111115",
                         "0000000",
+                        LocalDate.now().plusDays(1),
                         bankId,
                         Map.of("en", "Branch A")
 
@@ -73,6 +76,7 @@ class CreateRefBankAccountTest {
                 new CreateRefBankAccountUseCase.CreateBankAccountCommand(
                         branchId,
                         "5555555",
+                        LocalDate.now().plusDays(1),
                         Map.of("en", "Account A")
 
                 )
@@ -86,6 +90,7 @@ class CreateRefBankAccountTest {
         Long bankId = createRefBankUseCase.create(
                 new CreateRefBankUseCase.CreateRefBankCommand(
                         "4444",
+                        LocalDate.now().plusDays(1),
                         Map.of("en", "Bank of Bhutan")
 
                 )
@@ -96,6 +101,7 @@ class CreateRefBankAccountTest {
                         "0000",
                         "111115",
                         "0000000",
+                        LocalDate.now().plusDays(1),
                         bankId,
                         Map.of("en", "Branch A")
 
@@ -106,6 +112,7 @@ class CreateRefBankAccountTest {
                 new CreateRefBankAccountUseCase.CreateBankAccountCommand(
                         branchId,
                         "5555555",
+                        LocalDate.now().plusDays(1),
                         Map.of("en", "Account A")
 
                 )

@@ -1,8 +1,10 @@
 ---------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS ref.bank
 (
-    id        bigint  NOT NULL,
-    code      varchar NOT NULL
+    id                bigint  NOT NULL,
+    code              varchar NOT NULL,
+    start_of_validity date    NOT NULL,
+    end_of_validity   date    NULL
 );
 
 ALTER TABLE ref.bank
