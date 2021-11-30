@@ -3,9 +3,7 @@ CREATE TABLE IF NOT EXISTS ref.currency
 (
     id                bigint  NOT NULL,
     code              char(3) NOT NULL,
-    symbol            varchar NOT NULL,
-    start_of_validity date    NOT NULL,
-    end_of_validity   date    NULL
+    symbol            varchar NOT NULL
 );
 
 ALTER TABLE ref.currency
