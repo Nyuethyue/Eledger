@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.Querydsl;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 @RequiredArgsConstructor
 class ReceiptSearchAdapter implements ReceiptSearchPort {
@@ -48,6 +50,11 @@ class ReceiptSearchAdapter implements ReceiptSearchPort {
 
         if (command.getPaymentMode() != null) {
             predicate.and(qReceiptEntity.paymentMode.eq(command.getPaymentMode().getValue()));
+        }
+
+        if (command.getReceiptDate() != null) {
+            LocalDateTime margin = command.getReceiptDate().plusDays(1).atStartOfDay();
+            predicate.and(qReceiptEntity.creationDateTime.before(margin));
         }
 
         if (command.getGlAccountPartFullCode() != null) {
