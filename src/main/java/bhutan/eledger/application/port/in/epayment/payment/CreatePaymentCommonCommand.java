@@ -12,7 +12,7 @@ public class CreatePaymentCommonCommand {
     @NotNull
     private final Long paymentAdviceId;
     @NotNull
-    private final String currency;
+    private final Long refCurrencyId;
     @NotNull
     @NotEmpty
     private final Collection<PaymentCommand> payments;

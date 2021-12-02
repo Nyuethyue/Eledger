@@ -17,16 +17,16 @@ public interface ReceiptSearchPort {
     @ToString
     class ReceiptCommand extends AbstractSearchCommand {
 
-        private final String currency;
+        private final Long refCurrencyId;
         private final PaymentMode paymentMode;
         private final String branchCode;
         private final String glAccountPartFullCode;
         private final LocalDate receiptDate;
 
         public ReceiptCommand(int page, int size, String sortProperty, String sortDirection,
-                              String currency, PaymentMode paymentMode, String branchCode, String glAccountPartFullCode, LocalDate receiptDate) {
+                              Long refCurrencyId, PaymentMode paymentMode, String branchCode, String glAccountPartFullCode, LocalDate receiptDate) {
             super(page, size, sortProperty, sortDirection);
-            this.currency = currency;
+            this.refCurrencyId = refCurrencyId;
             this.paymentMode = paymentMode;
             this.branchCode = branchCode;
             this.glAccountPartFullCode = glAccountPartFullCode;

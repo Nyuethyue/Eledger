@@ -4,8 +4,10 @@ import bhutan.eledger.application.port.in.epayment.payment.CreateCashPaymentUseC
 import bhutan.eledger.application.port.in.epayment.payment.CreatePaymentCommonCommand;
 import bhutan.eledger.application.port.in.epayment.payment.SearchReceiptUseCase;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAdviceUseCase;
+import bhutan.eledger.application.port.in.ref.currency.CreateRefCurrencyUseCase;
 import bhutan.eledger.application.port.out.epayment.payment.CashReceiptRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceRepositoryPort;
+import bhutan.eledger.application.port.out.ref.currency.RefCurrencyRepositoryPort;
 import bhutan.eledger.domain.epayment.payment.Receipt;
 import bhutan.eledger.domain.epayment.payment.ReceiptStatus;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
@@ -43,6 +45,12 @@ class CreatePaymentTest {
 
     @Autowired
     private SearchReceiptUseCase searchReceiptUseCase;
+
+    //todo remove ref dependencies
+    @Autowired
+    private CreateRefCurrencyUseCase createRefCurrencyUseCase;
+    @Autowired
+    private RefCurrencyRepositoryPort refCurrencyRepositoryPort;
 
     private PaymentAdvice paymentAdvice;
 
@@ -91,14 +99,25 @@ class CreatePaymentTest {
     void afterEach() {
         cashReceiptRepositoryPort.deleteAll();
         paymentAdviceRepositoryPort.deleteAll();
+        refCurrencyRepositoryPort.deleteAll();
     }
 
     @Test
     void createTest() {
 
+        Long currId = createRefCurrencyUseCase.create(
+                new CreateRefCurrencyUseCase.CreateCurrencyCommand(
+                        "BTN",
+                        "Nu.",
+                        Map.of("en", "Ngultrum")
+
+                )
+
+        );
+
         var command = new CreateCashPaymentUseCase.CreateCashPaymentCommand(
                 paymentAdvice.getId(),
-                "USD",
+                currId,
                 Set.of(
                         new CreatePaymentCommonCommand.PaymentCommand(
                                 paymentAdvice.getPayableLines()

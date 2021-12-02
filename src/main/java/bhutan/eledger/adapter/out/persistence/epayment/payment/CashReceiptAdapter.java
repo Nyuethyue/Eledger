@@ -1,6 +1,9 @@
 package bhutan.eledger.adapter.out.persistence.epayment.payment;
 
 import bhutan.eledger.application.port.out.epayment.payment.CashReceiptRepositoryPort;
+import bhutan.eledger.common.ref.refentry.RefEntry;
+import bhutan.eledger.common.ref.refentry.RefEntryRepository;
+import bhutan.eledger.common.ref.refentry.RefName;
 import bhutan.eledger.domain.epayment.payment.CashReceipt;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Component;
 class CashReceiptAdapter implements CashReceiptRepositoryPort {
     private final CashReceiptMapper cashReceiptMapper;
     private final ReceiptEntityRepository receiptEntityRepository;
+    private final RefEntryRepository refEntryRepository;
 
     @Override
     public CashReceipt create(CashReceipt cashReceipt) {
@@ -17,7 +21,9 @@ class CashReceiptAdapter implements CashReceiptRepositoryPort {
                 cashReceiptMapper.mapToEntity(cashReceipt)
         );
 
-        return cashReceiptMapper.mapToDomain(receiptEntity);
+        RefEntry refEntry = refEntryRepository.findByRefNameAndId(RefName.CURRENCY.getValue(), receiptEntity.getRefCurrencyId());
+
+        return cashReceiptMapper.mapToDomain(receiptEntity, refEntry);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package bhutan.eledger.domain.epayment.payment;
 
+import bhutan.eledger.common.ref.refentry.RefEntry;
 import bhutan.eledger.domain.epayment.taxpayer.EpTaxpayer;
 import lombok.Data;
 
@@ -13,7 +14,7 @@ public abstract class Receipt {
     private final String drn;
     private final PaymentMode paymentMode;
     private final ReceiptStatus status;
-    private final String currency;
+    private final RefEntry currency;
     private final String receiptNumber;
     private final LocalDateTime creationDateTime;
 

@@ -1,5 +1,6 @@
 package bhutan.eledger.domain.epayment.payment;
 
+import bhutan.eledger.common.ref.refentry.RefEntry;
 import bhutan.eledger.domain.epayment.taxpayer.EpTaxpayer;
 import lombok.Getter;
 import lombok.ToString;
@@ -16,7 +17,7 @@ public class CashReceipt extends Receipt {
             String drn,
             PaymentMode paymentMode,
             ReceiptStatus status,
-            String currency,
+            RefEntry currency,
             String receiptNumber,
             LocalDateTime creationDateTime,
             EpTaxpayer taxpayer,
@@ -30,7 +31,7 @@ public class CashReceipt extends Receipt {
             String drn,
             PaymentMode paymentMode,
             ReceiptStatus status,
-            String currency,
+            RefEntry currency,
             String receiptNumber,
             LocalDateTime creationDateTime,
             EpTaxpayer taxpayer,
@@ -53,7 +54,7 @@ public class CashReceipt extends Receipt {
             String drn,
             PaymentMode paymentMode,
             ReceiptStatus status,
-            String currency,
+            RefEntry currency,
             String receiptNumber,
             LocalDateTime creationDateTime,
             EpTaxpayer taxpayer,

@@ -29,8 +29,10 @@ class ReceiptEntity {
     private String paymentMode;
     @Column(name = "status")
     private String status;
-    @Column(name = "currency")
-    private String currency;
+    @Column(name = "ref_currency_id")
+    private Long refCurrencyId;
+    @Column(name = "ref_bank_branch_id")
+    private Long refBankBranchId;
     @Column(name = "receipt_number")
     private String receiptNumber;
     @Column(name = "security_number")
@@ -56,12 +58,12 @@ class ReceiptEntity {
     )
     private Set<PaymentEntity> payments;
 
-    public ReceiptEntity(Long id, String drn, String paymentMode, String status, String currency, String receiptNumber, String securityNumber, LocalDateTime creationDateTime, EpTaxpayer taxpayer) {
+    public ReceiptEntity(Long id, String drn, String paymentMode, String status, Long refCurrencyId, String receiptNumber, String securityNumber, LocalDateTime creationDateTime, EpTaxpayer taxpayer) {
         this.id = id;
         this.drn = drn;
         this.paymentMode = paymentMode;
         this.status = status;
-        this.currency = currency;
+        this.refCurrencyId = refCurrencyId;
         this.receiptNumber = receiptNumber;
         this.securityNumber = securityNumber;
         this.creationDateTime = creationDateTime;

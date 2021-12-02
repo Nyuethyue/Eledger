@@ -46,7 +46,7 @@ class SearchReceiptService implements SearchReceiptUseCase {
                 receiptSearchProperties.resolveSize(command.getSize()),
                 receiptSearchProperties.resolveSortProperty(command.getSortProperty()),
                 receiptSearchProperties.resolveSortDirection(command.getSortDirection()),
-                command.getCurrency(),
+                command.getRefCurrencyId(),
                 command.getPaymentMode(),
                 command.getBranchCode(),
                 command.getGlAccountPartFullCode(),

@@ -4,6 +4,9 @@ import am.iunetworks.lib.common.persistence.search.PageableResolver;
 import am.iunetworks.lib.common.persistence.search.PagedSearchResult;
 import am.iunetworks.lib.common.persistence.search.SearchResult;
 import bhutan.eledger.application.port.out.epayment.payment.ReceiptSearchPort;
+import bhutan.eledger.common.ref.refentry.RefEntry;
+import bhutan.eledger.common.ref.refentry.RefEntryRepository;
+import bhutan.eledger.common.ref.refentry.RefName;
 import bhutan.eledger.domain.epayment.payment.Receipt;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPQLQuery;
@@ -20,6 +23,7 @@ import java.time.LocalDateTime;
 class ReceiptSearchAdapter implements ReceiptSearchPort {
     private final ReceiptEntityRepository receiptEntityRepository;
     private final CashReceiptMapper cashReceiptMapper;
+    private final RefEntryRepository refEntryRepository;
 
     @Override
     public SearchResult<Receipt> search(ReceiptCommand command) {
@@ -30,7 +34,11 @@ class ReceiptSearchAdapter implements ReceiptSearchPort {
                         pageable
                 )
                 //todo create fill receipt domain and map all data
-                .map(cashReceiptMapper::mapToDomain);
+                .map(receiptEntity -> {
+                    RefEntry refEntry = refEntryRepository.findByRefNameAndId(RefName.CURRENCY.getValue(), receiptEntity.getRefCurrencyId());
+
+                    return cashReceiptMapper.mapToDomain(receiptEntity, refEntry);
+                });
 
         return new PagedSearchResult<>(page);
     }
@@ -44,8 +52,8 @@ class ReceiptSearchAdapter implements ReceiptSearchPort {
 
         BooleanBuilder predicate = new BooleanBuilder();
 
-        if (command.getCurrency() != null) {
-            predicate.and(qReceiptEntity.currency.eq(command.getCurrency()));
+        if (command.getRefCurrencyId() != null) {
+            predicate.and(qReceiptEntity.refCurrencyId.eq(command.getRefCurrencyId()));
         }
 
         if (command.getPaymentMode() != null) {

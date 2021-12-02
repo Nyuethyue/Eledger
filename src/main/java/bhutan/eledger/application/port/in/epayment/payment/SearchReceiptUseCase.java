@@ -25,7 +25,7 @@ public interface SearchReceiptUseCase {
         private final String sortProperty;
         private final String sortDirection;
 
-        private final String currency;
+        private final Long refCurrencyId;
         private final PaymentMode paymentMode;
         private final String branchCode;
         private final String glAccountPartFullCode;

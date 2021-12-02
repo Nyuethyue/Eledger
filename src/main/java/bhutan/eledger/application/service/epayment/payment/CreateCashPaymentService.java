@@ -9,6 +9,8 @@ import bhutan.eledger.application.port.out.epayment.payment.EledgerPaymentTransa
 import bhutan.eledger.application.port.out.epayment.payment.ReceiptNumberGeneratorPort;
 import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.taxpayer.EpTaxpayerRepositoryPort;
+import bhutan.eledger.common.ref.refentry.RefEntryRepository;
+import bhutan.eledger.common.ref.refentry.RefName;
 import bhutan.eledger.domain.epayment.payment.*;
 import bhutan.eledger.domain.epayment.paymentadvice.PayableLine;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
@@ -32,6 +34,7 @@ class CreateCashPaymentService implements CreateCashPaymentUseCase {
     private final CashReceiptRepositoryPort cashReceiptRepositoryPort;
     private final EpTaxpayerRepositoryPort epTaxpayerRepositoryPort;
     private final EledgerPaymentTransactionPort eledgerPaymentTransactionPort;
+    private final RefEntryRepository refEntryRepository;
 
     @Override
     public Receipt create(CreateCashPaymentCommand command) {
@@ -48,11 +51,19 @@ class CreateCashPaymentService implements CreateCashPaymentUseCase {
         var payments =
                 resolvePayments(command, updatedPaymentAdvice);
 
+        var refEntry = refEntryRepository.findByRefNameAndId(
+                RefName.CURRENCY.getValue(),
+                command.getRefCurrencyId()
+        );
+
+        //todo check is ref open
+
+
         CashReceipt cashReceipt = CashReceipt.withoutId(
                 updatedPaymentAdvice.getDrn(),
                 PaymentMode.CASH,
                 updatedPaymentAdvice.isPaid() ? ReceiptStatus.PAID : ReceiptStatus.SPLIT_PAYMENT,
-                command.getCurrency(),
+                refEntry,
                 receiptNumber,
                 creationDateTime,
                 epTaxpayerRepositoryPort.requiredReadByTpn(updatedPaymentAdvice.getTaxpayer().getTpn()),

@@ -1,5 +1,6 @@
 package bhutan.eledger.application.port.out.eledger.config.datatype;
 
+import am.iunetworks.lib.common.validation.RecordNotFoundException;
 import bhutan.eledger.domain.eledger.config.datatype.DataType;
 
 import java.util.Collection;
@@ -13,7 +14,9 @@ public interface DataTypeRepositoryPort {
     Optional<DataType> readById(Integer id);
 
     default DataType requiredReadById(Integer id) {
-        return readById(id).orElseThrow();
+        return readById(id).orElseThrow(() ->
+                new RecordNotFoundException("Data type by id: [" + id + "] not found.")
+        );
     }
 
     boolean existsByType(String type);

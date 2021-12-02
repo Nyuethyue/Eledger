@@ -13,8 +13,8 @@ public interface CreateCashPaymentUseCase {
 
     class CreateCashPaymentCommand extends CreatePaymentCommonCommand {
 
-        public CreateCashPaymentCommand(Long paymentAdviceId, String currency, Collection<PaymentCommand> payments) {
-            super(paymentAdviceId, currency, payments);
+        public CreateCashPaymentCommand(Long paymentAdviceId, Long refCurrencyId, Collection<PaymentCommand> payments) {
+            super(paymentAdviceId, refCurrencyId, payments);
         }
     }
 }

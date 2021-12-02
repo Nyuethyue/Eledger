@@ -1,5 +1,6 @@
 package bhutan.eledger.adapter.out.persistence.epayment.payment;
 
+import bhutan.eledger.common.ref.refentry.RefEntry;
 import bhutan.eledger.domain.epayment.payment.CashReceipt;
 import bhutan.eledger.domain.epayment.payment.Payment;
 import bhutan.eledger.domain.epayment.payment.PaymentMode;
@@ -17,7 +18,7 @@ public class CashReceiptMapper {
                 cashReceipt.getDrn(),
                 cashReceipt.getPaymentMode().getValue(),
                 cashReceipt.getStatus().getValue(),
-                cashReceipt.getCurrency(),
+                cashReceipt.getCurrency().getId(),
                 cashReceipt.getReceiptNumber(),
                 null,
                 cashReceipt.getCreationDateTime(),
@@ -43,13 +44,13 @@ public class CashReceiptMapper {
         return receiptEntity;
     }
 
-    CashReceipt mapToDomain(ReceiptEntity receipt) {
+    CashReceipt mapToDomain(ReceiptEntity receipt, RefEntry refEntry) {
         return CashReceipt.withId(
                 receipt.getId(),
                 receipt.getDrn(),
                 PaymentMode.of(receipt.getPaymentMode()),
                 ReceiptStatus.of(receipt.getStatus()),
-                receipt.getCurrency(),
+                refEntry,
                 receipt.getReceiptNumber(),
                 receipt.getCreationDateTime(),
                 receipt.getTaxpayer(),
