@@ -2,13 +2,13 @@
 CREATE TABLE IF NOT EXISTS epayment.deposit
 (
     id                     bigint    NOT NULL,
-    receipt_id             bigint    NOT NULL
-    payment_mode           varchar   NOT NULL,
+    payment_mode           bigint   NOT NULL,
     bank_deposit_date      date NOT NULL,
     last_printed_date      timestamp NOT NULL,
     amount                 numeric(20, 2) NOT NULL,
     status                 varchar   NOT NULL,
     creation_date_time     timestamp NOT NULL,
+    taxpayer_id            bigint    NOT NULL
 );
 
 ALTER TABLE epayment.deposit
