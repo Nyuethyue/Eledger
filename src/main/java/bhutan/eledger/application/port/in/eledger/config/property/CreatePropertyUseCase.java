@@ -1,6 +1,7 @@
 package bhutan.eledger.application.port.in.eledger.config.property;
 
 import bhutan.eledger.domain.eledger.config.property.Property;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
@@ -20,6 +21,12 @@ public interface CreatePropertyUseCase {
 
     @Data
     class CreatePropertiesCommand {
+
+        @JsonCreator
+        public CreatePropertiesCommand(Collection<PropertyCommand> properties) {
+            this.properties = properties;
+        }
+
         @NotEmpty
         @Valid
         private final Collection<PropertyCommand> properties;
