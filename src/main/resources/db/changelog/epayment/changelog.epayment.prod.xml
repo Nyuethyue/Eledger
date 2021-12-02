@@ -26,4 +26,9 @@
         <sqlFile path="../../sql/epayment/006_create_receipt_number_sequence.sql"
                  relativeToChangelogFile="true"/>
     </changeSet>
+
+    <changeSet id="Deposit schemas" author="A.A." dbms="postgresql">
+        <sqlFile path="../../sql/epayment/007_deposit_schema.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog>
