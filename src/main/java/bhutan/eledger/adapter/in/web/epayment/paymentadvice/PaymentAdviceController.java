@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/payment/paymentadvice")
+@RequestMapping("/payment/paymentadvice/search")
 @RequiredArgsConstructor
 public class PaymentAdviceController {
 
@@ -29,7 +29,7 @@ public class PaymentAdviceController {
                 .build();
     }
 
-    @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/slip", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     public SearchResult<PaymentAdvice> search(SearchPaymentAdviceUseCase.SearchPaymentAdviseCommand command) {
         return searchPaymentAdviceUseCase.search(command);

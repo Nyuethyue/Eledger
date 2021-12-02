@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/payment/receipt/search")
+@RequestMapping("/payment/receipt")
 class SearchReceiptController {
 
     private final SearchReceiptUseCase searchReceiptUseCase;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     public SearchResult<Receipt> search(SearchReceiptUseCase.SearchReceiptCommand command) {
         return searchReceiptUseCase.search(command);
