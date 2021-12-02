@@ -7,6 +7,8 @@ import bhutan.eledger.domain.epayment.payment.Receipt;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.time.LocalDate;
+
 public interface ReceiptSearchPort {
 
     SearchResult<Receipt> search(ReceiptCommand command);
@@ -19,13 +21,16 @@ public interface ReceiptSearchPort {
         private final PaymentMode paymentMode;
         private final String branchCode;
         private final String glAccountPartFullCode;
+        private final LocalDate receiptDate;
 
-        public ReceiptCommand(int page, int size, String sortProperty, String sortDirection, String currency, PaymentMode paymentMode, String branchCode, String glAccountPartFullCode) {
+        public ReceiptCommand(int page, int size, String sortProperty, String sortDirection,
+                              String currency, PaymentMode paymentMode, String branchCode, String glAccountPartFullCode, LocalDate receiptDate) {
             super(page, size, sortProperty, sortDirection);
             this.currency = currency;
             this.paymentMode = paymentMode;
             this.branchCode = branchCode;
             this.glAccountPartFullCode = glAccountPartFullCode;
+            this.receiptDate = receiptDate;
         }
     }
 }

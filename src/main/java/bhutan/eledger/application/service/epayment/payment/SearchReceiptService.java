@@ -49,7 +49,8 @@ class SearchReceiptService implements SearchReceiptUseCase {
                 command.getCurrency(),
                 command.getPaymentMode(),
                 command.getBranchCode(),
-                command.getGlAccountPartFullCode()
+                command.getGlAccountPartFullCode(),
+                command.getReceiptDate()
         );
     }
 }

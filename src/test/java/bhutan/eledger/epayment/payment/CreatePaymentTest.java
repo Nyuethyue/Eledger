@@ -131,9 +131,38 @@ class CreatePaymentTest {
                 null,
                 null,
                 null,
-                "12"
+                "12",
+                LocalDate.now()
         ));
 
         Assertions.assertEquals(1, searchResult.getTotalCount());
+
+        searchResult = searchReceiptUseCase.search(new SearchReceiptUseCase.SearchReceiptCommand(
+                0,
+                10,
+                null,
+                null,
+                null,
+                null,
+                null,
+                "12",
+                null
+        ));
+
+        Assertions.assertEquals(1, searchResult.getTotalCount());
+
+        searchResult = searchReceiptUseCase.search(new SearchReceiptUseCase.SearchReceiptCommand(
+                0,
+                10,
+                null,
+                null,
+                null,
+                null,
+                null,
+                "12",
+                LocalDate.now().minusDays(1)
+        ));
+
+        Assertions.assertEquals(0, searchResult.getTotalCount());
     }
 }

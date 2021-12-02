@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
+import java.time.LocalDate;
 
 @Validated
 public interface SearchReceiptUseCase {
@@ -28,5 +29,6 @@ public interface SearchReceiptUseCase {
         private final PaymentMode paymentMode;
         private final String branchCode;
         private final String glAccountPartFullCode;
+        private final LocalDate receiptDate;
     }
 }
