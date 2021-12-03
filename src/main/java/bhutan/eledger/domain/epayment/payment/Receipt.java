@@ -17,9 +17,9 @@ public abstract class Receipt {
     private final RefEntry currency;
     private final String receiptNumber;
     private final LocalDateTime creationDateTime;
-
     private final EpTaxpayer taxpayer;
     private final Collection<Payment> payments;
+    private final BigDecimal totalPaidAmount;
 
     public BigDecimal getTotalPaidAmount() {
         return payments

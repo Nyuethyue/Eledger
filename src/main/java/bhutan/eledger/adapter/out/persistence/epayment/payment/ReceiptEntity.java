@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -45,6 +46,8 @@ class ReceiptEntity {
     private String otherReferenceNumber;
     @Column(name = "creation_date_time")
     private LocalDateTime creationDateTime;
+    @Column(name = "total_paid_amount")
+    private BigDecimal totalPaidAmount;
 
     @OneToOne
     @JoinColumn(name = "taxpayer_id", nullable = false)
@@ -58,7 +61,8 @@ class ReceiptEntity {
     )
     private Set<PaymentEntity> payments;
 
-    public ReceiptEntity(Long id, String drn, String paymentMode, String status, Long refCurrencyId, String receiptNumber, String securityNumber, LocalDateTime creationDateTime, EpTaxpayer taxpayer) {
+    public ReceiptEntity(Long id, String drn, String paymentMode, String status, Long refCurrencyId, String receiptNumber,
+                         String securityNumber, LocalDateTime creationDateTime, EpTaxpayer taxpayer,BigDecimal totalPaidAmount) {
         this.id = id;
         this.drn = drn;
         this.paymentMode = paymentMode;
@@ -68,5 +72,6 @@ class ReceiptEntity {
         this.securityNumber = securityNumber;
         this.creationDateTime = creationDateTime;
         this.taxpayer = taxpayer;
+        this.totalPaidAmount = totalPaidAmount;
     }
 }

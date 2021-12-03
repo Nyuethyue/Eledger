@@ -22,7 +22,8 @@ public class CashReceiptMapper {
                 cashReceipt.getReceiptNumber(),
                 null,
                 cashReceipt.getCreationDateTime(),
-                cashReceipt.getTaxpayer()
+                cashReceipt.getTaxpayer(),
+                cashReceipt.getTotalPaidAmount()
         );
 
         receiptEntity.setPayments(
@@ -65,7 +66,8 @@ public class CashReceiptMapper {
                                         pe.getElTargetTransactionId()
                                 )
                         )
-                        .collect(Collectors.toUnmodifiableSet())
+                        .collect(Collectors.toUnmodifiableSet()),
+                receipt.getTotalPaidAmount()
         );
     }
 }
