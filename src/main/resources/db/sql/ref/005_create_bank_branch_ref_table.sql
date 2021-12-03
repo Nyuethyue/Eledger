@@ -14,6 +14,9 @@ ALTER TABLE ref.bank_branch
     ADD CONSTRAINT pk_bank_branch
         PRIMARY KEY (id);
 
+CREATE INDEX IF NOT EXISTS idx_bank_branch_code
+    ON ref.bank_branch (code);
+
 ALTER TABLE ref.bank_branch
     ADD CONSTRAINT fk_bank_branch_bank
         FOREIGN KEY (bank_id)

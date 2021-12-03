@@ -11,6 +11,9 @@ ALTER TABLE ref.bank
     ADD CONSTRAINT pk_bank
         PRIMARY KEY (id);
 
+CREATE INDEX IF NOT EXISTS idx_bank_code
+    ON ref.bank (code);
+
 CREATE SEQUENCE ref.bank_id_seq
     INCREMENT BY 1
     MINVALUE 1
