@@ -28,7 +28,7 @@ class PaymentAdviceSearchAdapter implements SearchPaymentAdvicePort {
                 pageable
         ).map(paymentAdviceMapper::mapToDomain);
 
-        return new PagedSearchResult<>(page);
+        return PagedSearchResult.of(page);
     }
 
     private JPQLQuery<PaymentAdviceEntity> resolveQuery(PaymentAdviseSearchCommand command, Querydsl querydsl) {

@@ -28,7 +28,7 @@ class GLAccountPartSearchAdapter implements GLAccountPartSearchPort {
                 pageable
         ).map(glAccountPartMapper::mapToDomain);
 
-        return new PagedSearchResult<>(page);
+        return PagedSearchResult.of(page);
     }
 
     private JPQLQuery<GLAccountPartEntity> resolveQuery(GLAccountPartSearchCommand command, Querydsl querydsl) {
