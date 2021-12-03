@@ -14,7 +14,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.LinkedList;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -39,28 +38,17 @@ class CreateDepositTest {
 
     @BeforeEach
     void beforeEach() {
+        var receipts = new LinkedList<Long>();
+        var denominationCounts = new LinkedList<CreateDepositUseCase.DenominationCount>();
         CreateDepositUseCase.CreateDepositCommand createCommand =
                 new CreateDepositUseCase.CreateDepositCommand(
+                        PaymentMode.CASH_WARRANT,
                         DepositStatus.BOUNCED,
-                        BigDecimal.valueOf(1221),
-                        LocalDate.now().minusDays(31),
-                        createReceipts(),
-                        createDenominationCounts()
+                        receipts,
+                        denominationCounts
                 );
         Long id = createDepositUseCase.create(createCommand);
         deposit = transactionTemplate.execute(status -> depositRepositoryPort.readById(id).get());
-    }
-
-    private Collection<Long> createReceipts() {
-        LinkedList<Long> result = new LinkedList<>();
-        result.add(1l);
-        return result;
-    }
-
-    private Collection<CreateDepositUseCase.DenominationCount> createDenominationCounts() {
-        var result = new LinkedList<CreateDepositUseCase.DenominationCount>();
-        result.add(new CreateDepositUseCase.DenominationCount(1l, 10l));
-        return result;
     }
 
     @AfterEach

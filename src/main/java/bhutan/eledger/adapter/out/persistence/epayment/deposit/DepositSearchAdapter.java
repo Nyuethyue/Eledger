@@ -22,7 +22,7 @@ class DepositSearchAdapter implements DepositSearchPort {
     private final DepositMapper depositMapper;
 
     @Override
-    public SearchResult<Deposit> search(DepositSearchCommand command) {
+    public SearchResult<Deposit> search(DepositCommand command) {
         Pageable pageable = PageableResolver.resolve(command);
 
         Page<Deposit> page = receiptEntityRepository.findAll(
@@ -30,10 +30,10 @@ class DepositSearchAdapter implements DepositSearchPort {
                         pageable
                 ).map(depositMapper::mapToDomain);
 
-        return PagedSearchResult.of(page);
+        return new PagedSearchResult<>(page);
     }
 
-    private JPQLQuery<DepositEntity> resolveQuery(DepositSearchCommand command, Querydsl querydsl) {
+    private JPQLQuery<DepositEntity> resolveQuery(DepositCommand command, Querydsl querydsl) {
         var qDepositEntity = QDepositEntity.depositEntity;
 
         var jpqlQuery = querydsl

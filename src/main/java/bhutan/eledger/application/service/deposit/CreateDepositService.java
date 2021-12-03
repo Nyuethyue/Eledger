@@ -12,7 +12,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.stream.Collectors;
+import java.time.LocalDateTime;
 
 @Log4j2
 @Service
@@ -29,19 +29,21 @@ class CreateDepositService implements CreateDepositUseCase {
     public Long create(CreateDepositUseCase.CreateDepositCommand command) {
         log.trace("Generating Deposit by command: {}", command);
 
+        LocalDateTime creationDateTime = LocalDateTime.now();
+
         var deposit = Deposit.withoutId(
-                command.getAmount(),
+                command.getPaymentMode(),
                 command.getBankDepositDate(),
+                command.getAmount(),
                 command.getStatus(),
-                command.getReceipts(),
-                command.getDenominationCounts().stream().map(rc ->
-                        bhutan.eledger.domain.epayment.deposit.DenominationCount.withoutId(rc.getDenominationId(), rc.getDenominationCount())
-                ).collect(Collectors.toList()),
-                null
+                command.getTaxpayer()
         );
+
 
         log.trace("Creating eledger payment deposit: {}", deposit);
 
-        return depositRepositoryPort.create(deposit);
+        var id = depositRepositoryPort.create(deposit);
+
+        return id;
     }
 }
