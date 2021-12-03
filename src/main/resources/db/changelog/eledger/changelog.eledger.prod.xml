@@ -99,8 +99,8 @@
         <sqlFile path="../../sql/eledger/023_procedure_sp_process_pac_for_date.sql" relativeToChangelogFile="true" splitStatements="false"/>
     </changeSet>
 
-    <changeSet id="Create function which will give trial balance calculated result" author="V.G.">
-        <sqlFile path="../../sql/eledger/024_function_fn_trial_balance.sql" relativeToChangelogFile="true" splitStatements="false"/>
+    <changeSet id="Create functions which will give trial balance calculated result and total count" author="V.G.">
+        <sqlFile path="../../sql/eledger/024_functions_fn_gl_accounting_details.sql" relativeToChangelogFile="true" splitStatements="false"/>
     </changeSet>
 
 </databaseChangeLog>
