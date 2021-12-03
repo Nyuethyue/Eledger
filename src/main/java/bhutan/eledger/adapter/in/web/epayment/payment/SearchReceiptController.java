@@ -17,10 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 class SearchReceiptController {
 
     private final SearchReceiptUseCase searchReceiptUseCase;
+    private final SearchReceiptForDetailsUseCase searchReceiptForDetailsUseCase;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     public SearchResult<Receipt> search(SearchReceiptUseCase.SearchReceiptCommand command) {
         return searchReceiptUseCase.search(command);
+    }
+
+    @GetMapping(value = "/details",produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.OK)
+    public SearchResult<Receipt> search(SearchReceiptForDetailsUseCase.SearchReceiptForDetailsCommand command){
+        return searchReceiptForDetailsUseCase.search(command);
     }
 }
