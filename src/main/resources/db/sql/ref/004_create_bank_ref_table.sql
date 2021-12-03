@@ -11,12 +11,6 @@ ALTER TABLE ref.bank
     ADD CONSTRAINT pk_bank
         PRIMARY KEY (id);
 
-ALTER TABLE ref.bank
-    ADD CONSTRAINT un_ref_bank_code UNIQUE (code);
---to do : need to add unique code for period
-CREATE UNIQUE INDEX IF NOT EXISTS idx_bank_code
-    ON ref.bank (code);
-
 CREATE SEQUENCE ref.bank_id_seq
     INCREMENT BY 1
     MINVALUE 1
