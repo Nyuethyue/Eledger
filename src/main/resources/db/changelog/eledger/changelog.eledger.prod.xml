@@ -103,8 +103,4 @@
         <sqlFile path="../../sql/eledger/024_function_fn_gl_accounting_details.sql" relativeToChangelogFile="true" splitStatements="false"/>
     </changeSet>
 
-    <changeSet id="Create function which will give trial balance calculated result" author="V.G.">
-        <sqlFile path="../../sql/eledger/025_function_fn_gl_accounting_details_count.sql" relativeToChangelogFile="true" splitStatements="false"/>
-    </changeSet>
-
 </databaseChangeLog>
