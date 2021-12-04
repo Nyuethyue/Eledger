@@ -45,12 +45,12 @@ class ReadRefBankAccountService implements ReadRefBankAccountUseCase {
     }
 
     @Override
-    public RefBankAccount readByAccNumber(String accNumber) {
-        log.trace("Reading bank's branch by account number: {}", accNumber);
+    public RefBankAccount readByCode(String code) {
+        log.trace("Reading bank's branch by account number: {}", code);
 
-        return refBankAccountRepositoryPort.readByAccNumber(accNumber)
+        return refBankAccountRepositoryPort.readByCode(code)
                 .orElseThrow(() ->
-                        new RecordNotFoundException("Bank's account by account number: [" + accNumber + "] not found.")
+                        new RecordNotFoundException("Bank's account by account number: [" + code + "] not found.")
                 );
     }
 }

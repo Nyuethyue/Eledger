@@ -5,7 +5,7 @@ import bhutan.eledger.application.port.out.ref.bank.RefBankRepositoryPort;
 import bhutan.eledger.domain.ref.bank.RefBank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -60,5 +60,10 @@ class RefBankAdapter implements RefBankRepositoryPort {
     @Override
     public boolean existsById(Long id) {
         return refBankEntityRepository.existsById(id);
+    }
+
+    @Override
+    public boolean isOpenBankExists(RefBank bank) {
+        return refBankEntityRepository.existsByCodeAndEndOfValidityNullOrEndOfValidity(bank.getCode(), LocalDate.now(), bank.getValidityPeriod().getStart());
     }
 }

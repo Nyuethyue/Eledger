@@ -6,6 +6,7 @@ import am.iunetworks.lib.multilingual.core.Multilingual;
 import bhutan.eledger.application.port.in.ref.bankaccount.CreateRefBankAccountUseCase;
 import bhutan.eledger.application.port.out.ref.bankaccount.RefBankAccountRepositoryPort;
 import bhutan.eledger.application.port.out.ref.bankbranch.RefBankBranchRepositoryPort;
+import bhutan.eledger.common.dto.ValidityPeriod;
 import bhutan.eledger.domain.ref.bankaccount.RefBankAccount;
 import bhutan.eledger.domain.ref.bankbranch.RefBankBranch;
 import lombok.RequiredArgsConstructor;
@@ -44,15 +45,19 @@ class CreateRefBankAccountService implements CreateRefBankAccountUseCase {
         return RefBankAccount.withoutId(
                 command.getBranchId(),
                 command.getAccNumber(),
+                ValidityPeriod.of(
+                        command.getStartOfValidity(),
+                        command.getEndOfValidity()
+                ),
                 Multilingual.fromMap(command.getDescriptions())
         );
     }
     void validate(RefBankAccount refBankAccount) {
         //todo replace existence checks by one method
-        if (refBankAccountRepositoryPort.existsByAccNumber(refBankAccount.getAccNumber())) {
+        if (refBankAccountRepositoryPort.isOpenBankAccountExists(refBankAccount)) {
             throw new ViolationException(
                     new ValidationError()
-                            .addViolation("AccNumber", "Bank's branch with account number: [" + refBankAccount.getAccNumber() + "] already exists.")
+                            .addViolation("AccNumber", "Bank's branch with account number: [" + refBankAccount.getCode() + "] already exists.")
             );
         }
         if (!refBankBranchRepositoryPort.existsById(refBankAccount.getBranchId())) {

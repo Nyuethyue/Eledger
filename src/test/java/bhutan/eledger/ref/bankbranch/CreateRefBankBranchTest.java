@@ -11,6 +11,8 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
+
+import java.time.LocalDate;
 import java.util.Map;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -43,6 +45,8 @@ class CreateRefBankBranchTest {
         Long bankId = createRefBankUseCase.create(
                 new CreateRefBankUseCase.CreateRefBankCommand(
                         "020202",
+                        LocalDate.now().plusDays(1),
+                        null,
                         Map.of("en", "Bank of Bhutan")
 
                 )
@@ -53,6 +57,8 @@ class CreateRefBankBranchTest {
                         "8888",
                         null,
                         "0000000",
+                        LocalDate.now().plusDays(1),
+                        null,
                         bankId,
                         Map.of("en", "Branch A")
 
@@ -67,6 +73,8 @@ class CreateRefBankBranchTest {
         Long bankId = createRefBankUseCase.create(
                 new CreateRefBankUseCase.CreateRefBankCommand(
                         "020202",
+                        LocalDate.now().plusDays(1),
+                        null,
                         Map.of("en", "Bank of Bhutan")
 
                 )
@@ -77,6 +85,8 @@ class CreateRefBankBranchTest {
                         "8888",
                         null,
                         "0000000",
+                        LocalDate.now().plusDays(1),
+                        null,
                         bankId,
                         Map.of("en", "Branch A")
 

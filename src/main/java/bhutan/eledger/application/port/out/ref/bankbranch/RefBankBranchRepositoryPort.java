@@ -19,4 +19,6 @@ public interface RefBankBranchRepositoryPort {
     Collection<RefBankBranch> readAllByBankId(Long bankId);
 
     boolean existsById(Long id);
+
+    boolean isOpenBranchExists(RefBankBranch refBankBranch);
 }

@@ -1,16 +1,18 @@
 ---------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS ref.bank
 (
-    id        bigint  NOT NULL,
-    code      varchar NOT NULL
+    id                bigint  NOT NULL,
+    code              varchar NOT NULL,
+    start_of_validity date    NOT NULL,
+    end_of_validity   date    NULL
 );
 
 ALTER TABLE ref.bank
     ADD CONSTRAINT pk_bank
         PRIMARY KEY (id);
 
-ALTER TABLE ref.bank
-    ADD CONSTRAINT un_ref_bank_code UNIQUE (code);
+CREATE INDEX IF NOT EXISTS idx_bank_code
+    ON ref.bank (code);
 
 CREATE SEQUENCE ref.bank_id_seq
     INCREMENT BY 1

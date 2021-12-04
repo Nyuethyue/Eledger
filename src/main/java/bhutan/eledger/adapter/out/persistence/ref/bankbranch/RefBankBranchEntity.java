@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,6 +30,12 @@ class RefBankBranchEntity {
     @Column(name = "address")
     private String address;
 
+    @Column(name = "start_of_validity")
+    private LocalDate startOfValidity;
+
+    @Column(name = "end_of_validity")
+    private LocalDate endOfValidity;
+
     @Column(name = "bank_id")
     private Long bankId;
 
@@ -40,14 +47,18 @@ class RefBankBranchEntity {
     )
     private Set<RefBankBranchDescriptionEntity> descriptions;
 
-    public RefBankBranchEntity(Long id, String code,String branchCode,
-                               String address,Long bankId) {
+    public RefBankBranchEntity(Long id, String code, String branchCode,
+                               String address, LocalDate startOfValidity,
+                               LocalDate endOfValidity,Long bankId) {
         this.id = id;
         this.code = code;
         this.branchCode = branchCode;
         this.address = address;
+        this.startOfValidity = startOfValidity;
+        this.endOfValidity = endOfValidity;
         this.bankId = bankId;
     }
+
     public void addToDescriptions(RefBankBranchDescriptionEntity description) {
         if (descriptions == null) {
             descriptions = new HashSet<>();

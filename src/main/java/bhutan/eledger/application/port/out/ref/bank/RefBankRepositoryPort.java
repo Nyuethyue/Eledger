@@ -1,7 +1,6 @@
 package bhutan.eledger.application.port.out.ref.bank;
 
 import bhutan.eledger.domain.ref.bank.RefBank;
-
 import java.util.Optional;
 import java.util.Collection;
 
@@ -20,4 +19,6 @@ public interface RefBankRepositoryPort {
     boolean existsByCode(String code);
 
     boolean existsById(Long id);
+
+    boolean isOpenBankExists(RefBank refBank);
 }

@@ -5,12 +5,17 @@ CREATE TABLE IF NOT EXISTS ref.bank_branch
     code             varchar NOT NULL,
     branch_code      varchar ,
     address          varchar NOT NULL,
+    start_of_validity date    NOT NULL,
+    end_of_validity   date    NULL,
     bank_id           bigint NOT NULL
 );
 
 ALTER TABLE ref.bank_branch
     ADD CONSTRAINT pk_bank_branch
         PRIMARY KEY (id);
+
+CREATE INDEX IF NOT EXISTS idx_bank_branch_code
+    ON ref.bank_branch (code);
 
 ALTER TABLE ref.bank_branch
     ADD CONSTRAINT fk_bank_branch_bank

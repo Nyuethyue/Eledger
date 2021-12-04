@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
+import java.time.LocalDate;
 import java.util.Map;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -52,7 +53,9 @@ class CreateRefBankAccountTest {
 
         Long bankId = createRefBankUseCase.create(
                 new CreateRefBankUseCase.CreateRefBankCommand(
-                        "4444",
+                        "020202",
+                        LocalDate.now().plusDays(1),
+                        null,
                         Map.of("en", "Bank of Bhutan")
 
                 )
@@ -63,6 +66,8 @@ class CreateRefBankAccountTest {
                         "0000",
                         "111115",
                         "0000000",
+                        LocalDate.now().plusDays(1),
+                        null,
                         bankId,
                         Map.of("en", "Branch A")
 
@@ -73,6 +78,8 @@ class CreateRefBankAccountTest {
                 new CreateRefBankAccountUseCase.CreateBankAccountCommand(
                         branchId,
                         "5555555",
+                        LocalDate.now().plusDays(1),
+                        null,
                         Map.of("en", "Account A")
 
                 )
@@ -85,7 +92,9 @@ class CreateRefBankAccountTest {
     void readTest() {
         Long bankId = createRefBankUseCase.create(
                 new CreateRefBankUseCase.CreateRefBankCommand(
-                        "4444",
+                        "020202",
+                        LocalDate.now().plusDays(1),
+                        null,
                         Map.of("en", "Bank of Bhutan")
 
                 )
@@ -96,6 +105,8 @@ class CreateRefBankAccountTest {
                         "0000",
                         "111115",
                         "0000000",
+                        LocalDate.now().plusDays(1),
+                        null,
                         bankId,
                         Map.of("en", "Branch A")
 
@@ -106,6 +117,8 @@ class CreateRefBankAccountTest {
                 new CreateRefBankAccountUseCase.CreateBankAccountCommand(
                         branchId,
                         "5555555",
+                        LocalDate.now().plusDays(1),
+                        null,
                         Map.of("en", "Account A")
 
                 )
@@ -117,8 +130,8 @@ class CreateRefBankAccountTest {
         Assertions.assertNotNull(bankAccount);
         Assertions.assertNotNull(bankAccount.getDescription());
 
-        var bankAccountByAccNumber = refBankAccountRepositoryPort.readByAccNumber(bankAccount.getAccNumber()).get();
-        Assertions.assertNotNull(bankAccountByAccNumber);
+        var bankAccountByCode = refBankAccountRepositoryPort.readByCode(bankAccount.getCode()).get();
+        Assertions.assertNotNull(bankAccountByCode);
 
         var bankAccountByBranchId = refBankAccountRepositoryPort.readAllByBranchId(branchId);
         Assertions.assertNotNull(bankAccountByBranchId);

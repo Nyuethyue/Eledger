@@ -1,6 +1,7 @@
 package bhutan.eledger.adapter.out.persistence.ref.bankbranch;
 
 import am.iunetworks.lib.multilingual.core.Multilingual;
+import bhutan.eledger.common.dto.ValidityPeriod;
 import bhutan.eledger.domain.ref.bankbranch.RefBankBranch;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,8 @@ class RefBankBranchMapper {
                         refBankBranch.getCode(),
                         refBankBranch.getBranchCode(),
                         refBankBranch.getAddress(),
+                        refBankBranch.getValidityPeriod().getStart(),
+                        refBankBranch.getValidityPeriod().getEnd(),
                         refBankBranch.getBankId()
                 );
 
@@ -37,6 +40,10 @@ class RefBankBranchMapper {
                 refBankBranchEntity.getCode(),
                 refBankBranchEntity.getBranchCode(),
                 refBankBranchEntity.getAddress(),
+                ValidityPeriod.of(
+                        refBankBranchEntity.getStartOfValidity(),
+                        refBankBranchEntity.getEndOfValidity()
+                ),
                 refBankBranchEntity.getBankId(),
                 Multilingual.of(refBankBranchEntity.getDescriptions())
         );

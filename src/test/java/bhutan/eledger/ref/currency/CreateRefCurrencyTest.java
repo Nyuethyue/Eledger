@@ -54,7 +54,7 @@ class CreateRefCurrencyTest {
 
         );
         var currencyOptional = refCurrencyRepositoryPort.readById(id);
-
+        Assertions.assertTrue(currencyOptional.isPresent());
         var currency = currencyOptional.get();
         Assertions.assertNotNull(currency);
         Assertions.assertNotNull(currency.getDescription());
