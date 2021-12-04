@@ -27,12 +27,6 @@ class RefCurrencyEntity {
     @Column(name = "symbol")
     private String symbol;
 
-    @Column(name = "start_of_validity")
-    private LocalDate startOfValidity;
-
-    @Column(name = "end_of_validity")
-    private LocalDate endOfValidity;
-
     @OneToMany(
             mappedBy = "currency",
             cascade = CascadeType.ALL,
