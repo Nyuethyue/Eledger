@@ -15,7 +15,7 @@
     </changeSet>
 
     <changeSet id="Data transaction_type overpayment" author="V.G.">
-        <sqlFile path="../../sql/eledger/dev/002_type_overpayment_data.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/eledger/dev/002_type_net_negative_data.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
     <changeSet id="Data transaction_type payment" author="V.G.">
