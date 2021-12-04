@@ -180,3 +180,25 @@ WHERE p.account_type = 'P'
   AND aett.code = 'LIABILITY';
 
 ------------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------------------------------------
+
+INSERT INTO eledger_config.el_transaction_couples(id, accounting_action_type_id, from_transaction_type_account_id,
+                                                  to_transaction_type_account_id)
+SELECT nextval('eledger_config.el_transaction_couples_id_seq')                          id
+     , (SELECT id FROM eledger_config.el_accounting_action_type WHERE name = 'PAYMENT') accounting_action_id
+     , p.id
+     , a.id
+FROM eledger_config.el_transaction_type_gl_account p
+         INNER JOIN eledger_config.el_transaction_type pett
+                    ON pett.id = p.transaction_type_id
+         INNER JOIN eledger_config.el_transaction_type_gl_account a
+                    ON a.gl_account_id = p.gl_account_id
+         INNER JOIN eledger_config.el_transaction_type aett
+                    ON aett.id = a.transaction_type_id
+WHERE p.account_type = 'P'
+  AND a.account_type = 'A'
+  AND pett.code = 'PAYMENT'
+  AND aett.code = 'LIABILITY';
+
+------------------------------------------------------------------------------------------------------------------------

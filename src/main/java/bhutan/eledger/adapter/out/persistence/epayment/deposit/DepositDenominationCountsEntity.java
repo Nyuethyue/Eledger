@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "deposit_denomination", schema = "epayment")
+@Table(name = "deposit_denomination_counts", schema = "epayment")
 @Getter
 @Setter
 class DepositDenominationCountsEntity {
@@ -28,9 +28,10 @@ class DepositDenominationCountsEntity {
     @JoinColumn(name = "deposit_id", nullable = false)
     private DepositEntity deposit;
 
-    public DepositDenominationCountsEntity(Long denominationId, Long count) {
+    public DepositDenominationCountsEntity(Long denominationId, Long count, DepositEntity deposit) {
         this.denominationId = denominationId;
         this.count = count;
+        this.deposit = deposit;
     }
 
     public void setDeposit(DepositEntity deposit) {

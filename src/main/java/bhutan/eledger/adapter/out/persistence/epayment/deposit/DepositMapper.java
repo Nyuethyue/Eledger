@@ -13,47 +13,26 @@ import java.util.stream.Collectors;
 
 @Component
 public class DepositMapper {
-
-    DepositEntity mapToEntity(CreateDepositUseCase.CreateDepositCommand command) {
-        DepositEntity depositEntity = new DepositEntity(
-                null,
-                command.getPaymentMode(),
-                command.getBankDepositDate(),
-                null,
-                command.getAmount(),
-                command.getStatus().getValue(),
-                LocalDateTime.now(),
-                command.getReceipts().stream().map(r ->
-                        new DepositReceiptEntity(null, r.longValue(), null)
-                ).collect(Collectors.toUnmodifiableSet()),
-                command.getDenominationCounts().stream().map(d ->
-                        new DepositDenominationCountsEntity(d.getDenominationId(), d.getDenominationCount())
-                ).collect(Collectors.toUnmodifiableSet())
-        );
-
-        return depositEntity;
-    }
-
     DepositEntity mapToEntity(Deposit deposit) {
         DepositEntity depositEntity = new DepositEntity(
                 null,
                 deposit.getPaymentModeId(),
                 deposit.getBankDepositDate(),
-                null,
                 deposit.getAmount(),
                 deposit.getStatus().getValue(),
-                LocalDateTime.now(),
-                deposit.getReceipts().stream().map(r ->
-                        new DepositReceiptEntity(deposit.getId(), r.getReceiptId())
-                ).collect(Collectors.toUnmodifiableSet()),
-                deposit.getDenominationCounts().stream().map(d ->
-                        new DepositDenominationCountsEntity(d.getDenominationId(), d.getDenominationCount())
-                ).collect(Collectors.toUnmodifiableSet())
+                LocalDateTime.now()
         );
+
+        depositEntity.setDepositDenominations(deposit.getDenominationCounts().stream().map(d ->
+                new DepositDenominationCountsEntity(d.getDenominationId(), d.getDenominationCount(), depositEntity)
+        ).collect(Collectors.toUnmodifiableSet()));
+
+        depositEntity.setDepositReceipts(deposit.getReceipts().stream().map(r ->
+                new DepositReceiptEntity(deposit.getId(), r.getReceiptId(), depositEntity)
+        ).collect(Collectors.toUnmodifiableSet()));
 
         return depositEntity;
     }
-
 
     Deposit mapToDomain(DepositEntity depositEntity) {
         return Deposit.withId(

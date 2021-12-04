@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS epayment.deposit
     id                     bigint   NOT NULL,
     payment_mode_id        bigint   NOT NULL,
     bank_deposit_date      date     NOT NULL,
-    last_printed_date      timestamp NOT NULL,
+    last_printed_date      timestamp,
     amount                 numeric(20, 2) NOT NULL,
     status                 varchar   NOT NULL,
     creation_date_time     timestamp NOT NULL
@@ -12,11 +12,6 @@ CREATE TABLE IF NOT EXISTS epayment.deposit
 
 ALTER TABLE epayment.deposit
     ADD CONSTRAINT pk_deposit PRIMARY KEY (id);
-
-ALTER TABLE ONLY epayment.deposit
-    ADD CONSTRAINT fk_deposit_payment_mode
-        FOREIGN KEY (payment_mode_id)
-            REFERENCES ref.payment_mode (id);
 
 CREATE SEQUENCE epayment.deposit_id_seq
     INCREMENT BY 1
@@ -31,7 +26,7 @@ CREATE TABLE IF NOT EXISTS epayment.deposit_receipt
     id                     bigint    NOT NULL,
     deposit_id             bigint    NOT NULL,
     receipt_id             bigint    NOT NULL,
-    receipt_number         varchar NOT NULL
+    receipt_number         varchar
 );
 
 ALTER TABLE epayment.deposit_receipt
@@ -64,14 +59,6 @@ CREATE TABLE IF NOT EXISTS epayment.deposit_denomination_counts
 
 ALTER TABLE epayment.deposit_denomination_counts
     ADD CONSTRAINT pk_deposit_denomination_counts PRIMARY KEY (id);
-
-ALTER TABLE ONLY epayment.deposit_denomination_counts
-    ADD CONSTRAINT fk_deposit_denomination_counts_deposit_id
-        FOREIGN KEY (deposit_id) REFERENCES epayment.deposit (id);
-
-ALTER TABLE ONLY epayment.deposit_denomination_counts
-    ADD CONSTRAINT fk_deposit_denomination_counts_denomination_id
-        FOREIGN KEY (denomination_id) REFERENCES ref.denomination (id);
 
 
 CREATE SEQUENCE epayment.deposit_denomination_counts_id_seq
