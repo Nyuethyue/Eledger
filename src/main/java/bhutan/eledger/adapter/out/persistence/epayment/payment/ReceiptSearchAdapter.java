@@ -40,7 +40,7 @@ class ReceiptSearchAdapter implements ReceiptSearchPort {
                     return cashReceiptMapper.mapToDomain(receiptEntity, refEntry);
                 });
 
-        return new PagedSearchResult<>(page);
+        return PagedSearchResult.of(page);
     }
 
     private JPQLQuery<ReceiptEntity> resolveQuery(ReceiptCommand command, Querydsl querydsl) {
