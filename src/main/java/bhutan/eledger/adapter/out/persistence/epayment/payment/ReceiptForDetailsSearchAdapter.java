@@ -8,6 +8,7 @@ import bhutan.eledger.common.ref.refentry.RefEntry;
 import bhutan.eledger.common.ref.refentry.RefEntryRepository;
 import bhutan.eledger.common.ref.refentry.RefName;
 import bhutan.eledger.domain.epayment.payment.Receipt;
+import bhutan.eledger.domain.epayment.taxpayer.QEpTaxpayer;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPQLQuery;
 import lombok.RequiredArgsConstructor;
@@ -54,6 +55,7 @@ public class ReceiptForDetailsSearchAdapter implements ReceiptForDetailsSearchPo
         BooleanBuilder predicate = new BooleanBuilder();
 
         if (command.getTpn() != null) {
+            jpqlQuery = jpqlQuery.innerJoin(qReceiptEntity.taxpayer);
             predicate.and(qReceiptEntity.taxpayer.tpn.eq(command.getTpn()));
         }
 
@@ -76,19 +78,12 @@ public class ReceiptForDetailsSearchAdapter implements ReceiptForDetailsSearchPo
         }
 
         if (command.getReceiptFromAmount() != null) {
-            predicate.and(qReceiptEntity.totalPaidAmount.gt(command.getReceiptFromAmount())
-                    .or(qReceiptEntity.totalPaidAmount.eq(command.getReceiptFromAmount())));
+            predicate.and(qReceiptEntity.totalPaidAmount.goe(command.getReceiptFromAmount()));
         }
 
         if (command.getReceiptToAmount() != null) {
-            predicate.and(qReceiptEntity.totalPaidAmount.lt(command.getReceiptToAmount())
-                    .or(qReceiptEntity.totalPaidAmount.eq(command.getReceiptToAmount())));
+            predicate.and(qReceiptEntity.totalPaidAmount.loe(command.getReceiptToAmount()));
         }
-
-        jpqlQuery.innerJoin(QPaymentEntity.paymentEntity)
-                    .on(qReceiptEntity.id.eq(QPaymentEntity.paymentEntity.receipt.id))
-                    .innerJoin(QPaymentEntity.paymentEntity.glAccount)
-                    .distinct();
 
         return jpqlQuery.where(predicate);
     }

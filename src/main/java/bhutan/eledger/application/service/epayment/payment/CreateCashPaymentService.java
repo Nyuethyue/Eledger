@@ -69,7 +69,9 @@ class CreateCashPaymentService implements CreateCashPaymentUseCase {
                 creationDateTime,
                 epTaxpayerRepositoryPort.requiredReadByTpn(updatedPaymentAdvice.getTaxpayer().getTpn()),
                 payments,
-                payments.stream().map(Payment::getPaidAmount).reduce(BigDecimal.ZERO, BigDecimal::add)
+                payments.stream()
+                        .map(Payment::getPaidAmount)
+                        .reduce(BigDecimal.ZERO, BigDecimal::add)
         );
 
         log.trace("Persisting cash receipt: {}", cashReceipt);
