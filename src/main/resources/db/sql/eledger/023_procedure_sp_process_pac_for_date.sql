@@ -1,3 +1,6 @@
+
+------------------------------------------------------------------------------------------------------------------------
+
 CREATE OR REPLACE FUNCTION eledger.fn_is_transaction_date(p_taxpayer_id bigint, p_calculation_date date)
     RETURNS boolean
     LANGUAGE plpgsql
@@ -20,11 +23,11 @@ END;
 $function$
 ;
 
+------------------------------------------------------------------------------------------------------------------------
 
 CREATE OR REPLACE PROCEDURE eledger.sp_process_pac_for_date(IN p_tpn character varying, IN p_calculation_date date)
     LANGUAGE plpgsql
-AS
-$procedure$
+AS $procedure$
 DECLARE
     v_processing_date              date;
     v_orig_processing_date         date;
@@ -55,7 +58,7 @@ BEGIN
     WHERE t.id = v_taxpayer_id
     LIMIT 1;
 
-    RAISE NOTICE '%', 'v_processing_date := ' || v_processing_date::text;
+    --RAISE NOTICE '%', 'v_processing_date := ' || v_processing_date::text;
     IF v_processing_date IS NULL
     THEN
         SELECT min(cast(eledger.fn_get_attribute_value(t.id, 'settlement_date') AS date))
@@ -64,7 +67,7 @@ BEGIN
         WHERE t.taxpayer_id = v_taxpayer_id;
     END IF;
 
-    RAISE NOTICE '%', 'v_processing_date := ' || to_char(v_processing_date, 'yyyy-mm-dd');
+    --RAISE NOTICE '%', 'v_processing_date := ' || to_char(v_processing_date, 'yyyy-mm-dd');
 
     WHILE v_processing_date <= p_calculation_date
         LOOP
@@ -88,16 +91,14 @@ BEGIN
                 CALL eledger.sp_move_interet_to_accounting(v_taxpayer_id, v_processing_date);
             END IF;
 
-
             -- repayment documents
-            /*
-                if v_is_document_transaction_date
-                then
-                    call eledger.sp_repayment(p_tpn, v_processing_date);
-                end if;
-            */
+            if v_is_document_transaction_date
+            then
+                call eledger.sp_repayment(v_taxpayer_id, v_processing_date);
+            end if;
 
-            -- update taxpayer3 calculation_date
+
+            -- update taxpayer calculation_date
             IF v_is_document_transaction_date OR v_processing_date = p_calculation_date
             THEN
                 CALL eledger.sp_update_taxpayer_calculation_date(v_taxpayer_id, v_processing_date);
@@ -112,4 +113,7 @@ BEGIN
 END;
 $procedure$
 ;
+
+------------------------------------------------------------------------------------------------------------------------
+
 
