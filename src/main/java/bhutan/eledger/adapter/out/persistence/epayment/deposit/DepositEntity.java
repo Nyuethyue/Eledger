@@ -1,8 +1,5 @@
 package bhutan.eledger.adapter.out.persistence.epayment.deposit;
 
-import bhutan.eledger.adapter.out.persistence.epayment.payment.ReceiptEntity;
-import bhutan.eledger.domain.epayment.taxpayer.EpTaxpayer;
-import bhutan.eledger.domain.ref.paymentmode.PaymentMode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +9,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -25,8 +23,8 @@ class DepositEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "deposit_id_seq")
     @Column(name = "id")
     private Long id;
-    @Column(name = "payment_mode")
-    private String paymentMode;
+    @Column(name = "id")
+    private Long paymentModeId;
     @Column(name = "bank_deposit_date")
     private LocalDate bankDepositDate;
     @Column(name = "last_printed_date")
@@ -38,8 +36,19 @@ class DepositEntity {
     @Column(name = "creation_date_time")
     private LocalDateTime creationDateTime;
 
-    @ManyToOne
-    @JoinColumn(name = "receipt_id", nullable = false)
-    private ReceiptEntity receipt;
+    @OneToMany(
+            mappedBy = "deposit",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
+    )
+    private Set<DepositReceiptEntity> depositReceipts;
 
+    @OneToMany(
+            mappedBy = "deposit",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
+    )
+    private Set<DepositDenominationCountsEntity> depositDenominations;
 }
