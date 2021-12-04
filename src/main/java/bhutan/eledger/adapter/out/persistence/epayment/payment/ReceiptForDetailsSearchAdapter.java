@@ -42,7 +42,7 @@ public class ReceiptForDetailsSearchAdapter implements ReceiptForDetailsSearchPo
                     return cashReceiptMapper.mapToDomain(receiptEntity, refEntry);
                 });
 
-        return new PagedSearchResult<>(page);
+        return PagedSearchResult.of(page);
     }
 
     private JPQLQuery<ReceiptEntity> resolveQuery(ReceiptForDetailsCommand command, Querydsl querydsl) {
