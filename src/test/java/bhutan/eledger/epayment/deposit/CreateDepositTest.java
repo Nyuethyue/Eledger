@@ -8,6 +8,7 @@ import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAd
 import bhutan.eledger.application.port.in.ref.currency.CreateRefCurrencyUseCase;
 import bhutan.eledger.application.port.out.epayment.deposit.DepositRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceRepositoryPort;
+import bhutan.eledger.application.port.out.ref.currency.RefCurrencyRepositoryPort;
 import bhutan.eledger.domain.epayment.deposit.Deposit;
 import bhutan.eledger.domain.epayment.deposit.DepositStatus;
 import bhutan.eledger.domain.epayment.payment.Receipt;
@@ -55,11 +56,37 @@ class CreateDepositTest {
     @Autowired
     private CreateRefCurrencyUseCase createRefCurrencyUseCase;
 
-    private Deposit deposit;
-    private PaymentAdvice paymentAdvice;
+    @Autowired
+    private RefCurrencyRepositoryPort refCurrencyRepositoryPort;
 
     @BeforeEach
     void beforeEach() {
+//        refCurrencyRepositoryPort.deleteAll();
+    }
+
+    private Collection<Long> createReceipts(Receipt ...receipts) {
+        LinkedList<Long> result = new LinkedList<>();
+        for(Receipt r : receipts) {
+            result.add(r.getId());
+        }
+        return result;
+    }
+
+    private Collection<CreateDepositUseCase.DenominationCount> createDenominationCounts() {
+        var result = new LinkedList<CreateDepositUseCase.DenominationCount>();
+        result.add(new CreateDepositUseCase.DenominationCount(1l, 10l));
+        return result;
+    }
+
+    @AfterEach
+    void afterEach() {
+//        paymentAdviceRepositoryPort.deleteAll();
+//        depositRepositoryPort.deleteAll();
+//        refCurrencyRepositoryPort.deleteAll();
+    }
+
+    //@Test
+    void createTest() {
         CreatePaymentAdviceUseCase.CreatePaymentAdviceCommand createCommand =
                 new CreatePaymentAdviceUseCase.CreatePaymentAdviceCommand(
                         "TestDrn",
@@ -97,7 +124,7 @@ class CreateDepositTest {
                 );
         Long padId = createPaymentAdviceUseCase.create(createCommand);
 
-        paymentAdvice = transactionTemplate.execute(status -> paymentAdviceRepositoryPort.readById(padId).get());
+        PaymentAdvice paymentAdvice = transactionTemplate.execute(status -> paymentAdviceRepositoryPort.readById(padId).get());
 
         Long currId = createRefCurrencyUseCase.create(
                 new CreateRefCurrencyUseCase.CreateCurrencyCommand(
@@ -106,7 +133,6 @@ class CreateDepositTest {
                         Map.of("en", "Ngultrum")
 
                 )
-
         );
 
         var command = new CreateCashPaymentUseCase.CreateCashPaymentCommand(
@@ -137,35 +163,13 @@ class CreateDepositTest {
                         1L,
                         DepositStatus.BOUNCED,
                         BigDecimal.valueOf(1221),
-                        LocalDate.now().minusDays(31),
+                        LocalDate.now(),
                         createReceipts(receipt),
                         createDenominationCounts()
                 );
         Long dpId = createDepositUseCase.create(createDepositCommand);
-        deposit = transactionTemplate.execute(status -> depositRepositoryPort.readById(dpId).get());
-    }
+        Deposit deposit = transactionTemplate.execute(status -> depositRepositoryPort.readById(dpId).get());
 
-    private Collection<Long> createReceipts(Receipt ...receipts) {
-        LinkedList<Long> result = new LinkedList<>();
-        for(Receipt r : receipts) {
-            result.add(r.getId());
-        }
-        return result;
-    }
-
-    private Collection<CreateDepositUseCase.DenominationCount> createDenominationCounts() {
-        var result = new LinkedList<CreateDepositUseCase.DenominationCount>();
-        result.add(new CreateDepositUseCase.DenominationCount(1l, 10l));
-        return result;
-    }
-
-    @AfterEach
-    void afterEach() {
-        depositRepositoryPort.deleteAll();
-    }
-
-    @Test
-    void createTest() {
         var searchResult = searchDepositUseCase.search(new SearchDepositUseCase.SearchDepositCommand(
                 0,
                 10,
@@ -177,5 +181,6 @@ class CreateDepositTest {
         ));
 
         Assertions.assertEquals(1, searchResult.getTotalCount());
+        refCurrencyRepositoryPort.deleteAll();
     }
 }

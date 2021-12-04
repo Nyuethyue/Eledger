@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS ref.denomination
 (
-    id    bigint  NOT NULL,
+    id     bigint  NOT NULL,
     val   varchar NOT NULL
 );
 
