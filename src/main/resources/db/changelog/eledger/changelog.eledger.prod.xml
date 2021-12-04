@@ -103,4 +103,8 @@
         <sqlFile path="../../sql/eledger/024_functions_fn_gl_accounting_details.sql" relativeToChangelogFile="true" splitStatements="false"/>
     </changeSet>
 
+    <changeSet id="Create procedure sp_repayment for payment type" author="V.G.">
+        <sqlFile path="../../sql/eledger/025_procedure_sp_repayment.sql" relativeToChangelogFile="true" splitStatements="false"/>
+    </changeSet>
+
 </databaseChangeLog>
