@@ -41,6 +41,7 @@ class CreateDepositTest {
     void beforeEach() {
         CreateDepositUseCase.CreateDepositCommand createCommand =
                 new CreateDepositUseCase.CreateDepositCommand(
+                        1L,
                         DepositStatus.BOUNCED,
                         BigDecimal.valueOf(1221),
                         LocalDate.now().minusDays(31),

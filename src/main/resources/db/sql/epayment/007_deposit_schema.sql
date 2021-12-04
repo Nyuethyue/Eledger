@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS epayment.deposit
     last_printed_date      timestamp NOT NULL,
     amount                 numeric(20, 2) NOT NULL,
     status                 varchar   NOT NULL,
-    creation_date_time     timestamp NOT NULL,
+    creation_date_time     timestamp NOT NULL
 );
 
 ALTER TABLE epayment.deposit

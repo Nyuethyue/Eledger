@@ -37,6 +37,7 @@ public class DepositMapper {
     DepositEntity mapToEntity(Deposit deposit) {
         DepositEntity depositEntity = new DepositEntity(
                 null,
+                deposit.getPaymentModeId(),
                 deposit.getBankDepositDate(),
                 null,
                 deposit.getAmount(),
@@ -57,6 +58,7 @@ public class DepositMapper {
     Deposit mapToDomain(DepositEntity depositEntity) {
         return Deposit.withId(
                 depositEntity.getId(),
+                depositEntity.getPaymentModeId(),
                 depositEntity.getAmount(),
                 depositEntity.getBankDepositDate(),
                 DepositStatus.of(depositEntity.getStatus()),

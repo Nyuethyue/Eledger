@@ -30,6 +30,7 @@ class CreateDepositService implements CreateDepositUseCase {
         log.trace("Generating Deposit by command: {}", command);
 
         var deposit = Deposit.withoutId(
+                command.getPaymentMode(),
                 command.getAmount(),
                 command.getBankDepositDate(),
                 command.getStatus(),
