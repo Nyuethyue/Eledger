@@ -5,6 +5,7 @@ import bhutan.eledger.domain.epayment.taxpayer.EpTaxpayer;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
@@ -21,9 +22,10 @@ public class CashReceipt extends Receipt {
             String receiptNumber,
             LocalDateTime creationDateTime,
             EpTaxpayer taxpayer,
-            Collection<Payment> payments
+            Collection<Payment> payments,
+            BigDecimal totalPaidAmount
     ) {
-        super(id, drn, paymentMode, status, currency, receiptNumber, creationDateTime, taxpayer, payments);
+        super(id, drn, paymentMode, status, currency, receiptNumber, creationDateTime, taxpayer, payments,totalPaidAmount);
     }
 
     public static CashReceipt withId(
@@ -35,7 +37,8 @@ public class CashReceipt extends Receipt {
             String receiptNumber,
             LocalDateTime creationDateTime,
             EpTaxpayer taxpayer,
-            Collection<Payment> payments
+            Collection<Payment> payments,
+            BigDecimal totalPaidAmount
     ) {
         return new CashReceipt(
                 id,
@@ -46,7 +49,8 @@ public class CashReceipt extends Receipt {
                 receiptNumber,
                 creationDateTime,
                 taxpayer,
-                payments
+                payments,
+                totalPaidAmount
         );
     }
 
@@ -58,7 +62,8 @@ public class CashReceipt extends Receipt {
             String receiptNumber,
             LocalDateTime creationDateTime,
             EpTaxpayer taxpayer,
-            Collection<Payment> payments
+            Collection<Payment> payments,
+            BigDecimal totalPaidAmount
     ) {
         return new CashReceipt(
                 null,
@@ -69,7 +74,8 @@ public class CashReceipt extends Receipt {
                 receiptNumber,
                 creationDateTime,
                 taxpayer,
-                payments
+                payments,
+                totalPaidAmount
         );
     }
 }

@@ -13,8 +13,9 @@ CREATE TABLE epayment.ep_receipt
     instrument_number      varchar,
     instrument_date        date,
     other_reference_number varchar,
-    creation_date_time     timestamp NOT NULL,
-    taxpayer_id            bigint    NOT NULL
+    creation_date_time     timestamp        NOT NULL,
+    taxpayer_id            bigint           NOT NULL,
+    total_paid_amount      numeric(20, 2)   NOT NULL
 );
 
 ALTER TABLE epayment.ep_receipt

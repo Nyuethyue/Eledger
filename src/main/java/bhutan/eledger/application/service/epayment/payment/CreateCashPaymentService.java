@@ -20,6 +20,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -67,7 +68,10 @@ class CreateCashPaymentService implements CreateCashPaymentUseCase {
                 receiptNumber,
                 creationDateTime,
                 epTaxpayerRepositoryPort.requiredReadByTpn(updatedPaymentAdvice.getTaxpayer().getTpn()),
-                payments
+                payments,
+                payments.stream()
+                        .map(Payment::getPaidAmount)
+                        .reduce(BigDecimal.ZERO, BigDecimal::add)
         );
 
         log.trace("Persisting cash receipt: {}", cashReceipt);
