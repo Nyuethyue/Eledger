@@ -1,15 +1,18 @@
-package bhutan.eledger.epayment.payment;
+package bhutan.eledger.epayment.deposit;
 
+import bhutan.eledger.application.port.in.epayment.deposit.CreateDepositUseCase;
+import bhutan.eledger.application.port.in.epayment.deposit.SearchDepositUseCase;
 import bhutan.eledger.application.port.in.epayment.payment.CreateCashPaymentUseCase;
 import bhutan.eledger.application.port.in.epayment.payment.CreatePaymentCommonCommand;
-import bhutan.eledger.application.port.in.epayment.payment.SearchReceiptUseCase;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAdviceUseCase;
 import bhutan.eledger.application.port.in.ref.currency.CreateRefCurrencyUseCase;
+import bhutan.eledger.application.port.out.epayment.deposit.DepositRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.payment.CashReceiptRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceRepositoryPort;
 import bhutan.eledger.application.port.out.ref.currency.RefCurrencyRepositoryPort;
+import bhutan.eledger.domain.epayment.deposit.Deposit;
+import bhutan.eledger.domain.epayment.deposit.DepositStatus;
 import bhutan.eledger.domain.epayment.payment.Receipt;
-import bhutan.eledger.domain.epayment.payment.ReceiptStatus;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,8 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
@@ -26,7 +31,10 @@ import java.util.Set;
 @TestPropertySource(
         properties = {"spring.config.location = classpath:application-test.yml"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class CreatePaymentTest {
+class CreateDepositTest {
+// @TODO Refactor!!!
+    @Autowired
+    private CreateDepositUseCase createDepositUseCase;
 
     @Autowired
     private CreatePaymentAdviceUseCase createPaymentAdviceUseCase;
@@ -38,24 +46,49 @@ class CreatePaymentTest {
     private CreateCashPaymentUseCase createCashPaymentUseCase;
 
     @Autowired
-    private CashReceiptRepositoryPort cashReceiptRepositoryPort;
+    private DepositRepositoryPort depositRepositoryPort;
 
     @Autowired
     private TransactionTemplate transactionTemplate;
 
     @Autowired
-    private SearchReceiptUseCase searchReceiptUseCase;
+    private SearchDepositUseCase searchDepositUseCase;
 
-    //todo remove ref dependencies
     @Autowired
     private CreateRefCurrencyUseCase createRefCurrencyUseCase;
+
     @Autowired
     private RefCurrencyRepositoryPort refCurrencyRepositoryPort;
 
-    private PaymentAdvice paymentAdvice;
+    @Autowired
+    private CashReceiptRepositoryPort cashReceiptRepositoryPort;
 
     @BeforeEach
     void beforeEach() {
+    }
+
+    private Collection<Long> createReceipts(Receipt ...receipts) {
+        LinkedList<Long> result = new LinkedList<>();
+        for(Receipt r : receipts) {
+            result.add(r.getId());
+        }
+        return result;
+    }
+
+    private Collection<CreateDepositUseCase.DenominationCount> createDenominationCounts() {
+        var result = new LinkedList<CreateDepositUseCase.DenominationCount>();
+        result.add(new CreateDepositUseCase.DenominationCount(1l, 10l));
+        return result;
+    }
+
+    @AfterEach
+    void afterEach() {
+        depositRepositoryPort.deleteAll();
+        cashReceiptRepositoryPort.deleteAll();
+    }
+
+    @Test
+    void createTest() {
         CreatePaymentAdviceUseCase.CreatePaymentAdviceCommand createCommand =
                 new CreatePaymentAdviceUseCase.CreatePaymentAdviceCommand(
                         "TestDrn",
@@ -91,19 +124,10 @@ class CreatePaymentTest {
                                 )
                         )
                 );
-        Long id = createPaymentAdviceUseCase.create(createCommand);
-        paymentAdvice = transactionTemplate.execute(status -> paymentAdviceRepositoryPort.readById(id).get());
-    }
+        Long padId = createPaymentAdviceUseCase.create(createCommand);
 
-    @AfterEach
-    void afterEach() {
-        cashReceiptRepositoryPort.deleteAll();
-        paymentAdviceRepositoryPort.deleteAll();
-        refCurrencyRepositoryPort.deleteAll();
-    }
+        PaymentAdvice paymentAdvice = transactionTemplate.execute(status -> paymentAdviceRepositoryPort.readById(padId).get());
 
-    @Test
-    void createTest() {
         Long currId;
         if(refCurrencyRepositoryPort.existsByCode("BTN")) {
             currId = refCurrencyRepositoryPort.readByCode("BTN").get().getId();
@@ -115,7 +139,6 @@ class CreatePaymentTest {
                             Map.of("en", "Ngultrum")
 
                     )
-
             );
         }
 
@@ -142,50 +165,30 @@ class CreatePaymentTest {
 
         Receipt receipt = createCashPaymentUseCase.create(command);
 
-        Assertions.assertNotNull(receipt);
-        Assertions.assertNotNull(receipt.getReceiptNumber());
-        Assertions.assertEquals(ReceiptStatus.PAID, receipt.getStatus());
+        CreateDepositUseCase.CreateDepositCommand createDepositCommand =
+                new CreateDepositUseCase.CreateDepositCommand(
+                        1L,
+                        DepositStatus.BOUNCED,
+                        BigDecimal.valueOf(1221),
+                        LocalDate.now(),
+                        createReceipts(receipt),
+                        createDenominationCounts()
+                );
+        Long dpId = createDepositUseCase.create(createDepositCommand);
+        Deposit deposit = transactionTemplate.execute(status -> depositRepositoryPort.readById(dpId).get());
 
-        var searchResult = searchReceiptUseCase.search(new SearchReceiptUseCase.SearchReceiptCommand(
+        var searchResult = searchDepositUseCase.search(new SearchDepositUseCase.SearchDepositCommand(
                 0,
                 10,
                 null,
                 null,
                 null,
-                null,
-                null,
-                "12",
-                LocalDate.now()
+                LocalDate.now().minusDays(1),
+                LocalDate.now().plusDays(1)
         ));
 
-        Assertions.assertEquals(1, searchResult.getTotalCount());
-
-        searchResult = searchReceiptUseCase.search(new SearchReceiptUseCase.SearchReceiptCommand(
-                0,
-                10,
-                null,
-                null,
-                null,
-                null,
-                null,
-                "12",
-                null
-        ));
-
-        Assertions.assertEquals(1, searchResult.getTotalCount());
-
-        searchResult = searchReceiptUseCase.search(new SearchReceiptUseCase.SearchReceiptCommand(
-                0,
-                10,
-                null,
-                null,
-                null,
-                null,
-                null,
-                "12",
-                LocalDate.now().minusDays(1)
-        ));
-
-        Assertions.assertEquals(0, searchResult.getTotalCount());
+        Assertions.assertTrue(searchResult.getTotalCount() > 0);
+        Assertions.assertTrue(searchResult.getContent().get(0).getDenominationCounts().size() > 0);
+        Assertions.assertTrue(searchResult.getContent().get(0).getReceipts().size() > 0);
     }
 }
