@@ -28,7 +28,7 @@ public class DepositMapper {
         ).collect(Collectors.toUnmodifiableSet()));
 
         depositEntity.setDepositReceipts(deposit.getReceipts().stream().map(r ->
-                new DepositReceiptEntity(deposit.getId(), r.getReceiptId(), depositEntity)
+                new DepositReceiptEntity(r.getReceiptId(), depositEntity)
         ).collect(Collectors.toUnmodifiableSet()));
 
         return depositEntity;
