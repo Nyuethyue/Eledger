@@ -3,6 +3,7 @@ package bhutan.eledger.application.port.in.epayment.deposit;
 import am.iunetworks.lib.common.persistence.search.SearchResult;
 import bhutan.eledger.domain.epayment.deposit.Deposit;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
@@ -25,7 +26,9 @@ public interface SearchDepositUseCase {
         private final String sortDirection;
 
         private final Long id;
+        @DateTimeFormat(pattern = "yyyy-MM-dd")
         private final LocalDate fromBankDepositDate;
+        @DateTimeFormat(pattern = "yyyy-MM-dd")
         private final LocalDate toBankDepositDate;
     }
 }
