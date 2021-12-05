@@ -10,9 +10,10 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public enum PaymentAdviceStatus {
     INITIAL("INITIAL"),
+    SPLIT_PAYMENT("SPLIT_PAYMENT"),
     PAID("PAID"),
     PRE_RECONCILED("PRE_RECONCILED"),
-    SPLIT_PAYMENT("SPLIT_PAYMENT");
+    RECONCILED("RECONCILED");
 
     private final String value;
 
