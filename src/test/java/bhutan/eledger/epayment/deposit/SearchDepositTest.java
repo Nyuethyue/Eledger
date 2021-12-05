@@ -3,15 +3,12 @@ package bhutan.eledger.epayment.deposit;
 import bhutan.eledger.application.port.in.epayment.deposit.CreateDepositUseCase;
 import bhutan.eledger.application.port.in.epayment.deposit.SearchDepositUseCase;
 import bhutan.eledger.application.port.in.epayment.payment.CreateCashPaymentUseCase;
-import bhutan.eledger.application.port.in.epayment.payment.CreatePaymentCommonCommand;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAdviceUseCase;
 import bhutan.eledger.application.port.in.ref.currency.CreateRefCurrencyUseCase;
 import bhutan.eledger.application.port.out.epayment.deposit.DepositRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceRepositoryPort;
 import bhutan.eledger.application.port.out.ref.currency.RefCurrencyRepositoryPort;
 import bhutan.eledger.domain.epayment.deposit.Deposit;
-import bhutan.eledger.domain.epayment.deposit.DepositStatus;
-import bhutan.eledger.domain.epayment.payment.Receipt;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +16,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Set;
+
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(
@@ -82,6 +75,6 @@ class SearchDepositTest {
                 LocalDate.now().plusDays(10)
         ));
 
-        Assertions.assertEquals(0, searchResult.getTotalCount());
+        Assertions.assertTrue(searchResult.getTotalCount() == 0);
     }
 }

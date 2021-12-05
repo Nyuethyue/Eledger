@@ -9,11 +9,11 @@ public class DepositReceipt {
     private final Long receiptId;
     private final Long depositId;
 
-    public static DepositReceipt withoutId(Long receiptId, Long depositId) {
+    public static DepositReceipt withoutId(Long receiptId) {
         return new DepositReceipt(
                 null,
                 receiptId,
-                depositId
+                null
         );
     }
 

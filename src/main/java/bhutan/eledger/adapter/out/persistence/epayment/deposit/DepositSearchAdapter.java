@@ -47,12 +47,12 @@ class DepositSearchAdapter implements DepositSearchPort {
         } else {
             LocalDate from = command.getFromBankDepositDate();
             if (from != null) {
-                predicate.and(qDepositEntity.bankDepositDate.eq(from).or(qDepositEntity.bankDepositDate.after(from)));
+                predicate.and(qDepositEntity.bankDepositDate.goe(from));
             }
 
             LocalDate to = command.getToBankDepositDate();
             if (to != null) {
-                predicate.and(qDepositEntity.bankDepositDate.eq(to).or(qDepositEntity.bankDepositDate.before(to)));
+                predicate.and(qDepositEntity.bankDepositDate.loe(to));
             }
         }
 

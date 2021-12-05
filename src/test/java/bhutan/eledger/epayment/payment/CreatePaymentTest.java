@@ -104,16 +104,20 @@ class CreatePaymentTest {
 
     @Test
     void createTest() {
+        Long currId;
+        if(refCurrencyRepositoryPort.existsByCode("BTN")) {
+            currId = refCurrencyRepositoryPort.readByCode("BTN").get().getId();
+        } else {
+            currId = createRefCurrencyUseCase.create(
+                    new CreateRefCurrencyUseCase.CreateCurrencyCommand(
+                            "BTN",
+                            "Nu.",
+                            Map.of("en", "Ngultrum")
 
-        Long currId = createRefCurrencyUseCase.create(
-                new CreateRefCurrencyUseCase.CreateCurrencyCommand(
-                        "BTN",
-                        "Nu.",
-                        Map.of("en", "Ngultrum")
+                    )
 
-                )
-
-        );
+            );
+        }
 
         var command = new CreateCashPaymentUseCase.CreateCashPaymentCommand(
                 paymentAdvice.getId(),

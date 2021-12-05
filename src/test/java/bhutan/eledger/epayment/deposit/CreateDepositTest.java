@@ -7,6 +7,7 @@ import bhutan.eledger.application.port.in.epayment.payment.CreatePaymentCommonCo
 import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAdviceUseCase;
 import bhutan.eledger.application.port.in.ref.currency.CreateRefCurrencyUseCase;
 import bhutan.eledger.application.port.out.epayment.deposit.DepositRepositoryPort;
+import bhutan.eledger.application.port.out.epayment.payment.CashReceiptRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceRepositoryPort;
 import bhutan.eledger.application.port.out.ref.currency.RefCurrencyRepositoryPort;
 import bhutan.eledger.domain.epayment.deposit.Deposit;
@@ -59,9 +60,11 @@ class CreateDepositTest {
     @Autowired
     private RefCurrencyRepositoryPort refCurrencyRepositoryPort;
 
+    @Autowired
+    private CashReceiptRepositoryPort cashReceiptRepositoryPort;
+
     @BeforeEach
     void beforeEach() {
-//        refCurrencyRepositoryPort.deleteAll();
     }
 
     private Collection<Long> createReceipts(Receipt ...receipts) {
@@ -80,12 +83,11 @@ class CreateDepositTest {
 
     @AfterEach
     void afterEach() {
-//        paymentAdviceRepositoryPort.deleteAll();
-//        depositRepositoryPort.deleteAll();
-//        refCurrencyRepositoryPort.deleteAll();
+        depositRepositoryPort.deleteAll();
+        cashReceiptRepositoryPort.deleteAll();
     }
 
-    //@Test
+    @Test
     void createTest() {
         CreatePaymentAdviceUseCase.CreatePaymentAdviceCommand createCommand =
                 new CreatePaymentAdviceUseCase.CreatePaymentAdviceCommand(
@@ -126,14 +128,19 @@ class CreateDepositTest {
 
         PaymentAdvice paymentAdvice = transactionTemplate.execute(status -> paymentAdviceRepositoryPort.readById(padId).get());
 
-        Long currId = createRefCurrencyUseCase.create(
-                new CreateRefCurrencyUseCase.CreateCurrencyCommand(
-                        "BTN",
-                        "Nu.",
-                        Map.of("en", "Ngultrum")
+        Long currId;
+        if(refCurrencyRepositoryPort.existsByCode("BTN")) {
+            currId = refCurrencyRepositoryPort.readByCode("BTN").get().getId();
+        } else {
+            currId = createRefCurrencyUseCase.create(
+                    new CreateRefCurrencyUseCase.CreateCurrencyCommand(
+                            "BTN",
+                            "Nu.",
+                            Map.of("en", "Ngultrum")
 
-                )
-        );
+                    )
+            );
+        }
 
         var command = new CreateCashPaymentUseCase.CreateCashPaymentCommand(
                 paymentAdvice.getId(),
@@ -180,7 +187,8 @@ class CreateDepositTest {
                 LocalDate.now().plusDays(1)
         ));
 
-        Assertions.assertEquals(1, searchResult.getTotalCount());
-        refCurrencyRepositoryPort.deleteAll();
+        Assertions.assertTrue(searchResult.getTotalCount() > 0);
+        Assertions.assertTrue(searchResult.getContent().get(0).getDenominationCounts().size() > 0);
+        Assertions.assertTrue(searchResult.getContent().get(0).getReceipts().size() > 0);
     }
 }

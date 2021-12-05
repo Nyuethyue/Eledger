@@ -26,11 +26,6 @@ class DepositReceiptEntity {
     @JoinColumn(name = "deposit_id", nullable = false)
     private DepositEntity deposit;
 
-    public DepositReceiptEntity(Long id, Long receiptId) {
-        this.id = id;
-        this.receiptId = receiptId;
-    }
-
     public void setDeposit(DepositEntity deposit) {
         this.deposit = deposit;
     }

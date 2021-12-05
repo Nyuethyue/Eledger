@@ -24,7 +24,7 @@ public class Deposit {
             BigDecimal amount,
             LocalDate bankDepositDate,
             DepositStatus status,
-            Collection<Long> receipts,
+            Collection<DepositReceipt> receipts,
             Collection<DenominationCount> denominationCounts,
             LocalDate lastPrintedDate
     ) {
@@ -35,7 +35,7 @@ public class Deposit {
                 bankDepositDate,
                 lastPrintedDate,
                 status,
-                receipts.stream().map(r -> DepositReceipt.withoutId(r.longValue(), null)).collect(Collectors.toUnmodifiableSet()),
+                receipts,
                 denominationCounts
         );
     }
