@@ -258,7 +258,7 @@ INSERT INTO eledger_config.el_gl_account_description
     (id, language_code, value, gl_account_id)
 VALUES (8, 'en', 'Fines and Penalties (EET)', 8);
 
-ALTER SEQUENCE eledger_config.el_gl_account_id_seq START WITH 1000;
-ALTER SEQUENCE eledger_config.el_gl_account_description_id_seq START WITH 1000;
-ALTER SEQUENCE eledger_config.el_gl_account_part_id_seq START WITH 1000;
-ALTER SEQUENCE eledger_config.el_gl_account_part_description_id_seq START WITH 1000;
+ALTER SEQUENCE eledger_config.el_gl_account_id_seq RESTART WITH 1000;
+ALTER SEQUENCE eledger_config.el_gl_account_description_id_seq RESTART WITH 1000;
+ALTER SEQUENCE eledger_config.el_gl_account_part_id_seq RESTART WITH 1000;
+ALTER SEQUENCE eledger_config.el_gl_account_part_description_id_seq RESTART WITH 1000;
