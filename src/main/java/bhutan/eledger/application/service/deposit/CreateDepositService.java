@@ -2,11 +2,7 @@ package bhutan.eledger.application.service.deposit;
 
 import bhutan.eledger.application.port.in.epayment.deposit.CreateDepositUseCase;
 import bhutan.eledger.application.port.out.epayment.deposit.DepositRepositoryPort;
-import bhutan.eledger.application.port.out.epayment.payment.CashReceiptRepositoryPort;
-import bhutan.eledger.application.port.out.epayment.payment.EledgerPaymentTransactionPort;
 import bhutan.eledger.application.port.out.epayment.payment.ReceiptRepositoryPort;
-import bhutan.eledger.application.port.out.epayment.taxpayer.EpTaxpayerRepositoryPort;
-import bhutan.eledger.common.ref.refentry.RefEntryRepository;
 import bhutan.eledger.domain.epayment.deposit.Deposit;
 import bhutan.eledger.domain.epayment.deposit.DepositReceipt;
 import bhutan.eledger.domain.epayment.payment.ReceiptStatus;
@@ -24,9 +20,6 @@ import java.util.stream.Collectors;
 class CreateDepositService implements CreateDepositUseCase {
     private final DepositRepositoryPort depositRepositoryPort;
     private final ReceiptRepositoryPort receiptRepositoryPort;
-//    private final EpTaxpayerRepositoryPort epTaxpayerRepositoryPort;
-//    private final EledgerPaymentTransactionPort eledgerPaymentTransactionPort;
-//    private final RefEntryRepository refEntryRepository;
 
     @Override
     public Long create(CreateDepositUseCase.CreateDepositCommand command) {
@@ -50,7 +43,7 @@ class CreateDepositService implements CreateDepositUseCase {
 
         log.trace("Updating eledger receipt statuses to: {}", ReceiptStatus.PRE_RECONCILIATION);
 
-        receiptRepositoryPort.setStatuses(ReceiptStatus.PRE_RECONCILIATION, command.getReceipts());
+        receiptRepositoryPort.updateStatuses(ReceiptStatus.PRE_RECONCILIATION, command.getReceipts());
         return depositId;
     }
 }

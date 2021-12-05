@@ -6,9 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -16,18 +15,13 @@ class ReceiptAdapter implements ReceiptRepositoryPort {
     private final ReceiptEntityRepository receiptEntityRepository;
 
     @Override
-    public void setStatuses(ReceiptStatus status, Collection<Long> receiptIds) {
-        List<ReceiptEntity> res = new LinkedList<>();
-        for(Long receiptId : receiptIds) {
-            Optional<ReceiptEntity> re = receiptEntityRepository.findById(receiptId);
-            if(re.isPresent()) {
-                ReceiptEntity receipt = re.get();
-                receipt.setStatus(status.getValue());
-                res.add(receipt);
-            }
-        }
-        if(!res.isEmpty()) {
-            receiptEntityRepository.saveAll(res);
-        }
+    public void updateStatuses(ReceiptStatus status, Collection<Long> receiptIds) {
+        var receiptEntities = receiptIds
+                .stream()
+                .map(receiptEntityRepository::findById)
+                .map(Optional::orElseThrow)
+                .collect(Collectors.toSet());
+
+        receiptEntityRepository.saveAll(receiptEntities);
     }
 }

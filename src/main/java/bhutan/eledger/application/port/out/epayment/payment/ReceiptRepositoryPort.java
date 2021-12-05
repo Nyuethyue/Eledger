@@ -6,5 +6,5 @@ import java.util.Collection;
 
 public interface ReceiptRepositoryPort {
 
-    void setStatuses(ReceiptStatus status, Collection<Long> receiptIds);
+    void updateStatuses(ReceiptStatus status, Collection<Long> receiptIds);
 }
