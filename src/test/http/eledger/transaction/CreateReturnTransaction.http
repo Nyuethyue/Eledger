@@ -1,0 +1,34 @@
+POST http://localhost:8086/eledger/api/eledger/transaction/return
+Content-Type: application/json
+
+{
+  "drn": "drn6546a",
+  "taxpayer": {
+    "tpn": "tpn123456789",
+    "name": "The taxpayer name"
+  },
+  "transactions": [
+    {
+      "glAccountCode": "11411010020",
+      "settlementDate": "2021-11-25",
+      "amount": 1000,
+      "transactionTypeCode": "LIABILITY",
+      "transactionAttributes": [
+        {
+          "transactionTypeAttributeCode": "PERIOD_YEAR",
+          "value": "2021"
+        },
+        {
+          "transactionTypeAttributeCode": "DEADLINE",
+          "value": "2021-11-30"
+        },
+        {
+          "transactionTypeAttributeCode": "PERIOD_SEGMENT",
+          "value": "4"
+        }
+      ]
+    }
+  ]
+}
+
+###

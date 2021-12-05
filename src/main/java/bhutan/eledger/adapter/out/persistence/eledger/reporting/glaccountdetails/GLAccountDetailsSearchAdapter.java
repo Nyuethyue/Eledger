@@ -2,6 +2,7 @@ package bhutan.eledger.adapter.out.persistence.eledger.reporting.glaccountdetail
 
 import am.iunetworks.lib.common.persistence.search.PagedSearchResult;
 import am.iunetworks.lib.common.persistence.search.SearchResult;
+import bhutan.eledger.application.port.out.eledger.accounting.formulation.FormulateAccountingPort;
 import bhutan.eledger.application.port.out.eledger.reporting.glaccountdetails.GLAccountDetailsSearchPort;
 import bhutan.eledger.domain.eledger.reporting.glaccountdetails.GlAccountDetailsDto;
 import lombok.RequiredArgsConstructor;
@@ -10,31 +11,22 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
 class GLAccountDetailsSearchAdapter implements GLAccountDetailsSearchPort {
     private final NamedParameterJdbcTemplate jdbcTemplate;
+    private final FormulateAccountingPort formulateAccountingPort;
 
     @Override
     public SearchResult<GlAccountDetailsDto> search(GLAccountDetailsSearchCommand command) {
 
         //todo remove after returns incoming fnEx execution also make caller service readonly
-        jdbcTemplate.execute(
-                "CALL eledger.sp_process_pac_for_date(:tpn, :currentDate )",
-                Map.of(
-                        "tpn", command.getTpn(),
-                        "currentDate", LocalDate.now()
-                ),
-                PreparedStatement::execute
-        );
-
+        formulateAccountingPort.formulate(command.getTpn(), LocalDate.now());
 
         var content = queryContent(command);
         var totalCount = queryTotalCount(command);

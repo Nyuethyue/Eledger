@@ -1,6 +1,7 @@
 package bhutan.eledger.application.service.eledger.transaction;
 
 import bhutan.eledger.application.port.in.eledger.transaction.CreateTransactionsUseCase;
+import bhutan.eledger.application.port.out.eledger.accounting.formulation.FormulateAccountingPort;
 import bhutan.eledger.application.port.out.eledger.config.transaction.TransactionTypeAttributeRepositoryPort;
 import bhutan.eledger.application.port.out.eledger.config.transaction.TransactionTypeTransactionTypeAttributeRepositoryPort;
 import bhutan.eledger.application.port.out.eledger.taxpayer.ElTaxpayerRepositoryPort;
@@ -11,8 +12,6 @@ import bhutan.eledger.domain.eledger.transaction.Transaction;
 import bhutan.eledger.domain.eledger.transaction.TransactionAttribute;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
@@ -21,29 +20,41 @@ import java.util.Collections;
 import java.util.stream.Collectors;
 
 @Log4j2
-@Service
-@Transactional
 @RequiredArgsConstructor
-class CreateTransactionsService implements CreateTransactionsUseCase {
+abstract class AbstractCreateTransactions implements CreateTransactionsUseCase {
     private final TransactionTypeTransactionTypeAttributeRepositoryPort transactionTypeTransactionTypeAttributeRepositoryPort;
     private final ElTaxpayerRepositoryPort taxpayerRepositoryPort;
     private final TransactionRepositoryPort transactionRepositoryPort;
     private final TransactionTypeAttributeRepositoryPort transactionTypeAttributeRepositoryPort;
+    private final FormulateAccountingPort formulateAccountingPort;
+
+    private void afterCreateHandler(CreateTransactionsCommand transactionsCommand, LocalDateTime currentDateTime) {
+        formulateAccountingPort.formulate(transactionsCommand.getTaxpayer().getTpn(), currentDateTime.toLocalDate());
+        afterCreate(transactionsCommand, currentDateTime);
+    }
+
+    protected void afterCreate(CreateTransactionsCommand transactionsCommand, LocalDateTime currentDateTime) {
+        log.trace("No-impl after transaction create");
+    }
 
     @Override
     public void create(CreateTransactionsCommand transactionsCommand) {
         log.trace("Creating transactions with command: {}", transactionsCommand);
 
-        var transactions = makeTransactions(transactionsCommand);
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+        var transactions = makeTransactions(transactionsCommand, currentDateTime);
 
         log.trace("Persisting transactions: {}", transactions);
 
         Collection<Long> ids = transactionRepositoryPort.createAll(transactions);
 
         log.debug("Transactions with ids: {} successfully created.", ids);
+
+        afterCreateHandler(transactionsCommand, currentDateTime);
     }
 
-    private Collection<Transaction> makeTransactions(CreateTransactionsCommand transactionsCommand) {
+    private Collection<Transaction> makeTransactions(CreateTransactionsCommand transactionsCommand, LocalDateTime currentDateTime) {
         Long taxpayerId = resolveTaxpayerId(transactionsCommand.getTaxpayer());
 
         return transactionsCommand.getTransactions()
@@ -55,8 +66,6 @@ class CreateTransactionsService implements CreateTransactionsUseCase {
                             );
 
                     validateTransactionTypeAttributes(command, transactionType);
-
-                    LocalDateTime currentDateTime = LocalDateTime.now();
 
                     return makeTransactionDomain(command, transactionsCommand.getDrn(), transactionType.getId(), taxpayerId, currentDateTime);
                 })
@@ -126,5 +135,4 @@ class CreateTransactionsService implements CreateTransactionsUseCase {
         //todo implement validation
         log.warn("Validation for transaction type attributes not implemented.");
     }
-
 }
