@@ -5,15 +5,17 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
-
+// @TODO remove this class and use ReceiptStatus instead?
 @Getter
 @RequiredArgsConstructor
 public enum DepositStatus {
+    PAID("PAID"),
     PENDING_RECONCILIATION("PENDING_RECONCILIATION"),
-    PRE_RECONCILED("PRE_RECONCILED"),
+    PRE_RECONCILIATION("PRE_RECONCILIATION"),
     RECONCILED("RECONCILED"),
     CANCELLED("CANCELLED"),
-    BOUNCED("BOUNCED");
+    BOUNCED("BOUNCED"),
+    SPLIT_PAYMENT("SPLIT_PAYMENT");
 
     private final String value;
 

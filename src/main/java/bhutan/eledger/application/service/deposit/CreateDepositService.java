@@ -4,10 +4,12 @@ import bhutan.eledger.application.port.in.epayment.deposit.CreateDepositUseCase;
 import bhutan.eledger.application.port.out.epayment.deposit.DepositRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.payment.CashReceiptRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.payment.EledgerPaymentTransactionPort;
+import bhutan.eledger.application.port.out.epayment.payment.ReceiptRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.taxpayer.EpTaxpayerRepositoryPort;
 import bhutan.eledger.common.ref.refentry.RefEntryRepository;
 import bhutan.eledger.domain.epayment.deposit.Deposit;
 import bhutan.eledger.domain.epayment.deposit.DepositReceipt;
+import bhutan.eledger.domain.epayment.payment.ReceiptStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -21,10 +23,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 class CreateDepositService implements CreateDepositUseCase {
     private final DepositRepositoryPort depositRepositoryPort;
-    private final CashReceiptRepositoryPort cashReceiptRepositoryPort;
-    private final EpTaxpayerRepositoryPort epTaxpayerRepositoryPort;
-    private final EledgerPaymentTransactionPort eledgerPaymentTransactionPort;
-    private final RefEntryRepository refEntryRepository;
+    private final ReceiptRepositoryPort receiptRepositoryPort;
+//    private final EpTaxpayerRepositoryPort epTaxpayerRepositoryPort;
+//    private final EledgerPaymentTransactionPort eledgerPaymentTransactionPort;
+//    private final RefEntryRepository refEntryRepository;
 
     @Override
     public Long create(CreateDepositUseCase.CreateDepositCommand command) {
@@ -42,10 +44,13 @@ class CreateDepositService implements CreateDepositUseCase {
                 null
         );
 
-
-
         log.trace("Creating eledger payment deposit: {}", deposit);
 
-        return depositRepositoryPort.create(deposit);
+        Long depositId = depositRepositoryPort.create(deposit);
+
+        log.trace("Updating eledger receipt statuses to: {}", ReceiptStatus.PRE_RECONCILIATION);
+
+        receiptRepositoryPort.setStatuses(ReceiptStatus.PRE_RECONCILIATION, command.getReceipts());
+        return depositId;
     }
 }
