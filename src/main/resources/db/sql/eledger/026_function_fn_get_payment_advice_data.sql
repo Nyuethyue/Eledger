@@ -7,7 +7,7 @@ CREATE OR REPLACE FUNCTION eledger.fn_get_payment_advice_data(p_tpn character va
                 drn            character varying,
                 period_year    character varying,
                 period_segment character varying,
-                deadline       character varying,
+                deadline       date,
                 payable_lines  json
             )
     LANGUAGE plpgsql
@@ -25,7 +25,7 @@ BEGIN
              , r.drn
              , r.period_year
              , r.period_segment
-             , r.deadline
+             , r.deadline::date
              , JSON_AGG(
                 JSON_BUILD_OBJECT(
                         'transactionId', r.transaction_id,
@@ -101,7 +101,7 @@ BEGIN
                       ) b
                           INNER JOIN (
                      SELECT gl_account_id,
-                            JSON_AGG(JSON_BUILD_OBJECT('language_code', language_code, 'value', value)) AS descriptions
+                            JSON_AGG(JSON_BUILD_OBJECT('languageCode', language_code, 'value', value)) AS descriptions
                      FROM eledger_config.el_gl_account_description
                      GROUP BY gl_account_id
                  ) d
