@@ -107,4 +107,8 @@
         <sqlFile path="../../sql/eledger/025_procedure_sp_repayment.sql" relativeToChangelogFile="true" splitStatements="false"/>
     </changeSet>
 
+    <changeSet id="Create function get payable data" author="V.G.">
+        <sqlFile path="../../sql/eledger/026_function_fn_get_payment_advice_data.sql" relativeToChangelogFile="true" splitStatements="false"/>
+    </changeSet>
+
 </databaseChangeLog>
