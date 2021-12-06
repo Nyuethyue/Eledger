@@ -6,6 +6,7 @@ CREATE OR REPLACE FUNCTION eledger.fn_get_payment_advice_data(p_tpn character va
                 drn            character varying,
                 period_year    character varying,
                 period_segment character varying,
+                deadline       character varying,
                 payable_lines  json
             )
     LANGUAGE plpgsql
@@ -22,16 +23,24 @@ BEGIN
              , r.drn
              , r.period_year
              , r.period_segment
-             , json_agg(
-                json_build_object('transaction_id', r.transaction_id, 'deadline', r.deadline, 'amount', r.balance,
-                                  'gl_account_code', r.code, 'description', r.description))
+             , r.deadline
+             , JSON_AGG(
+                JSON_BUILD_OBJECT(
+                        'transactionId', r.transaction_id,
+                        'amount', r.balance,
+                        'glAccount', JSON_BUILD_OBJECT(
+                                'code', r.code,
+                                'descriptions', r.descriptions
+                            )
+                    )
+            )
         FROM (
                  SELECT b.*
                       , a.code
                       , eledger.fn_get_attribute_value(b.transaction_id, 'period_year')    period_year
                       , eledger.fn_get_attribute_value(b.transaction_id, 'period_segment') period_segment
                       , eledger.fn_get_attribute_value(b.transaction_id, 'deadline')       deadline
-                      , d.description
+                      , d.descriptions
                  FROM (
                           SELECT u.tpn
                                , u.drn
@@ -39,7 +48,7 @@ BEGIN
                                , u.transaction_type_id
                                , u.gl_account_id
                                , u.account_type
-                               , sum(u.balance) AS balance
+                               , SUM(u.balance) AS balance
                           FROM (
                                    SELECT tp.tpn
                                         , t.drn
@@ -47,7 +56,7 @@ BEGIN
                                         , t.transaction_type_id
                                         , a.gl_account_id
                                         , a.account_type
-                                        , sum(a.amount * (CASE WHEN transfer_type = 'D' THEN 1 ELSE -1 END)) balance
+                                        , SUM(a.amount * (CASE WHEN transfer_type = 'D' THEN 1 ELSE -1 END)) balance
                                    FROM eledger.el_taxpayer tp
                                             INNER JOIN eledger.el_transaction t
                                                        ON t.taxpayer_id = tp.id
@@ -67,7 +76,7 @@ BEGIN
                                         , t.transaction_type_id
                                         , ecii.gl_account_id
                                         , 'A'              AS account_type
-                                        , sum(ecii.amount) AS balance
+                                        , SUM(ecii.amount) AS balance
                                    FROM eledger.el_calculated_interest_info ecii
                                             INNER JOIN eledger.el_transaction t
                                                        ON t.id = ecii.transaction_id
@@ -75,18 +84,18 @@ BEGIN
                                                        ON tp.id = t.taxpayer_id
                                    WHERE tp.tpn = p_tpn
                                      AND ecii.calculation_date <= p_calculation_date
-                                     AND coalesce(ecii.orig_calculation_date, '99990101') > p_calculation_date
+                                     AND COALESCE(ecii.orig_calculation_date, '99990101') > p_calculation_date
                                    GROUP BY tp.tpn, t.drn, ecii.transaction_id, t.transaction_type_id,
                                             ecii.gl_account_id
                                ) u
-                          WHERE coalesce(p_drn, u.drn) = u.drn
+                          WHERE COALESCE(p_drn, u.drn) = u.drn
                           GROUP BY u.tpn, u.drn, u.transaction_id, u.transaction_type_id, u.gl_account_id,
                                    u.account_type
-                          HAVING sum(u.balance) <> 0
+                          HAVING SUM(u.balance) <> 0
                       ) b
                           INNER JOIN (
                      SELECT gl_account_id,
-                            json_agg(json_build_object('language_code', language_code, 'value', value)) AS description
+                            JSON_AGG(JSON_BUILD_OBJECT('language_code', language_code, 'value', value)) AS descriptions
                      FROM eledger_config.el_gl_account_description
                      GROUP BY gl_account_id
                  ) d
@@ -94,7 +103,7 @@ BEGIN
                           INNER JOIN eledger_config.el_gl_account a
                                      ON a.id = d.gl_account_id
              ) r
-        GROUP BY r.tpn, r.drn, r.period_year, r.period_segment;
+        GROUP BY r.tpn, r.drn, r.period_year, r.period_segment, r.deadline;
 
 END;
 $function$
