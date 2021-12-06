@@ -3,6 +3,7 @@ CREATE OR REPLACE FUNCTION eledger.fn_get_payment_advice_data(p_tpn character va
     RETURNS TABLE
             (
                 tpn            character varying,
+                tpName         character varying,
                 drn            character varying,
                 period_year    character varying,
                 period_segment character varying,
@@ -20,6 +21,7 @@ BEGIN
 */
     RETURN QUERY
         SELECT r.tpn
+             , r.name
              , r.drn
              , r.period_year
              , r.period_segment
@@ -43,6 +45,7 @@ BEGIN
                       , d.descriptions
                  FROM (
                           SELECT u.tpn
+                               , u.name
                                , u.drn
                                , u.transaction_id
                                , u.transaction_type_id
@@ -51,6 +54,7 @@ BEGIN
                                , SUM(u.balance) AS balance
                           FROM (
                                    SELECT tp.tpn
+                                        , tp.name
                                         , t.drn
                                         , a.transaction_id
                                         , t.transaction_type_id
@@ -65,12 +69,14 @@ BEGIN
                                    WHERE tp.tpn = p_tpn
                                      AND a.account_type = 'A'
                                      AND a.transaction_date <= p_calculation_date
-                                   GROUP BY tp.tpn, t.drn, a.transaction_id, t.transaction_type_id, a.gl_account_id,
+                                   GROUP BY tp.tpn, tp.name, t.drn, a.transaction_id, t.transaction_type_id,
+                                            a.gl_account_id,
                                             a.account_type
 
                                    UNION ALL
 
                                    SELECT tp.tpn
+                                        , tp.name
                                         , t.drn
                                         , ecii.transaction_id
                                         , t.transaction_type_id
@@ -85,11 +91,11 @@ BEGIN
                                    WHERE tp.tpn = p_tpn
                                      AND ecii.calculation_date <= p_calculation_date
                                      AND COALESCE(ecii.orig_calculation_date, '99990101') > p_calculation_date
-                                   GROUP BY tp.tpn, t.drn, ecii.transaction_id, t.transaction_type_id,
+                                   GROUP BY tp.tpn, tp.name, t.drn, ecii.transaction_id, t.transaction_type_id,
                                             ecii.gl_account_id
                                ) u
                           WHERE COALESCE(p_drn, u.drn) = u.drn
-                          GROUP BY u.tpn, u.drn, u.transaction_id, u.transaction_type_id, u.gl_account_id,
+                          GROUP BY u.tpn, u.name, u.drn, u.transaction_id, u.transaction_type_id, u.gl_account_id,
                                    u.account_type
                           HAVING SUM(u.balance) <> 0
                       ) b
@@ -103,7 +109,7 @@ BEGIN
                           INNER JOIN eledger_config.el_gl_account a
                                      ON a.id = d.gl_account_id
              ) r
-        GROUP BY r.tpn, r.drn, r.period_year, r.period_segment, r.deadline;
+        GROUP BY r.tpn, r.name, r.drn, r.period_year, r.period_segment, r.deadline;
 
 END;
 $function$
