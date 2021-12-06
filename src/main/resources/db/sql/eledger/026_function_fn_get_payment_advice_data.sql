@@ -3,7 +3,7 @@ CREATE OR REPLACE FUNCTION eledger.fn_get_payment_advice_data(p_tpn character va
     RETURNS TABLE
             (
                 tpn            character varying,
-                tpName         character varying,
+                tp_name        character varying,
                 drn            character varying,
                 period_year    character varying,
                 period_segment character varying,
