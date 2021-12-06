@@ -1,8 +1,12 @@
 package bhutan.eledger.ref.bankaccount;
 
+import bhutan.eledger.application.port.in.eledger.config.glaccount.CreateGLAccountPartTypeUseCase;
+import bhutan.eledger.application.port.in.eledger.config.glaccount.CreateGLAccountPartUseCase;
 import bhutan.eledger.application.port.in.ref.bank.CreateRefBankUseCase;
 import bhutan.eledger.application.port.in.ref.bankaccount.CreateRefBankAccountUseCase;
 import bhutan.eledger.application.port.in.ref.bankbranch.CreateRefBankBranchUseCase;
+import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountPartRepositoryPort;
+import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountPartTypeRepositoryPort;
 import bhutan.eledger.application.port.out.ref.bank.RefBankRepositoryPort;
 import bhutan.eledger.application.port.out.ref.bankaccount.RefBankAccountRepositoryPort;
 import bhutan.eledger.application.port.out.ref.bankbranch.RefBankBranchRepositoryPort;
@@ -16,6 +20,7 @@ import org.springframework.test.context.TestPropertySource;
 
 import java.time.LocalDate;
 import java.util.Map;
+import java.util.Set;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(
@@ -32,6 +37,12 @@ class CreateRefBankAccountTest {
     private CreateRefBankAccountUseCase createRefBankAccountUseCase;
 
     @Autowired
+    private CreateGLAccountPartUseCase createGLAccountPartUseCase;
+
+    @Autowired
+    private CreateGLAccountPartTypeUseCase createGLAccountPartTypeUseCase;
+
+    @Autowired
     private RefBankAccountRepositoryPort refBankAccountRepositoryPort;
 
     @Autowired
@@ -40,10 +51,18 @@ class CreateRefBankAccountTest {
     @Autowired
     private RefBankRepositoryPort refBankRepositoryPort;
 
+    @Autowired
+    private GLAccountPartTypeRepositoryPort glAccountPartTypeRepositoryPort;
+
+    @Autowired
+    private GLAccountPartRepositoryPort glAccountPartRepositoryPort;
+
 
     @AfterEach
     void afterEach() {
         refBankAccountRepositoryPort.deleteAll();
+        glAccountPartRepositoryPort.deleteAll();
+        glAccountPartTypeRepositoryPort.deleteAll();
         refBankBranchRepositoryPort.deleteAll();
         refBankRepositoryPort.deleteAll();
     }
@@ -74,13 +93,41 @@ class CreateRefBankAccountTest {
                 )
 
         );
+        Integer glTypeId = createGLAccountPartTypeUseCase.create(
+                new CreateGLAccountPartTypeUseCase.CreateGLAccountPartTypeCommand(
+                        1,
+                        Map.of("en", "Major group")
+
+                )
+        );
+
+        createGLAccountPartUseCase.create(
+                new CreateGLAccountPartUseCase.CreateGLAccountPartCommand(
+                        null,
+                        glTypeId,
+                        Set.of(
+                                new CreateGLAccountPartUseCase.GLAccountPartCommand(
+                                        "11",
+                                        Map.of(
+                                                "en", "Revenue"
+                                        )
+                                )
+                        )
+                )
+        );
+
         Long id = createRefBankAccountUseCase.create(
                 new CreateRefBankAccountUseCase.CreateBankAccountCommand(
                         branchId,
                         "5555555",
                         LocalDate.now().plusDays(1),
                         null,
-                        Map.of("en", "Account A")
+                        true,
+                        Map.of("en", "Account A"),
+                        new CreateRefBankAccountUseCase.BankAccountGLAccountPartCommand(
+                                "11"
+                        )
+
 
                 )
 
@@ -113,19 +160,46 @@ class CreateRefBankAccountTest {
                 )
 
         );
+        Integer glTypeId = createGLAccountPartTypeUseCase.create(
+                new CreateGLAccountPartTypeUseCase.CreateGLAccountPartTypeCommand(
+                        1,
+                        Map.of("en", "Major group")
+
+                )
+        );
+
+        createGLAccountPartUseCase.create(
+                new CreateGLAccountPartUseCase.CreateGLAccountPartCommand(
+                        null,
+                        glTypeId,
+                        Set.of(
+                                new CreateGLAccountPartUseCase.GLAccountPartCommand(
+                                        "11",
+                                        Map.of(
+                                                "en", "Revenue"
+                                        )
+                                )
+                        )
+                )
+        );
+
         Long id = createRefBankAccountUseCase.create(
                 new CreateRefBankAccountUseCase.CreateBankAccountCommand(
                         branchId,
                         "5555555",
                         LocalDate.now().plusDays(1),
                         null,
-                        Map.of("en", "Account A")
-
+                        true,
+                        Map.of("en", "Account A"),
+                        new CreateRefBankAccountUseCase.BankAccountGLAccountPartCommand(
+                                "11"
+                        )
                 )
 
         );
-
         var bankAccountOptional = refBankAccountRepositoryPort.readById(id);
+
+        Assertions.assertTrue(bankAccountOptional.isPresent());
         var bankAccount = bankAccountOptional.get();
         Assertions.assertNotNull(bankAccount);
         Assertions.assertNotNull(bankAccount.getDescription());

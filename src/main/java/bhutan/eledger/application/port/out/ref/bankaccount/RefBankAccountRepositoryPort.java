@@ -1,6 +1,7 @@
 package bhutan.eledger.application.port.out.ref.bankaccount;
 
 import bhutan.eledger.domain.ref.bankaccount.RefBankAccount;
+
 import java.util.Collection;
 import java.util.Optional;
 
@@ -8,6 +9,7 @@ public interface RefBankAccountRepositoryPort {
     Long create(RefBankAccount refBankAccount);
 
     Collection<RefBankAccount> readAll();
+
 
     void deleteAll();
 
@@ -18,4 +20,8 @@ public interface RefBankAccountRepositoryPort {
     Collection<RefBankAccount> readAllByBranchId(Long branchId);
 
     Optional<RefBankAccount> readByCode(String code);
+
+    void setBankAccountInfoById(Long id);
+
+    Long readIdByBranchIdAndGlCode(Long branchId, String code);
 }

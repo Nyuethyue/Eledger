@@ -5,6 +5,7 @@ import bhutan.eledger.application.port.out.ref.bankaccount.RefBankAccountReposit
 import bhutan.eledger.domain.ref.bankaccount.RefBankAccount;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Optional;
@@ -21,7 +22,6 @@ class RefBankAccountAdapter implements RefBankAccountRepositoryPort {
     public Long create(RefBankAccount refBankAccount) {
         RefBankAccountEntity refBankAccountEntity =
                 refBankAccountMapper.mapToEntity(refBankAccount);
-
         return refBankAccountRepository.save(refBankAccountEntity).getId();
     }
 
@@ -62,5 +62,17 @@ class RefBankAccountAdapter implements RefBankAccountRepositoryPort {
         return refBankAccountRepository.findByCode(code)
                 .map(refBankAccountMapper::mapToDomain);
     }
+
+
+    @Override
+    public void setBankAccountInfoById(Long id) {
+        refBankAccountRepository.setBankAccountInfoById(id);
+    }
+
+    @Override
+    public Long readIdByBranchIdAndGlCode(Long branchId, String code) {
+        return refBankAccountRepository.readIdByBranchIdAndGlCode(branchId, code);
+    }
+
 
 }

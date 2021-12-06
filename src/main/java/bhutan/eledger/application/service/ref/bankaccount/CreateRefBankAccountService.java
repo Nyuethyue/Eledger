@@ -7,8 +7,8 @@ import bhutan.eledger.application.port.in.ref.bankaccount.CreateRefBankAccountUs
 import bhutan.eledger.application.port.out.ref.bankaccount.RefBankAccountRepositoryPort;
 import bhutan.eledger.application.port.out.ref.bankbranch.RefBankBranchRepositoryPort;
 import bhutan.eledger.common.dto.ValidityPeriod;
+import bhutan.eledger.domain.ref.bankaccount.BankAccountGLAccountPart;
 import bhutan.eledger.domain.ref.bankaccount.RefBankAccount;
-import bhutan.eledger.domain.ref.bankbranch.RefBankBranch;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -21,14 +21,15 @@ import org.springframework.transaction.annotation.Transactional;
 class CreateRefBankAccountService implements CreateRefBankAccountUseCase {
 
     private final RefBankAccountRepositoryPort refBankAccountRepositoryPort;
-
     private final RefBankBranchRepositoryPort refBankBranchRepositoryPort;
 
     @Override
     public Long create(CreateRefBankAccountUseCase.CreateBankAccountCommand command) {
         log.trace("Creating bank's account with command: {}", command);
 
-        RefBankAccount refBankAccount = mapCommandToRefBankBranch(command);
+        Boolean validatedPrimaryStatus = validatePrimaryStatus(command);
+
+        RefBankAccount refBankAccount = mapCommandToRefBankBranch(command, validatedPrimaryStatus);
 
         validate(refBankAccount);
 
@@ -41,7 +42,8 @@ class CreateRefBankAccountService implements CreateRefBankAccountUseCase {
         return id;
     }
 
-    private RefBankAccount mapCommandToRefBankBranch(CreateRefBankAccountUseCase.CreateBankAccountCommand command) {
+    private RefBankAccount mapCommandToRefBankBranch(CreateBankAccountCommand command, Boolean validatedPrimaryStatus) {
+
         return RefBankAccount.withoutId(
                 command.getBranchId(),
                 command.getAccNumber(),
@@ -49,9 +51,30 @@ class CreateRefBankAccountService implements CreateRefBankAccountUseCase {
                         command.getStartOfValidity(),
                         command.getEndOfValidity()
                 ),
-                Multilingual.fromMap(command.getDescriptions())
+                Multilingual.fromMap(command.getDescriptions()),
+                validatedPrimaryStatus,
+                BankAccountGLAccountPart.withoutId(
+                        command.getBankAccountGLAccountPart().getCode()
+                )
         );
     }
+
+    Boolean validatePrimaryStatus(CreateRefBankAccountUseCase.CreateBankAccountCommand command) {
+        Boolean isPrimaryForGlAccount = command.getIsPrimaryForGlAccount();
+        //To get data by selected branch id, gl part (full code) and primary status.
+        Long primaryIdForBranchAndGlPart = refBankAccountRepositoryPort.readIdByBranchIdAndGlCode(command.getBranchId(),
+                command.getBankAccountGLAccountPart().getCode());
+        System.out.println(primaryIdForBranchAndGlPart);
+        if (primaryIdForBranchAndGlPart == null) {
+            return true;
+        }
+        if (isPrimaryForGlAccount) {
+            refBankAccountRepositoryPort.setBankAccountInfoById(primaryIdForBranchAndGlPart);
+        }
+
+        return isPrimaryForGlAccount;
+    }
+
     void validate(RefBankAccount refBankAccount) {
         //todo replace existence checks by one method
         if (refBankAccountRepositoryPort.isOpenBankAccountExists(refBankAccount)) {
@@ -65,7 +88,10 @@ class CreateRefBankAccountService implements CreateRefBankAccountUseCase {
                     new ValidationError()
                             .addViolation("BranchId", "Branch with Id: [" + refBankAccount.getBranchId() + "] does not exists.")
             );
+
         }
+
+
     }
 
 

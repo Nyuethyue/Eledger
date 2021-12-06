@@ -3,7 +3,6 @@ package bhutan.eledger.adapter.out.persistence.ref.bankAccount;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -33,6 +32,9 @@ class RefBankAccountEntity {
     @Column(name = "end_of_validity")
     private LocalDate endOfValidity;
 
+    @Column(name = "is_primary_gl_account")
+    private Boolean isPrimaryForGlAccount;
+
     @OneToMany(
             mappedBy = "bankAccount",
             cascade = CascadeType.ALL,
@@ -41,13 +43,23 @@ class RefBankAccountEntity {
     )
     private Set<RefBankAccountDescriptionEntity> descriptions;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "bank_account_gl_account_part_id", nullable = false)
+    private BankAccountGLAccountPartEntity bankAccountGLAccountPart;
+
+
     public RefBankAccountEntity(Long id, Long branchId, String code,
-                                LocalDate startOfValidity, LocalDate endOfValidity) {
+                                LocalDate startOfValidity, LocalDate endOfValidity,
+                                Boolean isPrimaryForGlAccount,
+                                BankAccountGLAccountPartEntity bankAccountGLAccountPart) {
         this.id = id;
         this.branchId = branchId;
         this.code = code;
         this.startOfValidity = startOfValidity;
         this.endOfValidity = endOfValidity;
+        this.isPrimaryForGlAccount = isPrimaryForGlAccount;
+        this.bankAccountGLAccountPart = bankAccountGLAccountPart;
+
     }
 
     public void addToDescriptions(RefBankAccountDescriptionEntity description) {

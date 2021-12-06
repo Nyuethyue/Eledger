@@ -8,24 +8,30 @@ import java.time.LocalDate;
 
 @Data(staticConstructor = "withId")
 public class RefBankAccount {
-    private final Long   id;
-    private final Long   branchId;
+    private final Long id;
+    private final Long branchId;
     private final String code;
     private final ValidityPeriod<LocalDate> validityPeriod;
     private final Multilingual description;
+    private final Boolean isPrimaryForGlAccount;
+    private final BankAccountGLAccountPart bankAccountGLAccountPart;
 
     public static RefBankAccount withoutId(
-            Long   branchId,
+            Long branchId,
             String code,
             ValidityPeriod<LocalDate> validityPeriod,
-            Multilingual description
+            Multilingual description,
+            Boolean isPrimaryForGlAccount,
+            BankAccountGLAccountPart bankAccountGLAccountPart
     ) {
         return new RefBankAccount(
                 null,
                 branchId,
                 code,
                 validityPeriod,
-                description
+                description,
+                isPrimaryForGlAccount,
+                bankAccountGLAccountPart
         );
     }
 }
