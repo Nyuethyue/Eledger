@@ -5,7 +5,7 @@ import am.iunetworks.lib.common.validation.ViolationException;
 import bhutan.eledger.application.port.in.epayment.payment.CreateCashPaymentUseCase;
 import bhutan.eledger.application.port.in.epayment.payment.CreatePaymentCommonCommand;
 import bhutan.eledger.application.port.out.epayment.payment.CashReceiptRepositoryPort;
-import bhutan.eledger.application.port.out.epayment.payment.EledgerPaymentTransactionPort;
+import bhutan.eledger.application.port.out.epayment.payment.PaymentCreateEledgerTransactionPort;
 import bhutan.eledger.application.port.out.epayment.payment.ReceiptNumberGeneratorPort;
 import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.taxpayer.EpTaxpayerRepositoryPort;
@@ -34,7 +34,7 @@ class CreateCashPaymentService implements CreateCashPaymentUseCase {
     private final ReceiptNumberGeneratorPort receiptNumberGeneratorPort;
     private final CashReceiptRepositoryPort cashReceiptRepositoryPort;
     private final EpTaxpayerRepositoryPort epTaxpayerRepositoryPort;
-    private final EledgerPaymentTransactionPort eledgerPaymentTransactionPort;
+    private final PaymentCreateEledgerTransactionPort eledgerPaymentTransactionPort;
     private final RefEntryRepository refEntryRepository;
 
     @Override

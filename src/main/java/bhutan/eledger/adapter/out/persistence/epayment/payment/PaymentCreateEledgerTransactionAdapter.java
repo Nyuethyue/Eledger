@@ -1,7 +1,7 @@
 package bhutan.eledger.adapter.out.persistence.epayment.payment;
 
 import bhutan.eledger.application.port.in.eledger.transaction.CreateTransactionsUseCase;
-import bhutan.eledger.application.port.out.epayment.payment.EledgerPaymentTransactionPort;
+import bhutan.eledger.application.port.out.epayment.payment.PaymentCreateEledgerTransactionPort;
 import bhutan.eledger.domain.epayment.payment.Receipt;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Log4j2
 @Component
 @RequiredArgsConstructor
-class EledgerPaymentTransactionAdapter implements EledgerPaymentTransactionPort {
+class PaymentCreateEledgerTransactionAdapter implements PaymentCreateEledgerTransactionPort {
     private final CreateTransactionsUseCase createTransactionsUseCase;
 
     @Override
