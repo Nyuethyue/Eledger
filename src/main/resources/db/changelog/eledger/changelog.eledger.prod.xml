@@ -111,4 +111,8 @@
         <sqlFile path="../../sql/eledger/026_function_fn_get_payment_advice_data.sql" relativeToChangelogFile="true" splitStatements="false"/>
     </changeSet>
 
+    <changeSet id="Create procedure repayment from net negative" author="V.G.">
+        <sqlFile path="../../sql/eledger/027_procedure_sp_repayment_from_net_negative.sql" relativeToChangelogFile="true" splitStatements="false"/>
+    </changeSet>
+
 </databaseChangeLog>

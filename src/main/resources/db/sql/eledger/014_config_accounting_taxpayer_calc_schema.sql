@@ -48,6 +48,11 @@ ALTER TABLE eledger.el_taxpayer_calc
     ADD CONSTRAINT pk_taxpayer_calc
         PRIMARY KEY (id);
 
+ALTER TABLE ONLY eledger.el_taxpayer_calc
+    ADD CONSTRAINT fk_taxpayer_taxpayer_calc
+        FOREIGN KEY (id)
+            REFERENCES eledger.el_taxpayer (id);
+
 ALTER TABLE eledger.el_taxpayer_calc
     ADD CONSTRAINT un_taxpayer_calc_tpn UNIQUE (tpn);
 

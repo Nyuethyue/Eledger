@@ -1,4 +1,3 @@
-
 ----------------------------------------------------------------------------------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION eledger.fn_gl_accounting_details_count(p_tpn character varying,
@@ -29,6 +28,42 @@ BEGIN
                            , eledger.fn_get_attribute_value(a.transaction_id, 'period_year')    AS "period_year"
                            , eledger.fn_get_attribute_value(a.transaction_id, 'period_segment') AS "period_segment"
                       FROM eledger.el_accounting a
+                               INNER JOIN eledger.el_transaction t
+                                          ON t.id = a.transaction_id
+                               INNER JOIN eledger.el_taxpayer tp
+                                          ON tp.id = t.taxpayer_id
+                               LEFT JOIN eledger_config.el_gl_account ga
+                                         ON ga.id = a.gl_account_id
+                               LEFT JOIN eledger_config.el_gl_account_description gad
+                                         ON gad.gl_account_id = a.gl_account_id AND gad.language_code = 'en'
+                               LEFT JOIN eledger_config.el_accounting_action_type tat
+                                         ON tat.id = a.accounting_action_type_id
+                      WHERE tp.tpn = p_tpn
+                        AND ga.code LIKE coalesce(p_tax_type_code, ga.code) || '%'
+                        AND lower(trim(gad.language_code)) = lower(trim(p_language_code))
+                        AND a.account_type = 'A'
+
+                      UNION ALL
+
+                      SELECT a.id
+                           , a.transaction_date
+                           , tp.tpn
+                           , eledger.fn_get_attribute_value(a.transaction_id, 'period_year')    AS "period_year"
+                           , eledger.fn_get_attribute_value(a.transaction_id, 'period_segment') AS "period_segment"
+                      FROM (
+                               SELECT row_number() OVER (ORDER BY ecii.gl_account_id, ecii.transaction_id) id
+                                    , ecii.transaction_id
+                                    , ecii.gl_account_id
+                                    , ecii.accounting_action_type_id
+                                    , 'D'                                                                  transfer_type
+                                    , 'A'                                                                  account_type
+                                    , max(calculation_date) AS                                             transaction_date
+                                    , sum(ecii.amount)      AS                                             amount
+                               FROM eledger.el_calculated_interest_info ecii
+                               WHERE calculation_date <= coalesce(p_end_date, '99990101')
+                                 AND coalesce(orig_calculation_date, '99990102') > coalesce(p_end_date, '99990101')
+                               GROUP BY ecii.transaction_id, ecii.gl_account_id, ecii.accounting_action_type_id
+                           ) a
                                INNER JOIN eledger.el_transaction t
                                           ON t.id = a.transaction_id
                                INNER JOIN eledger.el_taxpayer tp
@@ -111,8 +146,7 @@ BEGIN
                       , t.gl_account_code
                       , t.action_type
                  FROM (
-                          SELECT --a.id, a.parent_id,
-                              a.id
+                          SELECT a.id
                                , tp.tpn
                                , a.transaction_id
                                , (SELECT code
@@ -158,13 +192,75 @@ BEGIN
                             AND ga.code LIKE coalesce(p_tax_type_code, ga.code) || '%'
                             AND lower(trim(gad.language_code)) = lower(trim(p_language_code))
                             AND a.account_type = 'A'
+
+                          UNION ALL
+
+                          SELECT a.id
+                               , tp.tpn
+                               , a.transaction_id
+                               , (SELECT code
+                                  FROM eledger_config.el_transaction_type ett
+                                  WHERE ett.id = t.transaction_type_id)                                   transaction_name
+                               , a.transaction_date
+                               , gad.value                                                                liability_description
+                               , eledger.fn_get_attribute_value(a.transaction_id, 'period_year')       AS "period_year"
+                               , eledger.fn_get_attribute_value(a.transaction_id, 'period_segment')    AS "period_segment"
+                               , CASE WHEN a.accounting_action_type_id = 4 THEN NULL ELSE a.amount END AS amount
+                               , CASE WHEN a.accounting_action_type_id = 4 THEN a.amount ELSE NULL END AS payment
+                               , eledger.fn_get_attribute_value(a.transaction_id, 'drn')                  drn
+                               , ga.id                                                                    gl_account_id
+                               , ga.code                                                                  gl_account_code
+                               , tat.name                                                                 action_type
+                               , CASE
+                                     WHEN substring(ga.code, 6, 6) = '990001'
+                                         THEN CASE WHEN a.transfer_type = 'D' THEN a.amount ELSE -a.amount END
+                                     ELSE 0
+                              END                                                                         interest_amount
+                               , CASE
+                                     WHEN substring(ga.code, 6, 6) = '990002'
+                                         THEN CASE WHEN a.transfer_type = 'D' THEN a.amount ELSE -a.amount END
+                                     ELSE 0
+                              END                                                                         penalty_amount
+                               , CASE
+                                     WHEN substring(ga.code, 6, 6) NOT IN ('990001', '990002')
+                                         THEN CASE WHEN a.transfer_type = 'D' THEN a.amount ELSE -a.amount END
+                                     ELSE 0
+                              END
+                          FROM (
+                                   SELECT row_number() OVER (ORDER BY ecii.gl_account_id, ecii.transaction_id) id
+                                        , ecii.transaction_id
+                                        , ecii.gl_account_id
+                                        , ecii.accounting_action_type_id
+                                        , 'D'                                                                  transfer_type
+                                        , 'A'                                                                  account_type
+                                        , max(calculation_date) AS                                             transaction_date
+                                        , sum(ecii.amount)      AS                                             amount
+                                   FROM eledger.el_calculated_interest_info ecii
+                                   WHERE calculation_date <= coalesce(p_end_date, '99990101')
+                                     AND coalesce(orig_calculation_date, '99990102') > coalesce(p_end_date, '99990101')
+                                   GROUP BY ecii.transaction_id, ecii.gl_account_id, ecii.accounting_action_type_id
+                               ) a
+                                   INNER JOIN eledger.el_transaction t
+                                              ON t.id = a.transaction_id
+                                   INNER JOIN eledger.el_taxpayer tp
+                                              ON tp.id = t.taxpayer_id
+                                   LEFT JOIN eledger_config.el_gl_account ga
+                                             ON ga.id = a.gl_account_id
+                                   LEFT JOIN eledger_config.el_gl_account_description gad
+                                             ON gad.gl_account_id = a.gl_account_id AND gad.language_code = 'en'
+                                   LEFT JOIN eledger_config.el_accounting_action_type tat
+                                             ON tat.id = a.accounting_action_type_id
+                          WHERE tp.tpn = p_tpn
+                            AND ga.code LIKE coalesce(p_tax_type_code, ga.code) || '%'
+                            AND lower(trim(gad.language_code)) = lower(trim(p_language_code))
+                            AND a.account_type = 'A'
                       ) t
                  WHERE t.period_year = coalesce(p_year, t.period_year)
                    AND t.period_segment = coalesce(p_segment, t.period_segment)
              ) ret
         WHERE ret.transaction_date >= coalesce(p_start_date, ret.transaction_date)
           AND ret.transaction_date <= coalesce(p_end_date, ret.transaction_date)
-        ORDER BY ret.id
+        ORDER BY ret.transaction_date, ret.id
             OFFSET p_offset
         LIMIT p_limit;
 

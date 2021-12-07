@@ -1,4 +1,3 @@
-
 ------------------------------------------------------------------------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION eledger.fn_is_transaction_date(p_taxpayer_id bigint, p_calculation_date date)
@@ -27,7 +26,8 @@ $function$
 
 CREATE OR REPLACE PROCEDURE eledger.sp_process_pac_for_date(IN p_tpn character varying, IN p_calculation_date date)
     LANGUAGE plpgsql
-AS $procedure$
+AS
+$procedure$
 DECLARE
     v_processing_date              date;
     v_orig_processing_date         date;
@@ -86,16 +86,22 @@ BEGIN
             CALL eledger.sp_transaction_interest_info(v_taxpayer_id, v_processing_date);
 
             -- move interest to main table
-            IF v_is_document_transaction_date OR v_processing_date = p_calculation_date
+            IF v_is_document_transaction_date --OR v_processing_date = p_calculation_date
             THEN
                 CALL eledger.sp_move_interet_to_accounting(v_taxpayer_id, v_processing_date);
             END IF;
 
             -- repayment documents
-            if v_is_document_transaction_date
-            then
-                call eledger.sp_repayment(v_taxpayer_id, v_processing_date);
-            end if;
+            IF v_is_document_transaction_date
+            THEN
+                CALL eledger.sp_repayment(v_taxpayer_id, v_processing_date);
+            END IF;
+
+            -- repayment documents from other debits
+            IF v_is_document_transaction_date
+            THEN
+                CALL eledger.sp_repayment_from_net_negative(v_taxpayer_id, v_processing_date);
+            END IF;
 
 
             -- update taxpayer calculation_date
