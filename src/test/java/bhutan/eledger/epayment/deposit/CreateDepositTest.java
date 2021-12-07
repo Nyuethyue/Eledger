@@ -174,7 +174,6 @@ class CreateDepositTest {
         CreateDepositUseCase.CreateDepositCommand createDepositCommand =
                 new CreateDepositUseCase.CreateDepositCommand(
                         1L,
-                        DepositStatus.BOUNCED,
                         BigDecimal.valueOf(1221),
                         LocalDate.now(),
                         createReceipts(receipt),
@@ -182,6 +181,9 @@ class CreateDepositTest {
                 );
         Long dpId = createDepositUseCase.create(createDepositCommand);
         Deposit deposit = transactionTemplate.execute(status -> depositRepositoryPort.readById(dpId).get());
+        Assertions.assertTrue(deposit.equals(DepositStatus.PENDING_RECONCILIATION));
+        Assertions.assertTrue(deposit.getDenominationCounts().size() > 0);
+        Assertions.assertTrue(deposit.getReceipts().size() > 0);
 
         var searchResult = searchDepositUseCase.search(new SearchDepositUseCase.SearchDepositCommand(
                 0,
