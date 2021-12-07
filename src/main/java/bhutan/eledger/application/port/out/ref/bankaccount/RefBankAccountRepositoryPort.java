@@ -21,7 +21,7 @@ public interface RefBankAccountRepositoryPort {
 
     Optional<RefBankAccount> readByCode(String code);
 
-    void setBankAccountInfoById(Long id);
+    void setPrimaryFlagById(Long id,Boolean flag);
 
     Long readIdByBranchIdAndGlCode(Long branchId, String code);
 }

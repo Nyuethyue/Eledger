@@ -5,6 +5,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/eledger
     username: eledger
     password: eledger
+
   jpa:
     open-in-view: true
     properties:

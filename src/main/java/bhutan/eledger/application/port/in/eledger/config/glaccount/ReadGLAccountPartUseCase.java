@@ -14,4 +14,6 @@ public interface ReadGLAccountPartUseCase {
     Collection<GLAccountPart> readAllByParentId(@NotNull Long parentId);
 
     Collection<GLAccountPart> readAllByPartTypeId(@NotNull Integer partTypeId);
+
+    Boolean existsByFullCode(@NotNull String fullCode);
 }

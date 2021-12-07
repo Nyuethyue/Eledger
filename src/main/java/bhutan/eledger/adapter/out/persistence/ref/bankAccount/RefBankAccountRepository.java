@@ -33,9 +33,9 @@ interface RefBankAccountRepository extends JpaRepository<RefBankAccountEntity, L
     boolean existsByCodeAndEndOfValidityNullOrEndOfValidity(String code, LocalDate date, LocalDate secondDate);
 
 
-    @Modifying(clearAutomatically = true)
-    @Query(value = "update ref.bank_account set is_primary_gl_account = false where id = :id", nativeQuery = true)
-    void setBankAccountInfoById(Long id);
+    @Modifying
+    @Query(value = "update ref.bank_account set is_primary_gl_account = :flag where id = :id", nativeQuery = true)
+    void setPrimaryFlagById (Long id,Boolean flag);
 
     @Query(value = " SELECT A.id" +
             "        FROM ref.bank_account A" +

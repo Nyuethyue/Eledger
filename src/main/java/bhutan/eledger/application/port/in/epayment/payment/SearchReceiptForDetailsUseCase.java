@@ -27,11 +27,7 @@ public interface SearchReceiptForDetailsUseCase {
         private final String tpn;
         private final String receiptNumber;
         private final String otherReferenceNumber;
-
-        @DateTimeFormat(pattern = "yyyy-MM-dd")
         private final LocalDate liabilityFromDate;
-
-        @DateTimeFormat(pattern = "yyyy-MM-dd")
         private final LocalDate liabilityToDate;
         private final BigDecimal receiptFromAmount;
         private final BigDecimal receiptToAmount;
