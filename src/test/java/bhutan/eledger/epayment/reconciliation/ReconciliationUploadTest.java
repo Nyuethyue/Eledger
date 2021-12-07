@@ -1,6 +1,6 @@
 package bhutan.eledger.epayment.reconciliation;
 
-import bhutan.eledger.adapter.out.fms.epayment.reconciliation.ReconciliationExcelLoader;
+import bhutan.eledger.adapter.out.epayment.fms.reconciliation.ReconciliationExcelLoader;
 import bhutan.eledger.application.port.in.epayment.reconciliation.BankStatementImportUseCase;
 import bhutan.eledger.domain.epayment.BankStatementImportReconciliationInfo;
 import org.junit.jupiter.api.AfterEach;

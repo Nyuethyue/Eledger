@@ -1,7 +1,7 @@
 package bhutan.eledger.configuration.epayment.deposit;
 
 import am.iunetworks.lib.common.persistence.search.AbstractSearchProperties;
-import bhutan.eledger.adapter.out.persistence.epayment.deposit.QDepositEntity;
+import bhutan.eledger.adapter.out.epayment.persistence.deposit.QDepositEntity;
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;

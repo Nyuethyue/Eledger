@@ -14,8 +14,8 @@ class DependencyRuleTests {
                 .withDomainLayer("domain")
 
                 .withAdaptersLayer("adapter")
-                .incoming("in.web")
-                .outgoing("out.persistence")
+                .incoming("in")
+                .outgoing("out")
                 .and()
 
                 .withApplicationLayer("application")

@@ -1,7 +1,7 @@
 package bhutan.eledger.configuration.epayment.payment;
 
 import am.iunetworks.lib.common.persistence.search.AbstractSearchProperties;
-import bhutan.eledger.adapter.out.persistence.epayment.payment.QReceiptEntity;
+import bhutan.eledger.adapter.out.epayment.persistence.payment.QReceiptEntity;
 import bhutan.eledger.common.constants.CharSequenceConstants;
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
