@@ -24,6 +24,11 @@ ALTER TABLE eledger.el_calculated_interest_info
         FOREIGN KEY (transaction_id)
             REFERENCES eledger.el_transaction (id);
 
+ALTER TABLE ONLY eledger.el_calculated_interest_info
+    ADD CONSTRAINT fk_calculated_interest_interest_calculation
+        FOREIGN KEY (interest_calculation_id)
+            REFERENCES eledger_config.el_interest_calculation (id);
+
 CREATE INDEX IF NOT EXISTS fki_calculated_interest_info_transaction
     ON eledger.el_calculated_interest_info (transaction_id);
 

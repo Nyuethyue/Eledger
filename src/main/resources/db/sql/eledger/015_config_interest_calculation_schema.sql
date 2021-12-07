@@ -25,6 +25,11 @@ CREATE TABLE eledger_config.el_interest_calculation
 ALTER TABLE eledger_config.el_interest_calculation
     ADD CONSTRAINT pk_interest_calculation PRIMARY KEY (id);
 
+ALTER TABLE ONLY eledger_config.el_interest_calculation
+    ADD CONSTRAINT fk_interest_calculation_acc_action_type
+        FOREIGN KEY (accounting_action_type_id)
+            REFERENCES eledger_config.el_accounting_action_type (id);
+
 CREATE SEQUENCE eledger_config.el_interest_calculation_id_seq
     INCREMENT BY 1
     MINVALUE 1

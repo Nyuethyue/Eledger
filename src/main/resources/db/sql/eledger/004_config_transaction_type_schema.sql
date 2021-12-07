@@ -71,6 +71,11 @@ ALTER TABLE eledger_config.el_transaction_type_attribute
 ALTER TABLE eledger_config.el_transaction_type_attribute
     ADD CONSTRAINT un_transaction_type_attribute_code UNIQUE (code);
 
+ALTER TABLE ONLY eledger_config.el_transaction_type_attribute
+    ADD CONSTRAINT fk_transaction_type_attribute_type
+        FOREIGN KEY (data_type_id)
+            REFERENCES eledger_config.el_data_type (id);
+
 CREATE SEQUENCE eledger_config.el_transaction_type_attribute_id_seq
     INCREMENT BY 1
     MINVALUE 1

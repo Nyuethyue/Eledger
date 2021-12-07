@@ -13,6 +13,11 @@ CREATE TABLE eledger_config.el_property
 ALTER TABLE eledger_config.el_property
     ADD CONSTRAINT pk_property PRIMARY KEY (id);
 
+ALTER TABLE ONLY eledger_config.el_property
+    ADD CONSTRAINT fk_property_data_type
+        FOREIGN KEY (data_type_id)
+            REFERENCES eledger_config.el_data_type (id);
+
 CREATE SEQUENCE eledger_config.el_property_id_seq
     INCREMENT BY 1
     MINVALUE 1
