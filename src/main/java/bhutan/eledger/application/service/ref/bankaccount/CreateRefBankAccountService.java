@@ -4,6 +4,7 @@ import am.iunetworks.lib.common.validation.ValidationError;
 import am.iunetworks.lib.common.validation.ViolationException;
 import am.iunetworks.lib.multilingual.core.Multilingual;
 import bhutan.eledger.application.port.in.ref.bankaccount.CreateRefBankAccountUseCase;
+import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountPartRepositoryPort;
 import bhutan.eledger.application.port.out.ref.bankaccount.RefBankAccountRepositoryPort;
 import bhutan.eledger.application.port.out.ref.bankbranch.RefBankBranchRepositoryPort;
 import bhutan.eledger.common.dto.ValidityPeriod;
@@ -22,6 +23,7 @@ class CreateRefBankAccountService implements CreateRefBankAccountUseCase {
 
     private final RefBankAccountRepositoryPort refBankAccountRepositoryPort;
     private final RefBankBranchRepositoryPort refBankBranchRepositoryPort;
+    private final GLAccountPartRepositoryPort glAccountPartRepositoryPort;
 
     @Override
     public Long create(CreateRefBankAccountUseCase.CreateBankAccountCommand command) {
@@ -87,6 +89,13 @@ class CreateRefBankAccountService implements CreateRefBankAccountUseCase {
             throw new ViolationException(
                     new ValidationError()
                             .addViolation("BranchId", "Branch with Id: [" + refBankAccount.getBranchId() + "] does not exists.")
+            );
+
+        }
+        if (!glAccountPartRepositoryPort.existsByFullCode(refBankAccount.getBankAccountGLAccountPart().getCode())) {
+            throw new ViolationException(
+                    new ValidationError()
+                            .addViolation("Code", "Gl Account with full code: [" + refBankAccount.getBankAccountGLAccountPart().getCode() + "] does not exists.")
             );
 
         }
