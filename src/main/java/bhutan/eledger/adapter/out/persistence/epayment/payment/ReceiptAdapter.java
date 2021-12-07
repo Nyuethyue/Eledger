@@ -1,5 +1,6 @@
 package bhutan.eledger.adapter.out.persistence.epayment.payment;
 
+import am.iunetworks.lib.common.validation.RecordNotFoundException;
 import am.iunetworks.lib.common.validation.ValidationError;
 import am.iunetworks.lib.common.validation.Violation;
 import am.iunetworks.lib.common.validation.ViolationException;
@@ -20,13 +21,8 @@ class ReceiptAdapter implements ReceiptRepositoryPort {
 
     @Override
     public void checkReceipts(Collection<Long> receiptIds) {
-        receiptIds.stream().forEach(receiptId -> receiptEntityRepository.findById(receiptId).orElseThrow(() -> new ViolationException(
-                new ValidationError(
-                        Set.of(
-                                new Violation("receipt.id", "Receipt not found by id:" + receiptId)
-                        )
-                )
-        )));
+        receiptIds.stream().forEach(receiptId -> receiptEntityRepository.findById(receiptId).orElseThrow(() ->
+                new RecordNotFoundException("Receipt not found by id:" + receiptId)));
     }
 
     @Override

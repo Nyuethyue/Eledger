@@ -29,7 +29,7 @@
 
     <changeSet id="Deposit schemas" author="A.A." dbms="postgresql">
         <sqlFile path="../../sql/epayment/007_deposit_schema.sql" relativeToChangelogFile="true"/>
-        <sqlFile path="../../sql/epayment/008_deposit_add_deposit_number.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/epayment/008_create_deposit_number_sequence.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
 </databaseChangeLog>
