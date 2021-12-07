@@ -1,6 +1,5 @@
 package bhutan.eledger.adapter.out.persistence.epayment.deposit;
 
-import bhutan.eledger.application.port.in.epayment.deposit.CreateDepositUseCase;
 import bhutan.eledger.domain.epayment.deposit.DenominationCount;
 import bhutan.eledger.domain.epayment.deposit.Deposit;
 import bhutan.eledger.domain.epayment.deposit.DepositReceipt;
