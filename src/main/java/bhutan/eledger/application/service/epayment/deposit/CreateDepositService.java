@@ -1,8 +1,5 @@
 package bhutan.eledger.application.service.epayment.deposit;
 
-import am.iunetworks.lib.common.validation.ValidationError;
-import am.iunetworks.lib.common.validation.Violation;
-import am.iunetworks.lib.common.validation.ViolationException;
 import bhutan.eledger.application.port.in.epayment.deposit.CreateDepositUseCase;
 import bhutan.eledger.application.port.out.epayment.deposit.DepositNumberGeneratorPort;
 import bhutan.eledger.application.port.out.epayment.deposit.DepositRepositoryPort;
@@ -16,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Log4j2
