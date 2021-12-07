@@ -19,12 +19,12 @@
         <sqlFile path="../../sql/eledger/003_config_gl_account_audit_schema.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="Transaction types configuration schemas" author="B.A.">
-        <sqlFile path="../../sql/eledger/004_config_transaction_type_schema.sql" relativeToChangelogFile="true"/>
+    <changeSet id="Data types configuration schemas" author="B.A.">
+        <sqlFile path="../../sql/eledger/004_config_data_type_schema.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="Data types configuration schemas" author="B.A.">
-        <sqlFile path="../../sql/eledger/005_config_data_type_schema.sql" relativeToChangelogFile="true"/>
+    <changeSet id="Transaction types configuration schemas" author="B.A.">
+        <sqlFile path="../../sql/eledger/005_config_transaction_type_schema.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
     <changeSet id="GL account level data insertion" author="V.G.">
