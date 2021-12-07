@@ -91,6 +91,11 @@ class GLAccountPartAdapter implements GLAccountPartRepositoryPort, GetGlAccountP
     }
 
     @Override
+    public boolean existsByFullCode(String fullCode) {
+        return glAccountPartEntityRepository.existsByFullCode(fullCode);
+    }
+
+    @Override
     public GlAccountPartFullCodeOnly getGlAccountPartFullCodeOnly(Long id) {
 
         return id == null ? () -> EMPTY : glAccountPartEntityRepository.readById(id)

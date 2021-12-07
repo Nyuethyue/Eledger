@@ -26,4 +26,6 @@ interface GLAccountPartEntityRepository extends CustomQuerydslJpaRepository<GLAc
     boolean existsByParentIdAndCodeIn(Long id, Collection<String> codes);
 
     Optional<GetGlAccountPartFullCodeOnlyPort.GlAccountPartFullCodeOnly> readById(Long id);
+
+    boolean existsByFullCode(String fullCode);
 }

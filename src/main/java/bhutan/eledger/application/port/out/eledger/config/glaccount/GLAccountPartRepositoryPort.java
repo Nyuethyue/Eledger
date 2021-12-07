@@ -25,4 +25,6 @@ public interface GLAccountPartRepositoryPort {
     void deleteAll();
 
     Collection<GLAccountPart> readAllByPartTypeId(Integer partTypeId);
+
+    boolean existsByFullCode(String fullCode);
 }

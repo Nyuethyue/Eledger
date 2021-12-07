@@ -1,11 +1,14 @@
 ------------------------------------------------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS ref.bank_account
 (
-    id                bigint  NOT NULL,
-    branch_id         bigint  NOT NULL,
-    code              varchar NOT NULL,
-    start_of_validity date    NOT NULL,
-    end_of_validity   date    NULL
+    id                              bigint  NOT NULL,
+    branch_id                       bigint  NOT NULL,
+    code                            varchar NOT NULL,
+    start_of_validity               date    NOT NULL,
+    end_of_validity                 date    NULL,
+    is_primary_gl_account           boolean NOT NULL,
+    bank_account_gl_account_part_id bigint  NOT NULL
+
 );
 
 ALTER TABLE ref.bank_account
@@ -22,6 +25,13 @@ ALTER TABLE ref.bank_account
 
 CREATE INDEX IF NOT EXISTS fki_bank_branch_account
     ON ref.bank_account (branch_id);
+
+ALTER TABLE ONLY ref.bank_account
+    ADD CONSTRAINT fk_bank_account_gl_account_part
+        FOREIGN KEY (bank_account_gl_account_part_id) REFERENCES ref.bank_account_gl_account_part (id);
+
+CREATE INDEX IF NOT EXISTS fki_bank_account_gl_account_part
+    ON ref.bank_account (bank_account_gl_account_part_id);
 
 CREATE SEQUENCE ref.bank_account_id_seq
     INCREMENT BY 1

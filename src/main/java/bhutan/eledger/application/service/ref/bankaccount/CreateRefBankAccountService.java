@@ -3,12 +3,13 @@ package bhutan.eledger.application.service.ref.bankaccount;
 import am.iunetworks.lib.common.validation.ValidationError;
 import am.iunetworks.lib.common.validation.ViolationException;
 import am.iunetworks.lib.multilingual.core.Multilingual;
+import bhutan.eledger.application.port.in.eledger.config.glaccount.ReadGLAccountPartUseCase;
 import bhutan.eledger.application.port.in.ref.bankaccount.CreateRefBankAccountUseCase;
 import bhutan.eledger.application.port.out.ref.bankaccount.RefBankAccountRepositoryPort;
 import bhutan.eledger.application.port.out.ref.bankbranch.RefBankBranchRepositoryPort;
 import bhutan.eledger.common.dto.ValidityPeriod;
+import bhutan.eledger.domain.ref.bankaccount.BankAccountGLAccountPart;
 import bhutan.eledger.domain.ref.bankaccount.RefBankAccount;
-import bhutan.eledger.domain.ref.bankbranch.RefBankBranch;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -21,14 +22,16 @@ import org.springframework.transaction.annotation.Transactional;
 class CreateRefBankAccountService implements CreateRefBankAccountUseCase {
 
     private final RefBankAccountRepositoryPort refBankAccountRepositoryPort;
-
     private final RefBankBranchRepositoryPort refBankBranchRepositoryPort;
+    private final ReadGLAccountPartUseCase glAccountPartUseCase;
 
     @Override
     public Long create(CreateRefBankAccountUseCase.CreateBankAccountCommand command) {
         log.trace("Creating bank's account with command: {}", command);
 
-        RefBankAccount refBankAccount = mapCommandToRefBankBranch(command);
+        Boolean primaryFlag = getPrimaryFlay(command);
+
+        RefBankAccount refBankAccount = mapCommandToRefBankBranch(command, primaryFlag);
 
         validate(refBankAccount);
 
@@ -41,7 +44,8 @@ class CreateRefBankAccountService implements CreateRefBankAccountUseCase {
         return id;
     }
 
-    private RefBankAccount mapCommandToRefBankBranch(CreateRefBankAccountUseCase.CreateBankAccountCommand command) {
+    private RefBankAccount mapCommandToRefBankBranch(CreateBankAccountCommand command, Boolean primaryFlag) {
+
         return RefBankAccount.withoutId(
                 command.getBranchId(),
                 command.getAccNumber(),
@@ -49,9 +53,30 @@ class CreateRefBankAccountService implements CreateRefBankAccountUseCase {
                         command.getStartOfValidity(),
                         command.getEndOfValidity()
                 ),
-                Multilingual.fromMap(command.getDescriptions())
+                Multilingual.fromMap(command.getDescriptions()),
+                primaryFlag,
+                BankAccountGLAccountPart.withoutId(
+                        command.getBankAccountGLAccountPart().getCode()
+                )
         );
     }
+
+    Boolean getPrimaryFlay(CreateRefBankAccountUseCase.CreateBankAccountCommand command) {
+        Boolean isPrimaryForGlAccount = command.getIsPrimaryForGlAccount();
+        //To get data by selected branch id, gl part (full code) and primary status.
+        Long primaryIdForBranchAndGlPart = refBankAccountRepositoryPort.readIdByBranchIdAndGlCode(command.getBranchId(),
+                command.getBankAccountGLAccountPart().getCode());
+
+        if (primaryIdForBranchAndGlPart == null) {
+            return true;
+        }
+        if (isPrimaryForGlAccount) {
+            refBankAccountRepositoryPort.setPrimaryFlagById(primaryIdForBranchAndGlPart, false);
+        }
+
+        return isPrimaryForGlAccount;
+    }
+
     void validate(RefBankAccount refBankAccount) {
         //todo replace existence checks by one method
         if (refBankAccountRepositoryPort.isOpenBankAccountExists(refBankAccount)) {
@@ -65,7 +90,17 @@ class CreateRefBankAccountService implements CreateRefBankAccountUseCase {
                     new ValidationError()
                             .addViolation("BranchId", "Branch with Id: [" + refBankAccount.getBranchId() + "] does not exists.")
             );
+
         }
+        if (!glAccountPartUseCase.existsByFullCode(refBankAccount.getBankAccountGLAccountPart().getCode())) {
+            throw new ViolationException(
+                    new ValidationError()
+                            .addViolation("Code", "Gl Account with full code: [" + refBankAccount.getBankAccountGLAccountPart().getCode() + "] does not exists.")
+            );
+
+        }
+
+
     }
 
 
