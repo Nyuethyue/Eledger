@@ -2,6 +2,7 @@
 CREATE TABLE IF NOT EXISTS epayment.deposit
 (
     id                     bigint   NOT NULL,
+    deposit_number         VARCHAR NOT NULL,
     payment_mode_id        bigint   NOT NULL,
     bank_deposit_date      date     NOT NULL,
     last_printed_date      timestamp,

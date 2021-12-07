@@ -20,7 +20,7 @@ public interface DepositRepositoryPort {
 
     Collection<Deposit> readAll();
 
-    Long create(Deposit paymentAdvice);
+    Deposit create(Deposit paymentAdvice);
 
     void deleteAll();
 

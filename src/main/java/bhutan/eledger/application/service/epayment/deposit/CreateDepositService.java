@@ -1,5 +1,8 @@
 package bhutan.eledger.application.service.epayment.deposit;
 
+import am.iunetworks.lib.common.validation.ValidationError;
+import am.iunetworks.lib.common.validation.Violation;
+import am.iunetworks.lib.common.validation.ViolationException;
 import bhutan.eledger.application.port.in.epayment.deposit.CreateDepositUseCase;
 import bhutan.eledger.application.port.out.epayment.deposit.DepositNumberGeneratorPort;
 import bhutan.eledger.application.port.out.epayment.deposit.DepositRepositoryPort;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -26,7 +30,7 @@ class CreateDepositService implements CreateDepositUseCase {
 
 
     @Override
-    public CreateDepositUseCase.CreateDepositResult create(CreateDepositUseCase.CreateDepositCommand command) {
+    public Deposit create(CreateDepositCommand command) {
         log.trace("Generating Deposit by command: {}", command);
 
         LocalDateTime creationDateTime = LocalDateTime.now();
@@ -49,11 +53,13 @@ class CreateDepositService implements CreateDepositUseCase {
 
         log.trace("Creating eledger payment deposit: {}", deposit);
 
-        Long depositId = depositRepositoryPort.create(deposit);
+        Deposit result = depositRepositoryPort.create(deposit);
 
         log.trace("Updating eledger receipt statuses to: {}", ReceiptStatus.PENDING_RECONCILIATION);
 
+        receiptRepositoryPort.checkReceipts(command.getReceipts());
+
         receiptRepositoryPort.updateStatuses(ReceiptStatus.PENDING_RECONCILIATION, command.getReceipts());
-        return new CreateDepositUseCase.CreateDepositResult(depositId, depositNumber);
+        return result;
     }
 }
