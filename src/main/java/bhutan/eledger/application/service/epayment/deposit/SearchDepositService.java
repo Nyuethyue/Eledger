@@ -1,15 +1,11 @@
-package bhutan.eledger.application.service.deposit;
+package bhutan.eledger.application.service.epayment.deposit;
 
 import am.iunetworks.lib.common.persistence.search.SearchResult;
 import am.iunetworks.lib.common.persistence.search.SearchValidationUtils;
 import bhutan.eledger.application.port.in.epayment.deposit.SearchDepositUseCase;
-import bhutan.eledger.application.port.in.epayment.payment.SearchReceiptUseCase;
 import bhutan.eledger.application.port.out.epayment.deposit.DepositSearchPort;
-import bhutan.eledger.application.port.out.epayment.payment.ReceiptSearchPort;
 import bhutan.eledger.configuration.epayment.deposit.DepositSearchProperties;
-import bhutan.eledger.configuration.epayment.payment.ReceiptSearchProperties;
 import bhutan.eledger.domain.epayment.deposit.Deposit;
-import bhutan.eledger.domain.epayment.payment.Receipt;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;

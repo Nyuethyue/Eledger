@@ -17,6 +17,7 @@ import bhutan.eledger.domain.epayment.deposit.DepositReceipt;
 import bhutan.eledger.domain.epayment.deposit.DepositStatus;
 import bhutan.eledger.domain.epayment.payment.Receipt;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,13 +30,14 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(
         properties = {"spring.config.location = classpath:application-test.yml"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CreateDepositTest {
-// @TODO Refactor!!!
+    // @TODO Refactor!!!
     @Autowired
     private CreateDepositUseCase createDepositUseCase;
 
@@ -50,9 +52,6 @@ class CreateDepositTest {
 
     @Autowired
     private DepositRepositoryPort depositRepositoryPort;
-
-    @Autowired
-    private ReceiptSearchPort receiptSearchPort;
 
     @Autowired
     private TransactionTemplate transactionTemplate;
@@ -73,9 +72,9 @@ class CreateDepositTest {
     void beforeEach() {
     }
 
-    private Collection<Long> createReceipts(Receipt ...receipts) {
+    private Collection<Long> createReceipts(Receipt... receipts) {
         LinkedList<Long> result = new LinkedList<>();
-        for(Receipt r : receipts) {
+        for (Receipt r : receipts) {
             result.add(r.getId());
         }
         return result;
@@ -130,12 +129,13 @@ class CreateDepositTest {
                                 )
                         )
                 );
-        Long padId = createPaymentAdviceUseCase.create(createCommand);
 
-        PaymentAdvice paymentAdvice = transactionTemplate.execute(status -> paymentAdviceRepositoryPort.readById(padId).get());
+        PaymentAdvice paymentAdvice;
+        Long id = createPaymentAdviceUseCase.create(createCommand);
+        paymentAdvice = transactionTemplate.execute(status -> paymentAdviceRepositoryPort.readById(id).get());
 
         Long currId;
-        if(refCurrencyRepositoryPort.existsByCode("BTN")) {
+        if (refCurrencyRepositoryPort.existsByCode("BTN")) {
             currId = refCurrencyRepositoryPort.readByCode("BTN").get().getId();
         } else {
             currId = createRefCurrencyUseCase.create(
@@ -194,7 +194,23 @@ class CreateDepositTest {
         ));
 
         Assertions.assertTrue(searchResult.getTotalCount() > 0);
-        Assertions.assertTrue(searchResult.getContent().get(0).getDenominationCounts().size() > 0);
-        Assertions.assertTrue(searchResult.getContent().get(0).getReceipts().size() > 0);
+
+        Deposit searchDeposit = searchResult.getContent().get(0);
+        Assertions.assertTrue(searchDeposit.equals(DepositStatus.PENDING_RECONCILIATION));
+        Assertions.assertTrue(searchDeposit.getDenominationCounts().size() > 0);
+        Assertions.assertTrue(searchDeposit.getReceipts().size() > 0);
+    }
+
+    @Autowired
+    ObjectMapper mapper;
+    public void prettyPrint(Object staff) {
+        try {
+            String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(staff);
+            System.out.println("################################");
+            System.out.println(json);
+            System.out.println("################################");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

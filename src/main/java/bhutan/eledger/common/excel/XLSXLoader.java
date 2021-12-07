@@ -47,11 +47,7 @@ public class XLSXLoader extends DefaultHandler {
             cellReferenceObject = new CellReference(cellReference);
             // Figure out if the value is an index in the SST
             cellType = attributes.getValue("t");
-            if (cellType != null && cellType.equals("s")) {
-                nextIsString = true;
-            } else {
-                nextIsString = false;
-            }
+            nextIsString = cellType != null && cellType.equals("s");
         }
         // Clear contents cache
         lastContents = "";

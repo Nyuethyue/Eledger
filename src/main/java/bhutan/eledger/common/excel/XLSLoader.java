@@ -12,7 +12,7 @@ import java.io.InputStream;
 import java.util.Iterator;
 
 public class XLSLoader {
-    private DataFormatter formatter = new DataFormatter();
+    private final DataFormatter formatter = new DataFormatter();
 
     public void load(InputStream io, int sheetIndex, ExcelCellReceiver receiver) throws IOException {
         try (HSSFWorkbook workbook = new HSSFWorkbook(io)) {
