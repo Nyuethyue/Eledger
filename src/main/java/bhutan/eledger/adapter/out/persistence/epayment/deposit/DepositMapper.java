@@ -6,7 +6,6 @@ import bhutan.eledger.domain.epayment.deposit.DepositReceipt;
 import bhutan.eledger.domain.epayment.deposit.DepositStatus;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 
@@ -15,11 +14,12 @@ public class DepositMapper {
     DepositEntity mapToEntity(Deposit deposit) {
         DepositEntity depositEntity = new DepositEntity(
                 null,
+                deposit.getDepositNumber(),
                 deposit.getPaymentModeId(),
                 deposit.getBankDepositDate(),
                 deposit.getAmount(),
                 deposit.getStatus().getValue(),
-                LocalDateTime.now()
+                deposit.getCreationDateTime()
         );
 
         depositEntity.setDepositDenominations(deposit.getDenominationCounts().stream().map(d ->
@@ -36,6 +36,7 @@ public class DepositMapper {
     Deposit mapToDomain(DepositEntity depositEntity) {
         return Deposit.withId(
                 depositEntity.getId(),
+                depositEntity.getDepositNumber(),
                 depositEntity.getPaymentModeId(),
                 depositEntity.getAmount(),
                 depositEntity.getBankDepositDate(),
@@ -59,7 +60,8 @@ public class DepositMapper {
                                 )
                         )
                         .collect(Collectors.toUnmodifiableList()),
-                depositEntity.getLastPrintedDate()
+                depositEntity.getLastPrintedDate(),
+                depositEntity.getCreationDateTime()
 
         );
     }

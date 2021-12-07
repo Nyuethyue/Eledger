@@ -14,7 +14,7 @@ import java.util.Collection;
 @Validated
 public interface CreateDepositUseCase {
 
-    Long create(@Valid CreateDepositCommand command);
+    CreateDepositResult create(@Valid CreateDepositCommand command);
 
     @Data
     class DenominationCount {
@@ -40,5 +40,17 @@ public interface CreateDepositUseCase {
         @NotNull
         @NotEmpty
         private final Collection<DenominationCount> denominationCounts;
+    }
+
+    @Data
+    class CreateDepositResult {
+        @Valid
+        @NotNull
+        @NotEmpty
+        private final Long depositId;
+        @Valid
+        @NotNull
+        @NotEmpty
+        private final String depositNumber;
     }
 }

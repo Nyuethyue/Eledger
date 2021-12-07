@@ -1,17 +1,18 @@
 package bhutan.eledger.application.service.epayment.deposit;
 
 import bhutan.eledger.application.port.in.epayment.deposit.CreateDepositUseCase;
+import bhutan.eledger.application.port.out.epayment.deposit.DepositNumberGeneratorPort;
 import bhutan.eledger.application.port.out.epayment.deposit.DepositRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.payment.ReceiptRepositoryPort;
 import bhutan.eledger.domain.epayment.deposit.Deposit;
 import bhutan.eledger.domain.epayment.deposit.DepositReceipt;
-import bhutan.eledger.domain.epayment.deposit.DepositStatus;
 import bhutan.eledger.domain.epayment.payment.ReceiptStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -19,14 +20,21 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 class CreateDepositService implements CreateDepositUseCase {
+    private final DepositNumberGeneratorPort depositNumberGeneratorPort;
     private final DepositRepositoryPort depositRepositoryPort;
     private final ReceiptRepositoryPort receiptRepositoryPort;
 
+
     @Override
-    public Long create(CreateDepositUseCase.CreateDepositCommand command) {
+    public CreateDepositUseCase.CreateDepositResult create(CreateDepositUseCase.CreateDepositCommand command) {
         log.trace("Generating Deposit by command: {}", command);
 
+        LocalDateTime creationDateTime = LocalDateTime.now();
+
+        String depositNumber = depositNumberGeneratorPort.generate(creationDateTime.toLocalDate());
+
         var deposit = Deposit.withoutId(
+                depositNumber,
                 command.getPaymentMode(),
                 command.getAmount(),
                 command.getBankDepositDate(),
@@ -35,7 +43,8 @@ class CreateDepositService implements CreateDepositUseCase {
                 command.getDenominationCounts().stream().map(rc ->
                         bhutan.eledger.domain.epayment.deposit.DenominationCount.withoutId(rc.getDenominationId(), rc.getDenominationCount())
                 ).collect(Collectors.toList()),
-                null
+                null,
+                creationDateTime
         );
 
         log.trace("Creating eledger payment deposit: {}", deposit);
@@ -45,6 +54,6 @@ class CreateDepositService implements CreateDepositUseCase {
         log.trace("Updating eledger receipt statuses to: {}", ReceiptStatus.PENDING_RECONCILIATION);
 
         receiptRepositoryPort.updateStatuses(ReceiptStatus.PENDING_RECONCILIATION, command.getReceipts());
-        return depositId;
+        return new CreateDepositUseCase.CreateDepositResult(depositId, depositNumber);
     }
 }

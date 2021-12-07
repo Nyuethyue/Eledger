@@ -175,8 +175,8 @@ class CreateDepositTest {
                         createReceipts(receipt),
                         createDenominationCounts()
                 );
-        Long dpId = createDepositUseCase.create(createDepositCommand);
-        Deposit deposit = transactionTemplate.execute(status -> depositRepositoryPort.readById(dpId).get());
+        CreateDepositUseCase.CreateDepositResult result = createDepositUseCase.create(createDepositCommand);
+        Deposit deposit = transactionTemplate.execute(status -> depositRepositoryPort.readById(result.getDepositId()).get());
         Assertions.assertTrue(deposit.equals(DepositStatus.PENDING_RECONCILIATION));
         Assertions.assertTrue(deposit.getDenominationCounts().size() > 0);
         Assertions.assertTrue(deposit.getReceipts().size() > 0);

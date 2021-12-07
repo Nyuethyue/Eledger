@@ -23,6 +23,10 @@ class DepositEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "deposit_id_seq")
     @Column(name = "id")
     private Long id;
+
+    @Column(name = "deposit_number")
+    private String depositNumber;
+
     @Column(name = "payment_mode_id")
     private Long paymentModeId;
     @Column(name = "bank_deposit_date")
@@ -52,9 +56,10 @@ class DepositEntity {
     )
     private Set<DepositDenominationCountsEntity> depositDenominations;
 
-    public DepositEntity(Long id, Long paymentModeId, LocalDate bankDepositDate, BigDecimal amount,
+    public DepositEntity(Long id, String depositNumber, Long paymentModeId, LocalDate bankDepositDate, BigDecimal amount,
                          String status, LocalDateTime creationDateTime) {
         this.id = id;
+        this.depositNumber = depositNumber;
         this.paymentModeId = paymentModeId;
         this.bankDepositDate = bankDepositDate;
         this.status = status;

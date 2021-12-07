@@ -10,7 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 
 @RestController
 @RequestMapping("/payment/deposit")
@@ -22,11 +21,10 @@ public class DepositController {
 
     @PostMapping
     public ResponseEntity<Object> create(@RequestBody CreateDepositUseCase.CreateDepositCommand command) {
-        Long id = createDepositUseCase.create(command);
-
+        CreateDepositUseCase.CreateDepositResult result = createDepositUseCase.create(command);
         return ResponseEntity
-                .created(URI.create("/" + id))
-                .build();
+                .status(HttpStatus.CREATED)
+                .body(result);
     }
 
     @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
