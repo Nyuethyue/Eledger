@@ -1,6 +1,7 @@
 package bhutan.eledger.adapter.out.persistence.epayment.payment;
 
 import bhutan.eledger.application.port.in.eledger.transaction.CreateTransactionsUseCase;
+import bhutan.eledger.application.port.in.eledger.transaction.CreateTransactionsUseCaseFactory;
 import bhutan.eledger.application.port.out.epayment.payment.PaymentCreateEledgerTransactionPort;
 import bhutan.eledger.domain.epayment.payment.Receipt;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 class PaymentCreateEledgerTransactionAdapter implements PaymentCreateEledgerTransactionPort {
-    private final CreateTransactionsUseCase createTransactionsUseCase;
+    private final CreateTransactionsUseCaseFactory createTransactionsUseCaseFactory;
 
     @Override
     public void create(Receipt receipt) {
@@ -48,6 +49,6 @@ class PaymentCreateEledgerTransactionAdapter implements PaymentCreateEledgerTran
                         .collect(Collectors.toUnmodifiableSet())
         );
 
-        createTransactionsUseCase.create(transactionsCreationCommand);
+        createTransactionsUseCaseFactory.get("payment").create(transactionsCreationCommand);
     }
 }
