@@ -11,6 +11,7 @@ import lombok.ToString;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -72,6 +73,19 @@ public class PaymentAdvice {
         return this;
     }
 
+    public PaymentAdvice upsertPaymentLine(PayableLine payableLine) {
+        payableLines.
+                stream()
+                .filter(pl -> pl.getGlAccount().getCode().equals(payableLine.getGlAccount().getCode()))
+                .findAny()
+                .ifPresentOrElse(
+                        pl -> pl.updateAmount(payableLine.getAmount()),
+                        () -> payableLines.add(payableLine)
+                );
+
+        return this;
+    }
+
     @Data(staticConstructor = "of")
     public static class Period {
         private final String year;
@@ -89,7 +103,7 @@ public class PaymentAdvice {
                 status,
                 taxpayer,
                 bankInfo,
-                payableLines
+                new ArrayList<>(payableLines)
         );
     }
 
@@ -104,7 +118,7 @@ public class PaymentAdvice {
                 status,
                 taxpayer,
                 bankInfo,
-                payableLines
+                new ArrayList<>(payableLines)
         );
     }
 }

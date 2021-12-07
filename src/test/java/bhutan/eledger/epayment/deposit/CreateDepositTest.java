@@ -5,6 +5,7 @@ import bhutan.eledger.application.port.in.epayment.deposit.SearchDepositUseCase;
 import bhutan.eledger.application.port.in.epayment.payment.CreateCashPaymentUseCase;
 import bhutan.eledger.application.port.in.epayment.payment.CreatePaymentCommonCommand;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAdviceUseCase;
+import bhutan.eledger.application.port.in.epayment.paymentadvice.UpsertPaymentAdviceUseCase;
 import bhutan.eledger.application.port.in.ref.currency.CreateRefCurrencyUseCase;
 import bhutan.eledger.application.port.out.epayment.deposit.DepositRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.payment.CashReceiptRepositoryPort;
@@ -14,7 +15,6 @@ import bhutan.eledger.domain.epayment.deposit.Deposit;
 import bhutan.eledger.domain.epayment.deposit.DepositStatus;
 import bhutan.eledger.domain.epayment.payment.Receipt;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -78,7 +78,7 @@ class CreateDepositTest {
 
     private Collection<CreateDepositUseCase.DenominationCount> createDenominationCounts() {
         var result = new LinkedList<CreateDepositUseCase.DenominationCount>();
-        result.add(new CreateDepositUseCase.DenominationCount(1l, 10l));
+        result.add(new CreateDepositUseCase.DenominationCount(1L, 10L));
         return result;
     }
 
@@ -90,22 +90,22 @@ class CreateDepositTest {
 
     @Test
     void createTest() {
-        CreatePaymentAdviceUseCase.CreatePaymentAdviceCommand createCommand =
-                new CreatePaymentAdviceUseCase.CreatePaymentAdviceCommand(
+        UpsertPaymentAdviceUseCase.UpsertPaymentAdviceCommand createCommand =
+                new UpsertPaymentAdviceUseCase.UpsertPaymentAdviceCommand(
                         "TestDrn",
-                        new CreatePaymentAdviceUseCase.TaxpayerCommand(
+                        new UpsertPaymentAdviceUseCase.TaxpayerCommand(
                                 "TestTpn",
                                 "TaxPayerName"
                         ),
                         LocalDate.now().plusMonths(1),
-                        new CreatePaymentAdviceUseCase.PeriodCommand(
+                        new UpsertPaymentAdviceUseCase.PeriodCommand(
                                 "2021",
                                 "M04"
                         ),
                         Set.of(
-                                new CreatePaymentAdviceUseCase.PayableLineCommand(
+                                new UpsertPaymentAdviceUseCase.PayableLineCommand(
                                         new BigDecimal("9999.99"),
-                                        new CreatePaymentAdviceUseCase.GLAccountCommand(
+                                        new UpsertPaymentAdviceUseCase.GLAccountCommand(
                                                 "12345678901",
                                                 Map.of(
                                                         "en", "Test value"
@@ -113,9 +113,9 @@ class CreateDepositTest {
                                         ),
                                         1L
                                 ),
-                                new CreatePaymentAdviceUseCase.PayableLineCommand(
+                                new UpsertPaymentAdviceUseCase.PayableLineCommand(
                                         new BigDecimal("500.99"),
-                                        new CreatePaymentAdviceUseCase.GLAccountCommand(
+                                        new UpsertPaymentAdviceUseCase.GLAccountCommand(
                                                 "12109876543",
                                                 Map.of(
                                                         "en", "Test value fine"
@@ -126,9 +126,8 @@ class CreateDepositTest {
                         )
                 );
 
-        PaymentAdvice paymentAdvice;
         Long id = createPaymentAdviceUseCase.create(createCommand);
-        paymentAdvice = transactionTemplate.execute(status -> paymentAdviceRepositoryPort.readById(id).get());
+        PaymentAdvice paymentAdvice = transactionTemplate.execute(status -> paymentAdviceRepositoryPort.readById(id).get());
 
         Long currId;
         if (refCurrencyRepositoryPort.existsByCode("BTN")) {
@@ -194,22 +193,8 @@ class CreateDepositTest {
         Assertions.assertTrue(searchResult.getTotalCount() > 0);
 
         Deposit searchDeposit = searchResult.getContent().get(0);
-        Assertions.assertTrue(searchDeposit.equals(DepositStatus.PENDING_RECONCILIATION));
+        Assertions.assertEquals(searchDeposit.getStatus(), DepositStatus.PENDING_RECONCILIATION);
         Assertions.assertTrue(searchDeposit.getDenominationCounts().size() > 0);
         Assertions.assertTrue(searchDeposit.getReceipts().size() > 0);
-    }
-
-    @Autowired
-    ObjectMapper mapper;
-
-    public void prettyPrint(Object staff) {
-        try {
-            String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(staff);
-            System.out.println("################################");
-            System.out.println(json);
-            System.out.println("################################");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

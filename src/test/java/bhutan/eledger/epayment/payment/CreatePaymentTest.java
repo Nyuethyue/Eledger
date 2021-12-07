@@ -4,6 +4,7 @@ import bhutan.eledger.application.port.in.epayment.payment.CreateCashPaymentUseC
 import bhutan.eledger.application.port.in.epayment.payment.CreatePaymentCommonCommand;
 import bhutan.eledger.application.port.in.epayment.payment.SearchReceiptUseCase;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAdviceUseCase;
+import bhutan.eledger.application.port.in.epayment.paymentadvice.UpsertPaymentAdviceUseCase;
 import bhutan.eledger.application.port.in.ref.currency.CreateRefCurrencyUseCase;
 import bhutan.eledger.application.port.out.epayment.payment.CashReceiptRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceRepositoryPort;
@@ -56,22 +57,22 @@ class CreatePaymentTest {
 
     @BeforeEach
     void beforeEach() {
-        CreatePaymentAdviceUseCase.CreatePaymentAdviceCommand createCommand =
-                new CreatePaymentAdviceUseCase.CreatePaymentAdviceCommand(
+        UpsertPaymentAdviceUseCase.UpsertPaymentAdviceCommand createCommand =
+                new UpsertPaymentAdviceUseCase.UpsertPaymentAdviceCommand(
                         "TestDrn",
-                        new CreatePaymentAdviceUseCase.TaxpayerCommand(
+                        new UpsertPaymentAdviceUseCase.TaxpayerCommand(
                                 "TestTpn",
                                 "TaxPayerName"
                         ),
                         LocalDate.now().plusMonths(1),
-                        new CreatePaymentAdviceUseCase.PeriodCommand(
+                        new UpsertPaymentAdviceUseCase.PeriodCommand(
                                 "2021",
                                 "M04"
                         ),
                         Set.of(
-                                new CreatePaymentAdviceUseCase.PayableLineCommand(
+                                new UpsertPaymentAdviceUseCase.PayableLineCommand(
                                         new BigDecimal("9999.99"),
-                                        new CreatePaymentAdviceUseCase.GLAccountCommand(
+                                        new UpsertPaymentAdviceUseCase.GLAccountCommand(
                                                 "12345678901",
                                                 Map.of(
                                                         "en", "Test value"
@@ -79,9 +80,9 @@ class CreatePaymentTest {
                                         ),
                                         1L
                                 ),
-                                new CreatePaymentAdviceUseCase.PayableLineCommand(
+                                new UpsertPaymentAdviceUseCase.PayableLineCommand(
                                         new BigDecimal("500.99"),
-                                        new CreatePaymentAdviceUseCase.GLAccountCommand(
+                                        new UpsertPaymentAdviceUseCase.GLAccountCommand(
                                                 "12109876543",
                                                 Map.of(
                                                         "en", "Test value fine"
@@ -105,7 +106,7 @@ class CreatePaymentTest {
     @Test
     void createTest() {
         Long currId;
-        if(refCurrencyRepositoryPort.existsByCode("BTN")) {
+        if (refCurrencyRepositoryPort.existsByCode("BTN")) {
             currId = refCurrencyRepositoryPort.readByCode("BTN").get().getId();
         } else {
             currId = createRefCurrencyUseCase.create(

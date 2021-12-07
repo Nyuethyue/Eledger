@@ -14,8 +14,13 @@ public class PayableLine {
     private final Long id;
     private final EpGLAccount glAccount;
     private BigDecimal paidAmount;
-    private final BigDecimal amount;
+    private BigDecimal amount;
     private final Long elTransactionId;
+
+    public PayableLine updateAmount(BigDecimal amount) {
+        this.amount = amount;
+        return this;
+    }
 
     public static PayableLine withoutId(
             EpGLAccount glAccount,

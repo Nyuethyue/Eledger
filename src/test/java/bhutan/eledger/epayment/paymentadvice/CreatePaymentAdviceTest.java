@@ -3,6 +3,7 @@ package bhutan.eledger.epayment.paymentadvice;
 import am.iunetworks.lib.common.persistence.search.SearchResult;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAdviceUseCase;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.SearchPaymentAdviceUseCase;
+import bhutan.eledger.application.port.in.epayment.paymentadvice.UpsertPaymentAdviceUseCase;
 import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceRepositoryPort;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
 import org.junit.jupiter.api.AfterEach;
@@ -41,22 +42,22 @@ class CreatePaymentAdviceTest {
 
     @Test
     void createTest() {
-        CreatePaymentAdviceUseCase.CreatePaymentAdviceCommand createCommand =
-                new CreatePaymentAdviceUseCase.CreatePaymentAdviceCommand(
+        UpsertPaymentAdviceUseCase.UpsertPaymentAdviceCommand createCommand =
+                new UpsertPaymentAdviceUseCase.UpsertPaymentAdviceCommand(
                         "TestDrn",
-                        new CreatePaymentAdviceUseCase.TaxpayerCommand(
+                        new UpsertPaymentAdviceUseCase.TaxpayerCommand(
                                 "TAB12345",
                                 "TaxPayerName"
                         ),
                         LocalDate.now().plusMonths(1),
-                        new CreatePaymentAdviceUseCase.PeriodCommand(
+                        new UpsertPaymentAdviceUseCase.PeriodCommand(
                                 "2021",
                                 "M04"
                         ),
                         Set.of(
-                                new CreatePaymentAdviceUseCase.PayableLineCommand(
+                                new UpsertPaymentAdviceUseCase.PayableLineCommand(
                                         new BigDecimal("9999.99"),
-                                        new CreatePaymentAdviceUseCase.GLAccountCommand(
+                                        new UpsertPaymentAdviceUseCase.GLAccountCommand(
                                                 "12345678901",
                                                 Map.of(
                                                         "en", "Test value"

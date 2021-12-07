@@ -2,6 +2,7 @@ package bhutan.eledger.application.service.epayment.paymentadvice;
 
 import am.iunetworks.lib.multilingual.core.Multilingual;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAdviceUseCase;
+import bhutan.eledger.application.port.in.epayment.paymentadvice.UpsertPaymentAdviceUseCase;
 import bhutan.eledger.application.port.out.epayment.config.bank.GetBankInfoByGLCodeAccountPort;
 import bhutan.eledger.application.port.out.epayment.glaccount.EpGLAccountRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceNumberGeneratorPort;
@@ -33,9 +34,10 @@ class CreatePaymentAdviceService implements CreatePaymentAdviceUseCase {
     private final PaymentAdviceRepositoryPort paymentAdviceRepositoryPort;
     private final EpTaxpayerRepositoryPort taxpayerRepositoryPort;
     private final EpGLAccountRepositoryPort epGLAccountRepositoryPort;
+    private final GLAccountResolverService glAccountResolverService;
 
     @Override
-    public Long create(CreatePaymentAdviceCommand command) {
+    public Long create(UpsertPaymentAdviceUseCase.UpsertPaymentAdviceCommand command) {
         log.trace("Generating payment advice by command: {}", command);
 
         var anyGlCode = command.getPayableLines()
@@ -69,7 +71,7 @@ class CreatePaymentAdviceService implements CreatePaymentAdviceUseCase {
         return id;
     }
 
-    private PaymentAdvice mapToPaymentAdvice(CreatePaymentAdviceCommand command, LocalDateTime creationDateTime, String pan, PaymentAdviceBankInfo bankInfo) {
+    private PaymentAdvice mapToPaymentAdvice(UpsertPaymentAdviceUseCase.UpsertPaymentAdviceCommand command, LocalDateTime creationDateTime, String pan, PaymentAdviceBankInfo bankInfo) {
 
         return PaymentAdvice.withoutId(
                 command.getDrn(),
@@ -87,7 +89,7 @@ class CreatePaymentAdviceService implements CreatePaymentAdviceUseCase {
                         .stream()
                         .map(plc ->
                                 PayableLine.withoutId(
-                                        resolveGlAccount(plc.getGlAccount()),
+                                        glAccountResolverService.resolve(plc.getGlAccount()),
                                         BigDecimal.ZERO,
                                         plc.getAmount(),
                                         plc.getTransactionId()
@@ -97,7 +99,7 @@ class CreatePaymentAdviceService implements CreatePaymentAdviceUseCase {
         );
     }
 
-    private EpTaxpayer resolveTaxpayer(TaxpayerCommand taxpayerCommand) {
+    private EpTaxpayer resolveTaxpayer(UpsertPaymentAdviceUseCase.TaxpayerCommand taxpayerCommand) {
         EpTaxpayer result;
 
         var taxpayerOptional = taxpayerRepositoryPort.readByTpn(taxpayerCommand.getTpn());
@@ -123,7 +125,7 @@ class CreatePaymentAdviceService implements CreatePaymentAdviceUseCase {
         return result;
     }
 
-    private EpGLAccount resolveGlAccount(GLAccountCommand glAccountCommand) {
+    private EpGLAccount resolveGlAccount(UpsertPaymentAdviceUseCase.GLAccountCommand glAccountCommand) {
         EpGLAccount result;
 
         var glAccountOptional = epGLAccountRepositoryPort.readByCode(glAccountCommand.getCode());

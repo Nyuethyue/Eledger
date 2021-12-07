@@ -1,7 +1,7 @@
 package bhutan.eledger.adapter.out.persistence.eledger.transaction;
 
-import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAdviceUseCase;
-import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAdvicesUseCase;
+import bhutan.eledger.application.port.in.epayment.paymentadvice.UpsertPaymentAdviceUseCase;
+import bhutan.eledger.application.port.in.epayment.paymentadvice.UpsertPaymentAdvicesUseCase;
 import bhutan.eledger.application.port.out.eledger.transaction.EledgerGeneratePaymentAdvicePort;
 import bhutan.eledger.domain.eledger.transaction.PaymentAdviceData;
 import lombok.RequiredArgsConstructor;
@@ -14,32 +14,32 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 //todo move po another package
 class EledgerGeneratePaymentAdviceAdapter implements EledgerGeneratePaymentAdvicePort {
-    private final CreatePaymentAdvicesUseCase createPaymentAdvicesUseCase;
+    private final UpsertPaymentAdvicesUseCase createPaymentAdvicesUseCase;
 
     @Override
     public void generate(Collection<PaymentAdviceData> paymentAdviceDatas) {
-        createPaymentAdvicesUseCase.create(
-                new CreatePaymentAdvicesUseCase.CreatePaymentAdvicesCommand(
+        createPaymentAdvicesUseCase.upsert(
+                new UpsertPaymentAdvicesUseCase.UpsertPaymentAdvicesCommand(
                         paymentAdviceDatas
                                 .stream()
                                 .map(pad ->
-                                        new CreatePaymentAdviceUseCase.CreatePaymentAdviceCommand(
+                                        new UpsertPaymentAdviceUseCase.UpsertPaymentAdviceCommand(
                                                 pad.getDrn(),
-                                                new CreatePaymentAdviceUseCase.TaxpayerCommand(
+                                                new UpsertPaymentAdviceUseCase.TaxpayerCommand(
                                                         pad.getTaxpayer().getTpn(),
                                                         pad.getTaxpayer().getName()
                                                 ),
                                                 pad.getDueDate(),
-                                                new CreatePaymentAdviceUseCase.PeriodCommand(
+                                                new UpsertPaymentAdviceUseCase.PeriodCommand(
                                                         pad.getPeriod().getYear(),
                                                         pad.getPeriod().getSegment()
                                                 ),
                                                 pad.getPayableLines()
                                                         .stream()
                                                         .map(pl ->
-                                                                new CreatePaymentAdviceUseCase.PayableLineCommand(
+                                                                new UpsertPaymentAdviceUseCase.PayableLineCommand(
                                                                         pl.getAmount(),
-                                                                        new CreatePaymentAdviceUseCase.GLAccountCommand(
+                                                                        new UpsertPaymentAdviceUseCase.GLAccountCommand(
                                                                                 pl.getGlAccount().getCode(),
                                                                                 pl.getGlAccount().getDescriptions()
                                                                         ),
