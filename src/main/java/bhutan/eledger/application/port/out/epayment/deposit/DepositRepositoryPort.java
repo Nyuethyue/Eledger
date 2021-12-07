@@ -1,6 +1,5 @@
 package bhutan.eledger.application.port.out.epayment.deposit;
 
-
 import am.iunetworks.lib.common.validation.RecordNotFoundException;
 import bhutan.eledger.domain.epayment.deposit.Deposit;
 
@@ -21,7 +20,7 @@ public interface DepositRepositoryPort {
 
     Collection<Deposit> readAll();
 
-    Long create(Deposit paymentAdvice);
+    Deposit create(Deposit paymentAdvice);
 
     void deleteAll();
 

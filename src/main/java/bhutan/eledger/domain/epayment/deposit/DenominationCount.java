@@ -2,7 +2,6 @@ package bhutan.eledger.domain.epayment.deposit;
 
 import lombok.Data;
 
-
 @Data
 public class DenominationCount {
     private final Long id;

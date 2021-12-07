@@ -30,12 +30,12 @@ class DepositAdapter implements DepositRepositoryPort {
     }
 
     @Override
-    public Long create(Deposit deposit) {
+    public Deposit create(Deposit deposit) {
         DepositEntity depositEntity = depositEntityRepository.save(
                 depositMapper.mapToEntity(deposit)
         );
 
-        return depositEntity.getId();
+        return depositMapper.mapToDomain(depositEntity);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package bhutan.eledger.application.port.in.epayment.deposit;
 
-import bhutan.eledger.domain.epayment.deposit.DepositStatus;
+import bhutan.eledger.domain.epayment.deposit.Deposit;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
@@ -15,7 +15,7 @@ import java.util.Collection;
 @Validated
 public interface CreateDepositUseCase {
 
-    Long create(@Valid CreateDepositCommand command);
+    Deposit create(@Valid CreateDepositCommand command);
 
     @Data
     class DenominationCount {
@@ -27,12 +27,9 @@ public interface CreateDepositUseCase {
         private final Long denominationCount;
     }
 
-
     @Data
     class CreateDepositCommand {
         private final Long paymentMode;
-        @NotNull
-        private final DepositStatus status;
         private final BigDecimal amount;
         private final LocalDate bankDepositDate;
 
