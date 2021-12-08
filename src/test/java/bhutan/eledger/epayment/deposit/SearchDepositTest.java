@@ -71,6 +71,7 @@ class SearchDepositTest {
                 null,
                 null,
                 null,
+                null,
                 LocalDate.now().minusDays(10),
                 LocalDate.now().plusDays(10)
         ));

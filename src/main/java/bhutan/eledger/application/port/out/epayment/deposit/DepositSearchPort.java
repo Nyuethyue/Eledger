@@ -18,11 +18,13 @@ public interface DepositSearchPort {
         private final Long id;
         private final LocalDate fromBankDepositDate;
         private final LocalDate toBankDepositDate;
+        private final String depositNumber;
 
         public DepositSearchCommand(int page, int size, String sortProperty, String sortDirection,
-                              Long id, LocalDate fromBankDepositDate, LocalDate toBankDepositDate) {
+                              Long id, String depositNumber, LocalDate fromBankDepositDate, LocalDate toBankDepositDate) {
             super(page, size, sortProperty, sortDirection);
             this.id = id;
+            this.depositNumber = depositNumber;
             this.fromBankDepositDate = fromBankDepositDate;
             this.toBankDepositDate = toBankDepositDate;
         }

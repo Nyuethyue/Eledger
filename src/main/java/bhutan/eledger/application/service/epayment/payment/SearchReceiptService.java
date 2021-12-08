@@ -6,10 +6,13 @@ import bhutan.eledger.application.port.in.epayment.payment.SearchReceiptUseCase;
 import bhutan.eledger.application.port.out.epayment.payment.ReceiptSearchPort;
 import bhutan.eledger.configuration.epayment.payment.ReceiptSearchProperties;
 import bhutan.eledger.domain.epayment.payment.Receipt;
+import bhutan.eledger.domain.epayment.payment.ReceiptStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
 
 @Log4j2
 @Service
@@ -50,7 +53,8 @@ class SearchReceiptService implements SearchReceiptUseCase {
                 command.getPaymentMode(),
                 command.getBranchCode(),
                 command.getGlAccountPartFullCode(),
-                command.getReceiptDate()
+                command.getReceiptDate(),
+                Arrays.asList(ReceiptStatus.PAID.getValue(), ReceiptStatus.SPLIT_PAYMENT.getValue())
         );
     }
 }
