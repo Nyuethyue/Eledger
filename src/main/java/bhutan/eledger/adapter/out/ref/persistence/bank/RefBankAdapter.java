@@ -69,8 +69,8 @@ class RefBankAdapter implements RefBankRepositoryPort {
     }
 
     @Override
-    public Collection<RefBank> getBankListByGlPartFullCode(String glPartFullCode) {
-        return refBankEntityRepository.getBankListByGlPartFullCode(glPartFullCode, LocalDate.now())
+    public Collection<RefBank> getBankListByGlPartFullCode(String glPartFullCode,LocalDate currentDate) {
+        return refBankEntityRepository.getBankListByGlPartFullCode(glPartFullCode, currentDate)
                 .stream()
                 .map(refBankMapper::mapToDomain)
                 .collect(Collectors.toUnmodifiableList());

@@ -42,10 +42,10 @@ class RefBankController {
     }
 
     // to do need improve in this code
-    @GetMapping(value = "/getBankListByGlPartFullCode/{glPartFullCode}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/getOpenBankListByGlPartFullCode/{glPartFullCode}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
-    public Collection<RefBank> getBankListByGlPartFullCode(@PathVariable String glPartFullCode) {
-        return readRefBankUseCase.getBankListByGlPartFullCode(glPartFullCode);
+    public Collection<RefBank> getOpenBankListByGlPartFullCode(@PathVariable String glPartFullCode) {
+        return readRefBankUseCase.getOpenBankListByGlPartFullCode(glPartFullCode);
     }
 
 

@@ -9,6 +9,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Collection;
 
 @Log4j2
@@ -36,9 +37,8 @@ class ReadRefBankService implements ReadRefBankUseCase {
     }
 
     @Override
-    public Collection<RefBank> getBankListByGlPartFullCode(String glPartFullCode) {
+    public Collection<RefBank> getOpenBankListByGlPartFullCode(String glPartFullCode) {
         log.trace("Reading all bank list by gl part full code.");
-
-        return refBankRepositoryPort.getBankListByGlPartFullCode(glPartFullCode);
+        return refBankRepositoryPort.getBankListByGlPartFullCode(glPartFullCode, LocalDate.now());
     }
 }

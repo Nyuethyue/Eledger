@@ -1,6 +1,8 @@
 package bhutan.eledger.application.port.out.ref.bank;
 
 import bhutan.eledger.domain.ref.bank.RefBank;
+
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Collection;
 
@@ -22,5 +24,5 @@ public interface RefBankRepositoryPort {
 
     boolean isOpenBankExists(RefBank refBank);
 
-    Collection<RefBank> getBankListByGlPartFullCode(String glPartFullCode);
+    Collection<RefBank> getBankListByGlPartFullCode(String glPartFullCode, LocalDate currentDate);
 }
