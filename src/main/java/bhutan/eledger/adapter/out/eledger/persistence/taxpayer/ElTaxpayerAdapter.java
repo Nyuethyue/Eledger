@@ -6,6 +6,7 @@ import bhutan.eledger.domain.eledger.taxpayer.ElTaxpayer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.Optional;
 
 @Component
@@ -27,6 +28,11 @@ class ElTaxpayerAdapter implements ElTaxpayerRepositoryPort {
     @Override
     public Optional<ElTaxpayer> readByTpn(String tpn) {
         return taxpayerEntityRepository.findByTpn(tpn);
+    }
+
+    @Override
+    public Collection<ElTaxpayer> readAll() {
+        return taxpayerEntityRepository.findAll();
     }
 
     @Override

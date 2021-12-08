@@ -26,9 +26,9 @@ class SearchReceiptController {
         return searchReceiptUseCase.search(command);
     }
 
-    @GetMapping(value = "/details",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/details", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
-    public SearchResult<Receipt> search(SearchReceiptForDetailsUseCase.SearchReceiptForDetailsCommand command){
+    public SearchResult<Receipt> search(SearchReceiptForDetailsUseCase.SearchReceiptForDetailsCommand command) {
         return searchReceiptForDetailsUseCase.search(command);
     }
 }
