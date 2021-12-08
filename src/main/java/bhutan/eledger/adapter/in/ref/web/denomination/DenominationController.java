@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/ref/denomination/mode")
+@RequestMapping("/ref/denomination")
 @RequiredArgsConstructor
 class DenominationController {
 
