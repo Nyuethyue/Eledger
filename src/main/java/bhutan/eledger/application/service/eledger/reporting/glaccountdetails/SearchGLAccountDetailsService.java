@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Log4j2
 @Service
 @RequiredArgsConstructor
-@Transactional//todo add read only. Removed temporary depends on procedure which must be called for data calculation before search
+@Transactional(readOnly = true)
 class SearchGLAccountDetailsService implements SearchGLAccountDetailsUseCase {
     private final GLAccountDetailsSearchPort glAccountDetailsSearchPort;
 
