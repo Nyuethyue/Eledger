@@ -52,4 +52,10 @@ class RefBankAccountController {
     public RefBankAccount readByCode(@PathVariable String code) {
         return readRefBankAccountUseCase.readByCode(code);
     }
+
+    @GetMapping(value = "/readPrimaryAccByGlCode/{glCode}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.OK)
+    public RefBankAccount readPrimaryAccByGlCode(@PathVariable String glCode) {
+        return readRefBankAccountUseCase.readPrimaryAccByGlCodeAndFlag(glCode, true);
+    }
 }

@@ -4,7 +4,6 @@ import am.iunetworks.lib.common.validation.RecordNotFoundException;
 import bhutan.eledger.application.port.in.ref.bankaccount.ReadRefBankAccountUseCase;
 import bhutan.eledger.application.port.out.ref.bankaccount.RefBankAccountRepositoryPort;
 import bhutan.eledger.domain.ref.bankaccount.RefBankAccount;
-import bhutan.eledger.domain.ref.bankbranch.RefBankBranch;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -52,5 +51,29 @@ class ReadRefBankAccountService implements ReadRefBankAccountUseCase {
                 .orElseThrow(() ->
                         new RecordNotFoundException("Bank's account by account number: [" + code + "] not found.")
                 );
+    }
+
+    @Override
+    public Long readIdByGlCodeAndFlag(String glCode, Boolean flag) {
+        log.trace("Reading account information by gl code and primary flag.");
+
+        return refBankAccountRepositoryPort.readIdByGlCodeAndFlag(glCode, flag);
+    }
+
+    @Override
+    public RefBankAccount readPrimaryAccByGlCodeAndFlag(String glCode, Boolean flag) {
+        log.trace("Reading primary account information by gl code and primary flag.");
+
+        Long id = refBankAccountRepositoryPort.readIdByGlCodeAndFlag(glCode, flag);
+
+        if (id == null) {
+            throw new IllegalArgumentException("Primary Account is not set.");
+        }
+
+        return refBankAccountRepositoryPort.readById(id)
+                .orElseThrow(() ->
+                        new RecordNotFoundException("Primary Bank's account by gl code: [" + glCode + "] not found.")
+                );
+
     }
 }
