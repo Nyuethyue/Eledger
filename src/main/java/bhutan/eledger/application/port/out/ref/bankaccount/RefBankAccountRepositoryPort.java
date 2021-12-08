@@ -10,7 +10,6 @@ public interface RefBankAccountRepositoryPort {
 
     Collection<RefBankAccount> readAll();
 
-
     void deleteAll();
 
     Optional<RefBankAccount> readById(Long id);
@@ -21,7 +20,7 @@ public interface RefBankAccountRepositoryPort {
 
     Optional<RefBankAccount> readByCode(String code);
 
-    void setPrimaryFlagById(Long id,Boolean flag);
+    void setPrimaryFlagById(Long id, Boolean flag);
 
-    Long readIdByBranchIdAndGlCode(Long branchId, String code);
+   Long readIdByGlCodeAndFlag(String code, Boolean flag);
 }

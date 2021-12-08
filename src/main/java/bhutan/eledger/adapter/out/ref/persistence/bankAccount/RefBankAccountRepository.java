@@ -14,6 +14,7 @@ interface RefBankAccountRepository extends JpaRepository<RefBankAccountEntity, L
 
     Optional<RefBankAccountEntity> findByCode(String code);
 
+
     @Query(value = "SELECT EXISTS(" +
             "               SELECT" +
             "               FROM ref.bank_account" +
@@ -35,14 +36,13 @@ interface RefBankAccountRepository extends JpaRepository<RefBankAccountEntity, L
 
     @Modifying
     @Query(value = "update ref.bank_account set is_primary_gl_account = :flag where id = :id", nativeQuery = true)
-    void setPrimaryFlagById (Long id,Boolean flag);
+    void setPrimaryFlagById(Long id, Boolean flag);
 
     @Query(value = " SELECT A.id" +
             "        FROM ref.bank_account A" +
             "        INNER JOIN ref.bank_account_gl_account_part B" +
             "        ON A.bank_account_gl_account_part_id = B.id" +
-            "        WHERE A.branch_id = :branchId" +
-            "        AND B.code = :code" +
-            "        AND A.is_primary_gl_account = true", nativeQuery = true)
-    Long readIdByBranchIdAndGlCode(Long branchId, String code);
+            "        WHERE B.code = :code" +
+            "        AND A.is_primary_gl_account = :flag", nativeQuery = true)
+    Long readIdByGlCodeAndFlag(String code, Boolean flag);
 }

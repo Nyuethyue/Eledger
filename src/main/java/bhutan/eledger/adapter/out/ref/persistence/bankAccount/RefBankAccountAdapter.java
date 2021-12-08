@@ -65,13 +65,13 @@ class RefBankAccountAdapter implements RefBankAccountRepositoryPort {
 
 
     @Override
-    public void setPrimaryFlagById(Long id,Boolean flag) {
-        refBankAccountRepository.setPrimaryFlagById(id,flag);
+    public void setPrimaryFlagById(Long id, Boolean flag) {
+        refBankAccountRepository.setPrimaryFlagById(id, flag);
     }
 
     @Override
-    public Long readIdByBranchIdAndGlCode(Long branchId, String code) {
-        return refBankAccountRepository.readIdByBranchIdAndGlCode(branchId, code);
+    public Long readIdByGlCodeAndFlag(String code, Boolean flag) {
+        return refBankAccountRepository.readIdByGlCodeAndFlag(code, flag);
     }
 
 

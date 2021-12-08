@@ -24,7 +24,7 @@ public interface CreateRefBankAccountUseCase {
         @NotNull
         @NotEmpty
         @Pattern(regexp = "\\d+", message = "Account number accept only numbers.")
-        private final String accNumber;
+        private final String code;
 
         @NotNull
         private final LocalDate startOfValidity;
