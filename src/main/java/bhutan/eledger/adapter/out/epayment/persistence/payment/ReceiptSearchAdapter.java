@@ -77,6 +77,10 @@ class ReceiptSearchAdapter implements ReceiptSearchPort {
             predicate.and(QPaymentEntity.paymentEntity.glAccount.code.startsWith(command.getGlAccountPartFullCode()));
         }
 
+        if(command.getStatuses() != null && !command.getStatuses().isEmpty()) {
+            predicate.and(qReceiptEntity.status.in(command.getStatuses()));
+        }
+
         return jpqlQuery.where(predicate);
     }
 

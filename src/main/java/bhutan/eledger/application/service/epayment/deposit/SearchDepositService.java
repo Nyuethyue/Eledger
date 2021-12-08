@@ -47,6 +47,7 @@ class SearchDepositService implements SearchDepositUseCase {
                 depositSearchProperties.resolveSortProperty(command.getSortProperty()),
                 depositSearchProperties.resolveSortDirection(command.getSortDirection()),
                 command.getId(),
+                command.getDepositNumber(),
                 command.getFromBankDepositDate(),
                 command.getToBankDepositDate()
         );

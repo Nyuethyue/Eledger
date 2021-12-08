@@ -26,6 +26,7 @@ public interface SearchDepositUseCase {
         private final String sortDirection;
 
         private final Long id;
+        private final String depositNumber;
         @DateTimeFormat(pattern = "yyyy-MM-dd")
         private final LocalDate fromBankDepositDate;
         @DateTimeFormat(pattern = "yyyy-MM-dd")
