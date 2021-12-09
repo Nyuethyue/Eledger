@@ -35,7 +35,7 @@ class CreateChequePaymentService implements CreateChequePaymentUseCase {
 
     @Override
     public Receipt create(CreateChequePaymentCommand command) {
-        log.trace("Generating cash receipt by command: {}", command);
+        log.trace("Generating cheque receipt by command: {}", command);
 
         PaymentAdvice updatedPaymentAdvice = paymentAdviceOnPaymentUpdaterService.updatePaymentAdvice(command);
 

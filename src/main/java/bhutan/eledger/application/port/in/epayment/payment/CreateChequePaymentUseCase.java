@@ -6,6 +6,7 @@ import lombok.ToString;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Collection;
 
@@ -17,8 +18,11 @@ public interface CreateChequePaymentUseCase {
     @Getter
     @ToString(callSuper = true)
     class CreateChequePaymentCommand extends CreatePaymentCommonCommand {
+        @NotNull
         private final Long bankBranchId;
+        @NotNull
         private final String instrumentNumber;
+        @NotNull
         private final LocalDate instrumentDate;
         private final String otherReferenceNumber;
 
