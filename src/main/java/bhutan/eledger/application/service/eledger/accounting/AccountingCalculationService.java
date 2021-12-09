@@ -31,7 +31,6 @@ class AccountingCalculationService implements AccountingCalculationUseCase {
                 .stream()
                 .map(ElTaxpayer::getTpn)
                 .forEach(tpn -> {
-                    log.trace("Formulating data for tpn: {}, at: {}", tpn, localDate);
 
                     formulateAccountingPort.formulate(tpn, localDate);
 

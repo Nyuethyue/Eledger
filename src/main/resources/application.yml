@@ -27,7 +27,12 @@ server:
 logging:
   level:
     root: WARN
-    bhutan.eledger: debug
+    bhutan:
+      eledger: debug
+        application:
+          service:
+            eledger:
+              transaction: trace
 
 bhutan:
   eledger:
