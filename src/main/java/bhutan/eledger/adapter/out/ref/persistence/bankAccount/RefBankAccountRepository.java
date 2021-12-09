@@ -12,8 +12,7 @@ interface RefBankAccountRepository extends JpaRepository<RefBankAccountEntity, L
 
     Collection<RefBankAccountEntity> readAllByBranchId(Long branchId);
 
-    Optional<RefBankAccountEntity> findByCode(String code);
-
+    Collection<RefBankAccountEntity> findByCode(String code);
 
     @Query(value = "SELECT EXISTS(" +
             "               SELECT" +

@@ -18,7 +18,7 @@ public interface RefBankAccountRepositoryPort {
 
     Collection<RefBankAccount> readAllByBranchId(Long branchId);
 
-    Optional<RefBankAccount> readByCode(String code);
+    Collection<RefBankAccount> readByCode(String code);
 
     void setPrimaryFlagById(Long id, Boolean flag);
 

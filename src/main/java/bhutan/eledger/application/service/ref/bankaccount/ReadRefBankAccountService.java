@@ -9,7 +9,9 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -40,17 +42,26 @@ class ReadRefBankAccountService implements ReadRefBankAccountUseCase {
     public Collection<RefBankAccount> readAllByBranchId(Long branchId) {
         log.trace("Reading all account information by branch id.");
 
-        return refBankAccountRepositoryPort.readAllByBranchId(branchId);
+        return refBankAccountRepositoryPort.readAllByBranchId(branchId)
+                .stream()
+                .filter(refBankBranch -> (refBankBranch.getValidityPeriod().getEnd() == null
+                        && refBankBranch.getValidityPeriod().getStart().isBefore(LocalDate.now().plusDays(1))) ||
+                        (refBankBranch.getValidityPeriod().getStart().isBefore(LocalDate.now().plusDays(1))
+                                && refBankBranch.getValidityPeriod().getEnd().isAfter(LocalDate.now().minusDays(1))))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public RefBankAccount readByCode(String code) {
+    public Collection<RefBankAccount> readByCode(String code) {
         log.trace("Reading bank's branch by account number: {}", code);
 
         return refBankAccountRepositoryPort.readByCode(code)
-                .orElseThrow(() ->
-                        new RecordNotFoundException("Bank's account by account number: [" + code + "] not found.")
-                );
+                .stream()
+                .filter(refBankBranch -> (refBankBranch.getValidityPeriod().getEnd() == null
+                        && refBankBranch.getValidityPeriod().getStart().isBefore(LocalDate.now().plusDays(1))) ||
+                        (refBankBranch.getValidityPeriod().getStart().isBefore(LocalDate.now().plusDays(1))
+                                && refBankBranch.getValidityPeriod().getEnd().isAfter(LocalDate.now().minusDays(1))))
+                .collect(Collectors.toList());
     }
 
     @Override

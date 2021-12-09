@@ -58,9 +58,11 @@ class RefBankAccountAdapter implements RefBankAccountRepositoryPort {
     }
 
     @Override
-    public Optional<RefBankAccount> readByCode(String code) {
+    public  Collection<RefBankAccount> readByCode(String code) {
         return refBankAccountRepository.findByCode(code)
-                .map(refBankAccountMapper::mapToDomain);
+                .stream()
+                .map(refBankAccountMapper::mapToDomain)
+                .collect(Collectors.toUnmodifiableList());
     }
 
 

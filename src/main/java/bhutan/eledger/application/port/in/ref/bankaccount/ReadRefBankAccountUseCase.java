@@ -14,7 +14,7 @@ public interface ReadRefBankAccountUseCase {
 
     Collection<RefBankAccount> readAllByBranchId(@NotNull Long branchId);
 
-    RefBankAccount readByCode(@NotNull String code);
+    Collection<RefBankAccount> readByCode(@NotNull String code);
 
     Long readIdByGlCodeAndFlag(@NotNull String glCode,@NotNull Boolean flag);
 
