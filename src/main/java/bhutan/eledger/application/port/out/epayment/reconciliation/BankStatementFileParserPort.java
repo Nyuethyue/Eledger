@@ -1,6 +1,6 @@
 package bhutan.eledger.application.port.out.epayment.reconciliation;
 
-import bhutan.eledger.domain.epayment.BankStatementImportReconciliationInfo;
+import bhutan.eledger.domain.epayment.deposit.BankStatementImportReconciliationInfo;
 
 import java.util.List;
 
