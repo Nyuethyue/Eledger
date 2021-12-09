@@ -12,6 +12,8 @@ public interface DepositRepositoryPort {
 
     Optional<Deposit> readById(Long id);
 
+    Optional<Deposit> readByDepositNumber(String depositNumber);
+
     default Deposit requiredReadById(Long id) {
         return readById(id)
                 .orElseThrow(() ->

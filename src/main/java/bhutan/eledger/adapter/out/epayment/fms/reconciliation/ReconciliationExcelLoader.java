@@ -2,7 +2,7 @@ package bhutan.eledger.adapter.out.epayment.fms.reconciliation;
 
 import bhutan.eledger.common.excel.ExcelCellReceiver;
 import bhutan.eledger.common.excel.ExcelLoader;
-import bhutan.eledger.domain.epayment.BankStatementImportReconciliationInfo;
+import bhutan.eledger.domain.epayment.deposit.BankStatementImportReconciliationInfo;
 import lombok.extern.log4j.Log4j2;
 import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 import org.apache.poi.ss.usermodel.DateUtil;

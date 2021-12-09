@@ -14,6 +14,6 @@ public interface UpdateDepositUseCase {
 
     @Data
     class SetDepositStatusesReconciledCommand {
-        private final Collection<Long> depositIds;
+        private final Collection<String> depositNumbers;
     }
 }

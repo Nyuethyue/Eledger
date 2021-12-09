@@ -60,6 +60,12 @@ class DepositController {
         return searchDepositUseCase.search(command);
     }
 
+    @GetMapping(value = "/importBankInfo", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.OK)
+    public SearchResult<Deposit> importBankInfo(SearchDepositUseCase.SearchDepositCommand command) {
+        return searchDepositUseCase.search(command);
+    }
+
     @Data
     class CreateDepositResult {
         @Valid

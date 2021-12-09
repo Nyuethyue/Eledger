@@ -24,6 +24,12 @@ class DepositAdapter implements DepositRepositoryPort {
     }
 
     @Override
+    public Optional<Deposit> readByDepositNumber(String depositNumber) {
+        return depositEntityRepository.readByDepositNumber(depositNumber)
+                .map(depositMapper::mapToDomain);
+    }
+
+    @Override
     public Collection<Deposit> readAll() {
         return depositEntityRepository.findAll()
                 .stream()
