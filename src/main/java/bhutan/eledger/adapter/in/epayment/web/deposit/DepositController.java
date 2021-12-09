@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -29,6 +31,19 @@ class DepositController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new CreateDepositResult(result.getId(), result.getDepositNumber()));
+    }
+
+    @PostMapping("/multiple")
+    public ResponseEntity<Object> createMultiple(@RequestBody CreateDepositUseCase.CreateDepositMultipleCommand command) {
+        Collection<Deposit> deposits = createDepositUseCase.create(command);
+        CreateDepositMultipleResult result =
+                new CreateDepositMultipleResult(
+                        deposits.stream().map(deposit ->
+                                new CreateDepositResult(deposit.getId(), deposit.getDepositNumber()))
+                                .collect(Collectors.toUnmodifiableList()));
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(result);
     }
 
     @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -49,4 +64,8 @@ class DepositController {
         private final String depositNumber;
     }
 
+    @Data
+    class CreateDepositMultipleResult {
+        private final Collection<CreateDepositResult> deposits;
+    }
 }
