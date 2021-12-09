@@ -22,7 +22,6 @@ public interface SearchPaymentAdviceUseCase {
         private final String sortProperty;
         private final String sortDirection;
 
-        private final String taxpayerType;
         private final String tpn;
         private final String pan;
     }
