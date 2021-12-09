@@ -18,5 +18,5 @@ public interface ReadRefBankAccountUseCase {
 
     Long readIdByGlCodeAndFlag(@NotNull String glCode,@NotNull Boolean flag);
 
-    RefBankAccount readPrimaryAccByGlCodeAndFlag(@NotNull String glCode, @NotNull Boolean flag);
+    RefBankAccount readPrimaryAccByGlPartFullCode(@NotNull String glPartFullCode);
 }

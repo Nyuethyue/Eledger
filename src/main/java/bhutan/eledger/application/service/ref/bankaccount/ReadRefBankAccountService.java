@@ -61,10 +61,10 @@ class ReadRefBankAccountService implements ReadRefBankAccountUseCase {
     }
 
     @Override
-    public RefBankAccount readPrimaryAccByGlCodeAndFlag(String glCode, Boolean flag) {
+    public RefBankAccount readPrimaryAccByGlPartFullCode(String glPartFullCode) {
         log.trace("Reading primary account information by gl code and primary flag.");
 
-        Long id = refBankAccountRepositoryPort.readIdByGlCodeAndFlag(glCode, flag);
+        Long id = refBankAccountRepositoryPort.readIdByGlCodeAndFlag(glPartFullCode, true);
 
         if (id == null) {
             throw new IllegalArgumentException("Primary Account is not set.");
@@ -72,7 +72,7 @@ class ReadRefBankAccountService implements ReadRefBankAccountUseCase {
 
         return refBankAccountRepositoryPort.readById(id)
                 .orElseThrow(() ->
-                        new RecordNotFoundException("Primary Bank's account by gl code: [" + glCode + "] not found.")
+                        new RecordNotFoundException("Primary Bank's account by gl code: [" + glPartFullCode + "] not found.")
                 );
 
     }

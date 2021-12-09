@@ -5,7 +5,6 @@ import am.iunetworks.lib.common.validation.ViolationException;
 import am.iunetworks.lib.multilingual.core.Multilingual;
 import bhutan.eledger.application.port.in.eledger.config.glaccount.ReadGLAccountPartUseCase;
 import bhutan.eledger.application.port.in.ref.bankaccount.CreateRefBankAccountUseCase;
-import bhutan.eledger.application.port.in.ref.bankaccount.ReadRefBankAccountUseCase;
 import bhutan.eledger.application.port.out.ref.bankaccount.RefBankAccountRepositoryPort;
 import bhutan.eledger.application.port.out.ref.bankbranch.RefBankBranchRepositoryPort;
 import bhutan.eledger.common.dto.ValidityPeriod;
@@ -25,13 +24,13 @@ class CreateRefBankAccountService implements CreateRefBankAccountUseCase {
     private final RefBankAccountRepositoryPort refBankAccountRepositoryPort;
     private final RefBankBranchRepositoryPort refBankBranchRepositoryPort;
     private final ReadGLAccountPartUseCase glAccountPartUseCase;
-    private final ReadRefBankAccountUseCase readRefBankAccountUseCase;
+    private final UpdatePrimaryBankAccountUseCase updatePrimaryBankAccountUseCase;
 
     @Override
     public Long create(CreateRefBankAccountUseCase.CreateBankAccountCommand command) {
         log.trace("Creating bank's account with command: {}", command);
 
-        Boolean primaryFlag = getPrimaryFlay(command);
+        Boolean primaryFlag = updatePrimaryBankAccountUseCase.updatePrimaryBankAccountUseCase(command.getBankAccountGLAccountPart().getCode(),command.getIsPrimaryForGlAccount());
 
         RefBankAccount refBankAccount = mapCommandToRefBankBranch(command, primaryFlag);
 
@@ -63,20 +62,6 @@ class CreateRefBankAccountService implements CreateRefBankAccountUseCase {
         );
     }
 
-    Boolean getPrimaryFlay(CreateRefBankAccountUseCase.CreateBankAccountCommand command) {
-        Boolean isPrimaryForGlAccount = command.getIsPrimaryForGlAccount();
-        //To get data by selected branch id, gl part (full code) and primary status.
-        Long primaryAccountId = readRefBankAccountUseCase.readIdByGlCodeAndFlag(command.getBankAccountGLAccountPart().getCode(), true);
-
-        if (primaryAccountId == null) {
-            return true;
-        }
-        if (isPrimaryForGlAccount) {
-            refBankAccountRepositoryPort.setPrimaryFlagById(primaryAccountId, false);
-        }
-
-        return isPrimaryForGlAccount;
-    }
 
     void validate(RefBankAccount refBankAccount) {
         //todo replace existence checks by one method
