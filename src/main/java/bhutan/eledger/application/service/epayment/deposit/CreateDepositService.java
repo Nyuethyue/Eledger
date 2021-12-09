@@ -36,6 +36,7 @@ class CreateDepositService implements CreateDepositUseCase {
         log.trace("Generating Deposit by command: {}", command);
 
         long paymentModeId;
+        // @TODO refactor
         if (null != command.getPaymentModeCode()) {
             paymentModeId = paymentModeRepositoryPort.getIdByCode(command.getPaymentModeCode());
             if (PaymentMode.CASH.getValue().equals(command.getPaymentModeCode()) &&
