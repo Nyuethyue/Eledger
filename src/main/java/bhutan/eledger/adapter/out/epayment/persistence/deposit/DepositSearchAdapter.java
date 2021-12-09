@@ -44,19 +44,20 @@ class DepositSearchAdapter implements DepositSearchPort {
 
         if (command.getId() != null) {
             predicate.and(qDepositEntity.id.eq(command.getId()));
-        } else
+        }
+
         if (command.getDepositNumber() != null) {
             predicate.and(qDepositEntity.depositNumber.eq(command.getDepositNumber()));
-        } else {
-            LocalDate from = command.getFromBankDepositDate();
-            if (from != null) {
-                predicate.and(qDepositEntity.bankDepositDate.goe(from));
-            }
+        }
 
-            LocalDate to = command.getToBankDepositDate();
-            if (to != null) {
-                predicate.and(qDepositEntity.bankDepositDate.loe(to));
-            }
+        LocalDate from = command.getFromBankDepositDate();
+        if (from != null) {
+            predicate.and(qDepositEntity.bankDepositDate.goe(from));
+        }
+
+        LocalDate to = command.getToBankDepositDate();
+        if (to != null) {
+            predicate.and(qDepositEntity.bankDepositDate.loe(to));
         }
 
         return jpqlQuery.where(predicate);

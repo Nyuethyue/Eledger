@@ -14,20 +14,16 @@ public interface SearchPaymentAdvicePort {
     @ToString
     class PaymentAdviseSearchCommand extends AbstractSearchCommand {
 
-        private final String taxpayerType;
         private final String tpn;
         private final String pan;
-//        private final String cid;
 
         public PaymentAdviseSearchCommand(int page,
                                           int size,
                                           String sortProperty,
                                           String sortDirection,
-                                          String taxpayerType,
                                           String tpn,
                                           String pan) {
             super(page, size, sortProperty, sortDirection);
-            this.taxpayerType = taxpayerType;
             this.tpn = tpn;
             this.pan = pan;
         }

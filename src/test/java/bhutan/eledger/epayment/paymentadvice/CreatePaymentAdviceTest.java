@@ -72,7 +72,7 @@ class CreatePaymentAdviceTest {
         Assertions.assertNotNull(id);
 
         SearchPaymentAdviceUseCase.SearchPaymentAdviseCommand command =
-                new SearchPaymentAdviceUseCase.SearchPaymentAdviseCommand(0, 10, "taxpayer.tpn", null, "PIT", createCommand.getTaxpayer().getTpn(), null);
+                new SearchPaymentAdviceUseCase.SearchPaymentAdviseCommand(0, 10, "taxpayer.tpn", null, createCommand.getTaxpayer().getTpn(), null);
         SearchResult<PaymentAdvice> searchResult = searchPaymentAdviceUseCase.search(command);
         Assertions.assertNotNull(searchResult);
         List<PaymentAdvice> content = searchResult.getContent();

@@ -169,6 +169,7 @@ class CreateDepositTest {
         CreateDepositUseCase.CreateDepositCommand createDepositCommand =
                 new CreateDepositUseCase.CreateDepositCommand(
                         1L,
+                        "CASH",
                         BigDecimal.valueOf(1221),
                         LocalDate.now(),
                         createReceipts(receipt),
