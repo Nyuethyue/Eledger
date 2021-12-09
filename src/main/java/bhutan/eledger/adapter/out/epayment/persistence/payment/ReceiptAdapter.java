@@ -2,23 +2,46 @@ package bhutan.eledger.adapter.out.epayment.persistence.payment;
 
 import am.iunetworks.lib.common.validation.RecordNotFoundException;
 import bhutan.eledger.application.port.out.epayment.payment.ReceiptRepositoryPort;
+import bhutan.eledger.common.ref.refentry.RefEntry;
+import bhutan.eledger.common.ref.refentry.RefEntryRepository;
+import bhutan.eledger.common.ref.refentry.RefName;
+import bhutan.eledger.domain.epayment.payment.Receipt;
 import bhutan.eledger.domain.epayment.payment.ReceiptStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 class ReceiptAdapter implements ReceiptRepositoryPort {
     private final ReceiptEntityRepository receiptEntityRepository;
+    private final ReceiptMapper receiptMapper;
+    private final RefEntryRepository refEntryRepository;
+
+    @Override
+    public Receipt create(Receipt receipt) {
+        ReceiptEntity receiptEntity = receiptEntityRepository.save(
+                receiptMapper.mapToEntity(receipt)
+        );
+
+        RefEntry refEntry = refEntryRepository.findByRefNameAndId(RefName.CURRENCY.getValue(), receiptEntity.getRefCurrencyId());
+
+        return receiptMapper.mapToDomain(receiptEntity, refEntry);
+    }
+
+    @Override
+    public void deleteAll() {
+        receiptEntityRepository.deleteAll();
+    }
 
     @Override
     public void checkReceipts(Collection<Long> receiptIds) {
-        receiptIds.stream().forEach(receiptId -> receiptEntityRepository.findById(receiptId).orElseThrow(() ->
-                new RecordNotFoundException("Receipt not found by id:" + receiptId)));
+        receiptIds
+                .forEach(receiptId -> receiptEntityRepository.findById(receiptId).orElseThrow(() ->
+                        new RecordNotFoundException("Receipt not found by id:" + receiptId))
+                );
     }
 
     @Override

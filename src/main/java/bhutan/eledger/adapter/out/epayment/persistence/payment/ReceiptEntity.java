@@ -46,6 +46,8 @@ class ReceiptEntity {
     private LocalDateTime creationDateTime;
     @Column(name = "total_paid_amount")
     private BigDecimal totalPaidAmount;
+    @Column(name = "pan")
+    private String pan;
 
     @OneToOne
     @JoinColumn(name = "taxpayer_id", nullable = false)
@@ -60,7 +62,7 @@ class ReceiptEntity {
     private Set<PaymentEntity> payments;
 
     public ReceiptEntity(Long id, String drn, String paymentMode, String status, Long refCurrencyId, String receiptNumber,
-                         String securityNumber, LocalDateTime creationDateTime, EpTaxpayer taxpayer,BigDecimal totalPaidAmount) {
+                         String securityNumber, LocalDateTime creationDateTime, EpTaxpayer taxpayer, BigDecimal totalPaidAmount, String pan) {
         this.id = id;
         this.drn = drn;
         this.paymentMode = paymentMode;
@@ -71,5 +73,6 @@ class ReceiptEntity {
         this.creationDateTime = creationDateTime;
         this.taxpayer = taxpayer;
         this.totalPaidAmount = totalPaidAmount;
+        this.pan = pan;
     }
 }

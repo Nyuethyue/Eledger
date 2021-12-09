@@ -1,6 +1,6 @@
 package bhutan.eledger.application.service.epayment.payment;
 
-import bhutan.eledger.application.port.in.epayment.payment.CreateCashPaymentUseCase;
+import bhutan.eledger.application.port.in.epayment.payment.CreateChequePaymentUseCase;
 import bhutan.eledger.application.port.out.epayment.eledger.CreateEledgerTransactionPort;
 import bhutan.eledger.application.port.out.epayment.payment.ReceiptNumberGeneratorPort;
 import bhutan.eledger.application.port.out.epayment.payment.ReceiptRepositoryPort;
@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 @Service
 @Transactional
 @RequiredArgsConstructor
-class CreateCashPaymentService implements CreateCashPaymentUseCase {
+class CreateChequePaymentService implements CreateChequePaymentUseCase {
     private final ReceiptNumberGeneratorPort receiptNumberGeneratorPort;
     private final ReceiptRepositoryPort receiptRepositoryPort;
     private final EpTaxpayerRepositoryPort epTaxpayerRepositoryPort;
@@ -34,7 +34,7 @@ class CreateCashPaymentService implements CreateCashPaymentUseCase {
     private final PaymentsResolverService paymentsResolverService;
 
     @Override
-    public Receipt create(CreateCashPaymentCommand command) {
+    public Receipt create(CreateChequePaymentCommand command) {
         log.trace("Generating cash receipt by command: {}", command);
 
         PaymentAdvice updatedPaymentAdvice = paymentAdviceOnPaymentUpdaterService.updatePaymentAdvice(command);
@@ -48,19 +48,24 @@ class CreateCashPaymentService implements CreateCashPaymentUseCase {
         var payments =
                 paymentsResolverService.resolvePayments(command, updatedPaymentAdvice);
 
-        var refEntry = refEntryRepository.findByRefNameAndId(
+        var refCurrencyEntry = refEntryRepository.findByRefNameAndId(
                 RefName.CURRENCY.getValue(),
                 command.getRefCurrencyId()
+        );
+
+        var refBankBranchEntry = refEntryRepository.findByRefNameAndId(
+                RefName.BANK_BRANCH.getValue(),
+                command.getBankBranchId()
         );
 
         //todo check is ref open
 
 
-        Receipt receipt = Receipt.cashWithoutId(
+        Receipt receipt = Receipt.chequeWithoutId(
                 updatedPaymentAdvice.getDrn(),
-                PaymentMode.CASH,
+                PaymentMode.CHEQUE,
                 updatedPaymentAdvice.isPaid() ? ReceiptStatus.PAID : ReceiptStatus.SPLIT_PAYMENT,
-                refEntry,
+                refCurrencyEntry,
                 receiptNumber,
                 creationDateTime,
                 epTaxpayerRepositoryPort.requiredReadByTpn(updatedPaymentAdvice.getTaxpayer().getTpn()),
@@ -69,19 +74,23 @@ class CreateCashPaymentService implements CreateCashPaymentUseCase {
                         .map(Payment::getPaidAmount)
                         .reduce(BigDecimal.ZERO, BigDecimal::add),
                 null,// todo apply security number,
+                command.getInstrumentNumber(),
+                command.getInstrumentDate(),
+                command.getOtherReferenceNumber(),
+                refBankBranchEntry,
                 updatedPaymentAdvice.getPan()
         );
 
-        log.trace("Persisting cash receipt: {}", receipt);
+        log.trace("Persisting cheque receipt: {}", receipt);
 
-        Receipt persistedCashReceipt = receiptRepositoryPort.create(receipt);
+        Receipt persistedReceipt = receiptRepositoryPort.create(receipt);
 
-        log.debug("Cash receipt with id: {} successfully created.", persistedCashReceipt.getId());
+        log.debug("Cheque receipt with id: {} successfully created.", persistedReceipt.getId());
 
         log.trace("Creating eledger payment transaction: {}", receipt);
 
         eledgerPaymentTransactionPort.create(receipt);
 
-        return persistedCashReceipt;
+        return persistedReceipt;
     }
 }

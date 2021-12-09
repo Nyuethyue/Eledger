@@ -19,7 +19,7 @@ public interface CreateDepositUseCase {
     Collection<Deposit> create(@Valid CreateDepositMultipleCommand command);
 
     @Data
-    class DenominationCount {
+    class DenominationCountCommand {
         @NotNull
         private final Long denominationId;
 
@@ -40,7 +40,7 @@ public interface CreateDepositUseCase {
         @NotEmpty
         private final Collection<Long> receipts;
 
-        private final Collection<DenominationCount> denominationCounts;
+        private final Collection<DenominationCountCommand> denominationCounts;
     }
 
     @Data

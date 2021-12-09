@@ -51,7 +51,7 @@ class SearchReceiptService implements SearchReceiptUseCase {
                 receiptSearchProperties.resolveSortDirection(command.getSortDirection()),
                 command.getRefCurrencyId(),
                 command.getPaymentMode(),
-                command.getBranchCode(),
+                command.getBankBranchId(),
                 command.getGlAccountPartFullCode(),
                 command.getReceiptDate(),
                 Arrays.asList(ReceiptStatus.PAID.getValue(), ReceiptStatus.SPLIT_PAYMENT.getValue())

@@ -6,7 +6,7 @@ import bhutan.eledger.application.port.in.epayment.payment.SearchReceiptUseCase;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAdviceUseCase;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.UpsertPaymentAdviceUseCase;
 import bhutan.eledger.application.port.in.ref.currency.CreateRefCurrencyUseCase;
-import bhutan.eledger.application.port.out.epayment.payment.CashReceiptRepositoryPort;
+import bhutan.eledger.application.port.out.epayment.payment.ReceiptRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceRepositoryPort;
 import bhutan.eledger.application.port.out.ref.currency.RefCurrencyRepositoryPort;
 import bhutan.eledger.domain.epayment.payment.Receipt;
@@ -39,7 +39,7 @@ class CreatePaymentTest {
     private CreateCashPaymentUseCase createCashPaymentUseCase;
 
     @Autowired
-    private CashReceiptRepositoryPort cashReceiptRepositoryPort;
+    private ReceiptRepositoryPort receiptRepositoryPort;
 
     @Autowired
     private TransactionTemplate transactionTemplate;
@@ -98,7 +98,7 @@ class CreatePaymentTest {
 
     @AfterEach
     void afterEach() {
-        cashReceiptRepositoryPort.deleteAll();
+        receiptRepositoryPort.deleteAll();
         paymentAdviceRepositoryPort.deleteAll();
         refCurrencyRepositoryPort.deleteAll();
     }
