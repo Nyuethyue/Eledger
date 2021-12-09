@@ -1,10 +1,7 @@
 package bhutan.eledger.adapter.out.epayment.persistence.payment;
 
 import bhutan.eledger.domain.epayment.taxpayer.EpTaxpayer;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -12,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+@Builder(toBuilder = true)
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor

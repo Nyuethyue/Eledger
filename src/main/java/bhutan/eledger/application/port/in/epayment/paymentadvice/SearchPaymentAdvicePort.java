@@ -17,7 +17,6 @@ public interface SearchPaymentAdvicePort {
         private final String taxpayerType;
         private final String tpn;
         private final String pan;
-//        private final String cid;
 
         public PaymentAdviseSearchCommand(int page,
                                           int size,
