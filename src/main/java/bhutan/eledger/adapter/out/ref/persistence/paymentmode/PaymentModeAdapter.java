@@ -3,7 +3,6 @@ package bhutan.eledger.adapter.out.ref.persistence.paymentmode;
 import bhutan.eledger.application.port.out.ref.paymentmode.PaymentModeRepositoryPort;
 import bhutan.eledger.domain.ref.paymentmode.PaymentMode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -32,7 +31,5 @@ class PaymentModeAdapter implements PaymentModeRepositoryPort {
                 .map(paymentModeMapper::mapToDomain)
                 .collect(Collectors.toUnmodifiableList());
     }
-
-
 }
 
