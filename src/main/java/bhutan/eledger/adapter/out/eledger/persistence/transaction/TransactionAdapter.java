@@ -28,7 +28,7 @@ class TransactionAdapter implements TransactionRepositoryPort {
 
     @Override
     public Collection<Long> createAll(Collection<Transaction> transactions) {
-        return transactionEntityRepository.saveAll(
+        return transactionEntityRepository.saveAllAndFlush(
                         transactions.stream()
                                 .map(transactionMapper::mapToEntity)
                                 .collect(Collectors.toUnmodifiableList())
