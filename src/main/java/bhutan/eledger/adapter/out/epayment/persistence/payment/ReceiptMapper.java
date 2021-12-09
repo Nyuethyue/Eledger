@@ -19,12 +19,16 @@ class ReceiptMapper {
                 receipt.getPaymentMode().getValue(),
                 receipt.getStatus().getValue(),
                 receipt.getCurrency().getId(),
+                receipt.getBankBranch().getId(),
                 receipt.getReceiptNumber(),
-                null,
+                receipt.getSecurityNumber(),
+                receipt.getInstrumentNumber(),
+                receipt.getInstrumentDate(),
+                receipt.getOtherReferenceNumber(),
                 receipt.getCreationDateTime(),
-                receipt.getTaxpayer(),
                 receipt.getTotalPaidAmount(),
-                receipt.getPan()
+                receipt.getPan(),
+                receipt.getTaxpayer()
         );
 
         receiptEntity.setPayments(
