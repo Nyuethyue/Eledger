@@ -204,7 +204,7 @@ class CreateRefBankAccountTest {
         Assertions.assertNotNull(bankAccount);
         Assertions.assertNotNull(bankAccount.getDescription());
 
-        var bankAccountByCode = refBankAccountRepositoryPort.readByCode(bankAccount.getCode()).get();
+        var bankAccountByCode = refBankAccountRepositoryPort.readByCode(bankAccount.getCode());
         Assertions.assertNotNull(bankAccountByCode);
 
         var bankAccountByBranchId = refBankAccountRepositoryPort.readAllByBranchId(branchId);

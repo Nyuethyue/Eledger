@@ -32,9 +32,9 @@ class CreateRefCurrencyTest {
     void createTest() {
         Long id = createRefCurrencyUseCase.create(
                 new CreateRefCurrencyUseCase.CreateCurrencyCommand(
-                        "BTN",
-                        "Nu.",
-                        Map.of("en", "Ngultrum")
+                        "yen",
+                        "￥",
+                        Map.of("en", "Yen")
 
                 )
 
@@ -46,9 +46,9 @@ class CreateRefCurrencyTest {
     void readTest() {
         Long id = createRefCurrencyUseCase.create(
                 new CreateRefCurrencyUseCase.CreateCurrencyCommand(
-                        "BTN",
-                        "Nu.",
-                        Map.of("en", "Ngultrum")
+                        "Yen",
+                        "￥",
+                        Map.of("en", "Yen")
 
                 )
 
