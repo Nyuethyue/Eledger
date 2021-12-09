@@ -2,7 +2,7 @@ package bhutan.eledger.epayment.reconciliation;
 
 import bhutan.eledger.adapter.out.epayment.fms.reconciliation.ReconciliationExcelLoader;
 import bhutan.eledger.application.port.in.epayment.reconciliation.BankStatementImportUseCase;
-import bhutan.eledger.domain.epayment.BankStatementImportReconciliationInfo;
+import bhutan.eledger.domain.epayment.deposit.BankStatementImportReconciliationInfo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -47,7 +47,7 @@ class ReconciliationUploadTest {
         String filePathOld = "/resources/file/files/drc-users/00/00/00/00000000-0000-0000-0000-000000000001/2021/11/29/1638187692518/attachments/Reconciliation.xls";
         BankStatementImportUseCase.ImportBankStatementsCommand commandOld =
                 new BankStatementImportUseCase.ImportBankStatementsCommand(
-                        "TAB12345", filePathOld);
+                         filePathOld);
 
         List<BankStatementImportReconciliationInfo> resultOld = bankStatementImportUseCase.importStatements(commandOld);
         Assertions.assertTrue(resultOld.size() > 0, "Empty result for excel file!");
@@ -55,7 +55,7 @@ class ReconciliationUploadTest {
         String filePathNew = "resources/file/files/drc-users/00/00/00/00000000-0000-0000-0000-000000000001/2021/11/29/1638187871846/attachments/Reconciliation.xlsx";
         BankStatementImportUseCase.ImportBankStatementsCommand commandNew =
                 new BankStatementImportUseCase.ImportBankStatementsCommand(
-                        "TAB12345", filePathNew);
+                        filePathNew);
 
         List<BankStatementImportReconciliationInfo> resultNew = bankStatementImportUseCase.importStatements(commandNew);
         Assertions.assertTrue(resultNew.size() > 0, "Empty result for excel file!");

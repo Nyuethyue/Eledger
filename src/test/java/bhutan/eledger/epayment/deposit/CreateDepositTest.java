@@ -2,6 +2,7 @@ package bhutan.eledger.epayment.deposit;
 
 import bhutan.eledger.application.port.in.epayment.deposit.CreateDepositUseCase;
 import bhutan.eledger.application.port.in.epayment.deposit.SearchDepositUseCase;
+import bhutan.eledger.application.port.in.epayment.deposit.UpdateDepositUseCase;
 import bhutan.eledger.application.port.in.epayment.payment.CreateCashPaymentUseCase;
 import bhutan.eledger.application.port.in.epayment.payment.CreatePaymentCommonCommand;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAdviceUseCase;
@@ -23,10 +24,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(
@@ -36,6 +34,9 @@ class CreateDepositTest {
     // @TODO Refactor!!!
     @Autowired
     private CreateDepositUseCase createDepositUseCase;
+
+    @Autowired
+    private UpdateDepositUseCase updateDepositUseCase;
 
     @Autowired
     private CreatePaymentAdviceUseCase createPaymentAdviceUseCase;
@@ -198,5 +199,24 @@ class CreateDepositTest {
         Assertions.assertEquals(searchDeposit.getStatus(), DepositStatus.PENDING_RECONCILIATION);
         Assertions.assertTrue(searchDeposit.getDenominationCounts().size() > 0);
         Assertions.assertTrue(searchDeposit.getReceipts().size() > 0);
+
+        UpdateDepositUseCase.SetDepositStatusesReconciledCommand setCommand =
+                new UpdateDepositUseCase.SetDepositStatusesReconciledCommand(
+                        Arrays.asList(searchDeposit.getDepositNumber()));
+        updateDepositUseCase.setDepositStatusesReconciled(setCommand);
+
+        searchResult = searchDepositUseCase.search(new SearchDepositUseCase.SearchDepositCommand(
+                0,
+                10,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.now().minusDays(1),
+                LocalDate.now().plusDays(1)
+        ));
+
+        Assertions.assertTrue(DepositStatus.RECONCILED.equals(searchResult.getContent().get(0).getStatus()));
+
     }
 }
