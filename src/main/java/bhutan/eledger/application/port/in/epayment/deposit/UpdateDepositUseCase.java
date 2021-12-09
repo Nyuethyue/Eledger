@@ -1,5 +1,6 @@
 package bhutan.eledger.application.port.in.epayment.deposit;
 
+import bhutan.eledger.domain.epayment.deposit.DepositStatus;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
@@ -13,6 +14,6 @@ public interface UpdateDepositUseCase {
 
     @Data
     class SetDepositStatusesReconciledCommand {
-        private final Collection<String> depositNumbers;
+        private final Collection<Long> depositIds;
     }
 }

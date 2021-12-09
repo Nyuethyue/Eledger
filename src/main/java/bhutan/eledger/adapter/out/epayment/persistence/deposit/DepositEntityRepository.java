@@ -5,5 +5,5 @@ import am.iunetworks.lib.common.persistence.spring.querydsl.CustomQuerydslJpaRep
 import java.util.Optional;
 
 public interface DepositEntityRepository extends CustomQuerydslJpaRepository<DepositEntity, Long> {
-    Optional<DepositEntity> readByDepositNumber(String depositNumber);
+    Optional<DepositEntity> findByDepositNumber(String depositNumber);
 }
