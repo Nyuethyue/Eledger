@@ -4,21 +4,18 @@ import bhutan.eledger.application.port.in.epayment.deposit.CreateDepositUseCase;
 import bhutan.eledger.application.port.out.epayment.deposit.DepositNumberGeneratorPort;
 import bhutan.eledger.application.port.out.epayment.deposit.DepositRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.payment.ReceiptRepositoryPort;
-import bhutan.eledger.application.port.out.ref.paymentmode.PaymentModeRepositoryPort;
 import bhutan.eledger.domain.epayment.deposit.Deposit;
 import bhutan.eledger.domain.epayment.deposit.DepositReceipt;
 import bhutan.eledger.domain.epayment.deposit.DepositStatus;
-import bhutan.eledger.domain.epayment.payment.PaymentMode;
 import bhutan.eledger.domain.epayment.payment.ReceiptStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.InvalidParameterException;
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Optional;
+import java.util.LinkedList;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -29,27 +26,11 @@ class CreateDepositService implements CreateDepositUseCase {
     private final DepositNumberGeneratorPort depositNumberGeneratorPort;
     private final DepositRepositoryPort depositRepositoryPort;
     private final ReceiptRepositoryPort receiptRepositoryPort;
-    private final PaymentModeRepositoryPort paymentModeRepositoryPort;
 
 
     @Override
     public Deposit create(CreateDepositCommand command) {
         log.trace("Generating Deposit by command: {}", command);
-
-        long paymentModeId;
-        if(null != command.getPaymentModeStr()) {
-            Optional<Long> id = paymentModeRepositoryPort.getIdByCode(command.getPaymentModeStr());
-            if(id.isEmpty()) {
-                throw new InvalidParameterException("Invalid payment mode:" + command.getPaymentModeStr());
-            }
-            paymentModeId = id.get();
-            if(PaymentMode.CASH.getValue().equals(command.getPaymentModeStr()) &&
-                    (null == command.getDenominationCounts() || command.getDenominationCounts().isEmpty())) {
-                throw new InvalidParameterException("Missing denomination info for deposit");
-            }
-        } else {
-            paymentModeId = command.getPaymentMode();
-        }
 
         LocalDateTime creationDateTime = LocalDateTime.now();
 
@@ -57,7 +38,7 @@ class CreateDepositService implements CreateDepositUseCase {
 
         var deposit = Deposit.withoutId(
                 depositNumber,
-                paymentModeId,
+                command.getPaymentMode(),
                 command.getAmount(),
                 command.getBankDepositDate(),
                 DepositStatus.PENDING_RECONCILIATION,
