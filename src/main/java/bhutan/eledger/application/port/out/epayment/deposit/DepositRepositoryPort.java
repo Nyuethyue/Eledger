@@ -14,13 +14,6 @@ public interface DepositRepositoryPort {
 
     Optional<Deposit> readByDepositNumber(String depositNumber);
 
-    default Deposit requiredReadByDepositNumber(String depositNumber) {
-        return readByDepositNumber(depositNumber)
-                .orElseThrow(() ->
-                        new RecordNotFoundException("Deposit by number: [" + depositNumber + "] not found.")
-                );
-    }
-
     default Deposit requiredReadById(Long id) {
         return readById(id)
                 .orElseThrow(() ->
