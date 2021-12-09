@@ -30,9 +30,7 @@ class SearchDepositService implements SearchDepositUseCase {
 
         var outCommand = makeOutSearchCommand(command);
 
-        var searchResult = depositSearchPort.search(
-                outCommand
-        );
+        var searchResult = depositSearchPort.search(outCommand);
 
         log.debug("Search executed. Result totalCount: {}, totalPages: {}, contentCount {}, out port command: {}", searchResult.getTotalCount(), searchResult.getTotalPages(), searchResult.getContent().size(), outCommand);
         log.trace("Search result content: {}, out port command: {}", searchResult.getContent(), outCommand);

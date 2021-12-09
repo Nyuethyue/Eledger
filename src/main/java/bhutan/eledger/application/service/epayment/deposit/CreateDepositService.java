@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -58,5 +60,11 @@ class CreateDepositService implements CreateDepositUseCase {
 
         receiptRepositoryPort.updateStatuses(ReceiptStatus.PENDING_RECONCILIATION, command.getReceipts());
         return result;
+    }
+
+    @Override
+    public Collection<Deposit> create(CreateDepositMultipleCommand command) {
+        log.trace("Generating Deposit Multiple by command: {}", command);
+        return command.getDeposits().stream().map(d -> create(d)).collect(Collectors.toUnmodifiableSet());
     }
 }
