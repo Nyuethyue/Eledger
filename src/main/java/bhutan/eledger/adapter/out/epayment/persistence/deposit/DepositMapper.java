@@ -62,6 +62,7 @@ class DepositMapper {
                         .collect(Collectors.toUnmodifiableList()),
                 depositEntity.getLastPrintedDate(),
                 depositEntity.getCreationDateTime()
+
         );
     }
 }
