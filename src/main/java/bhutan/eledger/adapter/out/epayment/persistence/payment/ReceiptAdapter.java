@@ -27,6 +27,7 @@ class ReceiptAdapter implements ReceiptRepositoryPort {
                 .stream()
                 .map(receiptEntityRepository::findById)
                 .map(Optional::orElseThrow)
+                .map(r -> r.toBuilder().status(status.getValue()).build())
                 .collect(Collectors.toSet());
 
         receiptEntityRepository.saveAll(receiptEntities);
