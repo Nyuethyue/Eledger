@@ -45,7 +45,7 @@ class RefBankAccountController {
 
     @GetMapping(value = "/allByBranchId/{branchId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
-    public Collection<RefBankAccount> readAllByBranchId(@PathVariable Long branchId) {
+    public RefBankAccount readAllByBranchId(@PathVariable Long branchId) {
         return readRefBankAccountUseCase.readAllByBranchId(branchId);
     }
 
@@ -67,5 +67,11 @@ class RefBankAccountController {
         return ResponseEntity
                 .noContent()
                 .build();
+    }
+
+    @GetMapping(value = "/allByBankIdAndGlPartCode", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.OK)
+    public Collection<RefBankAccount> readAllByBankIdAndGlPartCode(ReadRefBankAccountUseCase.ReadBankAccountCommand command) {
+        return readRefBankAccountUseCase.readAllByBankIdAndGlPartCode(command);
     }
 }

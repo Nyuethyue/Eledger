@@ -16,7 +16,7 @@ public interface RefBankAccountRepositoryPort {
 
     boolean isOpenBankAccountExists(RefBankAccount refBankAccount);
 
-    Collection<RefBankAccount> readAllByBranchId(Long branchId);
+    Optional<RefBankAccount> readAllByBranchId(Long branchId);
 
     Collection<RefBankAccount> readByCode(String code);
 

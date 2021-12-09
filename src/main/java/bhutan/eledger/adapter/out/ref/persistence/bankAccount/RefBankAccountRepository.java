@@ -10,7 +10,7 @@ import java.util.Optional;
 
 interface RefBankAccountRepository extends JpaRepository<RefBankAccountEntity, Long> {
 
-    Collection<RefBankAccountEntity> readAllByBranchId(Long branchId);
+    Optional<RefBankAccountEntity> readAllByBranchId(Long branchId);
 
     Collection<RefBankAccountEntity> findByCode(String code);
 
