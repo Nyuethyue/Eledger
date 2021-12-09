@@ -1,12 +1,12 @@
 package bhutan.eledger.adapter.out.ref.persistence.paymentmode;
 
+import am.iunetworks.lib.common.validation.RecordNotFoundException;
 import bhutan.eledger.application.port.out.ref.paymentmode.PaymentModeRepositoryPort;
 import bhutan.eledger.domain.ref.paymentmode.PaymentMode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -16,12 +16,9 @@ class PaymentModeAdapter implements PaymentModeRepositoryPort {
     private final PaymentModeMapper paymentModeMapper;
 
     @Override
-    public Optional<Long> getIdByCode(String code) {
-        Optional<PaymentModeEntity> res = paymentModeEntityRepository.findByCode(code);
-        if(res.isEmpty()) {
-            Optional.empty();
-        }
-        return Optional.of(res.get().getId());
+    public Long getIdByCode(String code) {
+        return paymentModeEntityRepository.findByCode(code).map(PaymentModeEntity::getId)
+                .orElseThrow(() -> new RecordNotFoundException("Payment mode by code:" + code + " not found."));
     }
 
     @Override

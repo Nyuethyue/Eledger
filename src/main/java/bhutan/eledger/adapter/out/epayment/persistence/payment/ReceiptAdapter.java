@@ -23,13 +23,13 @@ class ReceiptAdapter implements ReceiptRepositoryPort {
 
     @Override
     public void updateStatuses(ReceiptStatus status, Collection<Long> receiptIds) {
-        var receiptEntities = receiptIds
+        receiptIds
                 .stream()
                 .map(receiptEntityRepository::findById)
                 .map(Optional::orElseThrow)
-                .map(r -> r.toBuilder().status(status.getValue()).build())
-                .collect(Collectors.toSet());
-
-        receiptEntityRepository.saveAll(receiptEntities);
+                .forEach(r -> {
+                    r.setStatus(status.getValue());
+                    receiptEntityRepository.save(r);
+                });
     }
 }

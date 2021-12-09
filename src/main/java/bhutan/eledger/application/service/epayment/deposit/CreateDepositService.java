@@ -17,10 +17,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.InvalidParameterException;
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -33,31 +31,20 @@ class CreateDepositService implements CreateDepositUseCase {
     private final ReceiptRepositoryPort receiptRepositoryPort;
     private final PaymentModeRepositoryPort paymentModeRepositoryPort;
 
-
     @Override
     public Deposit create(CreateDepositCommand command) {
         log.trace("Generating Deposit by command: {}", command);
 
         long paymentModeId;
         if (null != command.getPaymentModeCode()) {
-            Optional<Long> id = paymentModeRepositoryPort.getIdByCode(command.getPaymentModeCode());
-            if (id.isEmpty()) {
-                throw new ViolationException(
-                        new ValidationError()
-                                .addViolation(
-                                        "paymentMode.code",
-                                        "Invalid payment mode:" + command.getPaymentModeCode()
-                                )
-                );
-            }
-            paymentModeId = id.get();
+            paymentModeId = paymentModeRepositoryPort.getIdByCode(command.getPaymentModeCode());
             if (PaymentMode.CASH.getValue().equals(command.getPaymentModeCode()) &&
                     (null == command.getDenominationCounts() || command.getDenominationCounts().isEmpty())) {
                 throw new ViolationException(
                         new ValidationError()
                                 .addViolation(
                                         "deposit.cash",
-                                        "Missing denomination info for deposit"
+                                        "Missing denomination info for CASH deposit"
                                 )
                 );
             }
