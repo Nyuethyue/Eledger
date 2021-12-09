@@ -3,6 +3,7 @@ package bhutan.eledger.adapter.in.epayment.web.deposit;
 import am.iunetworks.lib.common.persistence.search.SearchResult;
 import bhutan.eledger.application.port.in.epayment.deposit.CreateDepositUseCase;
 import bhutan.eledger.application.port.in.epayment.deposit.SearchDepositUseCase;
+import bhutan.eledger.application.port.in.epayment.deposit.UpdateDepositUseCase;
 import bhutan.eledger.domain.epayment.deposit.Deposit;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 class DepositController {
     private final CreateDepositUseCase createDepositUseCase;
+    private final UpdateDepositUseCase updateDepositUseCase;
     private final SearchDepositUseCase searchDepositUseCase;
 
     @PostMapping
@@ -44,6 +46,12 @@ class DepositController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(result);
+    }
+
+    @PostMapping("/update/reconciled")
+    public ResponseEntity<Object> setDepositStatusesReconciled(@RequestBody UpdateDepositUseCase.SetDepositStatusesReconciledCommand command) {
+        updateDepositUseCase.setDepositStatusesReconciled(command);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)

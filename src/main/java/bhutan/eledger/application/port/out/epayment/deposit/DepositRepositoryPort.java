@@ -2,6 +2,7 @@ package bhutan.eledger.application.port.out.epayment.deposit;
 
 import am.iunetworks.lib.common.validation.RecordNotFoundException;
 import bhutan.eledger.domain.epayment.deposit.Deposit;
+import bhutan.eledger.domain.epayment.deposit.DepositStatus;
 
 
 import java.util.Collection;
@@ -25,4 +26,6 @@ public interface DepositRepositoryPort {
     void deleteAll();
 
     void update(Deposit updatedDeposit);
+
+    void updateStatus(Long depositId, DepositStatus status);
 }
