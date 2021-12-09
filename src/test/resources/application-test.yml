@@ -34,3 +34,7 @@ bhutan:
     glaccount:
       search:
         sort-property: code
+    schedule:
+      accounting:
+        calculation:
+          cron: "@midnight" #0 0 0 * * *

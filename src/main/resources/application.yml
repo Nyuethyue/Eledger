@@ -28,6 +28,7 @@ logging:
   level:
     root: WARN
     bhutan.eledger: debug
+    bhutan.eledger.application.service.eledger.transaction: trace
 
 bhutan:
   eledger:

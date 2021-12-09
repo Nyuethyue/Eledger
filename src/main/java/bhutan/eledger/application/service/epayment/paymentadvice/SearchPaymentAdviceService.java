@@ -47,7 +47,6 @@ class SearchPaymentAdviceService implements SearchPaymentAdviceUseCase {
                 searchPaymentAdviceProperties.resolveSize(command.getSize()),
                 searchPaymentAdviceProperties.resolveSortProperty(command.getSortProperty()),
                 searchPaymentAdviceProperties.resolveSortDirection(command.getSortDirection()),
-                command.getTaxpayerType(),
                 command.getTpn(),
                 command.getPan()
         );

@@ -16,6 +16,7 @@ import java.util.Collection;
 public interface CreateDepositUseCase {
 
     Deposit create(@Valid CreateDepositCommand command);
+    Collection<Deposit> create(@Valid CreateDepositMultipleCommand command);
 
     @Data
     class DenominationCount {
@@ -30,6 +31,7 @@ public interface CreateDepositUseCase {
     @Data
     class CreateDepositCommand {
         private final Long paymentMode;
+        private final String paymentModeCode;
         private final BigDecimal amount;
         private final LocalDate bankDepositDate;
 
@@ -37,9 +39,12 @@ public interface CreateDepositUseCase {
         @NotNull
         @NotEmpty
         private final Collection<Long> receipts;
-        @Valid
-        @NotNull
-        @NotEmpty
+
         private final Collection<DenominationCount> denominationCounts;
+    }
+
+    @Data
+    class CreateDepositMultipleCommand {
+        private final Collection<CreateDepositCommand> deposits;
     }
 }
