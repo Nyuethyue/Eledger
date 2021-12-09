@@ -31,7 +31,7 @@ public interface CreateDepositUseCase {
     @Data
     class CreateDepositCommand {
         private final Long paymentMode;
-        private final String paymentModeStr;
+        private final String paymentModeCode;
         private final BigDecimal amount;
         private final LocalDate bankDepositDate;
 
