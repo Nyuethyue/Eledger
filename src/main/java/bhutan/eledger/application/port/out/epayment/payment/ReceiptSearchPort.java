@@ -4,7 +4,6 @@ import am.iunetworks.lib.common.persistence.search.AbstractSearchCommand;
 import am.iunetworks.lib.common.persistence.search.SearchResult;
 import bhutan.eledger.domain.epayment.payment.PaymentMode;
 import bhutan.eledger.domain.epayment.payment.Receipt;
-import bhutan.eledger.domain.epayment.payment.ReceiptStatus;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -21,19 +20,19 @@ public interface ReceiptSearchPort {
 
         private final Long refCurrencyId;
         private final PaymentMode paymentMode;
-        private final String branchCode;
+        private final Long bankBranchId;
         private final String glAccountPartFullCode;
         private final LocalDate receiptDate;
         private final Collection<String> statuses;
 
         public ReceiptCommand(int page, int size, String sortProperty, String sortDirection,
-                              Long refCurrencyId, PaymentMode paymentMode, String branchCode,
+                              Long refCurrencyId, PaymentMode paymentMode, Long bankBranchId,
                               String glAccountPartFullCode, LocalDate receiptDate,
                               Collection<String> statuses) {
             super(page, size, sortProperty, sortDirection);
             this.refCurrencyId = refCurrencyId;
             this.paymentMode = paymentMode;
-            this.branchCode = branchCode;
+            this.bankBranchId = bankBranchId;
             this.glAccountPartFullCode = glAccountPartFullCode;
             this.receiptDate = receiptDate;
             this.statuses = statuses;

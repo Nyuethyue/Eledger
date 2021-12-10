@@ -1,33 +1,38 @@
 package bhutan.eledger.adapter.out.epayment.persistence.payment;
 
 import bhutan.eledger.common.ref.refentry.RefEntry;
-import bhutan.eledger.domain.epayment.payment.CashReceipt;
 import bhutan.eledger.domain.epayment.payment.Payment;
 import bhutan.eledger.domain.epayment.payment.PaymentMode;
+import bhutan.eledger.domain.epayment.payment.Receipt;
 import bhutan.eledger.domain.epayment.payment.ReceiptStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
 @Component
-class CashReceiptMapper {
+class ReceiptMapper {
 
-    ReceiptEntity mapToEntity(CashReceipt cashReceipt) {
+    ReceiptEntity mapToEntity(Receipt receipt) {
         ReceiptEntity receiptEntity = new ReceiptEntity(
-                cashReceipt.getId(),
-                cashReceipt.getDrn(),
-                cashReceipt.getPaymentMode().getValue(),
-                cashReceipt.getStatus().getValue(),
-                cashReceipt.getCurrency().getId(),
-                cashReceipt.getReceiptNumber(),
-                null,
-                cashReceipt.getCreationDateTime(),
-                cashReceipt.getTaxpayer(),
-                cashReceipt.getTotalPaidAmount()
+                receipt.getId(),
+                receipt.getDrn(),
+                receipt.getPaymentMode().getValue(),
+                receipt.getStatus().getValue(),
+                receipt.getCurrency().getId(),
+                receipt.getBankBranch() != null ? receipt.getBankBranch().getId() : null,
+                receipt.getReceiptNumber(),
+                receipt.getSecurityNumber(),
+                receipt.getInstrumentNumber(),
+                receipt.getInstrumentDate(),
+                receipt.getOtherReferenceNumber(),
+                receipt.getCreationDateTime(),
+                receipt.getTotalPaidAmount(),
+                receipt.getPan(),
+                receipt.getTaxpayer()
         );
 
         receiptEntity.setPayments(
-                cashReceipt.getPayments()
+                receipt.getPayments()
                         .stream()
                         .map(payment ->
                                 new PaymentEntity(
@@ -45,8 +50,8 @@ class CashReceiptMapper {
         return receiptEntity;
     }
 
-    CashReceipt mapToDomain(ReceiptEntity receipt, RefEntry refEntry) {
-        return CashReceipt.withId(
+    Receipt mapToDomain(ReceiptEntity receipt, RefEntry refEntry) {
+        return Receipt.withId(
                 receipt.getId(),
                 receipt.getDrn(),
                 PaymentMode.of(receipt.getPaymentMode()),
@@ -67,7 +72,13 @@ class CashReceiptMapper {
                                 )
                         )
                         .collect(Collectors.toUnmodifiableSet()),
-                receipt.getTotalPaidAmount()
+                receipt.getTotalPaidAmount(),
+                receipt.getSecurityNumber(),
+                receipt.getInstrumentNumber(),
+                receipt.getInstrumentDate(),
+                receipt.getOtherReferenceNumber(),
+                RefEntry.builder(receipt.getRefBankBranchId(), "test").build(), //todo
+                receipt.getPan()
         );
     }
 }

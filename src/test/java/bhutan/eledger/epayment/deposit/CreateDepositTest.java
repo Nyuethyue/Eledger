@@ -8,7 +8,7 @@ import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAd
 import bhutan.eledger.application.port.in.epayment.paymentadvice.UpsertPaymentAdviceUseCase;
 import bhutan.eledger.application.port.in.ref.currency.CreateRefCurrencyUseCase;
 import bhutan.eledger.application.port.out.epayment.deposit.DepositRepositoryPort;
-import bhutan.eledger.application.port.out.epayment.payment.CashReceiptRepositoryPort;
+import bhutan.eledger.application.port.out.epayment.payment.ReceiptRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceRepositoryPort;
 import bhutan.eledger.application.port.out.ref.currency.RefCurrencyRepositoryPort;
 import bhutan.eledger.domain.epayment.deposit.Deposit;
@@ -62,7 +62,7 @@ class CreateDepositTest {
     private RefCurrencyRepositoryPort refCurrencyRepositoryPort;
 
     @Autowired
-    private CashReceiptRepositoryPort cashReceiptRepositoryPort;
+    private ReceiptRepositoryPort receiptRepositoryPort;
 
     @BeforeEach
     void beforeEach() {
@@ -76,16 +76,16 @@ class CreateDepositTest {
         return result;
     }
 
-    private Collection<CreateDepositUseCase.DenominationCount> createDenominationCounts() {
-        var result = new LinkedList<CreateDepositUseCase.DenominationCount>();
-        result.add(new CreateDepositUseCase.DenominationCount(1L, 10L));
+    private Collection<CreateDepositUseCase.DenominationCountCommand> createDenominationCounts() {
+        var result = new LinkedList<CreateDepositUseCase.DenominationCountCommand>();
+        result.add(new CreateDepositUseCase.DenominationCountCommand(1L, 10L));
         return result;
     }
 
     @AfterEach
     void afterEach() {
         depositRepositoryPort.deleteAll();
-        cashReceiptRepositoryPort.deleteAll();
+        receiptRepositoryPort.deleteAll();
     }
 
     @Test

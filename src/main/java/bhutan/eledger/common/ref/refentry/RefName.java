@@ -9,7 +9,8 @@ import java.util.Arrays;
 @Getter
 @RequiredArgsConstructor
 public enum RefName {
-    CURRENCY("RefCurrency");
+    CURRENCY("RefCurrency"),
+    BANK_BRANCH("RefBankBranch");
 
     private final String value;
 

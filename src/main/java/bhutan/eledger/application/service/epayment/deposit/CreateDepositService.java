@@ -7,6 +7,7 @@ import bhutan.eledger.application.port.out.epayment.deposit.DepositNumberGenerat
 import bhutan.eledger.application.port.out.epayment.deposit.DepositRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.payment.ReceiptRepositoryPort;
 import bhutan.eledger.application.port.out.ref.paymentmode.PaymentModeRepositoryPort;
+import bhutan.eledger.domain.epayment.deposit.DenominationCount;
 import bhutan.eledger.domain.epayment.deposit.Deposit;
 import bhutan.eledger.domain.epayment.deposit.DepositReceipt;
 import bhutan.eledger.domain.epayment.deposit.DepositStatus;
@@ -63,10 +64,15 @@ class CreateDepositService implements CreateDepositUseCase {
                 command.getAmount(),
                 command.getBankDepositDate(),
                 DepositStatus.PENDING_RECONCILIATION,
-                command.getReceipts().stream().map(r -> DepositReceipt.withoutId(r.longValue())).collect(Collectors.toUnmodifiableSet()),
-                command.getDenominationCounts().stream().map(rc ->
-                        bhutan.eledger.domain.epayment.deposit.DenominationCount.withoutId(rc.getDenominationId(), rc.getDenominationCount())
-                ).collect(Collectors.toList()),
+                command.getReceipts()
+                        .stream()
+                        .map(DepositReceipt::withoutId)
+                        .collect(Collectors.toUnmodifiableSet()),
+                command.getDenominationCounts()
+                        .stream()
+                        .map(rc ->
+                                DenominationCount.withoutId(rc.getDenominationId(), rc.getDenominationCount())
+                        ).collect(Collectors.toList()),
                 null,
                 creationDateTime
         );
@@ -86,6 +92,9 @@ class CreateDepositService implements CreateDepositUseCase {
     @Override
     public Collection<Deposit> create(CreateDepositMultipleCommand command) {
         log.trace("Generating Deposit Multiple by command: {}", command);
-        return command.getDeposits().stream().map(d -> create(d)).collect(Collectors.toUnmodifiableSet());
+        return command.getDeposits()
+                .stream()
+                .map(this::create)
+                .collect(Collectors.toUnmodifiableSet());
     }
 }

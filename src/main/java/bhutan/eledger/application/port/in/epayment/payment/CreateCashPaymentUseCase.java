@@ -1,6 +1,7 @@
 package bhutan.eledger.application.port.in.epayment.payment;
 
 import bhutan.eledger.domain.epayment.payment.Receipt;
+import lombok.ToString;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
@@ -11,6 +12,7 @@ public interface CreateCashPaymentUseCase {
 
     Receipt create(@Valid CreateCashPaymentCommand command);
 
+    @ToString(callSuper = true)
     class CreateCashPaymentCommand extends CreatePaymentCommonCommand {
 
         public CreateCashPaymentCommand(Long paymentAdviceId, Long refCurrencyId, Collection<PaymentCommand> payments) {

@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 class ReceiptSearchAdapter implements ReceiptSearchPort {
     private final ReceiptEntityRepository receiptEntityRepository;
-    private final CashReceiptMapper cashReceiptMapper;
+    private final ReceiptMapper cashReceiptMapper;
     private final RefEntryRepository refEntryRepository;
 
     @Override

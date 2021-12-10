@@ -2,20 +2,21 @@
 
 CREATE TABLE epayment.ep_receipt
 (
-    id                     bigint    NOT NULL,
-    drn                    varchar   NOT NULL,
-    payment_mode           varchar   NOT NULL,
-    status                 varchar   NOT NULL,
-    ref_currency_id        bigint    NOT NULL,
+    id                     bigint         NOT NULL,
+    drn                    varchar        NOT NULL,
+    payment_mode           varchar        NOT NULL,
+    status                 varchar        NOT NULL,
+    ref_currency_id        bigint         NOT NULL,
     ref_bank_branch_id     bigint,
-    receipt_number         varchar   NOT NULL,
+    receipt_number         varchar        NOT NULL,
     security_number        varchar,
     instrument_number      varchar,
     instrument_date        date,
     other_reference_number varchar,
-    creation_date_time     timestamp        NOT NULL,
-    taxpayer_id            bigint           NOT NULL,
-    total_paid_amount      numeric(20, 2)   NOT NULL
+    creation_date_time     timestamp      NOT NULL,
+    taxpayer_id            bigint         NOT NULL,
+    total_paid_amount      numeric(20, 2) NOT NULL,
+    pan                    varchar        NOT NULL
 );
 
 ALTER TABLE epayment.ep_receipt
