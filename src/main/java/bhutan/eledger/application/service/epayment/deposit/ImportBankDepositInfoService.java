@@ -23,7 +23,6 @@ class ImportBankDepositInfoService implements GenerateReconciliationInfoUseCase 
 
     @Override
     public ReconciliationInfo generate(@Valid GenerateDepositReconciliationInfoCommand command) {
-        boolean isOk = true;
         List<BankStatementImportReconciliationInfo> bankInfoList = bankStatementImportUseCase.importStatements(
                 new BankStatementImportUseCase.ImportBankStatementsCommand(command.getFilePath()));
 
@@ -53,7 +52,7 @@ class ImportBankDepositInfoService implements GenerateReconciliationInfoUseCase 
                 errorRecords.add(mapTo(info));
             }
         });
-        return new ReconciliationInfo(isOk, depositInfoList, errorRecords);
+        return new ReconciliationInfo(errorRecords.isEmpty(), depositInfoList, errorRecords);
     }
 
     private ErrorRecordsInfo mapTo(BankStatementImportReconciliationInfo record) {

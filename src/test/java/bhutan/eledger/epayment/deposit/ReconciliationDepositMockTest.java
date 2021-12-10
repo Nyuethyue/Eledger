@@ -1,21 +1,14 @@
 package bhutan.eledger.epayment.deposit;
 
-import bhutan.eledger.application.port.in.epayment.deposit.CreateDepositUseCase;
+import bhutan.eledger.application.port.in.epayment.deposit.GenerateReconciliationInfoUseCase;
 import bhutan.eledger.application.port.in.epayment.deposit.SearchDepositUseCase;
 import bhutan.eledger.application.port.in.epayment.deposit.UpdateDepositUseCase;
-import bhutan.eledger.application.port.in.epayment.payment.CreateCashPaymentUseCase;
-import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAdviceUseCase;
-import bhutan.eledger.application.port.in.ref.currency.CreateRefCurrencyUseCase;
-import bhutan.eledger.application.port.out.epayment.deposit.DepositRepositoryPort;
-import bhutan.eledger.application.port.out.epayment.payment.CashReceiptRepositoryPort;
-import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceRepositoryPort;
-import bhutan.eledger.application.port.out.ref.currency.RefCurrencyRepositoryPort;
+import bhutan.eledger.domain.epayment.deposit.Deposit;
 import bhutan.eledger.domain.epayment.deposit.DepositStatus;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -26,37 +19,13 @@ import java.util.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ReconciliationDepositMockTest {
     @Autowired
-    private CreateDepositUseCase createDepositUseCase;
+    private GenerateReconciliationInfoUseCase generateReconciliationInfoUseCase;
 
     @Autowired
     private UpdateDepositUseCase updateDepositUseCase;
 
     @Autowired
-    private CreatePaymentAdviceUseCase createPaymentAdviceUseCase;
-
-    @Autowired
-    private PaymentAdviceRepositoryPort paymentAdviceRepositoryPort;
-
-    @Autowired
-    private CreateCashPaymentUseCase createCashPaymentUseCase;
-
-    @Autowired
-    private DepositRepositoryPort depositRepositoryPort;
-
-    @Autowired
-    private TransactionTemplate transactionTemplate;
-
-    @Autowired
     private SearchDepositUseCase searchDepositUseCase;
-
-    @Autowired
-    private CreateRefCurrencyUseCase createRefCurrencyUseCase;
-
-    @Autowired
-    private RefCurrencyRepositoryPort refCurrencyRepositoryPort;
-
-    @Autowired
-    private CashReceiptRepositoryPort cashReceiptRepositoryPort;
 
     @BeforeEach
     void beforeEach() {
@@ -99,5 +68,13 @@ class ReconciliationDepositMockTest {
         ));
         Deposit deposit = searchResult.getContent().get(0);
         Assertions.assertTrue(DepositStatus.RECONCILED.equals(deposit.getStatus()));
+
+        String filePathOld =
+                "/resources/file/files/drc-users/00/00/00/00000000-0000-0000-0000-000000000001/2021/11/29/1638187692518/attachments/Reconciliation.xls";
+        GenerateReconciliationInfoUseCase.GenerateDepositReconciliationInfoCommand command =
+                new GenerateReconciliationInfoUseCase.GenerateDepositReconciliationInfoCommand(filePathOld);
+        GenerateReconciliationInfoUseCase.ReconciliationInfo result =
+                generateReconciliationInfoUseCase.generate(command);
+        Assertions.assertTrue(result.isOk());
     }
 }
