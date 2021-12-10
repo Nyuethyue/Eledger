@@ -19,7 +19,7 @@ class ReceiptMapper {
                 receipt.getPaymentMode().getValue(),
                 receipt.getStatus().getValue(),
                 receipt.getCurrency().getId(),
-                receipt.getBankBranch().getId(),
+                receipt.getBankBranch() != null ? receipt.getBankBranch().getId() : null,
                 receipt.getReceiptNumber(),
                 receipt.getSecurityNumber(),
                 receipt.getInstrumentNumber(),
@@ -77,7 +77,7 @@ class ReceiptMapper {
                 receipt.getInstrumentNumber(),
                 receipt.getInstrumentDate(),
                 receipt.getOtherReferenceNumber(),
-                RefEntry.builder(receipt.getRefBankBranchId(), "test").build(),
+                RefEntry.builder(receipt.getRefBankBranchId(), "test").build(), //todo
                 receipt.getPan()
         );
     }
