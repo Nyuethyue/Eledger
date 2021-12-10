@@ -2,6 +2,7 @@ package bhutan.eledger.adapter.in.epayment.web.deposit;
 
 import am.iunetworks.lib.common.persistence.search.SearchResult;
 import bhutan.eledger.application.port.in.epayment.deposit.CreateDepositUseCase;
+import bhutan.eledger.application.port.in.epayment.deposit.GenerateReconciliationInfoUseCase;
 import bhutan.eledger.application.port.in.epayment.deposit.SearchDepositUseCase;
 import bhutan.eledger.application.port.in.epayment.deposit.UpdateDepositUseCase;
 import bhutan.eledger.domain.epayment.deposit.Deposit;
@@ -26,6 +27,7 @@ class DepositController {
     private final CreateDepositUseCase createDepositUseCase;
     private final UpdateDepositUseCase updateDepositUseCase;
     private final SearchDepositUseCase searchDepositUseCase;
+    private final GenerateReconciliationInfoUseCase generateReconciliationInfoUseCase;
 
     @PostMapping
     public ResponseEntity<Object> create(@RequestBody CreateDepositUseCase.CreateDepositCommand command) {
@@ -60,10 +62,10 @@ class DepositController {
         return searchDepositUseCase.search(command);
     }
 
-    @GetMapping(value = "/importBankInfo", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/get/reconciliation/info", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
-    public SearchResult<Deposit> importBankInfo(SearchDepositUseCase.SearchDepositCommand command) {
-        return searchDepositUseCase.search(command);
+    public GenerateReconciliationInfoUseCase.ReconciliationInfo generateReconciliationInfo(GenerateReconciliationInfoUseCase.GenerateDepositReconciliationInfoCommand command) {
+        return generateReconciliationInfoUseCase.generate(command);
     }
 
     @Data
