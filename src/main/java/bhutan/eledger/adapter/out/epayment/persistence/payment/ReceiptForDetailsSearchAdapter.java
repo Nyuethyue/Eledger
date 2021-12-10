@@ -36,9 +36,10 @@ class ReceiptForDetailsSearchAdapter implements ReceiptForDetailsSearchPort {
                 )
                 //todo create fill receipt domain and map all data
                 .map(receiptEntity -> {
-                    RefEntry refEntry = refEntryRepository.findByRefNameAndId(RefName.CURRENCY.getValue(), receiptEntity.getRefCurrencyId());
+                    RefEntry refCurrencyEntry = refEntryRepository.findByRefNameAndId(RefName.CURRENCY.getValue(), receiptEntity.getRefCurrencyId());
+                    RefEntry refBankAccountEntry = refEntryRepository.findByRefNameAndId(RefName.BANK_BRANCH.getValue(), receiptEntity.getRefBankBranchId());
 
-                    return cashReceiptMapper.mapToDomain(receiptEntity, refEntry);
+                    return cashReceiptMapper.mapToDomain(receiptEntity, refCurrencyEntry, refBankAccountEntry);
                 });
 
         return PagedSearchResult.of(page);

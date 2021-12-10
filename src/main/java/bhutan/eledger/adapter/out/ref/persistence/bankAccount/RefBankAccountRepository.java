@@ -42,7 +42,7 @@ interface RefBankAccountRepository extends JpaRepository<RefBankAccountEntity, L
 
 
     @Modifying
-    @Query(value = "update ref.bank_account set is_primary_gl_account = :flag where id = :id", nativeQuery = true)
+    @Query(value = "UPDATE ref.bank_account SET is_primary_gl_account = :flag WHERE id = :id", nativeQuery = true)
     void setPrimaryFlagById(Long id, Boolean flag);
 
     @Query(value = " SELECT bacc.id" +
@@ -52,4 +52,19 @@ interface RefBankAccountRepository extends JpaRepository<RefBankAccountEntity, L
             "        WHERE baglacc.code = :code" +
             "        AND bacc.is_primary_gl_account = :flag", nativeQuery = true)
     Long readIdByGlCodeAndFlag(String code, Boolean flag);
+
+    @Query(
+            value = "SELECT * FROM ref.bank_account bacc" +
+                    " INNER JOIN ref.bank_account_gl_account_part baccGLPart" +
+                    " ON bacc.bank_account_gl_account_part_id = baccGLPart.id" +
+                    " WHERE bacc.is_primary_gl_account && STARTS_WITH(:glCode, baccGLPart.code)" +
+                    " AND bacc.start_of_validity <= :validityDate " +
+                    " AND (" +
+                    "        bacc.end_of_validity IS NULL" +
+                    "        OR" +
+                    "        bacc.end_of_validity >= :validityDate" +
+                    " ) ",
+            nativeQuery = true
+    )
+    Optional<RefBankAccountEntity> getPrimaryBankAccountByGLCode(String glCode, LocalDate validityDate);
 }

@@ -50,13 +50,13 @@ class ReceiptMapper {
         return receiptEntity;
     }
 
-    Receipt mapToDomain(ReceiptEntity receipt, RefEntry refEntry) {
+    Receipt mapToDomain(ReceiptEntity receipt, RefEntry refCurrencyEntry, RefEntry refBankAccountEntry) {
         return Receipt.withId(
                 receipt.getId(),
                 receipt.getDrn(),
                 PaymentMode.of(receipt.getPaymentMode()),
                 ReceiptStatus.of(receipt.getStatus()),
-                refEntry,
+                refCurrencyEntry,
                 receipt.getReceiptNumber(),
                 receipt.getCreationDateTime(),
                 receipt.getTaxpayer(),
@@ -77,7 +77,7 @@ class ReceiptMapper {
                 receipt.getInstrumentNumber(),
                 receipt.getInstrumentDate(),
                 receipt.getOtherReferenceNumber(),
-                RefEntry.builder(receipt.getRefBankBranchId(), "test").build(), //todo
+                refBankAccountEntry,
                 receipt.getPan()
         );
     }

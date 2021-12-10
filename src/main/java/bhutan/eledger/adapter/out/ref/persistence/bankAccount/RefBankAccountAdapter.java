@@ -1,7 +1,11 @@
 package bhutan.eledger.adapter.out.ref.persistence.bankAccount;
 
 
+import am.iunetworks.lib.common.validation.RecordNotFoundException;
+import am.iunetworks.lib.multilingual.core.Multilingual;
+import bhutan.eledger.application.port.out.epayment.config.bank.GetPrimaryBankAccountRefEntryByGLCodeAccountPort;
 import bhutan.eledger.application.port.out.ref.bankaccount.RefBankAccountRepositoryPort;
+import bhutan.eledger.common.ref.refentry.RefEntry;
 import bhutan.eledger.domain.ref.bankaccount.RefBankAccount;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -13,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-class RefBankAccountAdapter implements RefBankAccountRepositoryPort {
+class RefBankAccountAdapter implements RefBankAccountRepositoryPort, GetPrimaryBankAccountRefEntryByGLCodeAccountPort {
 
     private final RefBankAccountMapper refBankAccountMapper;
     private final RefBankAccountRepository refBankAccountRepository;
@@ -73,4 +77,18 @@ class RefBankAccountAdapter implements RefBankAccountRepositoryPort {
     }
 
 
+    @Override
+    public RefEntry getPrimaryBankAccountByGLCode(String glCode, LocalDate validityDate) {
+        return refBankAccountRepository.getPrimaryBankAccountByGLCode(glCode, validityDate)
+                .map(bacc ->
+                        RefEntry.withoutAttributes(
+                                bacc.getId(),
+                                bacc.getCode(),
+                                Multilingual.of(bacc.getDescriptions())
+                        )
+                )
+                .orElseThrow(
+                        () -> new RecordNotFoundException("Valid primary bank account not found by code: " + glCode)
+                );
+    }
 }

@@ -3,7 +3,7 @@ package bhutan.eledger.application.service.epayment.paymentadvice;
 import am.iunetworks.lib.multilingual.core.Multilingual;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAdviceUseCase;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.UpsertPaymentAdviceUseCase;
-import bhutan.eledger.application.port.out.epayment.config.bank.GetBankInfoByGLCodeAccountPort;
+import bhutan.eledger.application.port.out.epayment.config.bank.GetPrimaryBankAccountRefEntryByGLCodeAccountPort;
 import bhutan.eledger.application.port.out.epayment.glaccount.EpGLAccountRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceNumberGeneratorPort;
 import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceRepositoryPort;
@@ -29,12 +29,12 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 class CreatePaymentAdviceService implements CreatePaymentAdviceUseCase {
-    private final GetBankInfoByGLCodeAccountPort getBankInfoByGLCodeAccountPort;
     private final PaymentAdviceNumberGeneratorPort paymentAdviceNumberGeneratorPort;
     private final PaymentAdviceRepositoryPort paymentAdviceRepositoryPort;
     private final EpTaxpayerRepositoryPort taxpayerRepositoryPort;
     private final EpGLAccountRepositoryPort epGLAccountRepositoryPort;
     private final GLAccountResolverService glAccountResolverService;
+    private final GetPrimaryBankAccountRefEntryByGLCodeAccountPort getPrimaryBankAccountRefEntryByGLCodeAccountPort;
 
     @Override
     public Long create(UpsertPaymentAdviceUseCase.UpsertPaymentAdviceCommand command) {
@@ -47,14 +47,17 @@ class CreatePaymentAdviceService implements CreatePaymentAdviceUseCase {
                 .getGlAccount()
                 .getCode();
 
-        var paBankInfo = getBankInfoByGLCodeAccountPort.getBankInfo(
-                anyGlCode
+        LocalDateTime creationDateTime = LocalDateTime.now();
+        LocalDate creationDate = creationDateTime.toLocalDate();
+
+        var bankAccRefEntry = getPrimaryBankAccountRefEntryByGLCodeAccountPort.getPrimaryBankAccountByGLCode(anyGlCode, creationDate);
+
+        var paBankInfo = PaymentAdviceBankInfo.withoutId(
+                bankAccRefEntry.getCode(),
+                bankAccRefEntry.getDescription()
         );
 
         log.trace("Bank information resolved by gl code: {} is: {}", anyGlCode, paBankInfo);
-
-        LocalDateTime creationDateTime = LocalDateTime.now();
-        LocalDate creationDate = creationDateTime.toLocalDate();
 
         var pan = paymentAdviceNumberGeneratorPort.generate(creationDate);
 

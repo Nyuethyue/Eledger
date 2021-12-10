@@ -28,6 +28,7 @@ public class PaymentAdvice {
     private final String pan;
     private PaymentAdviceStatus status;
     private final EpTaxpayer taxpayer;
+    //todo replace bank info by ref entry
     private final PaymentAdviceBankInfo bankInfo;
     private final Collection<PayableLine> payableLines;
 
