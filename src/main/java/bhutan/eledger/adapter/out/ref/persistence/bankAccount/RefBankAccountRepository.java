@@ -57,7 +57,7 @@ interface RefBankAccountRepository extends JpaRepository<RefBankAccountEntity, L
             value = "SELECT * FROM ref.bank_account bacc" +
                     " INNER JOIN ref.bank_account_gl_account_part baccGLPart" +
                     " ON bacc.bank_account_gl_account_part_id = baccGLPart.id" +
-                    " WHERE bacc.is_primary_gl_account && STARTS_WITH(:glCode, baccGLPart.code)" +
+                    " WHERE bacc.is_primary_gl_account AND STARTS_WITH(:glCode, baccGLPart.code)" +
                     " AND bacc.start_of_validity <= :validityDate " +
                     " AND (" +
                     "        bacc.end_of_validity IS NULL" +
