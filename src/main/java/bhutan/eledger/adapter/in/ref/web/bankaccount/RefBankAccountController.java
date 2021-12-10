@@ -2,7 +2,6 @@ package bhutan.eledger.adapter.in.ref.web.bankaccount;
 
 import bhutan.eledger.application.port.in.ref.bankaccount.CreateRefBankAccountUseCase;
 import bhutan.eledger.application.port.in.ref.bankaccount.ReadRefBankAccountUseCase;
-import bhutan.eledger.application.port.in.ref.bankaccount.UpdateRefBankAccountUseCase;
 import bhutan.eledger.domain.ref.bankaccount.RefBankAccount;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +19,6 @@ class RefBankAccountController {
 
     private final CreateRefBankAccountUseCase createRefBankAccountUseCase;
     private final ReadRefBankAccountUseCase readRefBankAccountUseCase;
-    private final UpdateRefBankAccountUseCase updateRefBankAccountUseCase;
 
     @PostMapping
     public ResponseEntity<Object> create(@RequestBody CreateRefBankAccountUseCase.CreateBankAccountCommand command) {
@@ -59,14 +57,6 @@ class RefBankAccountController {
     @ResponseStatus(value = HttpStatus.OK)
     public RefBankAccount readPrimaryAccByGlCode(@PathVariable String glPartFullCode) {
         return readRefBankAccountUseCase.readPrimaryAccByGlPartFullCode(glPartFullCode);
-    }
-
-    @PutMapping(value = "/updatePrimaryBankAccount/{id}")
-    public ResponseEntity<Object> updatePrimaryBankAccount(@PathVariable Long id) {
-        updateRefBankAccountUseCase.updatePrimaryBankAccount(id);
-        return ResponseEntity
-                .noContent()
-                .build();
     }
 
     @GetMapping(value = "/allByBankIdAndGlPartCode", produces = MediaType.APPLICATION_JSON_VALUE)
