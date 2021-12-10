@@ -1,4 +1,4 @@
-package bhutan.eledger.adapter.out.epayment.fms.reconciliation;
+package bhutan.eledger.adapter.out.epayment.deposit.reconciliation;
 
 import bhutan.eledger.common.excel.ExcelCellReceiver;
 import bhutan.eledger.common.excel.ExcelLoader;

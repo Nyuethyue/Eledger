@@ -1,7 +1,7 @@
 package bhutan.eledger.application.service.epayment.deposit;
 
 import bhutan.eledger.application.port.in.epayment.deposit.GenerateReconciliationInfoUseCase;
-import bhutan.eledger.application.port.in.epayment.reconciliation.BankStatementImportUseCase;
+import bhutan.eledger.application.port.in.epayment.payment.deposit.reconciliation.BankStatementImportUseCase;
 import bhutan.eledger.application.port.out.epayment.deposit.DepositRepositoryPort;
 import bhutan.eledger.domain.epayment.deposit.BankStatementImportReconciliationInfo;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,6 @@ class ImportBankDepositInfoService implements GenerateReconciliationInfoUseCase 
 
     @Override
     public ReconciliationInfo generate(@Valid GenerateDepositReconciliationInfoCommand command) {
-        boolean isOk = true;
         List<BankStatementImportReconciliationInfo> bankInfoList = bankStatementImportUseCase.importStatements(
                 new BankStatementImportUseCase.ImportBankStatementsCommand(command.getFilePath()));
 
@@ -53,7 +52,7 @@ class ImportBankDepositInfoService implements GenerateReconciliationInfoUseCase 
                 errorRecords.add(mapTo(info));
             }
         });
-        return new ReconciliationInfo(isOk, depositInfoList, errorRecords);
+        return new ReconciliationInfo(errorRecords.isEmpty(), depositInfoList, errorRecords);
     }
 
     private ErrorRecordsInfo mapTo(BankStatementImportReconciliationInfo record) {
