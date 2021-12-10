@@ -24,7 +24,7 @@ class CreateRefBankAccountService implements CreateRefBankAccountUseCase {
     private final RefBankAccountRepositoryPort refBankAccountRepositoryPort;
     private final RefBankBranchRepositoryPort refBankBranchRepositoryPort;
     private final ReadGLAccountPartUseCase glAccountPartUseCase;
-    private final UpdatePrimaryBankAccountUseCase updatePrimaryBankAccountUseCase;
+    private final UpdatePrimaryBankAccountService updatePrimaryBankAccountUseCase;
 
     @Override
     public Long create(CreateRefBankAccountUseCase.CreateBankAccountCommand command) {

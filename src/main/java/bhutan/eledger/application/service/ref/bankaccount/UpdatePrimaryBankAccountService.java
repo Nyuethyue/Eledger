@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-class UpdatePrimaryBankAccountUseCase {
+class UpdatePrimaryBankAccountService {
 
     private final ReadRefBankAccountUseCase readRefBankAccountUseCase;
     private final RefBankAccountRepositoryPort refBankAccountRepositoryPort;
