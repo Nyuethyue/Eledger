@@ -21,7 +21,6 @@ public class XLSXLoader extends DefaultHandler {
     private SharedStringsTable sst;
     private String lastContents;
     private CellReference cellReferenceObject;
-    private String cellType;
     private boolean nextIsString;
 
     public void load(InputStream io, int sheetIndex, ExcelCellReceiver receiver) throws IOException, SAXException, ParserConfigurationException, OpenXML4JException {
@@ -41,12 +40,12 @@ public class XLSXLoader extends DefaultHandler {
 
     @Override
     public void startElement(String uri, String localName, String name,
-                             Attributes attributes) throws SAXException {
+                             Attributes attributes) {
         if (name.equals("c")) {
             String cellReference = attributes.getValue("r");
             cellReferenceObject = new CellReference(cellReference);
             // Figure out if the value is an index in the SST
-            cellType = attributes.getValue("t");
+            String cellType = attributes.getValue("t");
             nextIsString = cellType != null && cellType.equals("s");
         }
         // Clear contents cache
@@ -54,8 +53,7 @@ public class XLSXLoader extends DefaultHandler {
     }
 
     @Override
-    public void endElement(String uri, String localName, String name)
-            throws SAXException {
+    public void endElement(String uri, String localName, String name) {
         if (nextIsString) {
             int idx = Integer.parseInt(lastContents);
             lastContents = sst.getItemAt(idx).getString();
@@ -72,12 +70,12 @@ public class XLSXLoader extends DefaultHandler {
     }
 
     @Override
-    public void startDocument() throws SAXException {
+    public void startDocument() {
         receiver.startDocument();
     }
 
     @Override
-    public void endDocument() throws SAXException {
+    public void endDocument() {
         receiver.endDocument();
     }
 }

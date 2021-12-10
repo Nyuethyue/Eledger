@@ -58,8 +58,8 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    prepareServer(serviceHosts);
-                    deployModule(serviceHosts);
+                    prepareServer(serviceHosts)
+                    deployModule(serviceHosts)
                 }
             }
         }
