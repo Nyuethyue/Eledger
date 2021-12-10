@@ -51,7 +51,7 @@ class RefBankAccountController {
 
     @GetMapping(value = "/readByCode/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
-    public Collection<RefBankAccount> readByCode(@PathVariable String code) {
+    public RefBankAccount readByCode(@PathVariable String code) {
         return readRefBankAccountUseCase.readByCode(code);
     }
 

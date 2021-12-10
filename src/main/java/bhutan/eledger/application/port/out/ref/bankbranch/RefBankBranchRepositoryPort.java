@@ -1,6 +1,8 @@
 package bhutan.eledger.application.port.out.ref.bankbranch;
 
 import bhutan.eledger.domain.ref.bankbranch.RefBankBranch;
+
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -16,7 +18,7 @@ public interface RefBankBranchRepositoryPort {
 
     boolean existsByCode(String code);
 
-    Collection<RefBankBranch> readAllByBankId(Long bankId);
+    Collection<RefBankBranch> readAllByBankId(Long bankId, LocalDate currentDate);
 
     boolean existsById(Long id);
 

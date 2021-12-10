@@ -100,8 +100,7 @@ class CreateRefBankBranchTest {
         Assertions.assertNotNull(bankBranch);
         Assertions.assertNotNull(bankBranch.getDescription());
 
-        var bankBranchByBankId = refBankBranchRepositoryPort.readAllByBankId(bankId);
+        var bankBranchByBankId = refBankBranchRepositoryPort.readAllByBankId(bankId,LocalDate.now());
         Assertions.assertNotNull(bankBranchByBankId);
-        Assertions.assertEquals(1, bankBranchByBankId.size());
     }
 }

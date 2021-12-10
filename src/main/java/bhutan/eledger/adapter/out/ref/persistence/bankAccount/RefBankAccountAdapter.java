@@ -50,17 +50,15 @@ class RefBankAccountAdapter implements RefBankAccountRepositoryPort {
     }
 
     @Override
-    public Optional<RefBankAccount> readAllByBranchId(Long branchId) {
-        return refBankAccountRepository.readAllByBranchId(branchId)
+    public Optional<RefBankAccount> readAllByBranchId(Long branchId,LocalDate currentDate) {
+        return refBankAccountRepository.readAllByBranchId(branchId,currentDate)
                 .map(refBankAccountMapper::mapToDomain);
     }
 
     @Override
-    public  Collection<RefBankAccount> readByCode(String code) {
-        return refBankAccountRepository.findByCode(code)
-                .stream()
-                .map(refBankAccountMapper::mapToDomain)
-                .collect(Collectors.toUnmodifiableList());
+    public  Optional<RefBankAccount> readByCode(String code,LocalDate currentDate) {
+        return refBankAccountRepository.readByCode(code,currentDate)
+                .map(refBankAccountMapper::mapToDomain);
     }
 
 

@@ -5,14 +5,22 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.Optional;
 
 interface RefBankAccountRepository extends JpaRepository<RefBankAccountEntity, Long> {
+    @Query(value = "SELECT  *" +
+            " FROM ref.bank_account A" +
+            " WHERE A.branch_id = :branchId" +
+            " AND ((end_of_validity IS NULL AND start_of_validity<=:currentDate)" +
+            " OR (:currentDate BETWEEN start_of_validity AND end_of_validity))", nativeQuery = true)
+    Optional<RefBankAccountEntity> readAllByBranchId(Long branchId,LocalDate currentDate);
 
-    Optional<RefBankAccountEntity> readAllByBranchId(Long branchId);
-
-    Collection<RefBankAccountEntity> findByCode(String code);
+    @Query(value = "SELECT  *" +
+            " FROM ref.bank_account A" +
+            " WHERE A.code = :code" +
+            " AND ((end_of_validity IS NULL AND start_of_validity<=:currentDate)" +
+            " OR (:currentDate BETWEEN start_of_validity AND end_of_validity))", nativeQuery = true)
+    Optional<RefBankAccountEntity> readByCode(String code, LocalDate currentDate);
 
     @Query(value = "SELECT EXISTS(" +
             "               SELECT" +

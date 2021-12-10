@@ -45,23 +45,21 @@ class ReadRefBankAccountService implements ReadRefBankAccountUseCase {
     public RefBankAccount readAllByBranchId(Long branchId) {
         log.trace("Reading all account information by branch id.");
 
-        return refBankAccountRepositoryPort.readAllByBranchId(branchId)
+        return refBankAccountRepositoryPort.readAllByBranchId(branchId,LocalDate.now())
                 .orElseThrow(() ->
                         new RecordNotFoundException("Bank's account by branch id: [" + branchId + "] not found.")
                 );
     }
 
     @Override
-    public Collection<RefBankAccount> readByCode(String code) {
+    public RefBankAccount readByCode(String code) {
         log.trace("Reading bank's branch by account number: {}", code);
 
-        return refBankAccountRepositoryPort.readByCode(code)
-                .stream()
-                .filter(refBankBranch -> (refBankBranch.getValidityPeriod().getEnd() == null
-                        && refBankBranch.getValidityPeriod().getStart().isBefore(LocalDate.now().plusDays(1))) ||
-                        (refBankBranch.getValidityPeriod().getStart().isBefore(LocalDate.now().plusDays(1))
-                                && refBankBranch.getValidityPeriod().getEnd().isAfter(LocalDate.now().minusDays(1))))
-                .collect(Collectors.toList());
+        return refBankAccountRepositoryPort.readByCode(code,LocalDate.now())
+                .orElseThrow(() ->
+                new RecordNotFoundException("Reading bank's branch by account number: [" + code + "] not found.")
+        );
+
     }
 
     @Override
