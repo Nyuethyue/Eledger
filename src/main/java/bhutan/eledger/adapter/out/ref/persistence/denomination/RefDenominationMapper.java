@@ -7,12 +7,10 @@ import org.springframework.stereotype.Component;
 class RefDenominationMapper {
 
     RefDenominationEntity mapToEntity(RefDenomination refDenomination) {
-        RefDenominationEntity refCurrencyEntity =
-                new RefDenominationEntity(
-                        refDenomination.getId(),
-                        refDenomination.getValue()
-                );
-        return refCurrencyEntity;
+        return new RefDenominationEntity(
+                refDenomination.getId(),
+                refDenomination.getValue()
+        );
     }
 
     RefDenomination mapToDomain(RefDenominationEntity refCurrencyEntity) {

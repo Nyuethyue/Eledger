@@ -2,7 +2,6 @@ package bhutan.eledger.application.service.ref.denomination;
 
 import am.iunetworks.lib.common.validation.ValidationError;
 import am.iunetworks.lib.common.validation.ViolationException;
-import am.iunetworks.lib.multilingual.core.Multilingual;
 import bhutan.eledger.application.port.in.ref.denomination.CreateRefDenominationUseCase;
 import bhutan.eledger.application.port.out.ref.denomination.RefDenominationRepositoryPort;
 import bhutan.eledger.domain.ref.denomination.RefDenomination;

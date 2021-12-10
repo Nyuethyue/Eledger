@@ -1,7 +1,6 @@
 package bhutan.eledger.application.port.in.epayment.deposit;
 
 import bhutan.eledger.domain.epayment.deposit.Deposit;
-import bhutan.eledger.domain.epayment.deposit.DepositStatus;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 

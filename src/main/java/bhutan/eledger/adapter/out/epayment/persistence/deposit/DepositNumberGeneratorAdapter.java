@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 @Component
 @RequiredArgsConstructor
 class DepositNumberGeneratorAdapter implements DepositNumberGeneratorPort {
-    private static final String DN_PREFIX = "DN";
+    private static final String DN_PREFIX = "DS";
     private static final DateTimeFormatter DN_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyMMdd");
 
     private final JdbcTemplate jdbcTemplate;
