@@ -1,8 +1,6 @@
 package bhutan.eledger.application.service.epayment.paymentadvice;
 
 import am.iunetworks.lib.common.validation.RecordNotFoundException;
-import am.iunetworks.lib.common.validation.ValidationError;
-import am.iunetworks.lib.common.validation.ViolationException;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.UpdatePaymentAdviceUseCase;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.UpsertPaymentAdviceUseCase;
 import bhutan.eledger.application.port.out.epayment.glaccount.EpGLAccountRepositoryPort;
@@ -38,12 +36,9 @@ public class UpdatePaymentAdviceService implements UpdatePaymentAdviceUseCase {
     public void update(PaymentAdvice paymentAdvice, UpsertPaymentAdviceUseCase.UpsertPaymentAdviceCommand command) {
         log.trace("Updating payment advice {}, by command: {}", paymentAdvice, command);
 
-        if (paymentAdvice.getStatus() != PaymentAdviceStatus.INITIAL) {
-            throw new ViolationException(
-                    "Update not implemented for status: " + paymentAdvice.getStatus(),
-                    new ValidationError()
-                            .addViolation("status", "Update not implemented for status: " + paymentAdvice.getStatus())
-            );
+        if (paymentAdvice.getStatus() != PaymentAdviceStatus.INITIAL) {//todo clarification needed
+            log.warn("Update not implemented for status: " + paymentAdvice.getStatus());
+            return;
         }
 
         command.getPayableLines()
