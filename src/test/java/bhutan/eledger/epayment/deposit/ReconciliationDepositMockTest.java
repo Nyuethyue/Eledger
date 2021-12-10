@@ -35,7 +35,7 @@ class ReconciliationDepositMockTest {
     void afterEach() {
     }
 
-//    @Test
+    @Test
     void createTest() {
         var searchResult = searchDepositUseCase.search(new SearchDepositUseCase.SearchDepositCommand(
                 0,
@@ -75,6 +75,6 @@ class ReconciliationDepositMockTest {
                 new GenerateReconciliationInfoUseCase.GenerateDepositReconciliationInfoCommand(filePathOld);
         GenerateReconciliationInfoUseCase.ReconciliationInfo result =
                 generateReconciliationInfoUseCase.generate(command);
-        Assertions.assertTrue(null != result.getDeposits() && !result.getDeposits().isEmpty());
+        Assertions.assertTrue(result.isOk());
     }
 }
