@@ -1,6 +1,6 @@
 package bhutan.eledger.adapter.out.epayment.fms.reconciliation;
 
-import bhutan.eledger.application.port.out.epayment.reconciliation.BankStatementFileParserPort;
+import bhutan.eledger.application.port.out.epayment.deposit.reconciliation.BankStatementFileParserPort;
 import bhutan.eledger.configuration.fms.FmsProperties;
 import bhutan.eledger.domain.epayment.deposit.BankStatementImportReconciliationInfo;
 import com.jsunsoft.http.HttpRequest;

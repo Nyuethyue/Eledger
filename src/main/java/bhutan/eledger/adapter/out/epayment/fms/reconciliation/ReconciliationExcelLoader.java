@@ -43,7 +43,7 @@ public class ReconciliationExcelLoader  implements ExcelCellReceiver {
             if (0 == column) {
                 currentRowValue.setTransactionId(value);
             } else if (1 == column) {
-                currentRowValue.setBankId(value);
+                currentRowValue.setBankBranchCode(value);
             } else if (2 == column) {
                 currentRowValue.setDepositNumber(value);
             } else if (3 == column) {
