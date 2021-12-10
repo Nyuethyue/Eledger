@@ -51,9 +51,8 @@ class RefBankBranchAdapter implements RefBankBranchRepositoryPort {
 
 
     @Override
-    public Collection<RefBankBranch> readAllByBankId(Long bankId) {
-        return refBankBranchRepository.readAllByBankId(bankId)
-                .stream()
+    public Collection<RefBankBranch> readAllByBankId(Long bankId, LocalDate currentDate) {
+        return refBankBranchRepository.readAllByBankId(bankId,currentDate).stream()
                 .map(refBankBranchMapper::mapToDomain)
                 .collect(Collectors.toUnmodifiableList());
     }

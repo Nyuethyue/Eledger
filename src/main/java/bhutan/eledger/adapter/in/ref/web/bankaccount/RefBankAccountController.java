@@ -43,7 +43,7 @@ class RefBankAccountController {
 
     @GetMapping(value = "/allByBranchId/{branchId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
-    public Collection<RefBankAccount> readAllByBranchId(@PathVariable Long branchId) {
+    public RefBankAccount readAllByBranchId(@PathVariable Long branchId) {
         return readRefBankAccountUseCase.readAllByBranchId(branchId);
     }
 
@@ -53,9 +53,15 @@ class RefBankAccountController {
         return readRefBankAccountUseCase.readByCode(code);
     }
 
-    @GetMapping(value = "/readPrimaryAccByGlCode/{glCode}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/readPrimaryAccByGlCode/{glPartFullCode}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
-    public RefBankAccount readPrimaryAccByGlCode(@PathVariable String glCode) {
-        return readRefBankAccountUseCase.readPrimaryAccByGlCodeAndFlag(glCode, true);
+    public RefBankAccount readPrimaryAccByGlCode(@PathVariable String glPartFullCode) {
+        return readRefBankAccountUseCase.readPrimaryAccByGlPartFullCode(glPartFullCode);
+    }
+
+    @GetMapping(value = "/allByBankIdAndGlPartCode", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.OK)
+    public Collection<RefBankAccount> readAllByBankIdAndGlPartCode(ReadRefBankAccountUseCase.ReadBankAccountCommand command) {
+        return readRefBankAccountUseCase.readAllByBankIdAndGlPartCode(command);
     }
 }

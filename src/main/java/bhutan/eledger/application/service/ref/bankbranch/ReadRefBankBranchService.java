@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 import java.util.Collection;
 
 @Log4j2
@@ -38,6 +40,6 @@ class ReadRefBankBranchService implements ReadRefBankBranchUseCase {
     public Collection<RefBankBranch> readAllByBankId(Long bankId) {
         log.trace("Reading all branch information by bank id.");
 
-        return refBankBranchRepositoryPort.readAllByBankId(bankId);
+        return refBankBranchRepositoryPort.readAllByBankId(bankId, LocalDate.now());
     }
 }

@@ -204,12 +204,11 @@ class CreateRefBankAccountTest {
         Assertions.assertNotNull(bankAccount);
         Assertions.assertNotNull(bankAccount.getDescription());
 
-        var bankAccountByCode = refBankAccountRepositoryPort.readByCode(bankAccount.getCode()).get();
+        var bankAccountByCode = refBankAccountRepositoryPort.readByCode(bankAccount.getCode(),LocalDate.now());
         Assertions.assertNotNull(bankAccountByCode);
 
-        var bankAccountByBranchId = refBankAccountRepositoryPort.readAllByBranchId(branchId);
+        var bankAccountByBranchId = refBankAccountRepositoryPort.readAllByBranchId(branchId,LocalDate.now());
         Assertions.assertNotNull(bankAccountByBranchId);
-        Assertions.assertEquals(1, bankAccountByBranchId.size());
     }
 
 }

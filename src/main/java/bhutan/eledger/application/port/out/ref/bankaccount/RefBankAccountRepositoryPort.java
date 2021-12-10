@@ -2,6 +2,7 @@ package bhutan.eledger.application.port.out.ref.bankaccount;
 
 import bhutan.eledger.domain.ref.bankaccount.RefBankAccount;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -16,9 +17,9 @@ public interface RefBankAccountRepositoryPort {
 
     boolean isOpenBankAccountExists(RefBankAccount refBankAccount);
 
-    Collection<RefBankAccount> readAllByBranchId(Long branchId);
+    Optional<RefBankAccount> readAllByBranchId(Long branchId,LocalDate currentDate);
 
-    Optional<RefBankAccount> readByCode(String code);
+    Optional<RefBankAccount> readByCode(String code, LocalDate currentDate);
 
     void setPrimaryFlagById(Long id, Boolean flag);
 
