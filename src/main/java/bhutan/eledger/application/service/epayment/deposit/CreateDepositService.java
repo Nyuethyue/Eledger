@@ -58,21 +58,21 @@ class CreateDepositService implements CreateDepositUseCase {
 
         String depositNumber = depositNumberGeneratorPort.generate(creationDateTime.toLocalDate());
 
+        Collection<DenominationCount> denominations;
+        if(null != command.getDenominationCounts() && !command.getDenominationCounts().isEmpty()) {
+            denominations = command.getDenominationCounts().stream().map(rc ->
+                    DenominationCount.withoutId(rc.getDenominationId(), rc.getDenominationCount())).collect(Collectors.toList());
+        } else {
+            denominations = null;
+        }
         var deposit = Deposit.withoutId(
                 depositNumber,
                 paymentModeId,
                 command.getAmount(),
                 command.getBankDepositDate(),
                 DepositStatus.PENDING_RECONCILIATION,
-                command.getReceipts()
-                        .stream()
-                        .map(DepositReceipt::withoutId)
-                        .collect(Collectors.toUnmodifiableSet()),
-                command.getDenominationCounts()
-                        .stream()
-                        .map(rc ->
-                                DenominationCount.withoutId(rc.getDenominationId(), rc.getDenominationCount())
-                        ).collect(Collectors.toList()),
+                command.getReceipts().stream().map(r -> DepositReceipt.withoutId(r.longValue())).collect(Collectors.toUnmodifiableSet()),
+                denominations,
                 null,
                 creationDateTime
         );

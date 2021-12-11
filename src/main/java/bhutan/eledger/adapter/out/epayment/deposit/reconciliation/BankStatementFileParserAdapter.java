@@ -1,8 +1,8 @@
-package bhutan.eledger.adapter.out.epayment.fms.reconciliation;
+package bhutan.eledger.adapter.out.epayment.deposit.reconciliation;
 
-import bhutan.eledger.application.port.out.epayment.reconciliation.BankStatementFileParserPort;
+import bhutan.eledger.application.port.out.epayment.deposit.reconciliation.BankStatementFileParserPort;
 import bhutan.eledger.configuration.fms.FmsProperties;
-import bhutan.eledger.domain.epayment.BankStatementImportReconciliationInfo;
+import bhutan.eledger.domain.epayment.deposit.BankStatementImportReconciliationInfo;
 import com.jsunsoft.http.HttpRequest;
 import com.jsunsoft.http.HttpRequestBuilder;
 import com.jsunsoft.http.Response;
@@ -52,7 +52,7 @@ class BankStatementFileParserAdapter implements BankStatementFileParserPort {
                     throw new RuntimeException(MessageFormat.format("Invalid excel file from:{0}" , webTarget.getURIString()), e);
                 }
             } else {
-                throw new RuntimeException(MessageFormat.format("Cant read excel file from:{0}, Http.status:{1}", webTarget.getURIString(), response.getStatusCode()));
+                throw new RuntimeException(MessageFormat.format("Can't read excel file from:{0}, Http.status:{1}", webTarget.getURIString(), response.getStatusCode()));
             }
         }
         catch (IOException e) {

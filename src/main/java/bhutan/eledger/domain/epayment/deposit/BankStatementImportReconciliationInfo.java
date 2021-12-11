@@ -1,4 +1,4 @@
-package bhutan.eledger.domain.epayment;
+package bhutan.eledger.domain.epayment.deposit;
 
 import lombok.Data;
 
@@ -8,8 +8,8 @@ import java.time.LocalDate;
 @Data()
 public class BankStatementImportReconciliationInfo {
     private String transactionId;
-    private String bankId;
-    private String refNo;
+    private String bankBranchCode;
+    private String depositNumber;
     private LocalDate paymentDate;
     private BigDecimal amount;
 }

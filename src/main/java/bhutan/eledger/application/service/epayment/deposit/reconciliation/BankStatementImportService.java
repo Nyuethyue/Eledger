@@ -1,8 +1,8 @@
-package bhutan.eledger.application.service.reconciliation;
+package bhutan.eledger.application.service.epayment.deposit.reconciliation;
 
-import bhutan.eledger.application.port.in.epayment.reconciliation.BankStatementImportUseCase;
-import bhutan.eledger.application.port.out.epayment.reconciliation.BankStatementFileParserPort;
-import bhutan.eledger.domain.epayment.BankStatementImportReconciliationInfo;
+import bhutan.eledger.application.port.in.epayment.payment.deposit.reconciliation.BankStatementImportUseCase;
+import bhutan.eledger.application.port.out.epayment.deposit.reconciliation.BankStatementFileParserPort;
+import bhutan.eledger.domain.epayment.deposit.BankStatementImportReconciliationInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
-package bhutan.eledger.application.port.in.epayment.reconciliation;
+package bhutan.eledger.application.port.in.epayment.payment.deposit.reconciliation;
 
-import bhutan.eledger.domain.epayment.BankStatementImportReconciliationInfo;
+import bhutan.eledger.domain.epayment.deposit.BankStatementImportReconciliationInfo;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
@@ -13,9 +13,6 @@ public interface BankStatementImportUseCase {
 
     @Data
     class ImportBankStatementsCommand {
-        @NotNull
-        @NotEmpty
-        private final String tpn;
         @NotNull
         @NotEmpty
         private final String excelFilePath;

@@ -1,8 +1,8 @@
-package bhutan.eledger.adapter.out.epayment.fms.reconciliation;
+package bhutan.eledger.adapter.out.epayment.deposit.reconciliation;
 
 import bhutan.eledger.common.excel.ExcelCellReceiver;
 import bhutan.eledger.common.excel.ExcelLoader;
-import bhutan.eledger.domain.epayment.BankStatementImportReconciliationInfo;
+import bhutan.eledger.domain.epayment.deposit.BankStatementImportReconciliationInfo;
 import lombok.extern.log4j.Log4j2;
 import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 import org.apache.poi.ss.usermodel.DateUtil;
@@ -43,9 +43,9 @@ public class ReconciliationExcelLoader  implements ExcelCellReceiver {
             if (0 == column) {
                 currentRowValue.setTransactionId(value);
             } else if (1 == column) {
-                currentRowValue.setBankId(value);
+                currentRowValue.setBankBranchCode(value);
             } else if (2 == column) {
-                currentRowValue.setRefNo(value);
+                currentRowValue.setDepositNumber(value);
             } else if (3 == column) {
                 if (value.contains("/")) {
                     currentRowValue.setPaymentDate(LocalDate.parse(value, formatter));
