@@ -1,6 +1,5 @@
 package bhutan.eledger.application.port.in.epayment.deposit;
 
-import bhutan.eledger.application.port.in.epayment.payment.CreateCashPaymentUseCase;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Data;
 import lombok.Getter;
