@@ -2,7 +2,7 @@ package bhutan.eledger.epayment.deposit;
 
 import bhutan.eledger.application.port.in.epayment.deposit.CreateDepositUseCase;
 import bhutan.eledger.application.port.in.epayment.deposit.SearchDepositUseCase;
-import bhutan.eledger.application.port.in.epayment.deposit.UpdateDepositUseCase;
+import bhutan.eledger.application.port.in.epayment.deposit.ApproveReconciliationUseCase;
 import bhutan.eledger.application.port.in.epayment.payment.CreateCashPaymentUseCase;
 import bhutan.eledger.application.port.in.epayment.payment.CreatePaymentCommonCommand;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAdviceUseCase;
@@ -35,7 +35,7 @@ class CreateDepositTest {
     private CreateDepositUseCase createDepositUseCase;
 
     @Autowired
-    private UpdateDepositUseCase updateDepositUseCase;
+    private ApproveReconciliationUseCase updateDepositUseCase;
 
     @Autowired
     private CreatePaymentAdviceUseCase createPaymentAdviceUseCase;
@@ -195,8 +195,8 @@ class CreateDepositTest {
         Assertions.assertTrue(searchDeposit.getDenominationCounts().size() > 0);
         Assertions.assertTrue(searchDeposit.getReceipts().size() > 0);
 
-        UpdateDepositUseCase.ApproveDepositReconciliationCommand setCommand =
-                new UpdateDepositUseCase.ApproveDepositReconciliationCommand(
+        ApproveReconciliationUseCase.ApproveDepositReconciliationCommand setCommand =
+                new ApproveReconciliationUseCase.ApproveDepositReconciliationCommand(
                         Arrays.asList(searchDeposit.getDepositNumber()));
         updateDepositUseCase.approveDepositReconciliation(setCommand);
 

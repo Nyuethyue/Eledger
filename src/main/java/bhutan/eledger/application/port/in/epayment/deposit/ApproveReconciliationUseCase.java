@@ -7,9 +7,9 @@ import javax.validation.Valid;
 import java.util.Collection;
 
 @Validated
-public interface UpdateDepositUseCase {
+public interface ApproveReconciliationUseCase {
 
-    void approveDepositReconciliation(@Valid UpdateDepositUseCase.ApproveDepositReconciliationCommand command);
+    void approveDepositReconciliation(@Valid ApproveReconciliationUseCase.ApproveDepositReconciliationCommand command);
 
     @Data
     class ApproveDepositReconciliationCommand {

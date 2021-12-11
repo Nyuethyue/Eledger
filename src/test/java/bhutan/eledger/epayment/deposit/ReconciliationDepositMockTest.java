@@ -2,7 +2,7 @@ package bhutan.eledger.epayment.deposit;
 
 import bhutan.eledger.application.port.in.epayment.deposit.GenerateReconciliationInfoUseCase;
 import bhutan.eledger.application.port.in.epayment.deposit.SearchDepositUseCase;
-import bhutan.eledger.application.port.in.epayment.deposit.UpdateDepositUseCase;
+import bhutan.eledger.application.port.in.epayment.deposit.ApproveReconciliationUseCase;
 import bhutan.eledger.domain.epayment.deposit.Deposit;
 import bhutan.eledger.domain.epayment.deposit.DepositStatus;
 import org.junit.jupiter.api.*;
@@ -22,7 +22,7 @@ class ReconciliationDepositMockTest {
     private GenerateReconciliationInfoUseCase generateReconciliationInfoUseCase;
 
     @Autowired
-    private UpdateDepositUseCase updateDepositUseCase;
+    private ApproveReconciliationUseCase updateDepositUseCase;
 
     @Autowired
     private SearchDepositUseCase searchDepositUseCase;
@@ -51,8 +51,8 @@ class ReconciliationDepositMockTest {
         Assertions.assertTrue(searchResult.getTotalCount() > 0);
         Assertions.assertTrue(DepositStatus.PENDING_RECONCILIATION.equals(searchResult.getContent().get(0).getStatus()));
 
-        UpdateDepositUseCase.ApproveDepositReconciliationCommand setCommand =
-                new UpdateDepositUseCase.ApproveDepositReconciliationCommand(
+        ApproveReconciliationUseCase.ApproveDepositReconciliationCommand setCommand =
+                new ApproveReconciliationUseCase.ApproveDepositReconciliationCommand(
                         Arrays.asList(searchResult.getContent().get(0).getDepositNumber()));
         updateDepositUseCase.approveDepositReconciliation(setCommand);
 

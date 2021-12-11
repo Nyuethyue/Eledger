@@ -4,7 +4,7 @@ import am.iunetworks.lib.common.persistence.search.SearchResult;
 import bhutan.eledger.application.port.in.epayment.deposit.CreateDepositUseCase;
 import bhutan.eledger.application.port.in.epayment.deposit.GenerateReconciliationInfoUseCase;
 import bhutan.eledger.application.port.in.epayment.deposit.SearchDepositUseCase;
-import bhutan.eledger.application.port.in.epayment.deposit.UpdateDepositUseCase;
+import bhutan.eledger.application.port.in.epayment.deposit.ApproveReconciliationUseCase;
 import bhutan.eledger.domain.epayment.deposit.Deposit;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 class DepositController {
     private final CreateDepositUseCase createDepositUseCase;
-    private final UpdateDepositUseCase updateDepositUseCase;
+    private final ApproveReconciliationUseCase updateDepositUseCase;
     private final SearchDepositUseCase searchDepositUseCase;
     private final GenerateReconciliationInfoUseCase generateReconciliationInfoUseCase;
 
@@ -51,7 +51,7 @@ class DepositController {
     }
 
     @PostMapping("/update/reconciled")
-    public ResponseEntity<Object> approveDepositsReconciliation(@RequestBody UpdateDepositUseCase.ApproveDepositReconciliationCommand command) {
+    public ResponseEntity<Object> approveDepositsReconciliation(@RequestBody ApproveReconciliationUseCase.ApproveDepositReconciliationCommand command) {
         updateDepositUseCase.approveDepositReconciliation(command);
         return ResponseEntity.status(HttpStatus.OK).build();
     }

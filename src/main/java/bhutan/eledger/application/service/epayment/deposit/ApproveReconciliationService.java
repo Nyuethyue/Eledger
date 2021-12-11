@@ -1,6 +1,6 @@
 package bhutan.eledger.application.service.epayment.deposit;
 
-import bhutan.eledger.application.port.in.epayment.deposit.UpdateDepositUseCase;
+import bhutan.eledger.application.port.in.epayment.deposit.ApproveReconciliationUseCase;
 import bhutan.eledger.application.port.out.epayment.deposit.DepositRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.payment.ReceiptRepositoryPort;
 import bhutan.eledger.domain.epayment.deposit.Deposit;
@@ -19,12 +19,12 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @RequiredArgsConstructor
-class UpdateDepositService implements UpdateDepositUseCase {
+class ApproveReconciliationService implements ApproveReconciliationUseCase {
     private final DepositRepositoryPort depositRepositoryPort;
     private final ReceiptRepositoryPort receiptRepositoryPort;
 
     @Override
-    public void approveDepositReconciliation(@Valid UpdateDepositUseCase.ApproveDepositReconciliationCommand command) {
+    public void approveDepositReconciliation(@Valid ApproveReconciliationUseCase.ApproveDepositReconciliationCommand command) {
         command.getDepositNumbers().stream().forEach(dn -> {
             Deposit deposit = depositRepositoryPort.requiredReadByDepositNumber(dn);
             depositRepositoryPort.updateStatus(deposit.getId(), DepositStatus.RECONCILED);
