@@ -51,8 +51,8 @@ class DepositController {
     }
 
     @PostMapping("/update/reconciled")
-    public ResponseEntity<Object> setDepositStatusesReconciled(@RequestBody UpdateDepositUseCase.SetDepositStatusesReconciledCommand command) {
-        updateDepositUseCase.setDepositStatusesReconciled(command);
+    public ResponseEntity<Object> approveDepositsReconciliation(@RequestBody UpdateDepositUseCase.ApproveDepositReconciliationCommand command) {
+        updateDepositUseCase.approveDepositReconciliation(command);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

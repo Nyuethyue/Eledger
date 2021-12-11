@@ -1,5 +1,6 @@
 package bhutan.eledger.application.port.out.epayment.payment;
 
+import bhutan.eledger.domain.epayment.payment.Receipt;
 import bhutan.eledger.domain.epayment.payment.ReceiptStatus;
 
 import java.util.Collection;

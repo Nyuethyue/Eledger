@@ -51,10 +51,10 @@ class ReconciliationDepositMockTest {
         Assertions.assertTrue(searchResult.getTotalCount() > 0);
         Assertions.assertTrue(DepositStatus.PENDING_RECONCILIATION.equals(searchResult.getContent().get(0).getStatus()));
 
-        UpdateDepositUseCase.SetDepositStatusesReconciledCommand setCommand =
-                new UpdateDepositUseCase.SetDepositStatusesReconciledCommand(
+        UpdateDepositUseCase.ApproveDepositReconciliationCommand setCommand =
+                new UpdateDepositUseCase.ApproveDepositReconciliationCommand(
                         Arrays.asList(searchResult.getContent().get(0).getDepositNumber()));
-        updateDepositUseCase.setDepositStatusesReconciled(setCommand);
+        updateDepositUseCase.approveDepositReconciliation(setCommand);
 
         searchResult = searchDepositUseCase.search(new SearchDepositUseCase.SearchDepositCommand(
                 0,
@@ -75,6 +75,6 @@ class ReconciliationDepositMockTest {
                 new GenerateReconciliationInfoUseCase.GenerateDepositReconciliationInfoCommand(filePathOld);
         GenerateReconciliationInfoUseCase.ReconciliationInfo result =
                 generateReconciliationInfoUseCase.generate(command);
-        Assertions.assertTrue(result.isOk());
+        Assertions.assertTrue(null != result.getDeposits() && !result.getDeposits().isEmpty());
     }
 }

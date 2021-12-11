@@ -24,9 +24,9 @@ class UpdateDepositService implements UpdateDepositUseCase {
     private final ReceiptRepositoryPort receiptRepositoryPort;
 
     @Override
-    public void setDepositStatusesReconciled(@Valid UpdateDepositUseCase.SetDepositStatusesReconciledCommand command) {
-        command.getDepositIds().stream().forEach(id -> {
-            Deposit deposit = depositRepositoryPort.requiredReadById(id);
+    public void approveDepositReconciliation(@Valid UpdateDepositUseCase.ApproveDepositReconciliationCommand command) {
+        command.getDepositNumbers().stream().forEach(dn -> {
+            Deposit deposit = depositRepositoryPort.requiredReadByDepositNumber(dn);
             depositRepositoryPort.updateStatus(deposit.getId(), DepositStatus.RECONCILED);
             if(null != deposit.getReceipts() && !deposit.getReceipts().isEmpty()) {
                 receiptRepositoryPort.updateStatuses(

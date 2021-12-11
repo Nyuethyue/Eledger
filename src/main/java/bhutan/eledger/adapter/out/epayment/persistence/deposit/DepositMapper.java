@@ -6,6 +6,7 @@ import bhutan.eledger.domain.epayment.deposit.DepositReceipt;
 import bhutan.eledger.domain.epayment.deposit.DepositStatus;
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -21,10 +22,15 @@ class DepositMapper {
                 deposit.getStatus().getValue(),
                 deposit.getCreationDateTime()
         );
-
-        depositEntity.setDepositDenominations(deposit.getDenominationCounts().stream().map(d ->
-                new DepositDenominationCountsEntity(d.getDenominationId(), d.getDenominationCount(), depositEntity)
-        ).collect(Collectors.toUnmodifiableSet()));
+        Set<DepositDenominationCountsEntity> denominationCountEntities;
+        if(null != deposit.getDenominationCounts() && !deposit.getDenominationCounts().isEmpty()) {
+            denominationCountEntities = deposit.getDenominationCounts().stream().map(d ->
+                    new DepositDenominationCountsEntity(d.getDenominationId(), d.getDenominationCount(), depositEntity)
+            ).collect(Collectors.toUnmodifiableSet());
+        } else {
+            denominationCountEntities = null;
+        }
+        depositEntity.setDepositDenominations(denominationCountEntities);
 
         depositEntity.setDepositReceipts(deposit.getReceipts().stream().map(r ->
                 new DepositReceiptEntity(r.getReceiptId(), depositEntity)

@@ -9,7 +9,6 @@ import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAd
 import bhutan.eledger.application.port.in.epayment.paymentadvice.UpsertPaymentAdviceUseCase;
 import bhutan.eledger.application.port.in.ref.currency.CreateRefCurrencyUseCase;
 import bhutan.eledger.application.port.out.epayment.deposit.DepositRepositoryPort;
-import bhutan.eledger.application.port.out.epayment.payment.CashReceiptRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceRepositoryPort;
 import bhutan.eledger.application.port.out.ref.currency.RefCurrencyRepositoryPort;
 import bhutan.eledger.domain.epayment.deposit.Deposit;
@@ -24,10 +23,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(
@@ -65,9 +61,6 @@ class CreateDepositTest {
     @Autowired
     private RefCurrencyRepositoryPort refCurrencyRepositoryPort;
 
-    @Autowired
-    private CashReceiptRepositoryPort cashReceiptRepositoryPort;
-
     @BeforeEach
     void beforeEach() {
     }
@@ -80,16 +73,15 @@ class CreateDepositTest {
         return result;
     }
 
-    private Collection<CreateDepositUseCase.DenominationCount> createDenominationCounts() {
-        var result = new LinkedList<CreateDepositUseCase.DenominationCount>();
-        result.add(new CreateDepositUseCase.DenominationCount(1L, 10L));
+    private Collection<CreateDepositUseCase.DenominationCountCommand> createDenominationCounts() {
+        var result = new LinkedList<CreateDepositUseCase.DenominationCountCommand>();
+        result.add(new CreateDepositUseCase.DenominationCountCommand(1L, 10L));
         return result;
     }
 
     @AfterEach
     void afterEach() {
         depositRepositoryPort.deleteAll();
-        cashReceiptRepositoryPort.deleteAll();
     }
 
     @Test
@@ -203,9 +195,10 @@ class CreateDepositTest {
         Assertions.assertTrue(searchDeposit.getDenominationCounts().size() > 0);
         Assertions.assertTrue(searchDeposit.getReceipts().size() > 0);
 
-        UpdateDepositUseCase.SetDepositStatusesReconciledCommand setCommand =
-                new UpdateDepositUseCase.SetDepositStatusesReconciledCommand(createDepositCommand.getReceipts());
-        updateDepositUseCase.setDepositStatusesReconciled(setCommand);
+        UpdateDepositUseCase.ApproveDepositReconciliationCommand setCommand =
+                new UpdateDepositUseCase.ApproveDepositReconciliationCommand(
+                        Arrays.asList(searchDeposit.getDepositNumber()));
+        updateDepositUseCase.approveDepositReconciliation(setCommand);
 
         searchResult = searchDepositUseCase.search(new SearchDepositUseCase.SearchDepositCommand(
                 0,
