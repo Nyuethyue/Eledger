@@ -24,6 +24,10 @@ class ReadRefEntryService implements RefEntryRepository {
     public RefEntry findByRefNameAndId(String refName, Long id) {
         log.trace("Reading ref entry. Ref name: {}, ID: {}.", refName, id);
 
+        if (id == null) {
+            return null;
+        }
+
         RefEntry result;
 
         if (RefCurrency.class.getSimpleName().equals(refName)) {
