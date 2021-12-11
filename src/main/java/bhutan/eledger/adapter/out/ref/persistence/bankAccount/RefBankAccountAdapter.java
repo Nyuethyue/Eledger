@@ -3,6 +3,7 @@ package bhutan.eledger.adapter.out.ref.persistence.bankAccount;
 
 import am.iunetworks.lib.common.validation.RecordNotFoundException;
 import am.iunetworks.lib.multilingual.core.Multilingual;
+import am.iunetworks.lib.multilingual.core.Translation;
 import bhutan.eledger.application.port.out.epayment.config.bank.GetPrimaryBankAccountRefEntryByGLCodeAccountPort;
 import bhutan.eledger.application.port.out.ref.bankaccount.RefBankAccountRepositoryPort;
 import bhutan.eledger.common.ref.refentry.RefEntry;
@@ -54,14 +55,14 @@ class RefBankAccountAdapter implements RefBankAccountRepositoryPort, GetPrimaryB
     }
 
     @Override
-    public Optional<RefBankAccount> readAllByBranchId(Long branchId,LocalDate currentDate) {
-        return refBankAccountRepository.readAllByBranchId(branchId,currentDate)
+    public Optional<RefBankAccount> readAllByBranchId(Long branchId, LocalDate currentDate) {
+        return refBankAccountRepository.readAllByBranchId(branchId, currentDate)
                 .map(refBankAccountMapper::mapToDomain);
     }
 
     @Override
-    public  Optional<RefBankAccount> readByCode(String code,LocalDate currentDate) {
-        return refBankAccountRepository.readByCode(code,currentDate)
+    public Optional<RefBankAccount> readByCode(String code, LocalDate currentDate) {
+        return refBankAccountRepository.readByCode(code, currentDate)
                 .map(refBankAccountMapper::mapToDomain);
     }
 
@@ -84,7 +85,17 @@ class RefBankAccountAdapter implements RefBankAccountRepositoryPort, GetPrimaryB
                         RefEntry.withoutAttributes(
                                 bacc.getId(),
                                 bacc.getCode(),
-                                Multilingual.of(bacc.getDescriptions())
+                                Multilingual.of(
+                                        bacc.getDescriptions()
+                                                .stream()
+                                                .map(t ->
+                                                        Translation.of(
+                                                                t.getLanguageCode(),
+                                                                t.getValue()
+                                                        )
+                                                )
+                                                .collect(Collectors.toUnmodifiableSet())
+                                )
                         )
                 )
                 .orElseThrow(

@@ -54,7 +54,7 @@ class CreatePaymentAdviceService implements CreatePaymentAdviceUseCase {
 
         var paBankInfo = PaymentAdviceBankInfo.withoutId(
                 bankAccRefEntry.getCode(),
-                bankAccRefEntry.getDescription()
+                Multilingual.copyOf(bankAccRefEntry.getDescription())
         );
 
         log.trace("Bank information resolved by gl code: {} is: {}", anyGlCode, paBankInfo);
