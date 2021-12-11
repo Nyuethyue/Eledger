@@ -31,8 +31,7 @@ class ApproveReconciliationService implements ApproveReconciliationUseCase {
             if(null != deposit.getReceipts() && !deposit.getReceipts().isEmpty()) {
                 receiptRepositoryPort.updateStatuses(
                         ReceiptStatus.RECONCILED,
-                        deposit.getReceipts().stream().map(DepositReceipt::getReceiptId).collect(Collectors.toUnmodifiableSet())
-                        );
+                        deposit.getReceipts().stream().map(DepositReceipt::getReceiptId).collect(Collectors.toUnmodifiableSet()));
             }
         });
     }

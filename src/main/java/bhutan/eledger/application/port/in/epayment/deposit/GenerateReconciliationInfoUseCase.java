@@ -1,5 +1,7 @@
 package bhutan.eledger.application.port.in.epayment.deposit;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
@@ -8,6 +10,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
 @Validated
 public interface GenerateReconciliationInfoUseCase {
@@ -17,6 +20,11 @@ public interface GenerateReconciliationInfoUseCase {
     @Data
     class GenerateDepositReconciliationInfoCommand {
         private final String filePath;
+
+        @JsonCreator
+        public GenerateDepositReconciliationInfoCommand(@JsonProperty("filePath") String filePath) {
+            this.filePath = filePath;
+        }
     }
 
     @Data
