@@ -11,4 +11,6 @@ public interface ReadRefBankUseCase {
     Collection<RefBank> readAll();
 
     RefBank readById(@NotNull Long id);
+
+    Collection<RefBank> getBankListByGlPartFullCode(@NotNull String glPartFullCode);
 }

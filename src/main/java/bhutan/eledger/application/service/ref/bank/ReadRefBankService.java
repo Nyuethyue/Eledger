@@ -34,4 +34,11 @@ class ReadRefBankService implements ReadRefBankUseCase {
                         new RecordNotFoundException("Bank by id: [" + id + "] not found.")
                 );
     }
+
+    @Override
+    public Collection<RefBank> getBankListByGlPartFullCode(String glPartFullCode) {
+        log.trace("Reading all bank list by gl part full code.");
+
+        return refBankRepositoryPort.getBankListByGlPartFullCode(glPartFullCode);
+    }
 }

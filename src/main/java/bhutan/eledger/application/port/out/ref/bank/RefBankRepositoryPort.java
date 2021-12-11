@@ -21,4 +21,6 @@ public interface RefBankRepositoryPort {
     boolean existsById(Long id);
 
     boolean isOpenBankExists(RefBank refBank);
+
+    Collection<RefBank> getBankListByGlPartFullCode(String glPartFullCode);
 }
