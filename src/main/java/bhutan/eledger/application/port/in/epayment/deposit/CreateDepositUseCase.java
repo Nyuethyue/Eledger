@@ -1,7 +1,10 @@
 package bhutan.eledger.application.port.in.epayment.deposit;
 
 import bhutan.eledger.domain.epayment.deposit.Deposit;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Data;
+import lombok.Getter;
+import lombok.ToString;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
@@ -43,8 +46,17 @@ public interface CreateDepositUseCase {
         private final Collection<DenominationCountCommand> denominationCounts;
     }
 
-    @Data
+    @Getter
+    @ToString
     class CreateDepositMultipleCommand {
+        @Valid
+        @NotNull
+        @NotEmpty
         private final Collection<CreateDepositCommand> deposits;
+
+        @JsonCreator
+        public CreateDepositMultipleCommand(Collection<CreateDepositCommand> deposits) {
+            this.deposits = deposits;
+        }
     }
 }
