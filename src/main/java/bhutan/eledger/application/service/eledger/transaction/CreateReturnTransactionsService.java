@@ -9,13 +9,11 @@ import bhutan.eledger.application.port.out.eledger.taxpayer.ElTaxpayerRepository
 import bhutan.eledger.application.port.out.eledger.transaction.TransactionRepositoryPort;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
 @Log4j2
 @Service
-@Transactional
 class CreateReturnTransactionsService extends AbstractCreateTransactions {
 
     private final GetPaymentAdviceDataPort getPaymentAdviceDataPort;

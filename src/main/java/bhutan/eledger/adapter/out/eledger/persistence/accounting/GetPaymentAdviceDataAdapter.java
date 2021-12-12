@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.postgresql.util.PGobject;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Map;
 
+@Log4j2
 @Component
 @RequiredArgsConstructor
 class GetPaymentAdviceDataAdapter implements GetPaymentAdviceDataPort {
@@ -29,7 +31,7 @@ class GetPaymentAdviceDataAdapter implements GetPaymentAdviceDataPort {
         var countQuery = "SELECT * FROM eledger.fn_get_payment_advice_data(:tpn, :formulationDate)";
 
 
-        return jdbcTemplate.query(
+        var result = jdbcTemplate.query(
                 countQuery,
                 Map.of(
                         "tpn", tpn,
@@ -37,6 +39,10 @@ class GetPaymentAdviceDataAdapter implements GetPaymentAdviceDataPort {
                 ),
                 this::mapToPaymentAdviceData
         );
+
+        log.trace("Payment advice queried data by tpn: {} and formulationDate: {} is: {}", tpn, formulationDate, result);
+
+        return result;
     }
 
     private PaymentAdviceData mapToPaymentAdviceData(ResultSet resultSet, int i) throws SQLException {

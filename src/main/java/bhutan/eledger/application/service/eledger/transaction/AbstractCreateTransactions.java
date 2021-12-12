@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.util.CollectionUtils;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Log4j2
 @RequiredArgsConstructor
+@Transactional
 abstract class AbstractCreateTransactions implements CreateTransactionsUseCase {
     private final TransactionTypeTransactionTypeAttributeRepositoryPort transactionTypeTransactionTypeAttributeRepositoryPort;
     private final ElTaxpayerRepositoryPort taxpayerRepositoryPort;
