@@ -50,4 +50,9 @@
         <sqlFile path="../../sql/eledger/dev/010_config_interest_calculation_late_payment_data.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <!--to do-->
+    <changeSet id="Delete redundant gl_account_part data" author="V.G.">
+        <sqlFile path="../../sql/eledger/dev/901_delete_redundant_gl_accounts.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog>
