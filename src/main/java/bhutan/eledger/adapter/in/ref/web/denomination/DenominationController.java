@@ -1,10 +1,7 @@
 package bhutan.eledger.adapter.in.ref.web.denomination;
 
 import bhutan.eledger.application.port.in.ref.denomination.ReadRefDenominationUseCase;
-import bhutan.eledger.application.port.in.ref.paymentmode.ReadPaymentModeUseCase;
-import bhutan.eledger.domain.ref.bank.RefBank;
 import bhutan.eledger.domain.ref.denomination.RefDenomination;
-import bhutan.eledger.domain.ref.paymentmode.PaymentMode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

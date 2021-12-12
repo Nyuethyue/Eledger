@@ -69,7 +69,7 @@ class DepositController {
     }
 
     @Data
-    class CreateDepositResult {
+    static class CreateDepositResult {
         @Valid
         @NotNull
         @NotEmpty
