@@ -25,14 +25,17 @@ class ApproveReconciliationService implements ApproveReconciliationUseCase {
 
     @Override
     public void approveDepositReconciliation(@Valid ApproveReconciliationUseCase.ApproveDepositReconciliationCommand command) {
-        command.getDepositNumbers().stream().forEach(dn -> {
+        for(String dn : command.getDepositNumbers()) {
             Deposit deposit = depositRepositoryPort.requiredReadByDepositNumber(dn);
             depositRepositoryPort.updateStatus(deposit.getId(), DepositStatus.RECONCILED);
+            if(!DepositStatus.PENDING_RECONCILIATION.equals(deposit.getStatus())) {
+                throw new IllegalStateException("Only pending reconciliation deposits can be approved for reconciliation!");
+            }
             if(null != deposit.getReceipts() && !deposit.getReceipts().isEmpty()) {
                 receiptRepositoryPort.updateStatuses(
                         ReceiptStatus.RECONCILED,
                         deposit.getReceipts().stream().map(DepositReceipt::getReceiptId).collect(Collectors.toUnmodifiableSet()));
             }
-        });
+        }
     }
 }

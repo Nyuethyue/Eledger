@@ -15,11 +15,11 @@ public interface Interceptor extends Ordered {
         return true;
     }
 
-    default boolean after(HttpServletRequest request, HttpServletResponse response, ModelAndView modelAndView) throws Exception {
+    default boolean after(HttpServletRequest request, HttpServletResponse response, ModelAndView modelAndView) {
         return true;
     }
 
-    default void afterView(HttpServletRequest request, HttpServletResponse response, Exception ex) throws Exception {
+    default void afterView(HttpServletRequest request, HttpServletResponse response, Exception ex) {
 
     }
 

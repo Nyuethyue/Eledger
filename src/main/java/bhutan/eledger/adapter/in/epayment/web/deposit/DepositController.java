@@ -81,7 +81,7 @@ class DepositController {
     }
 
     @Data
-    class CreateDepositMultipleResult {
+    static class CreateDepositMultipleResult {
         private final Collection<CreateDepositResult> deposits;
     }
 }
