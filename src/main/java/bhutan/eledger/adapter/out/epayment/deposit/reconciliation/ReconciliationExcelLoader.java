@@ -18,7 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 @Log4j2
 public class ReconciliationExcelLoader  implements ExcelCellReceiver {
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yy");
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private int currentRowIndex;
     private BankStatementImportReconciliationInfo currentRowValue;
 

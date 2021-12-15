@@ -47,6 +47,7 @@ public interface GenerateReconciliationInfoUseCase {
 
     @Data
     class ErrorRecordsInfo {
+        private final String errorType;
         private final String transactionId;
         private final String bankBranchCode;
         private final String depositNumber;

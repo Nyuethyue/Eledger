@@ -39,7 +39,8 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public String handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
         log.trace(e.getMessage(), e);
-        return "Request body is missing, incorrect or some request expectation like content-type is missing or incorrect.";
+        return "Request body is missing, incorrect or some request expectation like content-type is missing or incorrect:" +
+                e.getMessage();
     }
 
     @ExceptionHandler(ConstraintViolationException.class)

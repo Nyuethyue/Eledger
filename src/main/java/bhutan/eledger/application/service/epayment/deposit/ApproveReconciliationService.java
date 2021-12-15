@@ -1,5 +1,7 @@
 package bhutan.eledger.application.service.epayment.deposit;
 
+import am.iunetworks.lib.common.validation.ValidationError;
+import am.iunetworks.lib.common.validation.ViolationException;
 import bhutan.eledger.application.port.in.epayment.deposit.ApproveReconciliationUseCase;
 import bhutan.eledger.application.port.out.epayment.deposit.DepositRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.payment.ReceiptRepositoryPort;
@@ -25,14 +27,23 @@ class ApproveReconciliationService implements ApproveReconciliationUseCase {
 
     @Override
     public void approveDepositReconciliation(@Valid ApproveReconciliationUseCase.ApproveDepositReconciliationCommand command) {
-        command.getDepositNumbers().stream().forEach(dn -> {
+        for (String dn : command.getDepositNumbers()) {
             Deposit deposit = depositRepositoryPort.requiredReadByDepositNumber(dn);
             depositRepositoryPort.updateStatus(deposit.getId(), DepositStatus.RECONCILED);
-            if(null != deposit.getReceipts() && !deposit.getReceipts().isEmpty()) {
+            if (!DepositStatus.PENDING_RECONCILIATION.equals(deposit.getStatus())) {
+                throw new ViolationException(
+                        new ValidationError()
+                                .addViolation(
+                                        "deposit.status",
+                                        "Invalid deposit status:" + deposit.getStatus() + " Only pending reconciliation deposits can be set to reconciled!"
+                                )
+                );
+            }
+            if (null != deposit.getReceipts() && !deposit.getReceipts().isEmpty()) {
                 receiptRepositoryPort.updateStatuses(
                         ReceiptStatus.RECONCILED,
                         deposit.getReceipts().stream().map(DepositReceipt::getReceiptId).collect(Collectors.toUnmodifiableSet()));
             }
-        });
+        }
     }
 }

@@ -1,6 +1,7 @@
 package bhutan.eledger.common.history.persistence.envers;
 
 import bhutan.eledger.common.userdetails.UserDetailsHolder;
+import lombok.NonNull;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.envers.RevisionListener;
 import org.springframework.beans.BeansException;
@@ -29,7 +30,7 @@ public class UsernameAwareRevisionListener implements RevisionListener, Applicat
     }
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
 }
