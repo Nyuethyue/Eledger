@@ -6,6 +6,7 @@ import org.hibernate.envers.RevisionListener;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.lang.NonNull;
 
 @Log4j2
 public class UsernameAwareRevisionListener implements RevisionListener, ApplicationContextAware {
@@ -29,7 +30,7 @@ public class UsernameAwareRevisionListener implements RevisionListener, Applicat
     }
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
 }

@@ -3,7 +3,6 @@ package bhutan.eledger.application.port.in.epayment.payment;
 import am.iunetworks.lib.common.persistence.search.SearchResult;
 import bhutan.eledger.domain.epayment.payment.Receipt;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;

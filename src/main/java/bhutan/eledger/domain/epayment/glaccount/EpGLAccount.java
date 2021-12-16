@@ -41,8 +41,7 @@ public class EpGLAccount {
     @JsonIgnore
     private Set<EpGLAccountDescription> descriptions;
 
-    private EpGLAccount(Long id, String code, LocalDateTime creationDateTime, Multilingual description) {
-        this.id = id;
+    private EpGLAccount(String code, LocalDateTime creationDateTime, Multilingual description) {
         this.code = code;
         this.creationDateTime = creationDateTime;
         this.description = description;
@@ -58,7 +57,7 @@ public class EpGLAccount {
     }
 
     public static EpGLAccount withoutId(String code, LocalDateTime creationDateTime, Multilingual description) {
-        EpGLAccount glAccount = new EpGLAccount(null, code, creationDateTime, description);
+        EpGLAccount glAccount = new EpGLAccount(code, creationDateTime, description);
 
         glAccount.descriptions = description.getTranslations()
                 .stream()

@@ -1,8 +1,8 @@
 package bhutan.eledger.domain.epayment.paymentadvice;
 
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.NonNull;
 
 import java.util.Arrays;
 

@@ -6,9 +6,9 @@ import bhutan.eledger.application.port.in.eledger.config.property.UpdateProperty
 import bhutan.eledger.application.port.out.eledger.config.property.PropertyRepositoryPort;
 import bhutan.eledger.common.dto.ValidityPeriod;
 import bhutan.eledger.domain.eledger.config.property.Property;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -48,7 +48,7 @@ public class InterceptorHandlerInterceptorAdapter implements HandlerInterceptor 
     }
 
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
         @SuppressWarnings("unchecked")
         List<Interceptor> matchedInterceptorsObject = (List<Interceptor>) request.getAttribute(ATTRIBUTE_MATCHED_INTERCEPTORS);
 
@@ -74,7 +74,7 @@ public class InterceptorHandlerInterceptorAdapter implements HandlerInterceptor 
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
 
         @SuppressWarnings("unchecked")
         List<Interceptor> matchedInterceptorsObject = (List<Interceptor>) request.getAttribute(ATTRIBUTE_MATCHED_INTERCEPTORS);

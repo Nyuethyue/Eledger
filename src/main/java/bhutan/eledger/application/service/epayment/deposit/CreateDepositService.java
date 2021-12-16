@@ -71,7 +71,7 @@ class CreateDepositService implements CreateDepositUseCase {
                 command.getAmount(),
                 command.getBankDepositDate(),
                 DepositStatus.PENDING_RECONCILIATION,
-                command.getReceipts().stream().map(r -> DepositReceipt.withoutId(r.longValue())).collect(Collectors.toUnmodifiableSet()),
+                command.getReceipts().stream().map(DepositReceipt::withoutId).collect(Collectors.toUnmodifiableSet()),
                 denominations,
                 null,
                 creationDateTime
