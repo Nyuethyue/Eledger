@@ -1,14 +1,11 @@
 package bhutan.eledger.application.port.in.eledger.config.glaccount;
 
-import bhutan.eledger.domain.eledger.config.glaccount.GLAccountStatus;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
-import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import java.util.Map;
 
 @Validated
@@ -21,9 +18,5 @@ public interface UpdateGLAccountUseCase {
         @NotNull
         @NotEmpty
         private final Map<String, String> descriptions;
-        @NotNull
-        private final GLAccountStatus glAccountStatus;
-        @FutureOrPresent
-        private final LocalDateTime actualDate;
     }
 }

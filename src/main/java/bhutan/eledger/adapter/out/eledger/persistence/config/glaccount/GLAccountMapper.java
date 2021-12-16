@@ -1,9 +1,7 @@
 package bhutan.eledger.adapter.out.eledger.persistence.config.glaccount;
 
 import am.iunetworks.lib.multilingual.core.Multilingual;
-import bhutan.eledger.common.dto.ValidityPeriod;
 import bhutan.eledger.domain.eledger.config.glaccount.GLAccount;
-import bhutan.eledger.domain.eledger.config.glaccount.GLAccountStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
@@ -16,11 +14,8 @@ class GLAccountMapper {
                 glAccount.getId(),
                 glAccount.getCode(),
                 glAccount.getGlAccountLastPartId(),
-                glAccount.getStatus().getValue(),
                 glAccount.getCreationDateTime(),
-                glAccount.getLastModificationDateTime(),
-                glAccount.getValidityPeriod().getStart(),
-                glAccount.getValidityPeriod().getEnd()
+                glAccount.getLastModificationDateTime()
         );
 
         glAccountEntity.setDescriptions(
@@ -45,10 +40,8 @@ class GLAccountMapper {
         return GLAccount.withId(
                 glAccountEntity.getId(),
                 glAccountEntity.getCode(),
-                GLAccountStatus.of(glAccountEntity.getStatus()),
                 glAccountEntity.getCreationDateTime(),
                 glAccountEntity.getLastModificationDateTime(),
-                ValidityPeriod.of(glAccountEntity.getStartOfValidity(), glAccountEntity.getEndOfValidity()),
                 Multilingual.of(glAccountEntity.getDescriptions()),
                 glAccountEntity.getGlAccountLastPartId()
         );

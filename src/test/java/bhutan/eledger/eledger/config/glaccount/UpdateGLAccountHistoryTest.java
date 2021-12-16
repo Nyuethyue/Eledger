@@ -10,7 +10,6 @@ import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountPar
 import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountRepositoryPort;
 import bhutan.eledger.common.history.HistoryType;
 import bhutan.eledger.domain.eledger.config.glaccount.GLAccount;
-import bhutan.eledger.domain.eledger.config.glaccount.GLAccountStatus;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -115,9 +114,7 @@ class UpdateGLAccountHistoryTest {
         updateGLAccountUseCase.updateGLAccount(glAccountId, new UpdateGLAccountUseCase.UpdateGLAccountCommand(
                 Map.of(
                         "en", "Updated value"
-                ),
-                GLAccountStatus.INACTIVE,
-                actualDate
+                )
         ));
 
         GLAccount updatedGLAccount = GLAccountRepositoryPort.readById(glAccountId).orElseThrow();
@@ -127,8 +124,6 @@ class UpdateGLAccountHistoryTest {
 
         Assertions.assertEquals(2, historiesAfterUpdate.getHistories().size());
 
-        Assertions.assertEquals(existedGLAccount.getStatus(), historiesAfterUpdate.getHistories().get(0).getDto().getStatus());
-        Assertions.assertEquals(updatedGLAccount.getStatus(), historiesAfterUpdate.getHistories().get(1).getDto().getStatus());
         Assertions.assertEquals(existedGLAccount.getDescription().translationValue("en"), historiesAfterUpdate.getHistories().get(0).getDto().getDescription().translationValue("en"));
         Assertions.assertEquals(updatedGLAccount.getDescription().translationValue("en"), historiesAfterUpdate.getHistories().get(1).getDto().getDescription().translationValue("en"));
     }

@@ -27,10 +27,8 @@ class GLAccountPartHistoryController {
                 .map(bah -> new GLAccountPartHistoryPresentation(
                                 bah.getDto().getCode(),
                                 bah.getDto().getDescription(),
-                                bah.getDto().getStatus().getValue(),
                                 bah.getDto().getCreationDateTime(),
                                 bah.getDto().getLastModificationDateTime(),
-                                bah.getDto().getActualDateTime(),
                                 bah.getMetadata().getUsername(),
                                 bah.getMetadata().getHistoryType().value()
                         )
@@ -41,10 +39,8 @@ class GLAccountPartHistoryController {
     private static class GLAccountPartHistoryPresentation {
         private final String code;
         private final Multilingual description;
-        private final String status;
         private final LocalDateTime creationDateTime;
         private final LocalDateTime modificationDateTime;
-        private final LocalDateTime actualDateTime;
         private final String username;
         private final String action;
     }

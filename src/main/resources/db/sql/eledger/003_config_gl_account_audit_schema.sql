@@ -5,11 +5,8 @@ CREATE TABLE eledger_config.el_gl_account_aud
     rev_type                    smallint NOT NULL,
     id                          bigint   NOT NULL,
     code                        varchar,
-    status                      varchar,
     creation_date_time          timestamp,
     last_modification_date_time timestamp,
-    start_of_validity           timestamp,
-    end_of_validity             timestamp,
     gl_account_last_part_id     bigint
 );
 
@@ -65,11 +62,8 @@ CREATE TABLE eledger_config.el_gl_account_part_aud
     parent_id                   bigint,
     code                        varchar,
     full_code                   varchar,
-    status                      varchar,
     creation_date_time          timestamp,
     last_modification_date_time timestamp,
-    start_of_validity           timestamp,
-    end_of_validity             timestamp,
     gl_account_part_type_id     integer
 );
 
