@@ -13,4 +13,16 @@
         <sqlFile path="../../sql/ref/dev/001_insert_currency_ref_data.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <changeSet id="Bank script" author="P.L">
+        <sqlFile path="../../sql/ref/dev/002_insert_bank_ref_data.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="Bank branch script" author="P.L">
+        <sqlFile path="../../sql/ref/dev/003_insert_bank_branch_ref_data.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="Bank account script" author="P.L">
+        <sqlFile path="../../sql/ref/dev/004_insert_bank_account_ref_data.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog>
