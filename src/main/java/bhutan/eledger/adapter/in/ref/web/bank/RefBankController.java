@@ -40,4 +40,13 @@ class RefBankController {
     public RefBank getById(@PathVariable Long id) {
         return readRefBankUseCase.readById(id);
     }
+
+    // to do need improve in this code
+    @GetMapping(value = "/getOpenBankListByGlPartFullCode/{glPartFullCode}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.OK)
+    public Collection<RefBank> getOpenBankListByGlPartFullCode(@PathVariable String glPartFullCode) {
+        return readRefBankUseCase.getOpenBankListByGlPartFullCode(glPartFullCode);
+    }
+
+
 }

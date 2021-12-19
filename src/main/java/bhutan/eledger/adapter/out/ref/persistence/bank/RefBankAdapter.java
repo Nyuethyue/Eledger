@@ -67,4 +67,12 @@ class RefBankAdapter implements RefBankRepositoryPort {
     public boolean isOpenBankExists(RefBank bank) {
         return refBankEntityRepository.existsByCodeAndEndOfValidityNullOrEndOfValidity(bank.getCode(), LocalDate.now(), bank.getValidityPeriod().getStart());
     }
+
+    @Override
+    public Collection<RefBank> getBankListByGlPartFullCode(String glPartFullCode,LocalDate currentDate) {
+        return refBankEntityRepository.getBankListByGlPartFullCode(glPartFullCode, currentDate)
+                .stream()
+                .map(refBankMapper::mapToDomain)
+                .collect(Collectors.toUnmodifiableList());
+    }
 }
