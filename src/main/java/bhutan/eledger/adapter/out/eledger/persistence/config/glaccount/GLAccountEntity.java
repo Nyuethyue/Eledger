@@ -27,20 +27,11 @@ class GLAccountEntity {
     @Column(name = "gl_account_last_part_id")
     private Long glAccountLastPartId;
 
-    @Column(name = "status")
-    private String status;
-
     @Column(name = "creation_date_time", nullable = false, updatable = false)
     private LocalDateTime creationDateTime;
 
     @Column(name = "last_modification_date_time")
     private LocalDateTime lastModificationDateTime;
-
-    @Column(name = "start_of_validity")
-    private LocalDateTime startOfValidity;
-
-    @Column(name = "end_of_validity")
-    private LocalDateTime endOfValidity;
 
     @OneToMany(
             mappedBy = "glAccount",
@@ -50,15 +41,12 @@ class GLAccountEntity {
     )
     private Set<GLAccountDescriptionEntity> descriptions;
 
-    public GLAccountEntity(Long id, String code, Long glAccountLastPartId, String status, LocalDateTime creationDateTime, LocalDateTime lastModificationDateTime, LocalDateTime startOfValidity, LocalDateTime endOfValidity) {
+    public GLAccountEntity(Long id, String code, Long glAccountLastPartId, LocalDateTime creationDateTime, LocalDateTime lastModificationDateTime) {
         this.id = id;
         this.code = code;
         this.glAccountLastPartId = glAccountLastPartId;
-        this.status = status;
         this.creationDateTime = creationDateTime;
         this.lastModificationDateTime = lastModificationDateTime;
-        this.startOfValidity = startOfValidity;
-        this.endOfValidity = endOfValidity;
     }
 
     public Long getId() {
@@ -85,14 +73,6 @@ class GLAccountEntity {
         this.glAccountLastPartId = glAccountLastPartId;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public LocalDateTime getCreationDateTime() {
         return creationDateTime;
     }
@@ -107,22 +87,6 @@ class GLAccountEntity {
 
     public void setLastModificationDateTime(LocalDateTime lastModificationDateTime) {
         this.lastModificationDateTime = lastModificationDateTime;
-    }
-
-    public LocalDateTime getStartOfValidity() {
-        return startOfValidity;
-    }
-
-    public void setStartOfValidity(LocalDateTime startOfValidity) {
-        this.startOfValidity = startOfValidity;
-    }
-
-    public LocalDateTime getEndOfValidity() {
-        return endOfValidity;
-    }
-
-    public void setEndOfValidity(LocalDateTime endOfValidity) {
-        this.endOfValidity = endOfValidity;
     }
 
     public Set<GLAccountDescriptionEntity> getDescriptions() {

@@ -63,11 +63,8 @@ CREATE TABLE eledger_config.el_gl_account_part
     parent_id                   bigint    NULL,
     code                        varchar   NOT NULL,
     full_code                   varchar   NOT NULL,
-    status                      varchar   NOT NULL,
     creation_date_time          timestamp NOT NULL,
     last_modification_date_time timestamp NOT NULL,
-    start_of_validity           timestamp NOT NULL,
-    end_of_validity             timestamp NULL,
     gl_account_part_type_id     integer   NULL
 );
 
@@ -133,11 +130,8 @@ CREATE TABLE eledger_config.el_gl_account
 (
     id                          bigint    NOT NULL,
     code                        varchar   NOT NULL,
-    status                      varchar   NOT NULL,
     creation_date_time          timestamp NOT NULL,
     last_modification_date_time timestamp NOT NULL,
-    start_of_validity           timestamp NOT NULL,
-    end_of_validity             timestamp NULL,
     gl_account_last_part_id     bigint    NOT NULL
 );
 

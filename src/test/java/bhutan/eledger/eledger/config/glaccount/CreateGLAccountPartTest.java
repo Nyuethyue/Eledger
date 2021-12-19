@@ -4,7 +4,6 @@ import bhutan.eledger.application.port.in.eledger.config.glaccount.CreateGLAccou
 import bhutan.eledger.application.port.in.eledger.config.glaccount.CreateGLAccountPartUseCase;
 import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountPartRepositoryPort;
 import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountPartTypeRepositoryPort;
-import bhutan.eledger.domain.eledger.config.glaccount.GLAccountPartStatus;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -107,9 +106,6 @@ class CreateGLAccountPartTest {
         var part = partOptional.get();
 
         Assertions.assertEquals("11", part.getCode());
-        Assertions.assertEquals(GLAccountPartStatus.ACTIVE, part.getStatus());
-        Assertions.assertNotNull(part.getValidityPeriod().getStart());
-        Assertions.assertNull(part.getValidityPeriod().getEnd());
         Assertions.assertNotNull(part.getGlAccountPartLevelId());
 
         var description = part.getDescription();

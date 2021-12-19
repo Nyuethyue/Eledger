@@ -4,9 +4,7 @@ import am.iunetworks.lib.multilingual.core.Multilingual;
 import bhutan.eledger.application.port.in.eledger.config.glaccount.CreateGLAccountPartUseCase;
 import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountPartRepositoryPort;
 import bhutan.eledger.application.port.out.eledger.config.glaccount.GetGlAccountPartFullCodeOnlyPort;
-import bhutan.eledger.common.dto.ValidityPeriod;
 import bhutan.eledger.domain.eledger.config.glaccount.GLAccountPart;
-import bhutan.eledger.domain.eledger.config.glaccount.GLAccountPartStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -74,10 +72,8 @@ class CreateGLAccountPartService implements CreateGLAccountPartUseCase {
                             glAccountPartCommand.getCode(),
                             fullCode,
                             command.getParentId(),
-                            GLAccountPartStatus.ACTIVE,
                             creationDateTime,
                             creationDateTime,
-                            ValidityPeriod.withOnlyStartOfValidity(creationDateTime.toLocalDate().atStartOfDay()),
                             Multilingual.fromMap(glAccountPartCommand.getDescriptions()),
                             command.getGlAccountPartTypeId()
                     );

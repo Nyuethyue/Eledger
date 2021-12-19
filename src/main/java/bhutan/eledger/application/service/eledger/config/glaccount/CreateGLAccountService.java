@@ -9,11 +9,8 @@ import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountPar
 import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountPartTypeRepositoryPort;
 import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountRepositoryPort;
 import bhutan.eledger.application.port.out.eledger.config.glaccount.GetGlAccountPartFullCodeOnlyPort;
-import bhutan.eledger.common.dto.ValidityPeriod;
 import bhutan.eledger.domain.eledger.config.glaccount.GLAccount;
 import bhutan.eledger.domain.eledger.config.glaccount.GLAccountPart;
-import bhutan.eledger.domain.eledger.config.glaccount.GLAccountPartStatus;
-import bhutan.eledger.domain.eledger.config.glaccount.GLAccountStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -63,10 +60,8 @@ class CreateGLAccountService implements CreateGLAccountUseCase {
 
         GLAccount glAccount = GLAccount.withoutId(
                 lastPart.getFullCode(),
-                GLAccountStatus.ACTIVE,
                 creationDateTime,
                 creationDateTime,
-                ValidityPeriod.withOnlyStartOfValidity(creationDateTime.toLocalDate().atStartOfDay()),
                 Multilingual.fromMap(command.getDescriptions()),
                 lastPartId
         );
@@ -91,10 +86,8 @@ class CreateGLAccountService implements CreateGLAccountUseCase {
                 command.getCode(),
                 parentFullCode + command.getCode(),
                 parentId,
-                GLAccountPartStatus.ACTIVE,
                 creationDateTime,
                 creationDateTime,
-                ValidityPeriod.withOnlyStartOfValidity(creationDateTime.toLocalDate().atStartOfDay()),
                 Multilingual.fromMap(command.getDescriptions()),
                 gleAccountPartTypeId
         );

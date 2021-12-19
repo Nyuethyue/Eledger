@@ -25,10 +25,8 @@ public class GLAccountSearchProperties extends AbstractSearchProperties {
                 Set.of(
                         QGLAccountEntity.gLAccountEntity.id.getMetadata().getName(),
                         QGLAccountEntity.gLAccountEntity.code.getMetadata().getName(),
-                        QGLAccountEntity.gLAccountEntity.startOfValidity.getMetadata().getName(),
                         QGLAccountEntity.gLAccountEntity.creationDateTime.getMetadata().getName(),
-                        QGLAccountEntity.gLAccountEntity.lastModificationDateTime.getMetadata().getName(),
-                        QGLAccountEntity.gLAccountEntity.status.getMetadata().getName()
+                        QGLAccountEntity.gLAccountEntity.lastModificationDateTime.getMetadata().getName()
                 )
         );
     }
