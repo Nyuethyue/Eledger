@@ -1,9 +1,9 @@
-package bhutan.eledger.application.service.eledger.reporting.glaccountdetails;
+package bhutan.eledger.application.service.eledger.reporting.taxpayeraccount;
 
 import am.iunetworks.lib.common.persistence.search.SearchResult;
-import bhutan.eledger.application.port.in.eledger.reporting.glaccountdetails.SearchGLAccountDetailsUseCase;
-import bhutan.eledger.application.port.out.eledger.reporting.glaccountdetails.GLAccountDetailsSearchPort;
-import bhutan.eledger.domain.eledger.reporting.glaccountdetails.GlAccountDetailsDto;
+import bhutan.eledger.application.port.in.eledger.reporting.taxpayeraccount.SearchTaxpayerAccountUseCase;
+import bhutan.eledger.application.port.out.eledger.reporting.taxpayeraccount.TaxpayerAccountSearchPort;
+import bhutan.eledger.domain.eledger.reporting.taxpayeraccount.TaxpayerAccountDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -13,16 +13,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-class SearchGLAccountDetailsService implements SearchGLAccountDetailsUseCase {
-    private final GLAccountDetailsSearchPort glAccountDetailsSearchPort;
+class SearchTaxpayerAccountService implements SearchTaxpayerAccountUseCase {
+    private final TaxpayerAccountSearchPort taxpayerAccountSearchPort;
 
     @Override
-    public SearchResult<GlAccountDetailsDto> search(SearchGLAccountDetailsCommand command) {
+    public SearchResult<TaxpayerAccountDto> search(SearchTaxpayerAccountCommand command) {
         log.trace("Search receipt started with in command: {}", command);
 
         var outCommand = makeOutSearchCommand(command);
 
-        var searchResult = glAccountDetailsSearchPort.search(
+        var searchResult = taxpayerAccountSearchPort.search(
                 outCommand
         );
 
@@ -32,8 +32,8 @@ class SearchGLAccountDetailsService implements SearchGLAccountDetailsUseCase {
         return searchResult;
     }
 
-    private GLAccountDetailsSearchPort.GLAccountDetailsSearchCommand makeOutSearchCommand(SearchGLAccountDetailsCommand command) {
-        return new GLAccountDetailsSearchPort.GLAccountDetailsSearchCommand(
+    private TaxpayerAccountSearchPort.TaxpayerAccountSearchCommand makeOutSearchCommand(SearchTaxpayerAccountCommand command) {
+        return new TaxpayerAccountSearchPort.TaxpayerAccountSearchCommand(
                 command.getPage() == null ? 0 : command.getPage(),
                 command.getSize() == null ? 10 : command.getSize(),
                 command.getLanguageCode(),

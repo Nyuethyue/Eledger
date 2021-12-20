@@ -1,17 +1,17 @@
-package bhutan.eledger.application.port.out.eledger.reporting.glaccountdetails;
+package bhutan.eledger.application.port.out.eledger.reporting.taxpayeraccount;
 
 import am.iunetworks.lib.common.persistence.search.SearchResult;
-import bhutan.eledger.domain.eledger.reporting.glaccountdetails.GlAccountDetailsDto;
+import bhutan.eledger.domain.eledger.reporting.taxpayeraccount.TaxpayerAccountDto;
 import lombok.Data;
 
 import java.time.LocalDate;
 
-public interface GLAccountDetailsSearchPort {
+public interface TaxpayerAccountSearchPort {
 
-    SearchResult<GlAccountDetailsDto> search(GLAccountDetailsSearchCommand command);
+    SearchResult<TaxpayerAccountDto> search(TaxpayerAccountSearchCommand command);
 
     @Data
-    class GLAccountDetailsSearchCommand {
+    class TaxpayerAccountSearchCommand {
 
         private final Integer page;
         private final Integer size;
