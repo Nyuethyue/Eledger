@@ -1,7 +1,7 @@
-package bhutan.eledger.application.port.in.eledger.reporting.glaccountdetails;
+package bhutan.eledger.application.port.in.eledger.reporting.taxpayeraccount;
 
 import am.iunetworks.lib.common.persistence.search.SearchResult;
-import bhutan.eledger.domain.eledger.reporting.glaccountdetails.GlAccountDetailsDto;
+import bhutan.eledger.domain.eledger.reporting.taxpayeraccount.TaxpayerAccountDto;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
@@ -12,12 +12,12 @@ import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDate;
 
 @Validated
-public interface SearchGLAccountDetailsUseCase {
+public interface SearchTaxpayerAccountUseCase {
 
-    SearchResult<GlAccountDetailsDto> search(@Valid SearchGLAccountDetailsCommand command);
+    SearchResult<TaxpayerAccountDto> search(@Valid SearchTaxpayerAccountCommand command);
 
     @Data
-    class SearchGLAccountDetailsCommand {
+    class SearchTaxpayerAccountCommand {
         @PositiveOrZero
         private final Integer page;
         @Positive

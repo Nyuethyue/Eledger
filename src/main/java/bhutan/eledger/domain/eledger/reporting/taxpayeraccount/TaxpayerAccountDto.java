@@ -1,4 +1,4 @@
-package bhutan.eledger.domain.eledger.reporting.glaccountdetails;
+package bhutan.eledger.domain.eledger.reporting.taxpayeraccount;
 
 import lombok.Data;
 
@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data(staticConstructor = "of")
-public class GlAccountDetailsDto {
+public class TaxpayerAccountDto {
 
     private final LocalDate transactionDate;
     private final String glAccountId;

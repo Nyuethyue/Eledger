@@ -1,9 +1,9 @@
-package bhutan.eledger.adapter.out.eledger.persistence.reporting.glaccountdetails;
+package bhutan.eledger.adapter.out.eledger.persistence.reporting.taxpayeraccount;
 
 import am.iunetworks.lib.common.persistence.search.PagedSearchResult;
 import am.iunetworks.lib.common.persistence.search.SearchResult;
-import bhutan.eledger.application.port.out.eledger.reporting.glaccountdetails.GLAccountDetailsSearchPort;
-import bhutan.eledger.domain.eledger.reporting.glaccountdetails.GlAccountDetailsDto;
+import bhutan.eledger.application.port.out.eledger.reporting.taxpayeraccount.TaxpayerAccountSearchPort;
+import bhutan.eledger.domain.eledger.reporting.taxpayeraccount.TaxpayerAccountDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -16,11 +16,11 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-class GLAccountDetailsSearchAdapter implements GLAccountDetailsSearchPort {
+class TaxpayerAccountSearchAdapter implements TaxpayerAccountSearchPort {
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     @Override
-    public SearchResult<GlAccountDetailsDto> search(GLAccountDetailsSearchCommand command) {
+    public SearchResult<TaxpayerAccountDto> search(TaxpayerAccountSearchCommand command) {
 
         var content = queryContent(command);
         var totalCount = queryTotalCount(command);
@@ -35,7 +35,7 @@ class GLAccountDetailsSearchAdapter implements GLAccountDetailsSearchPort {
         );
     }
 
-    private Long queryTotalCount(GLAccountDetailsSearchCommand command) {
+    private Long queryTotalCount(TaxpayerAccountSearchCommand command) {
         //language=PostgreSQL
         var countQuery = "SELECT * FROM eledger.fn_gl_accounting_details_count(:tpn, :languageCode, :glAccountPartFullCode, :periodYear, :periodSegment, :startTransactionDate, :endTransactionDate)";
 
@@ -47,7 +47,7 @@ class GLAccountDetailsSearchAdapter implements GLAccountDetailsSearchPort {
         );
     }
 
-    private List<GlAccountDetailsDto> queryContent(GLAccountDetailsSearchCommand command) {
+    private List<TaxpayerAccountDto> queryContent(TaxpayerAccountSearchCommand command) {
         //language=PostgreSQL
         var resultQuery = "SELECT * FROM eledger.fn_gl_accounting_details(:tpn, :languageCode, :glAccountPartFullCode, :periodYear, :periodSegment, :startTransactionDate, :endTransactionDate, :offset, :limit)";
 
@@ -61,8 +61,8 @@ class GLAccountDetailsSearchAdapter implements GLAccountDetailsSearchPort {
         );
     }
 
-    private GlAccountDetailsDto mapResultSetToDto(ResultSet rs, int rowIndex) throws SQLException {
-        return GlAccountDetailsDto.of(
+    private TaxpayerAccountDto mapResultSetToDto(ResultSet rs, int rowIndex) throws SQLException {
+        return TaxpayerAccountDto.of(
                 rs.getDate("transaction_date").toLocalDate(),
                 rs.getString("gl_account_id"),
                 rs.getString("gl_account_code"),
@@ -81,7 +81,7 @@ class GLAccountDetailsSearchAdapter implements GLAccountDetailsSearchPort {
         );
     }
 
-    private MapSqlParameterSource resolveSqlParameterSource(GLAccountDetailsSearchCommand command) {
+    private MapSqlParameterSource resolveSqlParameterSource(TaxpayerAccountSearchCommand command) {
         return new MapSqlParameterSource()
                 .addValue("tpn", command.getTpn())
                 .addValue("languageCode", command.getLanguageCode())
