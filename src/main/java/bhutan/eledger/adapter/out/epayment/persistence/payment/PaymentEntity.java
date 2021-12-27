@@ -37,7 +37,7 @@ class PaymentEntity {
     private EpGLAccount glAccount;
 
     @OneToOne
-    @JoinColumn(name = "gl_account_id", nullable = false)
+    @JoinColumn(name = "payment_advice_info_id", nullable = false)
     private PaymentPaymentAdviceInfoEntity paymentAdviceInfo;
 
     @ManyToOne
