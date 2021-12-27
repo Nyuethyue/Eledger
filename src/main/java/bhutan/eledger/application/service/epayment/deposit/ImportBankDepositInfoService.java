@@ -3,7 +3,7 @@ package bhutan.eledger.application.service.epayment.deposit;
 import bhutan.eledger.application.port.in.epayment.deposit.GenerateReconciliationInfoUseCase;
 import bhutan.eledger.application.port.in.epayment.payment.deposit.reconciliation.BankStatementImportUseCase;
 import bhutan.eledger.application.port.out.epayment.deposit.DepositRepositoryPort;
-import bhutan.eledger.domain.epayment.deposit.BankStatementImportReconciliationInfo;
+import bhutan.eledger.domain.epayment.deposit.ReconciliationUploadRecordInfo;
 import bhutan.eledger.domain.epayment.deposit.DepositStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -24,14 +24,14 @@ class ImportBankDepositInfoService implements GenerateReconciliationInfoUseCase 
 
     @Override
     public ReconciliationInfo generate(@Valid GenerateDepositReconciliationInfoCommand command) {
-        List<BankStatementImportReconciliationInfo> bankInfoList = bankStatementImportUseCase.importStatements(
+        List<ReconciliationUploadRecordInfo> bankInfoList = bankStatementImportUseCase.importStatements(
                 new BankStatementImportUseCase.ImportBankStatementsCommand(command.getFilePath()));
 
         List<ErrorRecordsInfo> errorRecords = new LinkedList<>();
         Long uploadId = 1L;
 
         List<DepositReconciliationInfo> depositInfoList = new LinkedList<>();
-        for(BankStatementImportReconciliationInfo info : bankInfoList) {
+        for(ReconciliationUploadRecordInfo info : bankInfoList) {
             if(allMandatoryFieldsArePresent(info)) {
                 String depositNumber = info.getDepositNumber();
                 var dep = depositRepositoryPort.readByDepositNumber(depositNumber);
@@ -60,7 +60,7 @@ class ImportBankDepositInfoService implements GenerateReconciliationInfoUseCase 
         return new ReconciliationInfo(uploadId, errorRecords.isEmpty(), depositInfoList, errorRecords);
     }
 
-    private ErrorRecordsInfo mapTo(String errorType, BankStatementImportReconciliationInfo record) {
+    private ErrorRecordsInfo mapTo(String errorType, ReconciliationUploadRecordInfo record) {
         return new ErrorRecordsInfo(
                 errorType,
                 record.getTransactionId(),
@@ -71,7 +71,7 @@ class ImportBankDepositInfoService implements GenerateReconciliationInfoUseCase 
         );
     }
 
-    private boolean allMandatoryFieldsArePresent(BankStatementImportReconciliationInfo info) {
+    private boolean allMandatoryFieldsArePresent(ReconciliationUploadRecordInfo info) {
         return null != info.getDepositNumber() && !info.getDepositNumber().isEmpty() &&
                 null != info.getTransactionId() && !info.getTransactionId().isEmpty() &&
                 null != info.getPaymentDate() &&

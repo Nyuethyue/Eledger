@@ -2,7 +2,7 @@ package bhutan.eledger.adapter.out.epayment.deposit.reconciliation;
 
 import bhutan.eledger.application.port.out.epayment.deposit.reconciliation.BankStatementFileParserPort;
 import bhutan.eledger.configuration.fms.FmsProperties;
-import bhutan.eledger.domain.epayment.deposit.BankStatementImportReconciliationInfo;
+import bhutan.eledger.domain.epayment.deposit.ReconciliationUploadRecordInfo;
 import com.jsunsoft.http.HttpRequest;
 import com.jsunsoft.http.HttpRequestBuilder;
 import com.jsunsoft.http.Response;
@@ -34,7 +34,7 @@ class BankStatementFileParserAdapter implements BankStatementFileParserPort {
     }
 
     @Override
-    public List<BankStatementImportReconciliationInfo> getStatements(String filePath) {
+    public List<ReconciliationUploadRecordInfo> getStatements(String filePath) {
         String lcFilePath = filePath.toLowerCase();
         if (!lcFilePath.endsWith(".xls") && !lcFilePath.endsWith(".xlsx")) {
             throw new InvalidParameterException("Invalid excel file type extension:" + filePath);
