@@ -1,6 +1,6 @@
 package bhutan.eledger.application.port.in.epayment.payment.deposit.reconciliation;
 
-import bhutan.eledger.domain.epayment.deposit.ReconciliationUploadRecordInfo;
+import bhutan.eledger.domain.epayment.deposit.BankStatementImportReconciliationInfo;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface BankStatementImportUseCase {
 
-    List<ReconciliationUploadRecordInfo> importStatements(ImportBankStatementsCommand command);
+    List<BankStatementImportReconciliationInfo> importStatements(ImportBankStatementsCommand command);
 
     @Data
     class ImportBankStatementsCommand {
