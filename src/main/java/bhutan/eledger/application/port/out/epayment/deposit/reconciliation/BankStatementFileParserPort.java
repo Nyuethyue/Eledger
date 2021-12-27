@@ -1,9 +1,9 @@
 package bhutan.eledger.application.port.out.epayment.deposit.reconciliation;
 
-import bhutan.eledger.domain.epayment.deposit.BankStatementImportReconciliationInfo;
+import bhutan.eledger.domain.epayment.deposit.ReconciliationUploadRecordInfo;
 
 import java.util.List;
 
 public interface BankStatementFileParserPort {
-    List<BankStatementImportReconciliationInfo> getStatements(String filePath);
+    List<ReconciliationUploadRecordInfo> getStatements(String filePath);
 }

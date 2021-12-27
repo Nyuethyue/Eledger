@@ -2,7 +2,7 @@ package bhutan.eledger.adapter.out.epayment.deposit.reconciliation;
 
 import bhutan.eledger.common.excel.ExcelCellReceiver;
 import bhutan.eledger.common.excel.ExcelLoader;
-import bhutan.eledger.domain.epayment.deposit.BankStatementImportReconciliationInfo;
+import bhutan.eledger.domain.epayment.deposit.ReconciliationUploadRecordInfo;
 import lombok.extern.log4j.Log4j2;
 import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 import org.apache.poi.ss.usermodel.DateUtil;
@@ -20,11 +20,11 @@ import java.util.List;
 public class ReconciliationExcelLoader  implements ExcelCellReceiver {
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private int currentRowIndex;
-    private BankStatementImportReconciliationInfo currentRowValue;
+    private ReconciliationUploadRecordInfo currentRowValue;
 
-    private List<BankStatementImportReconciliationInfo> result;
+    private List<ReconciliationUploadRecordInfo> result;
 
-    public List<BankStatementImportReconciliationInfo> load(InputStream inputStream, boolean isXLSX)
+    public List<ReconciliationUploadRecordInfo> load(InputStream inputStream, boolean isXLSX)
             throws IOException, SAXException, OpenXML4JException, ParserConfigurationException {
         ExcelLoader.getInstance().load(inputStream, this, isXLSX);
         return result;
@@ -37,7 +37,7 @@ public class ReconciliationExcelLoader  implements ExcelCellReceiver {
                 if (null != currentRowValue) {
                     result.add(currentRowValue);
                 }
-                currentRowValue = new BankStatementImportReconciliationInfo();
+                currentRowValue = new ReconciliationUploadRecordInfo();
             }
 
             if (0 == column) {

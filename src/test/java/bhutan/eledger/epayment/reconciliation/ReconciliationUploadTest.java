@@ -2,7 +2,7 @@ package bhutan.eledger.epayment.reconciliation;
 
 import bhutan.eledger.adapter.out.epayment.deposit.reconciliation.ReconciliationExcelLoader;
 import bhutan.eledger.application.port.in.epayment.payment.deposit.reconciliation.BankStatementImportUseCase;
-import bhutan.eledger.domain.epayment.deposit.BankStatementImportReconciliationInfo;
+import bhutan.eledger.domain.epayment.deposit.ReconciliationUploadRecordInfo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -36,9 +36,9 @@ class ReconciliationUploadTest {
         Path resourceDirectory = Paths.get("src","test","resources", "files");
         String absolutePath = resourceDirectory.toFile().getAbsolutePath();
 
-        List<BankStatementImportReconciliationInfo> resOld = loader.load(new FileInputStream(absolutePath + "/" + "Reconciliation.xls"), false);
+        List<ReconciliationUploadRecordInfo> resOld = loader.load(new FileInputStream(absolutePath + "/" + "Reconciliation.xls"), false);
         Assertions.assertTrue(resOld.size() > 0, "Empty result for old!");
-        List<BankStatementImportReconciliationInfo> resNew = loader.load(new FileInputStream(absolutePath + "/" + "Reconciliation.xlsx"), true);
+        List<ReconciliationUploadRecordInfo> resNew = loader.load(new FileInputStream(absolutePath + "/" + "Reconciliation.xlsx"), true);
         Assertions.assertTrue(resNew.size() > 0, "Empty result for new!");
     }
 
@@ -49,7 +49,7 @@ class ReconciliationUploadTest {
                 new BankStatementImportUseCase.ImportBankStatementsCommand(
                          filePathOld);
 
-        List<BankStatementImportReconciliationInfo> resultOld = bankStatementImportUseCase.importStatements(commandOld);
+        List<ReconciliationUploadRecordInfo> resultOld = bankStatementImportUseCase.importStatements(commandOld);
         Assertions.assertTrue(resultOld.size() > 0, "Empty result for excel file!");
 
         String filePathNew = "resources/file/files/drc-users/00/00/00/00000000-0000-0000-0000-000000000001/2021/11/29/1638187871846/attachments/Reconciliation.xlsx";
@@ -57,7 +57,7 @@ class ReconciliationUploadTest {
                 new BankStatementImportUseCase.ImportBankStatementsCommand(
                         filePathNew);
 
-        List<BankStatementImportReconciliationInfo> resultNew = bankStatementImportUseCase.importStatements(commandNew);
+        List<ReconciliationUploadRecordInfo> resultNew = bankStatementImportUseCase.importStatements(commandNew);
         Assertions.assertTrue(resultNew.size() > 0, "Empty result for excel file!");
     }
 }
