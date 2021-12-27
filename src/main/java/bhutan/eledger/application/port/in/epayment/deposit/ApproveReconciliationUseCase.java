@@ -17,12 +17,16 @@ public interface ApproveReconciliationUseCase {
 
     @Data
     class ApproveDepositReconciliationCommand {
+        private final Long uploadId;
+
         @NotNull
         @NotEmpty
         private final List<String> depositNumbers;
 
         @JsonCreator
-        public ApproveDepositReconciliationCommand(@JsonProperty("depositNumbers") List<String> depositNumbers) {
+        public ApproveDepositReconciliationCommand(@JsonProperty("uploadId") Long uploadId,
+                                                   @JsonProperty("depositNumbers") List<String> depositNumbers) {
+            this.uploadId = uploadId;
             this.depositNumbers = depositNumbers;
         }
     }

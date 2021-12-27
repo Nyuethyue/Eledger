@@ -197,6 +197,7 @@ class CreateDepositTest {
 
         ApproveReconciliationUseCase.ApproveDepositReconciliationCommand setCommand =
                 new ApproveReconciliationUseCase.ApproveDepositReconciliationCommand(
+                        null,
                         Arrays.asList(searchDeposit.getDepositNumber()));
         updateDepositUseCase.approveDepositReconciliation(setCommand);
 

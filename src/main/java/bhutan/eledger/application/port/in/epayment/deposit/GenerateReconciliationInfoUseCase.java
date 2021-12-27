@@ -6,6 +6,7 @@ import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -28,7 +29,10 @@ public interface GenerateReconciliationInfoUseCase {
 
     @Data
     class ReconciliationInfo {
+        @NotNull
+        private final Long uploadId;
         private final boolean ok;
+
         private final Collection<DepositReconciliationInfo> deposits;
         private final Collection<ErrorRecordsInfo> errorRecords;
     }
