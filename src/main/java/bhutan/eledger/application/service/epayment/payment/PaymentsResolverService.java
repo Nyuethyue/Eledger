@@ -2,6 +2,7 @@ package bhutan.eledger.application.service.epayment.payment;
 
 import bhutan.eledger.application.port.in.epayment.payment.CreatePaymentCommonCommand;
 import bhutan.eledger.domain.epayment.payment.Payment;
+import bhutan.eledger.domain.epayment.payment.PaymentPaInfo;
 import bhutan.eledger.domain.epayment.paymentadvice.PayableLine;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,12 @@ class PaymentsResolverService {
                             payableLine.getGlAccount(),
                             pc.getPaidAmount(),
                             payableLine.getId(),
-                            payableLine.getElTransactionId()
+                            payableLine.getElTransactionId(),
+                            PaymentPaInfo.withoutId(
+                                    paymentAdvice.getId(),
+                                    paymentAdvice.getPan(),
+                                    paymentAdvice.getDrn()
+                            )
                     );
                 })
                 .collect(Collectors.toUnmodifiableList());

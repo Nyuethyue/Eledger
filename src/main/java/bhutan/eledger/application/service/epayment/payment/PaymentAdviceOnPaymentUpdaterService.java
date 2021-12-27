@@ -21,6 +21,11 @@ class PaymentAdviceOnPaymentUpdaterService {
 
         PaymentAdvice paymentAdvice = paymentAdviceRepositoryPort.requiredReadById(command.getPaymentAdviceId());
 
+        return updatePaymentAdvice(command, paymentAdvice);
+    }
+
+    PaymentAdvice updatePaymentAdvice(CreatePaymentCommonCommand command, PaymentAdvice paymentAdvice) {
+
         checkStatus(paymentAdvice);
 
         command.getPayments()
@@ -28,7 +33,6 @@ class PaymentAdviceOnPaymentUpdaterService {
                     PayableLine payableLine = paymentAdvice.getRequiredPayableLineById(pc.getPayableLineId());
 
                     checkPayableLine(payableLine, pc);
-
 
                     payableLine.pay(pc.getPaidAmount());
                 });

@@ -1,6 +1,6 @@
 package bhutan.eledger.epayment.payment;
 
-import bhutan.eledger.application.port.in.epayment.payment.CreateCashPaymentUseCase;
+import bhutan.eledger.application.port.in.epayment.payment.CreateCashMultiplePaymentsUseCase;
 import bhutan.eledger.application.port.in.epayment.payment.CreatePaymentCommonCommand;
 import bhutan.eledger.application.port.in.epayment.payment.SearchReceiptUseCase;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAdviceUseCase;
@@ -36,7 +36,7 @@ class CreatePaymentTest {
     private PaymentAdviceRepositoryPort paymentAdviceRepositoryPort;
 
     @Autowired
-    private CreateCashPaymentUseCase createCashPaymentUseCase;
+    private CreateCashMultiplePaymentsUseCase createCashMultiplePaymentsUseCase;
 
     @Autowired
     private ReceiptRepositoryPort receiptRepositoryPort;
@@ -120,28 +120,33 @@ class CreatePaymentTest {
             );
         }
 
-        var command = new CreateCashPaymentUseCase.CreateCashPaymentCommand(
-                paymentAdvice.getId(),
+        var command = new CreateCashMultiplePaymentsUseCase.CreateCashMultiplePaymentsCommand(
                 currId,
                 Set.of(
-                        new CreatePaymentCommonCommand.PaymentCommand(
-                                paymentAdvice.getPayableLines()
-                                        .stream()
-                                        .filter(pl -> pl.getGlAccount().getCode().equals("12345678901"))
-                                        .findAny().get().getId(),
-                                new BigDecimal("9999.99")
-                        ),
-                        new CreatePaymentCommonCommand.PaymentCommand(
-                                paymentAdvice.getPayableLines()
-                                        .stream()
-                                        .filter(pl -> pl.getGlAccount().getCode().equals("12109876543"))
-                                        .findAny().get().getId(),
-                                new BigDecimal("500.99")
+                        new CreateCashMultiplePaymentsUseCase.CreateCashPaymentCommand(
+                                paymentAdvice.getId(),
+                                Set.of(
+                                        new CreatePaymentCommonCommand.PaymentCommand(
+                                                paymentAdvice.getPayableLines()
+                                                        .stream()
+                                                        .filter(pl -> pl.getGlAccount().getCode().equals("12345678901"))
+                                                        .findAny().get().getId(),
+                                                new BigDecimal("9999.99")
+                                        ),
+                                        new CreatePaymentCommonCommand.PaymentCommand(
+                                                paymentAdvice.getPayableLines()
+                                                        .stream()
+                                                        .filter(pl -> pl.getGlAccount().getCode().equals("12109876543"))
+                                                        .findAny().get().getId(),
+                                                new BigDecimal("500.99")
+                                        )
+                                )
                         )
                 )
+
         );
 
-        Receipt receipt = createCashPaymentUseCase.create(command);
+        Receipt receipt = createCashMultiplePaymentsUseCase.create(command);
 
         Assertions.assertNotNull(receipt);
         Assertions.assertNotNull(receipt.getReceiptNumber());

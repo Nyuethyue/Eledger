@@ -1,17 +1,15 @@
 package bhutan.eledger.application.service.epayment.payment;
 
-import bhutan.eledger.application.port.in.epayment.payment.CreateChequePaymentUseCase;
+import bhutan.eledger.application.port.in.epayment.payment.CreateChequePaymentsUseCase;
 import bhutan.eledger.application.port.out.epayment.eledger.CreateEledgerTransactionPort;
 import bhutan.eledger.application.port.out.epayment.payment.ReceiptNumberGeneratorPort;
 import bhutan.eledger.application.port.out.epayment.payment.ReceiptRepositoryPort;
-import bhutan.eledger.application.port.out.epayment.taxpayer.EpTaxpayerRepositoryPort;
 import bhutan.eledger.common.ref.refentry.RefEntryRepository;
 import bhutan.eledger.common.ref.refentry.RefName;
 import bhutan.eledger.domain.epayment.payment.Payment;
 import bhutan.eledger.domain.epayment.payment.PaymentMode;
 import bhutan.eledger.domain.epayment.payment.Receipt;
 import bhutan.eledger.domain.epayment.payment.ReceiptStatus;
-import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -24,29 +22,23 @@ import java.time.LocalDateTime;
 @Service
 @Transactional
 @RequiredArgsConstructor
-class CreateChequePaymentService implements CreateChequePaymentUseCase {
-    private final ReceiptNumberGeneratorPort receiptNumberGeneratorPort;
-    private final ReceiptRepositoryPort receiptRepositoryPort;
-    private final EpTaxpayerRepositoryPort epTaxpayerRepositoryPort;
-    private final CreateEledgerTransactionPort eledgerPaymentTransactionPort;
+class CreateChequePaymentsService implements CreateChequePaymentsUseCase {
     private final RefEntryRepository refEntryRepository;
-    private final PaymentAdviceOnPaymentUpdaterService paymentAdviceOnPaymentUpdaterService;
-    private final PaymentsResolverService paymentsResolverService;
+    private final ReceiptNumberGeneratorPort receiptNumberGeneratorPort;
+    private final CreateEledgerTransactionPort eledgerPaymentTransactionPort;
+    private final ReceiptRepositoryPort receiptRepositoryPort;
+    private final PrepareReceiptService prepareReceiptService;
 
     @Override
-    public Receipt create(CreateChequePaymentCommand command) {
-        log.trace("Generating cheque receipt by command: {}", command);
+    public Receipt create(CreateChequePaymentsCommand command) {
 
-        PaymentAdvice updatedPaymentAdvice = paymentAdviceOnPaymentUpdaterService.updatePaymentAdvice(command);
+        var receiptCreationContext = prepareReceiptService.prepare(command);
 
         LocalDateTime creationDateTime = LocalDateTime.now();
 
         String receiptNumber = receiptNumberGeneratorPort.generate(creationDateTime.toLocalDate());
 
         log.trace("Receipt number: [{}], generated in: {}", receiptNumber, creationDateTime.toLocalDate());
-
-        var payments =
-                paymentsResolverService.resolvePayments(command, updatedPaymentAdvice);
 
         var refCurrencyEntry = refEntryRepository.findByRefNameAndId(
                 RefName.CURRENCY.getValue(),
@@ -58,39 +50,36 @@ class CreateChequePaymentService implements CreateChequePaymentUseCase {
                 command.getBankBranchId()
         );
 
-        //todo check is ref open
 
-
-        Receipt receipt = Receipt.chequeWithoutId(
-                updatedPaymentAdvice.getDrn(),
-                PaymentMode.CHEQUE,
-                updatedPaymentAdvice.isPaid() ? ReceiptStatus.PAID : ReceiptStatus.SPLIT_PAYMENT,
+        var receipt = Receipt.chequeWithoutId(
+                PaymentMode.CASH,
+                receiptCreationContext.isAllPaid() ? ReceiptStatus.PAID : ReceiptStatus.SPLIT_PAYMENT,
                 refCurrencyEntry,
                 receiptNumber,
                 creationDateTime,
-                epTaxpayerRepositoryPort.requiredReadByTpn(updatedPaymentAdvice.getTaxpayer().getTpn()),
-                payments,
-                payments.stream()
+                receiptCreationContext.getAnyPa().getTaxpayer(),
+                receiptCreationContext.getPayments(),
+                receiptCreationContext.getPayments().stream()
                         .map(Payment::getPaidAmount)
                         .reduce(BigDecimal.ZERO, BigDecimal::add),
-                null,// todo apply security number,
+                null,
                 command.getInstrumentNumber(),
                 command.getInstrumentDate(),
                 command.getOtherReferenceNumber(),
-                refBankBranchEntry,
-                updatedPaymentAdvice.getPan()
+                refBankBranchEntry
         );
 
         log.trace("Persisting cheque receipt: {}", receipt);
 
-        Receipt persistedReceipt = receiptRepositoryPort.create(receipt);
+        Receipt persistedCashReceipt = receiptRepositoryPort.create(receipt);
 
-        log.debug("Cheque receipt with id: {} successfully created.", persistedReceipt.getId());
+        log.debug("Cheque receipt with id: {} successfully created.", persistedCashReceipt.getId());
 
         log.trace("Creating eledger payment transaction: {}", receipt);
 
         eledgerPaymentTransactionPort.create(receipt);
 
-        return persistedReceipt;
+        return persistedCashReceipt;
+
     }
 }

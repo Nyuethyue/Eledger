@@ -5,28 +5,21 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 import java.util.Collection;
 
 @Getter
 @ToString
 @RequiredArgsConstructor
-public class CreatePaymentCommonCommand {
+public class CreatePaymentsCommonCommand<T extends CreatePaymentCommonCommand> {
     @NotNull
-    private final Long paymentAdviceId;
+    private final Long refCurrencyId;
+
+    @Valid
     @NotNull
     @NotEmpty
-    private final Collection<PaymentCommand> payments;
-
-    @Data
-    public static class PaymentCommand {
-        @NotNull
-        private final Long payableLineId;
-        @NotNull
-        @PositiveOrZero
-        private final BigDecimal paidAmount;
-    }
+    private final Collection<T> receipts;
 }

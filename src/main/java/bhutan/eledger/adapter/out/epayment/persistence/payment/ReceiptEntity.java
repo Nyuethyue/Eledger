@@ -1,7 +1,10 @@
 package bhutan.eledger.adapter.out.epayment.persistence.payment;
 
 import bhutan.eledger.domain.epayment.taxpayer.EpTaxpayer;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -9,7 +12,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-@Builder(toBuilder = true)
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,8 +24,6 @@ class ReceiptEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ep_receipt_id_seq")
     @Column(name = "id")
     private Long id;
-    @Column(name = "drn")
-    private String drn;
     @Column(name = "payment_mode")
     private String paymentMode;
     @Column(name = "status")
@@ -46,8 +46,6 @@ class ReceiptEntity {
     private LocalDateTime creationDateTime;
     @Column(name = "total_paid_amount")
     private BigDecimal totalPaidAmount;
-    @Column(name = "pan")
-    private String pan;
 
     @OneToOne
     @JoinColumn(name = "taxpayer_id", nullable = false)
@@ -61,9 +59,16 @@ class ReceiptEntity {
     )
     private Set<PaymentEntity> payments;
 
-    public ReceiptEntity(Long id, String drn, String paymentMode, String status, Long refCurrencyId, Long refBankBranchId, String receiptNumber, String securityNumber, String instrumentNumber, LocalDate instrumentDate, String otherReferenceNumber, LocalDateTime creationDateTime, BigDecimal totalPaidAmount, String pan, EpTaxpayer taxpayer) {
+//    @OneToMany(
+//            mappedBy = "receipt",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true,
+//            fetch = FetchType.EAGER
+//    )
+//    private Set<ReceiptPaymentAdviceInfoEntity> receiptPaymentAdviceInfos;
+
+    public ReceiptEntity(Long id, String paymentMode, String status, Long refCurrencyId, Long refBankBranchId, String receiptNumber, String securityNumber, String instrumentNumber, LocalDate instrumentDate, String otherReferenceNumber, LocalDateTime creationDateTime, BigDecimal totalPaidAmount, EpTaxpayer taxpayer) {
         this.id = id;
-        this.drn = drn;
         this.paymentMode = paymentMode;
         this.status = status;
         this.refCurrencyId = refCurrencyId;
@@ -75,7 +80,6 @@ class ReceiptEntity {
         this.otherReferenceNumber = otherReferenceNumber;
         this.creationDateTime = creationDateTime;
         this.totalPaidAmount = totalPaidAmount;
-        this.pan = pan;
         this.taxpayer = taxpayer;
     }
 }
