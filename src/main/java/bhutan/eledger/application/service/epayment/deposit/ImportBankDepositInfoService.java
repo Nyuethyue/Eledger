@@ -28,6 +28,7 @@ class ImportBankDepositInfoService implements GenerateReconciliationInfoUseCase 
                 new BankStatementImportUseCase.ImportBankStatementsCommand(command.getFilePath()));
 
         List<ErrorRecordsInfo> errorRecords = new LinkedList<>();
+        Long uploadId = 1L;
 
         List<DepositReconciliationInfo> depositInfoList = new LinkedList<>();
         for(BankStatementImportReconciliationInfo info : bankInfoList) {
@@ -56,7 +57,7 @@ class ImportBankDepositInfoService implements GenerateReconciliationInfoUseCase 
                 errorRecords.add(mapTo("MISSING_DATA", info));
             }
         }
-        return new ReconciliationInfo(errorRecords.isEmpty(), depositInfoList, errorRecords);
+        return new ReconciliationInfo(uploadId, errorRecords.isEmpty(), depositInfoList, errorRecords);
     }
 
     private ErrorRecordsInfo mapTo(String errorType, BankStatementImportReconciliationInfo record) {
