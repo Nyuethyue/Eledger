@@ -53,6 +53,7 @@ class ReconciliationDepositMockTest {
 
         ApproveReconciliationUseCase.ApproveDepositReconciliationCommand setCommand =
                 new ApproveReconciliationUseCase.ApproveDepositReconciliationCommand(
+                        null,
                         Arrays.asList(searchResult.getContent().get(0).getDepositNumber()));
         updateDepositUseCase.approveDepositReconciliation(setCommand);
 
