@@ -24,6 +24,8 @@ class PaymentAdviceAdapter implements PaymentAdviceRepositoryPort {
 
     @Override
     public Optional<PaymentAdvice> readByDrnAndStatusIn(String drn, Collection<PaymentAdviceStatus> statuses) {
+
+
         return paymentAdviceEntityRepository.findByDrnAndStatusIn(
                 drn,
                 statuses
@@ -31,6 +33,14 @@ class PaymentAdviceAdapter implements PaymentAdviceRepositoryPort {
                         .map(PaymentAdviceStatus::getValue)
                         .collect(Collectors.toUnmodifiableSet())
         ).map(paymentAdviceMapper::mapToDomain);
+    }
+
+    @Override
+    public Collection<PaymentAdvice> readAllByIds(Collection<Long> ids) {
+        return paymentAdviceEntityRepository.findAllById(ids)
+                .stream()
+                .map(paymentAdviceMapper::mapToDomain)
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     @Override

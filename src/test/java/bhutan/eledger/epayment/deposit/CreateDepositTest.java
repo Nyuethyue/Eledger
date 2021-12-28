@@ -1,9 +1,9 @@
 package bhutan.eledger.epayment.deposit;
 
+import bhutan.eledger.application.port.in.epayment.deposit.ApproveReconciliationUseCase;
 import bhutan.eledger.application.port.in.epayment.deposit.CreateDepositUseCase;
 import bhutan.eledger.application.port.in.epayment.deposit.SearchDepositUseCase;
-import bhutan.eledger.application.port.in.epayment.deposit.ApproveReconciliationUseCase;
-import bhutan.eledger.application.port.in.epayment.payment.CreateCashPaymentUseCase;
+import bhutan.eledger.application.port.in.epayment.payment.CreateCashMultiplePaymentsUseCase;
 import bhutan.eledger.application.port.in.epayment.payment.CreatePaymentCommonCommand;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAdviceUseCase;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.UpsertPaymentAdviceUseCase;
@@ -44,7 +44,7 @@ class CreateDepositTest {
     private PaymentAdviceRepositoryPort paymentAdviceRepositoryPort;
 
     @Autowired
-    private CreateCashPaymentUseCase createCashPaymentUseCase;
+    private CreateCashMultiplePaymentsUseCase createCashMultiplePaymentsUseCase;
 
     @Autowired
     private DepositRepositoryPort depositRepositoryPort;
@@ -139,28 +139,35 @@ class CreateDepositTest {
             );
         }
 
-        var command = new CreateCashPaymentUseCase.CreateCashPaymentCommand(
-                paymentAdvice.getId(),
+        var command = new CreateCashMultiplePaymentsUseCase.CreateCashMultiplePaymentsCommand(
+
                 currId,
                 Set.of(
-                        new CreatePaymentCommonCommand.PaymentCommand(
-                                paymentAdvice.getPayableLines()
-                                        .stream()
-                                        .filter(pl -> pl.getGlAccount().getCode().equals("12345678901"))
-                                        .findAny().get().getId(),
-                                new BigDecimal("9999.99")
-                        ),
-                        new CreatePaymentCommonCommand.PaymentCommand(
-                                paymentAdvice.getPayableLines()
-                                        .stream()
-                                        .filter(pl -> pl.getGlAccount().getCode().equals("12109876543"))
-                                        .findAny().get().getId(),
-                                new BigDecimal("500.99")
+                        new CreateCashMultiplePaymentsUseCase.CreateCashPaymentCommand(
+                                paymentAdvice.getId(),
+                                Set.of(
+                                        new CreatePaymentCommonCommand.PayableLineCommand(
+                                                paymentAdvice.getPayableLines()
+                                                        .stream()
+                                                        .filter(pl -> pl.getGlAccount().getCode().equals("12345678901"))
+                                                        .findAny().get().getId(),
+                                                new BigDecimal("9999.99")
+                                        ),
+                                        new CreatePaymentCommonCommand.PayableLineCommand(
+                                                paymentAdvice.getPayableLines()
+                                                        .stream()
+                                                        .filter(pl -> pl.getGlAccount().getCode().equals("12109876543"))
+                                                        .findAny().get().getId(),
+                                                new BigDecimal("500.99")
+                                        )
+                                )
                         )
+
                 )
+
         );
 
-        Receipt receipt = createCashPaymentUseCase.create(command);
+        Receipt receipt = createCashMultiplePaymentsUseCase.create(command);
 
         CreateDepositUseCase.CreateDepositCommand createDepositCommand =
                 new CreateDepositUseCase.CreateDepositCommand(
@@ -173,7 +180,8 @@ class CreateDepositTest {
                 );
         Deposit result = createDepositUseCase.create(createDepositCommand);
         Deposit deposit = transactionTemplate.execute(status -> depositRepositoryPort.readById(result.getId()).get());
-        Assertions.assertTrue(deposit.equals(DepositStatus.PENDING_RECONCILIATION));
+        Assertions.assertNotNull(deposit);
+        Assertions.assertEquals(DepositStatus.PENDING_RECONCILIATION, deposit.getStatus());
         Assertions.assertTrue(deposit.getDenominationCounts().size() > 0);
         Assertions.assertTrue(deposit.getReceipts().size() > 0);
 
@@ -191,7 +199,7 @@ class CreateDepositTest {
         Assertions.assertTrue(searchResult.getTotalCount() > 0);
 
         Deposit searchDeposit = searchResult.getContent().get(0);
-        Assertions.assertEquals(searchDeposit.getStatus(), DepositStatus.PENDING_RECONCILIATION);
+        Assertions.assertEquals(DepositStatus.PENDING_RECONCILIATION, searchDeposit.getStatus());
         Assertions.assertTrue(searchDeposit.getDenominationCounts().size() > 0);
         Assertions.assertTrue(searchDeposit.getReceipts().size() > 0);
 
@@ -211,7 +219,7 @@ class CreateDepositTest {
                 LocalDate.now().plusDays(1)
         ));
 
-        Assertions.assertTrue(DepositStatus.RECONCILED.equals(searchResult.getContent().get(0).getStatus()));
+        Assertions.assertEquals(DepositStatus.RECONCILED, searchResult.getContent().get(0).getStatus());
 
     }
 }

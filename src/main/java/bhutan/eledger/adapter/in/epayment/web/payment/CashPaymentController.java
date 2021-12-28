@@ -1,8 +1,7 @@
 package bhutan.eledger.adapter.in.epayment.web.payment;
 
 import bhutan.eledger.application.port.in.epayment.payment.CreateCashMultiplePaymentsUseCase;
-import bhutan.eledger.application.port.in.epayment.payment.CreateCashPaymentUseCase;
-import bhutan.eledger.application.port.in.epayment.payment.CreateChequePaymentUseCase;
+import bhutan.eledger.application.port.in.epayment.payment.CreateChequePaymentsUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,22 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/payment/receipt")
 class CashPaymentController {
 
-    private final CreateCashPaymentUseCase createCashPaymentUseCase;
     private final CreateCashMultiplePaymentsUseCase createCashMultiplePaymentsUseCase;
-    private final CreateChequePaymentUseCase createChequePaymentUseCase;
+    private final CreateChequePaymentsUseCase createChequePaymentsUseCase;
 
-    @PostMapping("/cash")
-    public ResponseEntity<Object> create(@RequestBody CreateCashPaymentUseCase.CreateCashPaymentCommand command) {
-        var receipt = createCashPaymentUseCase.create(command);
-
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(receipt);
-    }
-
-    @PostMapping("/cheque")
-    public ResponseEntity<Object> create(@RequestBody CreateChequePaymentUseCase.CreateChequePaymentCommand command) {
-        var receipt = createChequePaymentUseCase.create(command);
+    @PostMapping("/cheque/multiple")
+    public ResponseEntity<Object> createMultipleCheque(@RequestBody CreateChequePaymentsUseCase.CreateChequePaymentsCommand command) {
+        var receipt = createChequePaymentsUseCase.create(command);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -39,7 +28,7 @@ class CashPaymentController {
     }
 
     @PostMapping("/cash/multiple")
-    public ResponseEntity<Object> createMultiple(@RequestBody CreateCashMultiplePaymentsUseCase.CreateCashMultiplePaymentsCommand command) {
+    public ResponseEntity<Object> createMultipleCash(@RequestBody CreateCashMultiplePaymentsUseCase.CreateCashMultiplePaymentsCommand command) {
         var receipts = createCashMultiplePaymentsUseCase.create(command);
 
         return ResponseEntity

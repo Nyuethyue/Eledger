@@ -3,7 +3,6 @@
 CREATE TABLE epayment.ep_receipt
 (
     id                     bigint         NOT NULL,
-    drn                    varchar        NOT NULL,
     payment_mode           varchar        NOT NULL,
     status                 varchar        NOT NULL,
     ref_currency_id        bigint         NOT NULL,
@@ -15,8 +14,7 @@ CREATE TABLE epayment.ep_receipt
     other_reference_number varchar,
     creation_date_time     timestamp      NOT NULL,
     taxpayer_id            bigint         NOT NULL,
-    total_paid_amount      numeric(20, 2) NOT NULL,
-    pan                    varchar        NOT NULL
+    total_paid_amount numeric(20, 2) NOT NULL
 );
 
 ALTER TABLE epayment.ep_receipt
@@ -51,6 +49,32 @@ CREATE SEQUENCE epayment.ep_receipt_id_seq
 
 -----------------------------------------------------------------------------------------------------------------------------
 
+CREATE TABLE IF NOT EXISTS epayment.ep_payment_payment_advice_info
+(
+    id                bigint  NOT NULL,
+    payment_advice_id bigint  NOT NULL,
+    pan               varchar NOT NULL,
+    drn               varchar NOT NULL
+);
+
+ALTER TABLE epayment.ep_payment_payment_advice_info
+    ADD CONSTRAINT pk_ep_payment_payment_advice_info PRIMARY KEY (id);
+
+ALTER TABLE ONLY epayment.ep_payment_payment_advice_info
+    ADD CONSTRAINT fk_ep_payment_payment_advice_info_payment_advice_id
+        FOREIGN KEY (payment_advice_id) REFERENCES epayment.ep_payment_advice (id);
+
+CREATE SEQUENCE epayment.ep_payment_payment_advice_info_id_seq
+    INCREMENT BY 1
+    MINVALUE 1
+    START 1
+    CACHE 1
+    NO CYCLE
+    OWNED BY epayment.ep_payment_payment_advice_info.id;
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+
 
 CREATE TABLE IF NOT EXISTS epayment.ep_payment
 (
@@ -59,7 +83,8 @@ CREATE TABLE IF NOT EXISTS epayment.ep_payment
     payable_line_id          bigint         NOT NULL,
     el_target_transaction_id bigint         NOT NULL,
     gl_account_id            bigint         NOT NULL,
-    receipt_id               bigint         NOT NULL
+    receipt_id               bigint         NOT NULL,
+    payment_advice_info_id   bigint         NOT NULL
 );
 
 ALTER TABLE epayment.ep_payment
@@ -68,6 +93,10 @@ ALTER TABLE epayment.ep_payment
 ALTER TABLE ONLY epayment.ep_payment
     ADD CONSTRAINT fk_payment_payable_line
         FOREIGN KEY (payable_line_id) REFERENCES epayment.ep_pa_payable_line (id);
+
+ALTER TABLE ONLY epayment.ep_payment
+    ADD CONSTRAINT fk_payment_payment_advice_info
+        FOREIGN KEY (payment_advice_info_id) REFERENCES epayment.ep_payment_payment_advice_info (id);
 
 ALTER TABLE ONLY epayment.ep_payment
     ADD CONSTRAINT fk_payment_gl_account
