@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 @Data()
 public class ReconciliationUploadRecordInfo {
+    private final Long id;
     private final String depositNumber;
 
     private final String bankTransactionNumber;
@@ -15,8 +16,10 @@ public class ReconciliationUploadRecordInfo {
     private final LocalDate bankProcessingDate;
     private final BigDecimal bankAmount;
 
-    private final LocalDateTime paymentDepositDate;
-    private final BigDecimal paymentDepositAmount;
-    private final String paymentDepositStatus;
-    private final String rowStatus;
+    private final LocalDate depositDate;
+    private final BigDecimal depositAmount;
+    private final String depositStatus;
+
+    private final String recordStatus;
+    private final LocalDateTime creationDateTime;
 }
