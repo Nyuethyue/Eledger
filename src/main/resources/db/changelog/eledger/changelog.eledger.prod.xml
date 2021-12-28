@@ -100,7 +100,7 @@
     </changeSet>
 
     <changeSet id="Create functions which will give trial balance calculated result and total count" author="V.G.">
-        <sqlFile path="../../sql/eledger/024_functions_fn_gl_accounting_details.sql" relativeToChangelogFile="true" splitStatements="false"/>
+        <sqlFile path="../../sql/eledger/024_functions_fn_reporting_taxpayer_account.sql" relativeToChangelogFile="true" splitStatements="false"/>
     </changeSet>
 
     <changeSet id="Create procedure sp_repayment for payment type" author="V.G.">

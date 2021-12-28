@@ -37,7 +37,7 @@ class TaxpayerAccountSearchAdapter implements TaxpayerAccountSearchPort {
 
     private Long queryTotalCount(TaxpayerAccountSearchCommand command) {
         //language=PostgreSQL
-        var countQuery = "SELECT * FROM eledger.fn_gl_accounting_details_count(:tpn, :languageCode, :glAccountPartFullCode, :periodYear, :periodSegment, :startTransactionDate, :endTransactionDate)";
+        var countQuery = "SELECT * FROM eledger.fn_reporting_taxpayer_account_count(:tpn, :languageCode, :glAccountPartFullCode, :periodYear, :periodSegment, :startTransactionDate, :endTransactionDate)";
 
 
         return jdbcTemplate.queryForObject(
@@ -49,7 +49,7 @@ class TaxpayerAccountSearchAdapter implements TaxpayerAccountSearchPort {
 
     private List<TaxpayerAccountDto> queryContent(TaxpayerAccountSearchCommand command) {
         //language=PostgreSQL
-        var resultQuery = "SELECT * FROM eledger.fn_gl_accounting_details(:tpn, :languageCode, :glAccountPartFullCode, :periodYear, :periodSegment, :startTransactionDate, :endTransactionDate, :offset, :limit)";
+        var resultQuery = "SELECT * FROM eledger.fn_reporting_taxpayer_account(:tpn, :languageCode, :glAccountPartFullCode, :periodYear, :periodSegment, :startTransactionDate, :endTransactionDate, :offset, :limit)";
 
 
         return jdbcTemplate.query(
