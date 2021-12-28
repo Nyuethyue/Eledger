@@ -62,17 +62,20 @@ class ReconciliationUploadRecordEntity {
     public ReconciliationUploadRecordEntity(Long id, String depositNumber, String bankTransactionNumber,
                                             String bankBranchCode, LocalDate bankProcessingDate, BigDecimal bankAmount,
                                             LocalDate depositDate, BigDecimal depositAmount, String depositStatus,
-                                            LocalDateTime creationDateTime) {
+                                            LocalDateTime creationDateTime, String recordStatus) {
         this.id = id;
         this.depositNumber = depositNumber;
+
         this.bankTransactionNumber = bankTransactionNumber;
         this.bankBranchCode = bankBranchCode;
         this.bankProcessingDate = bankProcessingDate;
-        this.creationDateTime = creationDateTime;
         this.bankAmount = bankAmount;
+
         this.depositDate = depositDate;
         this.depositAmount = depositAmount;
         this.depositStatus = depositStatus;
+
+        this.recordStatus = recordStatus;
         this.creationDateTime = creationDateTime;
     }
 }

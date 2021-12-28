@@ -32,23 +32,28 @@ class ReconciliationUploadFileEntity {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "user_name")
+    private String userName;
+
     @Column(name = "creation_date_time", nullable = false, updatable = false)
     private LocalDateTime creationDateTime;
 
     @OneToMany(
-            mappedBy = "reconciliationUploadRecord",
+            mappedBy = "reconciliationUploadFile",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
     private Collection<ReconciliationUploadRecordEntity> records;
 
-    public ReconciliationUploadFileEntity(Long id, String filePath, String bankId, String status, LocalDateTime creationDateTime) {
+    public ReconciliationUploadFileEntity(Long id, String filePath, String bankId,
+                                          String status, String userName,
+                                          LocalDateTime creationDateTime) {
         this.id = id;
         this.filePath = filePath;
         this.bankId = bankId;
         this.status = status;
+        this.userName = userName;
         this.creationDateTime = creationDateTime;
-        this.status = status;
     }
 }
