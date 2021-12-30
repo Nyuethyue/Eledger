@@ -85,12 +85,52 @@ class ImportBankDepositInfoService implements GenerateReconciliationInfoUseCase 
                                 LocalDateTime.now()
                         ));
                     } else {
+                        uploadRows.add(new ReconciliationUploadRecordInfo(
+                                null,
+                                depositNumber,
+                                info.getTransactionId(),
+                                info.getBankBranchCode(),
+                                info.getPaymentDate(),
+                                info.getAmount(),
+                                deposit.getCreationDateTime(),
+                                deposit.getAmount(),
+                                deposit.getStatus().getValue(),
+                                "WRONG_STATUS",
+                                LocalDateTime.now()
+                        ));
                         errorRecords.add(mapTo("WRONG_STATUS", info));
                     }
                 } else {
+                    uploadRows.add(new ReconciliationUploadRecordInfo(
+                            null,
+                            depositNumber,
+                            info.getTransactionId(),
+                            info.getBankBranchCode(),
+                            info.getPaymentDate(),
+                            info.getAmount(),
+                            null,
+                            null,
+                            null,
+                            "MISSING_DEPOSIT",
+                            LocalDateTime.now()
+                    ));
                     errorRecords.add(mapTo("MISSING_DEPOSIT", info));
                 }
             } else {
+                uploadRows.add(new ReconciliationUploadRecordInfo(
+                        null,
+                        null,
+                        info.getTransactionId(),
+                        info.getBankBranchCode(),
+                        info.getPaymentDate(),
+                        info.getAmount(),
+                        null,
+                        null,
+                        null,
+                        "MISSING_DATA",
+                        LocalDateTime.now()
+                ));
+
                 errorRecords.add(mapTo("MISSING_DATA", info));
             }
         }
