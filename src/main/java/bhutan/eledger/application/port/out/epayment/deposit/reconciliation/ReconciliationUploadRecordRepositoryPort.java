@@ -22,6 +22,4 @@ public interface ReconciliationUploadRecordRepositoryPort {
     ReconciliationUploadRecordInfo create(ReconciliationUploadRecordInfo paymentAdvice);
 
     void deleteAll();
-
-    void update(ReconciliationUploadRecordInfo data);
 }
