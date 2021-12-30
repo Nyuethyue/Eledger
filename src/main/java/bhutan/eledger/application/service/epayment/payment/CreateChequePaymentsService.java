@@ -52,7 +52,7 @@ class CreateChequePaymentsService implements CreateChequePaymentsUseCase {
 
 
         var receipt = Receipt.chequeWithoutId(
-                PaymentMode.CASH,
+                PaymentMode.CHEQUE,
                 receiptCreationContext.isAllPaid() ? ReceiptStatus.PAID : ReceiptStatus.SPLIT_PAYMENT,
                 refCurrencyEntry,
                 receiptNumber,
