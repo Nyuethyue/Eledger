@@ -18,10 +18,13 @@ public interface GenerateReconciliationInfoUseCase {
 
     @Data
     class GenerateDepositReconciliationInfoCommand {
+        private final String bankId;
         private final String filePath;
 
         @JsonCreator
-        public GenerateDepositReconciliationInfoCommand(@JsonProperty("filePath") String filePath) {
+        public GenerateDepositReconciliationInfoCommand(@JsonProperty("bankId") String bankId,
+                                                        @JsonProperty("filePath") String filePath) {
+            this.bankId = bankId;
             this.filePath = filePath;
         }
     }
