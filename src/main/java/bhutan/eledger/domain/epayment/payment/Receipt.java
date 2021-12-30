@@ -28,6 +28,7 @@ public class Receipt {
     private final LocalDate instrumentDate;
     private final String otherReferenceNumber;
     private final RefEntry bankBranch;
+    private final RefEntry issuingBankBranch;
 
     public Collection<PaymentPaInfo> getPaInfos() {
         return payments
@@ -66,7 +67,8 @@ public class Receipt {
                 instrumentNumber,
                 instrumentDate,
                 otherReferenceNumber,
-                bankBranch
+                bankBranch,
+                null
         );
     }
 
@@ -99,7 +101,8 @@ public class Receipt {
                 instrumentNumber,
                 instrumentDate,
                 otherReferenceNumber,
-                bankBranch
+                bankBranch,
+                null
         );
     }
 
@@ -132,7 +135,8 @@ public class Receipt {
                 instrumentNumber,
                 instrumentDate,
                 otherReferenceNumber,
-                bankBranch
+                bankBranch,
+                null
         );
     }
 
@@ -161,7 +165,44 @@ public class Receipt {
                 null,
                 null,
                 null,
+                null,
                 null
         );
     }
+
+    public static Receipt cashWarrantWithoutId(
+            PaymentMode paymentMode,
+            ReceiptStatus status,
+            RefEntry currency,
+            String receiptNumber,
+            LocalDateTime creationDateTime,
+            EpTaxpayer taxpayer,
+            Collection<Payment> payments,
+            BigDecimal totalPaidAmount,
+            String securityNumber,
+            String instrumentNumber,
+            LocalDate instrumentDate,
+            String otherReferenceNumber,
+            RefEntry bankBranch,
+            RefEntry issuingBankBranch
+    ) {
+        return new Receipt(
+                null,
+                paymentMode,
+                status,
+                currency,
+                receiptNumber,
+                creationDateTime,
+                taxpayer,
+                payments,
+                totalPaidAmount,
+                securityNumber,
+                instrumentNumber,
+                instrumentDate,
+                otherReferenceNumber,
+                bankBranch,
+                issuingBankBranch
+        );
+    }
+
 }

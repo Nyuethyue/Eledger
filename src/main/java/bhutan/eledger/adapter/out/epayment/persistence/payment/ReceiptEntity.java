@@ -32,6 +32,8 @@ class ReceiptEntity {
     private Long refCurrencyId;
     @Column(name = "ref_bank_branch_id")
     private Long refBankBranchId;
+    @Column(name = "ref_issuing_bank_branch_id")
+    private Long refIssuingBankBranchId;
     @Column(name = "receipt_number")
     private String receiptNumber;
     @Column(name = "security_number")

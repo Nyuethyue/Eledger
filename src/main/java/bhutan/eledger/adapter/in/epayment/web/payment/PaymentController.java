@@ -1,6 +1,7 @@
 package bhutan.eledger.adapter.in.epayment.web.payment;
 
 import bhutan.eledger.application.port.in.epayment.payment.CreateCashMultiplePaymentsUseCase;
+import bhutan.eledger.application.port.in.epayment.payment.CreateCashWarrantPaymentsUseCase;
 import bhutan.eledger.application.port.in.epayment.payment.CreateChequePaymentsUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,10 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/payment/receipt")
-class CashPaymentController {
+class PaymentController {
 
     private final CreateCashMultiplePaymentsUseCase createCashMultiplePaymentsUseCase;
     private final CreateChequePaymentsUseCase createChequePaymentsUseCase;
+    private final CreateCashWarrantPaymentsUseCase createCashWarrantPaymentsUseCase;
 
     @PostMapping("/cheque/multiple")
     public ResponseEntity<Object> createMultipleCheque(@RequestBody CreateChequePaymentsUseCase.CreateChequePaymentsCommand command) {
@@ -35,4 +37,15 @@ class CashPaymentController {
                 .status(HttpStatus.CREATED)
                 .body(receipts);
     }
+
+    @PostMapping("/cash_warrant/multiple")
+    public ResponseEntity<Object> createMultipleCashWarrant(@RequestBody CreateCashWarrantPaymentsUseCase.CreateCashWarrantPaymentsCommand command) {
+        var receipts = createCashWarrantPaymentsUseCase.create(command);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(receipts);
+    }
+
+
 }

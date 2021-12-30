@@ -3,6 +3,7 @@ package bhutan.eledger.adapter.out.epayment.persistence.payment;
 import am.iunetworks.lib.common.persistence.search.PageableResolver;
 import am.iunetworks.lib.common.persistence.search.PagedSearchResult;
 import am.iunetworks.lib.common.persistence.search.SearchResult;
+import bhutan.eledger.adapter.out.ref.persistence.bankbranch.QRefBankBranchEntity;
 import bhutan.eledger.application.port.out.epayment.payment.ReceiptSearchPort;
 import bhutan.eledger.common.ref.refentry.RefEntry;
 import bhutan.eledger.common.ref.refentry.RefEntryRepository;
@@ -78,8 +79,12 @@ class ReceiptSearchAdapter implements ReceiptSearchPort {
             predicate.and(QPaymentEntity.paymentEntity.glAccount.code.startsWith(command.getGlAccountPartFullCode()));
         }
 
-        if(command.getStatuses() != null && !command.getStatuses().isEmpty()) {
+        if (command.getStatuses() != null && !command.getStatuses().isEmpty()) {
             predicate.and(qReceiptEntity.status.in(command.getStatuses()));
+        }
+
+        if (command.getBankBranchId() != null) {
+            predicate.and(qReceiptEntity.refBankBranchId.eq(command.getBankBranchId()));
         }
 
         return jpqlQuery.where(predicate);
