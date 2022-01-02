@@ -21,18 +21,20 @@ public interface ReceiptSearchPort {
         private final Long refCurrencyId;
         private final PaymentMode paymentMode;
         private final Long bankBranchId;
+        private final Long bankIssuingBranchId;
         private final String glAccountPartFullCode;
         private final LocalDate receiptDate;
         private final Collection<String> statuses;
 
         public ReceiptCommand(int page, int size, String sortProperty, String sortDirection,
-                              Long refCurrencyId, PaymentMode paymentMode, Long bankBranchId,
+                              Long refCurrencyId, PaymentMode paymentMode, Long bankBranchId, Long bankIssuingBranchId,
                               String glAccountPartFullCode, LocalDate receiptDate,
                               Collection<String> statuses) {
             super(page, size, sortProperty, sortDirection);
             this.refCurrencyId = refCurrencyId;
             this.paymentMode = paymentMode;
             this.bankBranchId = bankBranchId;
+            this.bankIssuingBranchId = bankIssuingBranchId;
             this.glAccountPartFullCode = glAccountPartFullCode;
             this.receiptDate = receiptDate;
             this.statuses = statuses;

@@ -1,8 +1,6 @@
 package bhutan.eledger.adapter.in.epayment.web.payment;
 
-import bhutan.eledger.application.port.in.epayment.payment.CreateCashMultiplePaymentsUseCase;
-import bhutan.eledger.application.port.in.epayment.payment.CreateCashWarrantPaymentsUseCase;
-import bhutan.eledger.application.port.in.epayment.payment.CreateChequePaymentsUseCase;
+import bhutan.eledger.application.port.in.epayment.payment.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +17,8 @@ class PaymentController {
     private final CreateCashMultiplePaymentsUseCase createCashMultiplePaymentsUseCase;
     private final CreateChequePaymentsUseCase createChequePaymentsUseCase;
     private final CreateCashWarrantPaymentsUseCase createCashWarrantPaymentsUseCase;
+    private final CreatePosPaymentsUseCase createPosPaymentsUseCase;
+    private final CreateDemandDraftPaymentsUseCase createDemandDraftPaymentsUseCase;
 
     @PostMapping("/cheque/multiple")
     public ResponseEntity<Object> createMultipleCheque(@RequestBody CreateChequePaymentsUseCase.CreateChequePaymentsCommand command) {
@@ -38,9 +38,27 @@ class PaymentController {
                 .body(receipts);
     }
 
-    @PostMapping("/cash_warrant/multiple")
+    @PostMapping("/cash/warrant/multiple")
     public ResponseEntity<Object> createMultipleCashWarrant(@RequestBody CreateCashWarrantPaymentsUseCase.CreateCashWarrantPaymentsCommand command) {
         var receipts = createCashWarrantPaymentsUseCase.create(command);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(receipts);
+    }
+
+    @PostMapping("/demand/draft/multiple")
+    public ResponseEntity<Object> createMultipleDemandDraft(@RequestBody CreateDemandDraftPaymentsUseCase.CreateDemandDraftPaymentsCommand command) {
+        var receipts = createDemandDraftPaymentsUseCase.create(command);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(receipts);
+    }
+
+    @PostMapping("/pos/multiple")
+    public ResponseEntity<Object> createMultiplePos(@RequestBody CreatePosPaymentsUseCase.CreatePosPaymentsCommand command) {
+        var receipts = createPosPaymentsUseCase.create(command);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)

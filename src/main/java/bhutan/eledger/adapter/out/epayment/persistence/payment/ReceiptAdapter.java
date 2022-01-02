@@ -28,8 +28,9 @@ class ReceiptAdapter implements ReceiptRepositoryPort {
 
         RefEntry refCurrencyEntry = refEntryRepository.findByRefNameAndId(RefName.CURRENCY.getValue(), receiptEntity.getRefCurrencyId());
         RefEntry refBankAccountEntry = refEntryRepository.findByRefNameAndId(RefName.BANK_BRANCH.getValue(), receiptEntity.getRefBankBranchId());
+        RefEntry refIssuingBankAccountEntry = refEntryRepository.findByRefNameAndId(RefName.BANK_BRANCH.getValue(), receiptEntity.getRefIssuingBankBranchId());
 
-        return receiptMapper.mapToDomain(receiptEntity, refCurrencyEntry, refBankAccountEntry);
+        return receiptMapper.mapToDomain(receiptEntity, refCurrencyEntry, refBankAccountEntry,refIssuingBankAccountEntry);
     }
 
     @Override

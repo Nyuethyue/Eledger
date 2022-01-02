@@ -11,6 +11,7 @@ CREATE TABLE epayment.ep_receipt
     receipt_number             varchar        NOT NULL,
     security_number            varchar,
     instrument_number          varchar,
+    pos_reference_number       varchar,
     instrument_date            date,
     other_reference_number     varchar,
     creation_date_time         timestamp      NOT NULL,

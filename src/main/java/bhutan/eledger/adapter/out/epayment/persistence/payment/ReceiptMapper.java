@@ -16,9 +16,11 @@ class ReceiptMapper {
                 receipt.getStatus().getValue(),
                 receipt.getCurrency().getId(),
                 receipt.getBankBranch() != null ? receipt.getBankBranch().getId() : null,
+                receipt.getIssuingBankBranch() != null ? receipt.getIssuingBankBranch().getId() : null,
                 receipt.getReceiptNumber(),
                 receipt.getSecurityNumber(),
                 receipt.getInstrumentNumber(),
+                receipt.getPosReferenceNumber(),
                 receipt.getInstrumentDate(),
                 receipt.getOtherReferenceNumber(),
                 receipt.getCreationDateTime(),
@@ -51,7 +53,7 @@ class ReceiptMapper {
         return receiptEntity;
     }
 
-    Receipt mapToDomain(ReceiptEntity receipt, RefEntry refCurrencyEntry, RefEntry refBankAccountEntry) {
+    Receipt mapToDomain(ReceiptEntity receipt, RefEntry refCurrencyEntry, RefEntry refBankAccountEntry,RefEntry refIssuingBankAccountEntry) {
         return Receipt.withId(
                 receipt.getId(),
                 PaymentMode.of(receipt.getPaymentMode()),
@@ -83,7 +85,9 @@ class ReceiptMapper {
                 receipt.getInstrumentNumber(),
                 receipt.getInstrumentDate(),
                 receipt.getOtherReferenceNumber(),
-                refBankAccountEntry
+                refBankAccountEntry,
+                refIssuingBankAccountEntry,
+                receipt.getPosReferenceNumber()
         );
     }
 }
