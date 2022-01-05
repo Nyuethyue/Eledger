@@ -23,7 +23,7 @@ class ReconciliationUploadFileMapper {
                     new ReconciliationUploadRecordEntity(
                             null,
                             u.getDepositNumber(), u.getBankTransactionNumber(), u.getBankBranchCode(),
-                            u.getBankProcessingDate(), u.getBankAmount(), u.getDepositDate(),
+                            u.getBankProcessingDate(), u.getBankAmount(), u.getDepositDateTime(),
                             u.getDepositAmount(), u.getDepositStatus(),
                             u.getCreationDateTime(), u.getRecordStatus()
                     )
@@ -49,7 +49,7 @@ class ReconciliationUploadFileMapper {
                                     r.getBankBranchCode(),
                                     r.getBankProcessingDate(),
                                     r.getBankAmount(),
-                                    r.getDepositDate(),
+                                    r.getCreationDateTime(),
                                     r.getDepositAmount(),
                                     r.getDepositStatus(),
                                     r.getRecordStatus(),

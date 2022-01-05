@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS epayment.reconciliation_upload_record
     bank_branch_code        VARCHAR,
     bank_processing_date    date,
     bank_amount             numeric(20, 2),
-    deposit_date            date NOT NULL,
+    deposit_date_time       timestamp NOT NULL,
     deposit_amount          numeric(20, 2) NOT NULL,
     deposit_status          VARCHAR NOT NULL,
     record_status           VARCHAR NOT NULL

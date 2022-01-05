@@ -39,8 +39,8 @@ class ReconciliationUploadRecordEntity {
     @Column(name = "bank_amount")
     private BigDecimal bankAmount;
 
-    @Column(name = "deposit_date")
-    private LocalDate depositDate;
+    @Column(name = "deposit_date_time")
+    private LocalDateTime depositDateTime;
 
     @Column(name = "deposit_amount")
     private BigDecimal depositAmount;
@@ -61,7 +61,7 @@ class ReconciliationUploadRecordEntity {
 
     public ReconciliationUploadRecordEntity(Long id, String depositNumber, String bankTransactionNumber,
                                             String bankBranchCode, LocalDate bankProcessingDate, BigDecimal bankAmount,
-                                            LocalDate depositDate, BigDecimal depositAmount, String depositStatus,
+                                            LocalDateTime depositDateTime, BigDecimal depositAmount, String depositStatus,
                                             LocalDateTime creationDateTime, String recordStatus) {
         this.id = id;
         this.depositNumber = depositNumber;
@@ -71,7 +71,7 @@ class ReconciliationUploadRecordEntity {
         this.bankProcessingDate = bankProcessingDate;
         this.bankAmount = bankAmount;
 
-        this.depositDate = depositDate;
+        this.depositDateTime = depositDateTime;
         this.depositAmount = depositAmount;
         this.depositStatus = depositStatus;
 
