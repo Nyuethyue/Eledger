@@ -29,8 +29,8 @@ CREATE TABLE IF NOT EXISTS epayment.reconciliation_upload_record
     bank_branch_code        VARCHAR,
     bank_processing_date    date,
     bank_amount             numeric(20, 2),
-    deposit_date            date NOT NULL,
-    deposit_amount          numeric(20, 2) NIT NULL,
+    deposit_date_time       timestamp NOT NULL,
+    deposit_amount          numeric(20, 2) NOT NULL,
     deposit_status          VARCHAR NOT NULL,
     record_status           VARCHAR NOT NULL
 );
@@ -41,11 +41,6 @@ ALTER TABLE epayment.reconciliation_upload_record
 ALTER TABLE ONLY epayment.reconciliation_upload_record
     ADD CONSTRAINT fk_reconciliation_upload_record_upload_id
         FOREIGN KEY (upload_id) REFERENCES epayment.deposit (id);
-
-ALTER TABLE ONLY epayment.deposit_receipt
-    ADD CONSTRAINT fk_deposit_receipt_id
-        FOREIGN KEY (receipt_id) REFERENCES epayment.reconciliation_upload_file (id);
-
 
 CREATE SEQUENCE epayment.reconciliation_upload_record_id_seq
     INCREMENT BY 1

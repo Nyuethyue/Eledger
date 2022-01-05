@@ -16,7 +16,7 @@ public class ReconciliationUploadRecordInfo {
     private final LocalDate bankProcessingDate;
     private final BigDecimal bankAmount;
 
-    private final LocalDateTime depositCreationDateTime;
+    private final LocalDateTime depositDateTime;
     private final BigDecimal depositAmount;
     private final String depositStatus;
 

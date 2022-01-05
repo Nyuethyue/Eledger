@@ -14,7 +14,7 @@ class ReconciliationUploadRecordMapper {
                 info.getBankBranchCode(),
                 info.getBankProcessingDate(),
                 info.getBankAmount(),
-                info.getDepositDate(),
+                info.getDepositDateTime(),
                 info.getDepositAmount(),
                 info.getDepositStatus(),
                 info.getCreationDateTime(),
@@ -33,7 +33,7 @@ class ReconciliationUploadRecordMapper {
                 entity.getBankProcessingDate(),
                 entity.getBankAmount(),
 
-                entity.getDepositDate(),
+                entity.getDepositDateTime(),
                 entity.getDepositAmount(),
                 entity.getDepositStatus(),
                 entity.getRecordStatus(),
