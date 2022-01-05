@@ -25,6 +25,10 @@ class ReconciliationUploadTest {
     @Autowired
     private BankStatementImportUseCase bankStatementImportUseCase;
 
+    @Autowired
+    private BankStatementImportUseCase bankStatementImportUseCase;
+
+
     @AfterEach
     void afterEach() {
     }
@@ -47,11 +51,11 @@ class ReconciliationUploadTest {
 
     @Test
     void excelDownloadTest() {
-        String filePathOld = "/resources/file/files/drc-users/00/00/00/00000000-0000-0000-0000-000000000001/2021/11/29/1638187692518/attachments/Reconciliation.xls";
-        BankStatementImportUseCase.ImportBankStatementsCommand commandOld =
-                new BankStatementImportUseCase.ImportBankStatementsCommand(
-                         filePathOld);
-
+//        String filePathOld = "/resources/file/files/drc-users/00/00/00/00000000-0000-0000-0000-000000000001/2021/11/29/1638187692518/attachments/Reconciliation.xls";
+//        BankStatementImportUseCase.ImportBankStatementsCommand commandOld =
+//                new BankStatementImportUseCase.ImportBankStatementsCommand(
+//                         filePathOld);
+//
 //        List<BankStatementImportReconciliationInfo> resultOld = bankStatementImportUseCase.importStatements(commandOld);
 //        Assertions.assertTrue(resultOld.size() > 0, "Empty result for excel file!");
 

@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION eledger.fn_reporting_taxpayer_account_count(p_tpn character varying,
+CREATE OR REPLACE FUNCTION eledger.fn_gl_accounting_details_count(p_tpn character varying,
                                                                   p_language_code character varying,
                                                                   p_tax_type_code character varying,
                                                                   p_year character varying, p_segment character varying,
@@ -92,7 +92,7 @@ $function$
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION eledger.fn_reporting_taxpayer_account(p_tpn character varying, p_language_code character varying,
+CREATE OR REPLACE FUNCTION eledger.fn_gl_accounting_details(p_tpn character varying, p_language_code character varying,
                                                             p_tax_type_code character varying, p_year character varying,
                                                             p_segment character varying, p_start_date date,
                                                             p_end_date date, p_offset bigint, p_limit bigint)
