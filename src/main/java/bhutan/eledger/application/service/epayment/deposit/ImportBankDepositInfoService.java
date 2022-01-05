@@ -40,6 +40,20 @@ class ImportBankDepositInfoService implements GenerateReconciliationInfoUseCase 
 
         List<ErrorRecordsInfo> errorRecords = new LinkedList<>();
 
+/*  private final Long id;
+    private final String depositNumber;
+
+    private final String bankTransactionNumber;
+    private final String bankBranchCode;
+    private final LocalDate bankProcessingDate;
+    private final BigDecimal bankAmount;
+
+    private final LocalDate depositDate;
+    private final BigDecimal depositAmount;
+    private final String depositStatus;
+
+    private final String recordStatus;
+    private final LocalDateTime creationDateTime; */
         List<DepositReconciliationInfo> depositInfoList = new LinkedList<>();
         for(BankStatementImportReconciliationInfo info : bankInfoList) {
             if(allMandatoryFieldsArePresent(info)) {
