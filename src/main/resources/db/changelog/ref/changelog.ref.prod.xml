@@ -39,4 +39,8 @@
         <sqlFile path="../../sql/ref/008_insert_denomination_ref_table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <changeSet id="RRCO Cash Counters Schema" author="D.T." dbms="postgresql">
+        <sqlFile path="../../sql/ref/009_create_rrco_cash_counters_ref_table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog>
