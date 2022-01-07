@@ -1,9 +1,6 @@
 package bhutan.eledger.adapter.out.epayment.persistence.deposit;
 
-import bhutan.eledger.application.port.out.epayment.deposit.DepositRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.deposit.reconciliation.ReconciliationUploadFileRepositoryPort;
-import bhutan.eledger.domain.epayment.deposit.Deposit;
-import bhutan.eledger.domain.epayment.deposit.DepositStatus;
 import bhutan.eledger.domain.epayment.deposit.ReconciliationUploadFileInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

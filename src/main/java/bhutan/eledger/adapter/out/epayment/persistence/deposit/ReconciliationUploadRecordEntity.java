@@ -54,10 +54,9 @@ class ReconciliationUploadRecordEntity {
     @Column(name = "creation_date_time", nullable = false, updatable = false)
     private LocalDateTime creationDateTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("uploadId")
+    @ManyToOne
+    @JoinColumn(name = "id", nullable = false)
     private ReconciliationUploadFileEntity reconciliationUploadFile;
-
 
     public ReconciliationUploadRecordEntity(Long id, String depositNumber, String bankTransactionNumber,
                                             String bankBranchCode, LocalDate bankProcessingDate, BigDecimal bankAmount,

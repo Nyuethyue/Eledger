@@ -32,7 +32,8 @@ CREATE TABLE IF NOT EXISTS epayment.reconciliation_upload_record
     deposit_date_time       timestamp NOT NULL,
     deposit_amount          numeric(20, 2) NOT NULL,
     deposit_status          VARCHAR NOT NULL,
-    record_status           VARCHAR NOT NULL
+    record_status           VARCHAR NOT NULL,
+    creation_date_time      timestamp NOT NULL
 );
 
 ALTER TABLE epayment.reconciliation_upload_record

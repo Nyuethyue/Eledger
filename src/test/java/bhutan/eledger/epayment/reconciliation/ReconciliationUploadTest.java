@@ -1,9 +1,11 @@
 package bhutan.eledger.epayment.reconciliation;
 
+import am.iunetworks.lib.common.persistence.search.SearchResult;
 import bhutan.eledger.adapter.out.epayment.deposit.reconciliation.ReconciliationExcelLoader;
 import bhutan.eledger.application.port.in.epayment.deposit.SearchReconciliationUploadHistoryUseCase;
 import bhutan.eledger.application.port.in.epayment.payment.deposit.reconciliation.BankStatementImportUseCase;
 import bhutan.eledger.domain.epayment.deposit.BankStatementImportReconciliationInfo;
+import bhutan.eledger.domain.epayment.deposit.ReconciliationUploadRecordInfo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,6 +17,8 @@ import org.springframework.test.context.TestPropertySource;
 import java.io.FileInputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.temporal.TemporalUnit;
 import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -67,5 +71,21 @@ class ReconciliationUploadTest {
 
         List<BankStatementImportReconciliationInfo> resultNew = bankStatementImportUseCase.importStatements(commandNew);
         Assertions.assertTrue(resultNew.size() > 0, "Empty result for excel file!");
+
+        var now = LocalDate.now();
+        var from = now.minusDays(1);
+        var to = now.plusDays(1);
+        SearchReconciliationUploadHistoryUseCase.SearchReconciliationUploadRecordCommand command =
+                command = new SearchReconciliationUploadHistoryUseCase.SearchReconciliationUploadRecordCommand(
+                        0,
+                        10,
+                        null,
+                        null,
+                        from,
+                        to);
+        SearchResult<ReconciliationUploadRecordInfo> historyResult =
+                searchReconciliationUploadHistoryUseCase.search(command);
+
+        Assertions.assertTrue(historyResult.getContent().size() > 0, "Empty result reconciliation history result!");
     }
 }
