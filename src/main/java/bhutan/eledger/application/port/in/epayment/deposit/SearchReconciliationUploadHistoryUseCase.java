@@ -1,6 +1,7 @@
 package bhutan.eledger.application.port.in.epayment.deposit;
 
 import am.iunetworks.lib.common.persistence.search.SearchResult;
+import bhutan.eledger.domain.epayment.deposit.ReconciliationUploadRecordInfo;
 import bhutan.eledger.domain.epayment.payment.Receipt;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 @Validated
 public interface SearchReconciliationUploadHistoryUseCase {
 
-    SearchResult<Receipt> search(@Valid SearchReconciliationUploadRecordCommand command);
+    SearchResult<ReconciliationUploadRecordInfo> search(@Valid SearchReconciliationUploadRecordCommand command);
 
     @Data
     class SearchReconciliationUploadRecordCommand {

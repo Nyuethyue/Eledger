@@ -8,18 +8,18 @@ import lombok.ToString;
 
 import java.time.LocalDate;
 
-public interface ReconciliationUploadRecordSearchPort {
+public interface ReconciliationUploadRecordHistorySearchPort {
 
-    SearchResult<ReconciliationUploadRecordInfo> search(ReconciliationUploadRecordSearchCommand command);
+    SearchResult<ReconciliationUploadRecordInfo> search(ReconciliationUploadRecordHistorySearchCommand command);
 
     @Getter
     @ToString
-    class ReconciliationUploadRecordSearchCommand extends AbstractSearchCommand {
+    class ReconciliationUploadRecordHistorySearchCommand extends AbstractSearchCommand {
         private final LocalDate fromDate;
         private final LocalDate toDate;
 
-        public ReconciliationUploadRecordSearchCommand(int page, int size, String sortProperty, String sortDirection,
-                              LocalDate fromDate, LocalDate toDate) {
+        public ReconciliationUploadRecordHistorySearchCommand(int page, int size, String sortProperty, String sortDirection,
+                                                              LocalDate fromDate, LocalDate toDate) {
             super(page, size, sortProperty, sortDirection);
             this.fromDate = fromDate;
             this.toDate = toDate;

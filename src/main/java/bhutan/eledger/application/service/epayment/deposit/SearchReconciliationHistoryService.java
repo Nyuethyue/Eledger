@@ -2,11 +2,10 @@ package bhutan.eledger.application.service.epayment.deposit;
 
 import am.iunetworks.lib.common.persistence.search.SearchResult;
 import am.iunetworks.lib.common.persistence.search.SearchValidationUtils;
-import bhutan.eledger.application.port.in.epayment.deposit.SearchDepositUseCase;
 import bhutan.eledger.application.port.in.epayment.deposit.SearchReconciliationUploadHistoryUseCase;
-import bhutan.eledger.application.port.out.epayment.deposit.DepositSearchPort;
-import bhutan.eledger.configuration.epayment.deposit.DepositSearchProperties;
-import bhutan.eledger.domain.epayment.deposit.Deposit;
+import bhutan.eledger.application.port.out.epayment.deposit.reconciliation.ReconciliationUploadRecordHistorySearchPort;
+import bhutan.eledger.configuration.epayment.deposit.ReconciliationRecordHistorySearchProperties;
+import bhutan.eledger.domain.epayment.deposit.ReconciliationUploadRecordInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -17,21 +16,21 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 class SearchReconciliationHistoryService implements SearchReconciliationUploadHistoryUseCase {
-    private final DepositSearchProperties depositSearchProperties;
-    private final DepositSearchPort depositSearchPort;
+    private final ReconciliationRecordHistorySearchProperties reconciliationRecordHistorySearchProperties;
+    private final ReconciliationUploadRecordHistorySearchPort reconciliationUploadRecordSearchPort;
 
     @Override
-    public SearchResult<Deposit> search(SearchDepositCommand command) {
-        log.trace("Search deposit started with in command: {}", command);
+    public SearchResult<ReconciliationUploadRecordInfo> search(SearchReconciliationUploadRecordCommand command) {
+        log.trace("Search reconciliation record history started with in command: {}", command);
 
         SearchValidationUtils.validateSortPropertyAvailability(
-                depositSearchProperties.getAvailableSortProperties(),
+                reconciliationRecordHistorySearchProperties.getAvailableSortProperties(),
                 command.getSortProperty()
         );
 
         var outCommand = makeOutSearchCommand(command);
 
-        var searchResult = depositSearchPort.search(outCommand);
+        var searchResult = reconciliationUploadRecordSearchPort.search(outCommand);
 
         log.debug("Search executed. Result totalCount: {}, totalPages: {}, contentCount {}, out port command: {}", searchResult.getTotalCount(), searchResult.getTotalPages(), searchResult.getContent().size(), outCommand);
         log.trace("Search result content: {}, out port command: {}", searchResult.getContent(), outCommand);
@@ -39,16 +38,14 @@ class SearchReconciliationHistoryService implements SearchReconciliationUploadHi
         return searchResult;
     }
 
-    private DepositSearchPort.DepositSearchCommand makeOutSearchCommand(SearchDepositCommand command) {
-        return new DepositSearchPort.DepositSearchCommand(
-                depositSearchProperties.resolvePage(command.getPage()),
-                depositSearchProperties.resolveSize(command.getSize()),
-                depositSearchProperties.resolveSortProperty(command.getSortProperty()),
-                depositSearchProperties.resolveSortDirection(command.getSortDirection()),
-                command.getId(),
-                command.getDepositNumber(),
-                command.getFromBankDepositDate(),
-                command.getToBankDepositDate()
+    private ReconciliationUploadRecordHistorySearchPort.ReconciliationUploadRecordHistorySearchCommand makeOutSearchCommand(SearchReconciliationUploadRecordCommand command) {
+        return new ReconciliationUploadRecordHistorySearchPort.ReconciliationUploadRecordHistorySearchCommand(
+                reconciliationRecordHistorySearchProperties.resolvePage(command.getPage()),
+                reconciliationRecordHistorySearchProperties.resolveSize(command.getSize()),
+                reconciliationRecordHistorySearchProperties.resolveSortProperty(command.getSortProperty()),
+                reconciliationRecordHistorySearchProperties.resolveSortDirection(command.getSortDirection()),
+                command.getFromDate(),
+                command.getToDate()
         );
     }
 }
