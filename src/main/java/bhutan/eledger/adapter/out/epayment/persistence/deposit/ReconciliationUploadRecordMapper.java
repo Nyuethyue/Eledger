@@ -6,24 +6,6 @@ import org.springframework.stereotype.Component;
 @Component
 class ReconciliationUploadRecordMapper {
 
-    ReconciliationUploadRecordEntity mapToEntity(ReconciliationUploadRecordInfo info) {
-        ReconciliationUploadRecordEntity entity = new ReconciliationUploadRecordEntity(
-                null,
-                info.getDepositNumber(),
-                info.getBankTransactionNumber(),
-                info.getBankBranchCode(),
-                info.getBankProcessingDate(),
-                info.getBankAmount(),
-                info.getDepositDateTime(),
-                info.getDepositAmount(),
-                info.getDepositStatus(),
-                info.getCreationDateTime(),
-                info.getRecordStatus()
-        );
-
-        return entity;
-    }
-
     ReconciliationUploadRecordInfo mapToDomain(ReconciliationUploadRecordEntity entity) {
         return new ReconciliationUploadRecordInfo(
                 entity.getId(),

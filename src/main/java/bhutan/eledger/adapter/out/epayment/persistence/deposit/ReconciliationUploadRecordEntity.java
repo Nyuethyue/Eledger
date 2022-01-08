@@ -58,23 +58,25 @@ class ReconciliationUploadRecordEntity {
     @JoinColumn(name = "reconciliation_upload_file_id", nullable = false)
     private ReconciliationUploadFileEntity reconciliationUploadFile;
 
-    public ReconciliationUploadRecordEntity(Long id, String depositNumber, String bankTransactionNumber,
-                                            String bankBranchCode, LocalDate bankProcessingDate, BigDecimal bankAmount,
-                                            LocalDateTime depositDateTime, BigDecimal depositAmount, String depositStatus,
-                                            LocalDateTime creationDateTime, String recordStatus) {
-        this.id = id;
-        this.depositNumber = depositNumber;
+    public ReconciliationUploadRecordEntity(String bankTransactionNumber, String bankBranchCode,
+                                            LocalDate bankProcessingDate, BigDecimal bankAmount,
+                                            String depositNumber, LocalDateTime depositDateTime,
+                                            BigDecimal depositAmount, String depositStatus,
+                                            LocalDateTime creationDateTime, String recordStatus,
+                                            ReconciliationUploadFileEntity reconciliationUploadFile) {
 
         this.bankTransactionNumber = bankTransactionNumber;
         this.bankBranchCode = bankBranchCode;
         this.bankProcessingDate = bankProcessingDate;
         this.bankAmount = bankAmount;
 
+        this.depositNumber = depositNumber;
         this.depositDateTime = depositDateTime;
         this.depositAmount = depositAmount;
         this.depositStatus = depositStatus;
 
         this.recordStatus = recordStatus;
+        this.reconciliationUploadFile = reconciliationUploadFile;
         this.creationDateTime = creationDateTime;
     }
 }

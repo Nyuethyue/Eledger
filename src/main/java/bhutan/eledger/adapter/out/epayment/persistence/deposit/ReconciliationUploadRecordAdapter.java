@@ -29,14 +29,6 @@ class ReconciliationUploadRecordAdapter implements ReconciliationUploadRecordRep
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    @Override
-    public ReconciliationUploadRecordInfo create(ReconciliationUploadRecordInfo info) {
-        ReconciliationUploadRecordEntity entity = repository.save(
-                mapper.mapToEntity(info)
-        );
-
-        return mapper.mapToDomain(entity);
-    }
 
     @Override
     public void deleteAll() {

@@ -19,7 +19,5 @@ public interface ReconciliationUploadRecordRepositoryPort {
 
     Collection<ReconciliationUploadRecordInfo> readAll();
 
-    ReconciliationUploadRecordInfo create(ReconciliationUploadRecordInfo paymentAdvice);
-
     void deleteAll();
 }

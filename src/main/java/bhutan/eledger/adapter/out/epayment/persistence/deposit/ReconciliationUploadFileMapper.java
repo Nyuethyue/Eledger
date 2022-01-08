@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 class ReconciliationUploadFileMapper {
     ReconciliationUploadFileEntity mapToEntity(ReconciliationUploadFileInfo uploadRecordInfo) {
         ReconciliationUploadFileEntity entity = new ReconciliationUploadFileEntity(
-                null,
                 uploadRecordInfo.getFilePath(),
                 uploadRecordInfo.getBankId(),
                 uploadRecordInfo.getStatus(),
@@ -21,12 +20,12 @@ class ReconciliationUploadFileMapper {
         if(null != uploadRecordInfo.getUploadRows() && !uploadRecordInfo.getUploadRows().isEmpty()) {
             records = uploadRecordInfo.getUploadRows().stream().map(u ->
                     new ReconciliationUploadRecordEntity(
-                            null,
-                            u.getDepositNumber(), u.getBankTransactionNumber(),
-                            u.getBankBranchCode(), u.getBankProcessingDate(),
-                            u.getBankAmount(), u.getDepositDateTime(),
+                            u.getBankTransactionNumber(), u.getBankBranchCode(),
+                            u.getBankProcessingDate(), u.getBankAmount(),
+                            u.getDepositNumber(), u.getDepositDateTime(),
                             u.getDepositAmount(), u.getDepositStatus(),
-                            u.getCreationDateTime(), u.getRecordStatus()
+                            uploadRecordInfo.getCreationDateTime(),u.getRecordStatus(),
+                            entity
                     )
             ).collect(Collectors.toUnmodifiableList());
         } else {

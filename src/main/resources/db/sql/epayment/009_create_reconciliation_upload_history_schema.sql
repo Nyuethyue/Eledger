@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS epayment.reconciliation_upload_file
 (
     id                     bigint  NOT NULL,
     file_path              VARCHAR NOT NULL,
-    bank_id                VARCHAR NOT NULL,
+    bank_id                VARCHAR,
     status                 VARCHAR NOT NULL,
     user_name              VARCHAR NOT NULL,
     creation_date_time     timestamp NOT NULL
@@ -24,14 +24,14 @@ CREATE TABLE IF NOT EXISTS epayment.reconciliation_upload_record
 (
     id                      bigint NOT NULL,
     reconciliation_upload_file_id   bigint NOT NULL,
-    deposit_number          VARCHAR NOT NULL,
     bank_transaction_number VARCHAR,
     bank_branch_code        VARCHAR,
     bank_processing_date    date,
     bank_amount             numeric(20, 2),
-    deposit_date_time       timestamp NOT NULL,
-    deposit_amount          numeric(20, 2) NOT NULL,
-    deposit_status          VARCHAR NOT NULL,
+    deposit_number          VARCHAR NOT NULL,
+    deposit_date_time       timestamp,
+    deposit_amount          numeric(20, 2),
+    deposit_status          VARCHAR,
     record_status           VARCHAR NOT NULL,
     creation_date_time      timestamp NOT NULL
 );

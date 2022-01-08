@@ -66,20 +66,23 @@ class ReconciliationUploadTest {
 //
 //        List<BankStatementImportReconciliationInfo> resultOld = bankStatementImportUseCase.importStatements(commandOld);
 //        Assertions.assertTrue(resultOld.size() > 0, "Empty result for excel file!");
-
         String filePathNew = "resources/file/files/drc-users/00/00/00/00000000-0000-0000-0000-000000000001/2021/11/29/1638187871846/attachments/Reconciliation.xlsx";
-        BankStatementImportUseCase.ImportBankStatementsCommand commandNew =
-                new BankStatementImportUseCase.ImportBankStatementsCommand(
-                        filePathNew);
 
-        List<BankStatementImportReconciliationInfo> resultNew = bankStatementImportUseCase.importStatements(commandNew);
-        Assertions.assertTrue(resultNew.size() > 0, "Empty result for excel file!");
+        GenerateReconciliationInfoUseCase.GenerateDepositReconciliationInfoCommand generateCommand =
+                new GenerateReconciliationInfoUseCase.GenerateDepositReconciliationInfoCommand(
+                        null,
+                        filePathNew
+                );
+        GenerateReconciliationInfoUseCase.ReconciliationInfo resultNew =
+                generateReconciliationInfoUseCase.generate(generateCommand);
+
+//        Assertions.assertTrue(resultNew.getDeposits().size() > 0, "Empty result for excel file!");
 
         var now = LocalDate.now();
         var from = now.minusDays(1);
         var to = now.plusDays(1);
-        SearchReconciliationUploadHistoryUseCase.SearchReconciliationUploadRecordCommand command =
-                command = new SearchReconciliationUploadHistoryUseCase.SearchReconciliationUploadRecordCommand(
+        SearchReconciliationUploadHistoryUseCase.SearchReconciliationUploadRecordCommand searchCommand =
+                searchCommand = new SearchReconciliationUploadHistoryUseCase.SearchReconciliationUploadRecordCommand(
                         0,
                         10,
                         null,
@@ -87,7 +90,7 @@ class ReconciliationUploadTest {
                         from,
                         to);
         SearchResult<ReconciliationUploadRecordInfo> historyResult =
-                searchReconciliationUploadHistoryUseCase.search(command);
+                searchReconciliationUploadHistoryUseCase.search(searchCommand);
 
         Assertions.assertTrue(historyResult.getContent().size() > 0, "Empty reconciliation history result!");
     }

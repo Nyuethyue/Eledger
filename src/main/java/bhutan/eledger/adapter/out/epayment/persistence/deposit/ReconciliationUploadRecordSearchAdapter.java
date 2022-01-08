@@ -45,12 +45,12 @@ class ReconciliationUploadRecordSearchAdapter implements ReconciliationUploadRec
 
         LocalDate from = command.getFromDate();
         if (from != null) {
-            predicate.and(qReconciliationUploadRecordEntity.bankProcessingDate.goe(from));
+            predicate.and(qReconciliationUploadRecordEntity.creationDateTime.goe(from.atStartOfDay()));
         }
 
         LocalDate to = command.getToDate();
         if (to != null) {
-            predicate.and(qReconciliationUploadRecordEntity.bankProcessingDate.loe(to));
+            predicate.and(qReconciliationUploadRecordEntity.creationDateTime.loe(to.plusDays(1).atStartOfDay()));
         }
 
         return jpqlQuery.where(predicate);

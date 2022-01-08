@@ -120,11 +120,17 @@ class ImportBankDepositInfoService implements GenerateReconciliationInfoUseCase 
                 errorRecords.add(mapTo("MISSING_DATA", info));
             }
         }
+        String userName;
+        if(null == userDetails.get()) {
+            userName = "SYSTEM";
+        } else {
+            userName = userDetails.get().getUsername();
+        }
         ReconciliationUploadFileInfo fileInfo = ReconciliationUploadFileInfo.withoutId(
                 command.getFilePath(),
                 command.getBankId(),
                 "SUBMITTED",
-                userDetails.get().getUsername(),
+                userName,
                 LocalDateTime.now(),
                 uploadRows);
         reconciliationUploadFileRepositoryPort.create(fileInfo);

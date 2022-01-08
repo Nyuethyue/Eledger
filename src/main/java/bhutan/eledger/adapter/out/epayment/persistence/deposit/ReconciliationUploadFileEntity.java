@@ -46,10 +46,9 @@ class ReconciliationUploadFileEntity {
     )
     private Collection<ReconciliationUploadRecordEntity> records;
 
-    public ReconciliationUploadFileEntity(Long id, String filePath, String bankId,
+    public ReconciliationUploadFileEntity(String filePath, String bankId,
                                           String status, String userName,
                                           LocalDateTime creationDateTime) {
-        this.id = id;
         this.filePath = filePath;
         this.bankId = bankId;
         this.status = status;
