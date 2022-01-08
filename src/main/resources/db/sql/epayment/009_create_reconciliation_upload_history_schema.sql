@@ -23,7 +23,7 @@ CREATE SEQUENCE epayment.reconciliation_upload_file_id_seq
 CREATE TABLE IF NOT EXISTS epayment.reconciliation_upload_record
 (
     id                      bigint NOT NULL,
-    upload_id               bigint NOT NULL,
+    reconciliation_upload_file_id   bigint NOT NULL,
     deposit_number          VARCHAR NOT NULL,
     bank_transaction_number VARCHAR,
     bank_branch_code        VARCHAR,
@@ -40,8 +40,8 @@ ALTER TABLE epayment.reconciliation_upload_record
     ADD CONSTRAINT pk_reconciliation_upload_record PRIMARY KEY (id);
 
 ALTER TABLE ONLY epayment.reconciliation_upload_record
-    ADD CONSTRAINT fk_reconciliation_upload_record_upload_id
-        FOREIGN KEY (upload_id) REFERENCES epayment.deposit (id);
+    ADD CONSTRAINT fk_reconciliation_upload_record_reconciliation_upload_file_id
+        FOREIGN KEY (reconciliation_upload_file_id) REFERENCES epayment.reconciliation_upload_file(id);
 
 CREATE SEQUENCE epayment.reconciliation_upload_record_id_seq
     INCREMENT BY 1

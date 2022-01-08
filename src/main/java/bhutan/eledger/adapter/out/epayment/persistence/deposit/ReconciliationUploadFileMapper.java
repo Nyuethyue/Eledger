@@ -22,8 +22,9 @@ class ReconciliationUploadFileMapper {
             records = uploadRecordInfo.getUploadRows().stream().map(u ->
                     new ReconciliationUploadRecordEntity(
                             null,
-                            u.getDepositNumber(), u.getBankTransactionNumber(), u.getBankBranchCode(),
-                            u.getBankProcessingDate(), u.getBankAmount(), u.getDepositDateTime(),
+                            u.getDepositNumber(), u.getBankTransactionNumber(),
+                            u.getBankBranchCode(), u.getBankProcessingDate(),
+                            u.getBankAmount(), u.getDepositDateTime(),
                             u.getDepositAmount(), u.getDepositStatus(),
                             u.getCreationDateTime(), u.getRecordStatus()
                     )

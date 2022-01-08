@@ -2,6 +2,7 @@ package bhutan.eledger.epayment.reconciliation;
 
 import am.iunetworks.lib.common.persistence.search.SearchResult;
 import bhutan.eledger.adapter.out.epayment.deposit.reconciliation.ReconciliationExcelLoader;
+import bhutan.eledger.application.port.in.epayment.deposit.GenerateReconciliationInfoUseCase;
 import bhutan.eledger.application.port.in.epayment.deposit.SearchReconciliationUploadHistoryUseCase;
 import bhutan.eledger.application.port.in.epayment.payment.deposit.reconciliation.BankStatementImportUseCase;
 import bhutan.eledger.domain.epayment.deposit.BankStatementImportReconciliationInfo;
@@ -18,7 +19,6 @@ import java.io.FileInputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.time.temporal.TemporalUnit;
 import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -29,6 +29,9 @@ class ReconciliationUploadTest {
 
     @Autowired
     private BankStatementImportUseCase bankStatementImportUseCase;
+
+    @Autowired
+    private GenerateReconciliationInfoUseCase generateReconciliationInfoUseCase;
 
     @Autowired
     private SearchReconciliationUploadHistoryUseCase searchReconciliationUploadHistoryUseCase;
@@ -86,6 +89,6 @@ class ReconciliationUploadTest {
         SearchResult<ReconciliationUploadRecordInfo> historyResult =
                 searchReconciliationUploadHistoryUseCase.search(command);
 
-        Assertions.assertTrue(historyResult.getContent().size() > 0, "Empty result reconciliation history result!");
+        Assertions.assertTrue(historyResult.getContent().size() > 0, "Empty reconciliation history result!");
     }
 }

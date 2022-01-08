@@ -55,7 +55,7 @@ class ReconciliationUploadRecordEntity {
     private LocalDateTime creationDateTime;
 
     @ManyToOne
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "reconciliation_upload_file_id", nullable = false)
     private ReconciliationUploadFileEntity reconciliationUploadFile;
 
     public ReconciliationUploadRecordEntity(Long id, String depositNumber, String bankTransactionNumber,
