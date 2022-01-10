@@ -35,7 +35,7 @@ class ReconciliationDepositMockTest {
     void afterEach() {
     }
 
-    //@Test
+//    @Test
     void createTest() {
         var searchResult = searchDepositUseCase.search(new SearchDepositUseCase.SearchDepositCommand(
                 0,
@@ -53,6 +53,7 @@ class ReconciliationDepositMockTest {
 
         ApproveReconciliationUseCase.ApproveDepositReconciliationCommand setCommand =
                 new ApproveReconciliationUseCase.ApproveDepositReconciliationCommand(
+                        null,
                         Arrays.asList(searchResult.getContent().get(0).getDepositNumber()));
         updateDepositUseCase.approveDepositReconciliation(setCommand);
 
@@ -68,11 +69,13 @@ class ReconciliationDepositMockTest {
         ));
         Deposit deposit = searchResult.getContent().get(0);
         Assertions.assertTrue(DepositStatus.RECONCILED.equals(deposit.getStatus()));
+        String filePathNew =
+                "resources/file/files/drc-users/00/00/00/00000000-0000-0000-0000-000000000001/2021/11/29/1638187871846/attachments/Reconciliation.xlsx";
 
-        String filePathOld =
-                "/resources/file/files/drc-users/00/00/00/00000000-0000-0000-0000-000000000001/2021/11/29/1638187692518/attachments/Reconciliation.xls";
+//        String filePathOld =
+//                "/resources/file/files/drc-users/00/00/00/00000000-0000-0000-0000-000000000001/2021/11/29/1638187692518/attachments/Reconciliation.xls";
         GenerateReconciliationInfoUseCase.GenerateDepositReconciliationInfoCommand command =
-                new GenerateReconciliationInfoUseCase.GenerateDepositReconciliationInfoCommand(filePathOld);
+                new GenerateReconciliationInfoUseCase.GenerateDepositReconciliationInfoCommand("213213213", filePathNew);
         GenerateReconciliationInfoUseCase.ReconciliationInfo result =
                 generateReconciliationInfoUseCase.generate(command);
         Assertions.assertTrue(null != result.getDeposits() && !result.getDeposits().isEmpty());

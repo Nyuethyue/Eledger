@@ -1,8 +1,12 @@
 package bhutan.eledger.epayment.reconciliation;
 
+import am.iunetworks.lib.common.persistence.search.SearchResult;
 import bhutan.eledger.adapter.out.epayment.deposit.reconciliation.ReconciliationExcelLoader;
+import bhutan.eledger.application.port.in.epayment.deposit.GenerateReconciliationInfoUseCase;
+import bhutan.eledger.application.port.in.epayment.deposit.SearchReconciliationUploadHistoryUseCase;
 import bhutan.eledger.application.port.in.epayment.payment.deposit.reconciliation.BankStatementImportUseCase;
 import bhutan.eledger.domain.epayment.deposit.BankStatementImportReconciliationInfo;
+import bhutan.eledger.domain.epayment.deposit.ReconciliationUploadRecordInfo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,6 +18,7 @@ import org.springframework.test.context.TestPropertySource;
 import java.io.FileInputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -24,6 +29,13 @@ class ReconciliationUploadTest {
 
     @Autowired
     private BankStatementImportUseCase bankStatementImportUseCase;
+
+    @Autowired
+    private GenerateReconciliationInfoUseCase generateReconciliationInfoUseCase;
+
+    @Autowired
+    private SearchReconciliationUploadHistoryUseCase searchReconciliationUploadHistoryUseCase;
+
 
     @AfterEach
     void afterEach() {
@@ -36,28 +48,50 @@ class ReconciliationUploadTest {
         Path resourceDirectory = Paths.get("src","test","resources", "files");
         String absolutePath = resourceDirectory.toFile().getAbsolutePath();
 
-        List<BankStatementImportReconciliationInfo> resOld = loader.load(new FileInputStream(absolutePath + "/" + "Reconciliation.xls"), false);
+        String filePathOld = absolutePath + "/" + "Reconciliation.xls";
+        List<BankStatementImportReconciliationInfo> resOld = loader.load(new FileInputStream(filePathOld), false);
         Assertions.assertTrue(resOld.size() > 0, "Empty result for old!");
-        List<BankStatementImportReconciliationInfo> resNew = loader.load(new FileInputStream(absolutePath + "/" + "Reconciliation.xlsx"), true);
+
+        String filePathNew = absolutePath + "/" + "Reconciliation.xlsx";
+        List<BankStatementImportReconciliationInfo> resNew = loader.load(new FileInputStream(filePathNew), true);
         Assertions.assertTrue(resNew.size() > 0, "Empty result for new!");
     }
 
     //@Test
     void excelDownloadTest() {
-        String filePathOld = "/resources/file/files/drc-users/00/00/00/00000000-0000-0000-0000-000000000001/2021/11/29/1638187692518/attachments/Reconciliation.xls";
-        BankStatementImportUseCase.ImportBankStatementsCommand commandOld =
-                new BankStatementImportUseCase.ImportBankStatementsCommand(
-                         filePathOld);
-
-        List<BankStatementImportReconciliationInfo> resultOld = bankStatementImportUseCase.importStatements(commandOld);
-        Assertions.assertTrue(resultOld.size() > 0, "Empty result for excel file!");
-
+//        String filePathOld = "/resources/file/files/drc-users/00/00/00/00000000-0000-0000-0000-000000000001/2021/11/29/1638187692518/attachments/Reconciliation.xls";
+//        BankStatementImportUseCase.ImportBankStatementsCommand commandOld =
+//                new BankStatementImportUseCase.ImportBankStatementsCommand(
+//                         filePathOld);
+//
+//        List<BankStatementImportReconciliationInfo> resultOld = bankStatementImportUseCase.importStatements(commandOld);
+//        Assertions.assertTrue(resultOld.size() > 0, "Empty result for excel file!");
         String filePathNew = "resources/file/files/drc-users/00/00/00/00000000-0000-0000-0000-000000000001/2021/11/29/1638187871846/attachments/Reconciliation.xlsx";
-        BankStatementImportUseCase.ImportBankStatementsCommand commandNew =
-                new BankStatementImportUseCase.ImportBankStatementsCommand(
-                        filePathNew);
 
-        List<BankStatementImportReconciliationInfo> resultNew = bankStatementImportUseCase.importStatements(commandNew);
-        Assertions.assertTrue(resultNew.size() > 0, "Empty result for excel file!");
+        GenerateReconciliationInfoUseCase.GenerateDepositReconciliationInfoCommand generateCommand =
+                new GenerateReconciliationInfoUseCase.GenerateDepositReconciliationInfoCommand(
+                        null,
+                        filePathNew
+                );
+        GenerateReconciliationInfoUseCase.ReconciliationInfo resultNew =
+                generateReconciliationInfoUseCase.generate(generateCommand);
+
+//        Assertions.assertTrue(resultNew.getDeposits().size() > 0, "Empty result for excel file!");
+
+        var now = LocalDate.now();
+        var from = now.minusDays(1);
+        var to = now.plusDays(1);
+        SearchReconciliationUploadHistoryUseCase.SearchReconciliationUploadRecordCommand searchCommand =
+                searchCommand = new SearchReconciliationUploadHistoryUseCase.SearchReconciliationUploadRecordCommand(
+                        0,
+                        10,
+                        null,
+                        null,
+                        from,
+                        to);
+        SearchResult<ReconciliationUploadRecordInfo> historyResult =
+                searchReconciliationUploadHistoryUseCase.search(searchCommand);
+
+        Assertions.assertTrue(historyResult.getContent().size() > 0, "Empty reconciliation history result!");
     }
 }

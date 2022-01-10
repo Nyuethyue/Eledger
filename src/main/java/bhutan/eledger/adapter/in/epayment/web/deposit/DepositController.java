@@ -1,11 +1,9 @@
 package bhutan.eledger.adapter.in.epayment.web.deposit;
 
 import am.iunetworks.lib.common.persistence.search.SearchResult;
-import bhutan.eledger.application.port.in.epayment.deposit.CreateDepositUseCase;
-import bhutan.eledger.application.port.in.epayment.deposit.GenerateReconciliationInfoUseCase;
-import bhutan.eledger.application.port.in.epayment.deposit.SearchDepositUseCase;
-import bhutan.eledger.application.port.in.epayment.deposit.ApproveReconciliationUseCase;
+import bhutan.eledger.application.port.in.epayment.deposit.*;
 import bhutan.eledger.domain.epayment.deposit.Deposit;
+import bhutan.eledger.domain.epayment.deposit.ReconciliationUploadRecordInfo;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,6 +26,7 @@ class DepositController {
     private final ApproveReconciliationUseCase updateDepositUseCase;
     private final SearchDepositUseCase searchDepositUseCase;
     private final GenerateReconciliationInfoUseCase generateReconciliationInfoUseCase;
+    private final SearchReconciliationUploadHistoryUseCase searchReconciliationUploadHistoryUseCase;
 
     @PostMapping
     public ResponseEntity<Object> create(@RequestBody CreateDepositUseCase.CreateDepositCommand command) {
@@ -66,6 +65,13 @@ class DepositController {
     @ResponseStatus(value = HttpStatus.OK)
     public GenerateReconciliationInfoUseCase.ReconciliationInfo generateReconciliationInfo(GenerateReconciliationInfoUseCase.GenerateDepositReconciliationInfoCommand command) {
         return generateReconciliationInfoUseCase.generate(command);
+    }
+
+    @GetMapping(value = "/get/reconciliation/history", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.OK)
+    public SearchResult<ReconciliationUploadRecordInfo> searchReconciliationHistoryInfo(
+            SearchReconciliationUploadHistoryUseCase.SearchReconciliationUploadRecordCommand command) {
+        return searchReconciliationUploadHistoryUseCase.search(command);
     }
 
     @Data

@@ -1,5 +1,4 @@
 package bhutan.eledger.adapter.out.ref.persistence.bank;
-import bhutan.eledger.domain.ref.bank.RefBank;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

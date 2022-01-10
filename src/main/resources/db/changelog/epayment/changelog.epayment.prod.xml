@@ -32,4 +32,8 @@
         <sqlFile path="../../sql/epayment/008_create_deposit_number_sequence.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <changeSet id="Reconciliation history schemas" author="A.A." dbms="postgresql">
+        <sqlFile path="../../sql/epayment/009_create_reconciliation_upload_history_schema.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog>

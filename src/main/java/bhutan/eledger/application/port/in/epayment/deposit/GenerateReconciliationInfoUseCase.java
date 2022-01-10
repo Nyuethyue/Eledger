@@ -1,7 +1,6 @@
 package bhutan.eledger.application.port.in.epayment.deposit;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
@@ -18,19 +17,25 @@ public interface GenerateReconciliationInfoUseCase {
 
     @Data
     class GenerateDepositReconciliationInfoCommand {
+        private final String bankId;
         private final String filePath;
 
         @JsonCreator
-        public GenerateDepositReconciliationInfoCommand(@JsonProperty("filePath") String filePath) {
+        public GenerateDepositReconciliationInfoCommand(String bankId,
+                                                        String filePath) {
+            this.bankId = bankId;
             this.filePath = filePath;
         }
     }
 
     @Data
     class ReconciliationInfo {
-        private final boolean ok;
         private final Collection<DepositReconciliationInfo> deposits;
         private final Collection<ErrorRecordsInfo> errorRecords;
+
+        public boolean isOk() {
+            return null == errorRecords || errorRecords.isEmpty();
+        }
     }
 
     @Data

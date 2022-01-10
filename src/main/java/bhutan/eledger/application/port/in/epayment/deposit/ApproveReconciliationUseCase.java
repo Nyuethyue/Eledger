@@ -1,7 +1,6 @@
 package bhutan.eledger.application.port.in.epayment.deposit;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
@@ -17,12 +16,16 @@ public interface ApproveReconciliationUseCase {
 
     @Data
     class ApproveDepositReconciliationCommand {
+        private final Long uploadId;
+
         @NotNull
         @NotEmpty
         private final List<String> depositNumbers;
 
         @JsonCreator
-        public ApproveDepositReconciliationCommand(@JsonProperty("depositNumbers") List<String> depositNumbers) {
+        public ApproveDepositReconciliationCommand(Long uploadId,
+                                                   List<String> depositNumbers) {
+            this.uploadId = uploadId;
             this.depositNumbers = depositNumbers;
         }
     }
