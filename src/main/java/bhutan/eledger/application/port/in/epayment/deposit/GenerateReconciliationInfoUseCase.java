@@ -34,7 +34,7 @@ public interface GenerateReconciliationInfoUseCase {
         private final Collection<ErrorRecordsInfo> errorRecords;
 
         public boolean isOk() {
-            return errorRecords.isEmpty();
+            return null == errorRecords || errorRecords.isEmpty();
         }
     }
 
