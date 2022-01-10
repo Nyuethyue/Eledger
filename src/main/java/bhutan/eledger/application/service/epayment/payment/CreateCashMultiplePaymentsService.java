@@ -53,9 +53,7 @@ class CreateCashMultiplePaymentsService implements CreateCashMultiplePaymentsUse
                 creationDateTime,
                 receiptCreationContext.getAnyPa().getTaxpayer(),
                 receiptCreationContext.getPayments(),
-                receiptCreationContext.getPayments().stream()
-                        .map(Payment::getPaidAmount)
-                        .reduce(BigDecimal.ZERO, BigDecimal::add),
+                receiptCreationContext.getTotalPaidAmount(),
                 null
         );
 

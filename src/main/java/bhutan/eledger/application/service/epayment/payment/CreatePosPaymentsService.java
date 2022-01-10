@@ -53,15 +53,7 @@ public class CreatePosPaymentsService implements CreatePosPaymentsUseCase {
                 creationDateTime,
                 receiptCreationContext.getAnyPa().getTaxpayer(),
                 receiptCreationContext.getPayments(),
-                receiptCreationContext.getPayments().stream()
-                        .map(Payment::getPaidAmount)
-                        .reduce(BigDecimal.ZERO, BigDecimal::add),
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
+                receiptCreationContext.getTotalPaidAmount(),
                 command.getPosReferenceNumber()
         );
 

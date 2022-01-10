@@ -223,12 +223,6 @@ public class Receipt {
             EpTaxpayer taxpayer,
             Collection<Payment> payments,
             BigDecimal totalPaidAmount,
-            String securityNumber,
-            String instrumentNumber,
-            LocalDate instrumentDate,
-            String otherReferenceNumber,
-            RefEntry bankBranch,
-            RefEntry issuingBankBranch,
             String posReferenceNumber
     ) {
         return new Receipt(
@@ -241,12 +235,12 @@ public class Receipt {
                 taxpayer,
                 payments,
                 totalPaidAmount,
-                securityNumber,
-                instrumentNumber,
-                instrumentDate,
-                otherReferenceNumber,
-                bankBranch,
-                issuingBankBranch,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
                 posReferenceNumber
         );
     }

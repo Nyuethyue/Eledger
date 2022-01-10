@@ -63,9 +63,7 @@ public class CreateDemandDraftPaymentsService implements CreateDemandDraftPaymen
                 creationDateTime,
                 receiptCreationContext.getAnyPa().getTaxpayer(),
                 receiptCreationContext.getPayments(),
-                receiptCreationContext.getPayments().stream()
-                        .map(Payment::getPaidAmount)
-                        .reduce(BigDecimal.ZERO, BigDecimal::add),
+                receiptCreationContext.getTotalPaidAmount(),
                 null,
                 command.getInstrumentNumber(),
                 command.getInstrumentDate(),

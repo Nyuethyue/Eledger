@@ -8,6 +8,7 @@ import bhutan.eledger.application.port.out.epayment.payment.ReceiptSearchPort;
 import bhutan.eledger.common.ref.refentry.RefEntry;
 import bhutan.eledger.common.ref.refentry.RefEntryRepository;
 import bhutan.eledger.common.ref.refentry.RefName;
+import bhutan.eledger.domain.epayment.payment.PaymentMode;
 import bhutan.eledger.domain.epayment.payment.Receipt;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPQLQuery;
@@ -40,7 +41,7 @@ class ReceiptSearchAdapter implements ReceiptSearchPort {
                     RefEntry refIssuingBankAccountEntry = refEntryRepository.findByRefNameAndId(RefName.BANK_BRANCH.getValue(), receiptEntity.getRefIssuingBankBranchId());
 
 
-                    return cashReceiptMapper.mapToDomain(receiptEntity, refCurrencyEntry, refBankAccountEntry,refIssuingBankAccountEntry);
+                    return cashReceiptMapper.mapToDomain(receiptEntity, refCurrencyEntry, refBankAccountEntry, refIssuingBankAccountEntry);
                 });
 
         return PagedSearchResult.of(page);
@@ -88,9 +89,13 @@ class ReceiptSearchAdapter implements ReceiptSearchPort {
             predicate.and(qReceiptEntity.refBankBranchId.eq(command.getBankBranchId()));
         }
 
-        if (command.getBankIssuingBranchId() != null) {
-            predicate.and(qReceiptEntity.refIssuingBankBranchId.eq(command.getBankIssuingBranchId()));
+        if (command.getPaymentMode().equals(PaymentMode.CASH_WARRANT) ||
+                command.getPaymentMode().equals(PaymentMode.DEMAND_DRAFT)) {
+            if (command.getBankIssuingBranchId() != null) {
+                predicate.and(qReceiptEntity.refIssuingBankBranchId.eq(command.getBankIssuingBranchId()));
+            }
         }
+
 
         return jpqlQuery.where(predicate);
     }
