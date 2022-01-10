@@ -30,9 +30,12 @@ public interface GenerateReconciliationInfoUseCase {
 
     @Data
     class ReconciliationInfo {
-        private final boolean ok;
         private final Collection<DepositReconciliationInfo> deposits;
         private final Collection<ErrorRecordsInfo> errorRecords;
+
+        public boolean isOk() {
+            return errorRecords.isEmpty();
+        }
     }
 
     @Data
