@@ -1,7 +1,6 @@
 package bhutan.eledger.application.service.epayment.payment;
 
 import bhutan.eledger.domain.epayment.payment.Payment;
-import bhutan.eledger.domain.epayment.paymentadvice.PayableLine;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
 import lombok.Data;
 import org.springframework.util.Assert;
