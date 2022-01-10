@@ -1,13 +1,11 @@
 package bhutan.eledger.application.service.epayment.payment;
 
-import bhutan.eledger.application.port.in.epayment.payment.CreateCashWarrantPaymentsUseCase;
 import bhutan.eledger.application.port.in.epayment.payment.CreateDemandDraftPaymentsUseCase;
 import bhutan.eledger.application.port.out.epayment.eledger.CreateEledgerTransactionPort;
 import bhutan.eledger.application.port.out.epayment.payment.ReceiptNumberGeneratorPort;
 import bhutan.eledger.application.port.out.epayment.payment.ReceiptRepositoryPort;
 import bhutan.eledger.common.ref.refentry.RefEntryRepository;
 import bhutan.eledger.common.ref.refentry.RefName;
-import bhutan.eledger.domain.epayment.payment.Payment;
 import bhutan.eledger.domain.epayment.payment.PaymentMode;
 import bhutan.eledger.domain.epayment.payment.Receipt;
 import bhutan.eledger.domain.epayment.payment.ReceiptStatus;
@@ -16,7 +14,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Log4j2

@@ -38,7 +38,7 @@ class PaymentController {
                 .body(receipts);
     }
 
-    @PostMapping("/cash/warrant/multiple")
+    @PostMapping("/cashwarrant/multiple")
     public ResponseEntity<Object> createMultipleCashWarrant(@RequestBody CreateCashWarrantPaymentsUseCase.CreateCashWarrantPaymentsCommand command) {
         var receipts = createCashWarrantPaymentsUseCase.create(command);
 
@@ -47,7 +47,7 @@ class PaymentController {
                 .body(receipts);
     }
 
-    @PostMapping("/demand/draft/multiple")
+    @PostMapping("/demanddraft/multiple")
     public ResponseEntity<Object> createMultipleDemandDraft(@RequestBody CreateDemandDraftPaymentsUseCase.CreateDemandDraftPaymentsCommand command) {
         var receipts = createDemandDraftPaymentsUseCase.create(command);
 

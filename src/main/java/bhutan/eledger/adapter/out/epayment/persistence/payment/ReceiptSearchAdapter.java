@@ -88,13 +88,10 @@ class ReceiptSearchAdapter implements ReceiptSearchPort {
             predicate.and(qReceiptEntity.refBankBranchId.eq(command.getBankBranchId()));
         }
 
-        if (command.getPaymentMode().equals(PaymentMode.CASH_WARRANT) ||
-                command.getPaymentMode().equals(PaymentMode.DEMAND_DRAFT)) {
-            if (command.getBankIssuingBranchId() != null) {
-                predicate.and(qReceiptEntity.refIssuingBankBranchId.eq(command.getBankIssuingBranchId()));
-            }
+        if (PaymentMode.CASH_WARRANT.equals(command.getPaymentMode()) ||
+                PaymentMode.DEMAND_DRAFT.equals(command.getPaymentMode())) {
+            predicate.and(qReceiptEntity.refIssuingBankBranchId.eq(command.getBankIssuingBranchId()));
         }
-
 
         return jpqlQuery.where(predicate);
     }
