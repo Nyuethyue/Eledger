@@ -135,7 +135,7 @@ class ImportBankDepositInfoService implements GenerateReconciliationInfoUseCase 
                 uploadRows);
         reconciliationUploadFileRepositoryPort.create(fileInfo);
 
-        return new ReconciliationInfo(errorRecords.isEmpty(), depositInfoList, errorRecords);
+        return new ReconciliationInfo(errorRecords.isEmpty() , depositInfoList, errorRecords);
     }
 
     private ErrorRecordsInfo mapTo(String errorType, BankStatementImportReconciliationInfo record) {
