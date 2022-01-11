@@ -36,6 +36,10 @@ class PaymentEntity {
     @JoinColumn(name = "gl_account_id", nullable = false)
     private EpGLAccount glAccount;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "payment_advice_info_id", nullable = false)
+    private PaymentPaymentAdviceInfoEntity paymentAdviceInfo;
+
     @ManyToOne
     @JoinColumn(name = "receipt_id", nullable = false)
     private ReceiptEntity receipt;

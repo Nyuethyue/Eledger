@@ -1,10 +1,7 @@
 package bhutan.eledger.adapter.out.epayment.persistence.payment;
 
 import bhutan.eledger.common.ref.refentry.RefEntry;
-import bhutan.eledger.domain.epayment.payment.Payment;
-import bhutan.eledger.domain.epayment.payment.PaymentMode;
-import bhutan.eledger.domain.epayment.payment.Receipt;
-import bhutan.eledger.domain.epayment.payment.ReceiptStatus;
+import bhutan.eledger.domain.epayment.payment.*;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
@@ -15,19 +12,19 @@ class ReceiptMapper {
     ReceiptEntity mapToEntity(Receipt receipt) {
         ReceiptEntity receiptEntity = new ReceiptEntity(
                 receipt.getId(),
-                receipt.getDrn(),
                 receipt.getPaymentMode().getValue(),
                 receipt.getStatus().getValue(),
                 receipt.getCurrency().getId(),
                 receipt.getBankBranch() != null ? receipt.getBankBranch().getId() : null,
+                receipt.getIssuingBankBranch() != null ? receipt.getIssuingBankBranch().getId() : null,
                 receipt.getReceiptNumber(),
                 receipt.getSecurityNumber(),
                 receipt.getInstrumentNumber(),
+                receipt.getPosReferenceNumber(),
                 receipt.getInstrumentDate(),
                 receipt.getOtherReferenceNumber(),
                 receipt.getCreationDateTime(),
                 receipt.getTotalPaidAmount(),
-                receipt.getPan(),
                 receipt.getTaxpayer()
         );
 
@@ -41,6 +38,12 @@ class ReceiptMapper {
                                         payment.getElTargetTransactionId(),
                                         payment.getPaidAmount(),
                                         payment.getGlAccount(),
+                                        new PaymentPaymentAdviceInfoEntity(
+                                                payment.getPaymentAdviceInfo().getId(),
+                                                payment.getPaymentAdviceInfo().getPaId(),
+                                                payment.getPaymentAdviceInfo().getPan(),
+                                                payment.getPaymentAdviceInfo().getDrn()
+                                        ),
                                         receiptEntity
                                 )
                         )
@@ -50,10 +53,9 @@ class ReceiptMapper {
         return receiptEntity;
     }
 
-    Receipt mapToDomain(ReceiptEntity receipt, RefEntry refCurrencyEntry, RefEntry refBankAccountEntry) {
+    Receipt mapToDomain(ReceiptEntity receipt, RefEntry refCurrencyEntry, RefEntry refBankAccountEntry,RefEntry refIssuingBankAccountEntry) {
         return Receipt.withId(
                 receipt.getId(),
-                receipt.getDrn(),
                 PaymentMode.of(receipt.getPaymentMode()),
                 ReceiptStatus.of(receipt.getStatus()),
                 refCurrencyEntry,
@@ -68,7 +70,13 @@ class ReceiptMapper {
                                         pe.getGlAccount(),
                                         pe.getPaidAmount(),
                                         pe.getPayableLineId(),
-                                        pe.getElTargetTransactionId()
+                                        pe.getElTargetTransactionId(),
+                                        PaymentPaInfo.withId(
+                                                pe.getPaymentAdviceInfo().getId(),
+                                                pe.getPaymentAdviceInfo().getPaId(),
+                                                pe.getPaymentAdviceInfo().getPan(),
+                                                pe.getPaymentAdviceInfo().getDrn()
+                                        )
                                 )
                         )
                         .collect(Collectors.toUnmodifiableSet()),
@@ -78,7 +86,8 @@ class ReceiptMapper {
                 receipt.getInstrumentDate(),
                 receipt.getOtherReferenceNumber(),
                 refBankAccountEntry,
-                receipt.getPan()
+                refIssuingBankAccountEntry,
+                receipt.getPosReferenceNumber()
         );
     }
 }

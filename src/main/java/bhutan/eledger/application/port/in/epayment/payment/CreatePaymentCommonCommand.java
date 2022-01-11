@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 import java.util.Collection;
 
@@ -17,15 +18,15 @@ public class CreatePaymentCommonCommand {
     @NotNull
     private final Long paymentAdviceId;
     @NotNull
-    private final Long refCurrencyId;
-    @NotNull
     @NotEmpty
-    private final Collection<PaymentCommand> payments;
+    private final Collection<PayableLineCommand> payableLines;
 
     @Data
-    public static class PaymentCommand {
+    public static class PayableLineCommand {
         @NotNull
         private final Long payableLineId;
+        @NotNull
+        @PositiveOrZero
         private final BigDecimal paidAmount;
     }
 }

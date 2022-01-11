@@ -1,6 +1,6 @@
 package bhutan.eledger.application.service.epayment.payment;
 
-import bhutan.eledger.application.port.in.epayment.payment.CreateCashMultiplePaymentsUseCase;
+import bhutan.eledger.application.port.in.epayment.payment.CreatePosPaymentsUseCase;
 import bhutan.eledger.application.port.out.epayment.eledger.CreateEledgerTransactionPort;
 import bhutan.eledger.application.port.out.epayment.payment.ReceiptNumberGeneratorPort;
 import bhutan.eledger.application.port.out.epayment.payment.ReceiptRepositoryPort;
@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @Service
 @Transactional
 @RequiredArgsConstructor
-class CreateCashMultiplePaymentsService implements CreateCashMultiplePaymentsUseCase {
+public class CreatePosPaymentsService implements CreatePosPaymentsUseCase {
     private final RefEntryRepository refEntryRepository;
     private final ReceiptNumberGeneratorPort receiptNumberGeneratorPort;
     private final CreateEledgerTransactionPort eledgerPaymentTransactionPort;
@@ -30,14 +30,9 @@ class CreateCashMultiplePaymentsService implements CreateCashMultiplePaymentsUse
     private final PrepareReceiptService prepareReceiptService;
 
     @Override
-    public Receipt create(CreateCashMultiplePaymentsCommand command) {
+    public Receipt create(CreatePosPaymentsCommand command) {
 
         var receiptCreationContext = prepareReceiptService.prepare(command);
-
-        var refCurrencyEntry = refEntryRepository.findByRefNameAndId(
-                RefName.CURRENCY.getValue(),
-                command.getRefCurrencyId()
-        );
 
         LocalDateTime creationDateTime = LocalDateTime.now();
 
@@ -45,8 +40,13 @@ class CreateCashMultiplePaymentsService implements CreateCashMultiplePaymentsUse
 
         log.trace("Receipt number: [{}], generated in: {}", receiptNumber, creationDateTime.toLocalDate());
 
-        var receipt = Receipt.cashWithoutId(
-                PaymentMode.CASH,
+        var refCurrencyEntry = refEntryRepository.findByRefNameAndId(
+                RefName.CURRENCY.getValue(),
+                command.getRefCurrencyId()
+        );
+
+        var receipt = Receipt.posWithoutId(
+                PaymentMode.POS,
                 receiptCreationContext.isAllPaid() ? ReceiptStatus.PAID : ReceiptStatus.SPLIT_PAYMENT,
                 refCurrencyEntry,
                 receiptNumber,
@@ -54,14 +54,14 @@ class CreateCashMultiplePaymentsService implements CreateCashMultiplePaymentsUse
                 receiptCreationContext.getAnyPa().getTaxpayer(),
                 receiptCreationContext.getPayments(),
                 receiptCreationContext.getTotalPaidAmount(),
-                null
+                command.getPosReferenceNumber()
         );
 
-        log.trace("Persisting cash receipt: {}", receipt);
+        log.trace("Persisting pos receipt: {}", receipt);
 
         Receipt persistedCashReceipt = receiptRepositoryPort.create(receipt);
 
-        log.debug("Cash receipt with id: {} successfully created.", persistedCashReceipt.getId());
+        log.debug("POS receipt with id: {} successfully created.", persistedCashReceipt.getId());
 
         log.trace("Creating eledger payment transaction: {}", receipt);
 

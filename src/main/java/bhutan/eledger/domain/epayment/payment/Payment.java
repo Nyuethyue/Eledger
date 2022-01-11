@@ -13,19 +13,22 @@ public class Payment {
     private final BigDecimal paidAmount;
     private final Long payableLineId;
     private final Long elTargetTransactionId;
+    private final PaymentPaInfo paymentAdviceInfo;
 
     public static Payment withoutId(
             EpGLAccount glAccount,
             BigDecimal paidAmount,
             Long payableLineId,
-            Long elTargetTransactionId
+            Long elTargetTransactionId,
+            PaymentPaInfo paymentAdviceInfo
     ) {
         return new Payment(
                 null,
                 glAccount,
                 paidAmount,
                 payableLineId,
-                elTargetTransactionId
+                elTargetTransactionId,
+                paymentAdviceInfo
         );
     }
 }

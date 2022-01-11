@@ -37,7 +37,7 @@ class CreateEledgerTransactionAdapter implements CreateEledgerTransactionPort {
                                         Set.of(
                                                 new CreateTransactionsUseCase.TransactionAttributeCommand(
                                                         "TARGET_DRN",
-                                                        receipt.getDrn()
+                                                        p.getPaymentAdviceInfo().getDrn()
                                                 ),
                                                 new CreateTransactionsUseCase.TransactionAttributeCommand(
                                                         "TARGET_TRANSACTION_ID",

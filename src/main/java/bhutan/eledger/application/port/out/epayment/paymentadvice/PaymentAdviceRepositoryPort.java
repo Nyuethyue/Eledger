@@ -7,12 +7,25 @@ import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdviceStatus;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public interface PaymentAdviceRepositoryPort {
 
     Optional<PaymentAdvice> readById(Long id);
 
     Optional<PaymentAdvice> readByDrnAndStatusIn(String drn, Collection<PaymentAdviceStatus> statuses);
+
+    Collection<PaymentAdvice> readAllByIds(Collection<Long> ids);
+
+    default Collection<PaymentAdvice> requiredReadAllByIds(Collection<Long> ids) {
+        var result = readAllByIds(ids);
+
+        if (result.size() != ids.size()) {
+            throw new RecordNotFoundException("Payment advice missed. Given ids: " + ids + ", founded ids: " + result.stream().map(PaymentAdvice::getId).collect(Collectors.toList()));
+        }
+
+        return result;
+    }
 
     default PaymentAdvice requiredReadById(Long id) {
         return readById(id)

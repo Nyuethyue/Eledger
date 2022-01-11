@@ -2,6 +2,7 @@ package bhutan.eledger.application.service.epayment.payment;
 
 import bhutan.eledger.application.port.in.epayment.payment.CreatePaymentCommonCommand;
 import bhutan.eledger.domain.epayment.payment.Payment;
+import bhutan.eledger.domain.epayment.payment.PaymentPaInfo;
 import bhutan.eledger.domain.epayment.paymentadvice.PayableLine;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
 import lombok.RequiredArgsConstructor;
@@ -17,17 +18,22 @@ import java.util.stream.Collectors;
 class PaymentsResolverService {
 
     Collection<Payment> resolvePayments(CreatePaymentCommonCommand command, PaymentAdvice paymentAdvice) {
-        return command.getPayments()
+        return command.getPayableLines()
                 .stream()
-                .map(pc -> {
+                .map(plc -> {
 
-                    PayableLine payableLine = paymentAdvice.getRequiredPayableLineById(pc.getPayableLineId());
+                    PayableLine payableLine = paymentAdvice.getRequiredPayableLineById(plc.getPayableLineId());
 
                     return Payment.withoutId(
                             payableLine.getGlAccount(),
-                            pc.getPaidAmount(),
+                            plc.getPaidAmount(),
                             payableLine.getId(),
-                            payableLine.getElTransactionId()
+                            payableLine.getElTransactionId(),
+                            PaymentPaInfo.withoutId(
+                                    paymentAdvice.getId(),
+                                    paymentAdvice.getPan(),
+                                    paymentAdvice.getDrn()
+                            )
                     );
                 })
                 .collect(Collectors.toUnmodifiableList());

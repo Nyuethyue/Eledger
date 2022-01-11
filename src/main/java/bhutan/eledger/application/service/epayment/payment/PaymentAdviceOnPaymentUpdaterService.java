@@ -21,16 +21,20 @@ class PaymentAdviceOnPaymentUpdaterService {
 
         PaymentAdvice paymentAdvice = paymentAdviceRepositoryPort.requiredReadById(command.getPaymentAdviceId());
 
+        return updatePaymentAdvice(command, paymentAdvice);
+    }
+
+    PaymentAdvice updatePaymentAdvice(CreatePaymentCommonCommand command, PaymentAdvice paymentAdvice) {
+
         checkStatus(paymentAdvice);
 
-        command.getPayments()
-                .forEach(pc -> {
-                    PayableLine payableLine = paymentAdvice.getRequiredPayableLineById(pc.getPayableLineId());
+        command.getPayableLines()
+                .forEach(plc -> {
+                    PayableLine payableLine = paymentAdvice.getRequiredPayableLineById(plc.getPayableLineId());
 
-                    checkPayableLine(payableLine, pc);
+                    checkPayableLine(payableLine, plc);
 
-
-                    payableLine.pay(pc.getPaidAmount());
+                    payableLine.pay(plc.getPaidAmount());
                 });
 
         if (paymentAdvice.isPaid()) {
@@ -46,7 +50,7 @@ class PaymentAdviceOnPaymentUpdaterService {
         return paymentAdvice;
     }
 
-    private void checkPayableLine(PayableLine payableLine, CreatePaymentCommonCommand.PaymentCommand paymentCommand) {
+    private void checkPayableLine(PayableLine payableLine, CreatePaymentCommonCommand.PayableLineCommand payableLineCommand) {
         if (payableLine.isPaid()) {
             throw new ViolationException(
                     new ValidationError()
@@ -57,12 +61,12 @@ class PaymentAdviceOnPaymentUpdaterService {
             );
         }
 
-        if (payableLine.getAmountToBePaid().compareTo(paymentCommand.getPaidAmount()) != 0) {
+        if (payableLine.getAmountToBePaid().compareTo(payableLineCommand.getPaidAmount()) != 0) {
             throw new ViolationException(
                     new ValidationError()
                             .addViolation(
                                     "paidAmount",
-                                    "Paid amount must be equal to be paid amount. Amount to be paid: " + payableLine.getAmountToBePaid() + ", Paid amount: " + paymentCommand.getPaidAmount()
+                                    "Paid amount must be equal to be paid amount. Amount to be paid: " + payableLine.getAmountToBePaid() + ", Paid amount: " + payableLineCommand.getPaidAmount()
                             )
             );
         }

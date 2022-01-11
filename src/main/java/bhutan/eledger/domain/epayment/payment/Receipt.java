@@ -9,12 +9,12 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Data
 @Builder(toBuilder = true)
 public class Receipt {
     private final Long id;
-    private final String drn;
     private final PaymentMode paymentMode;
     private final ReceiptStatus status;
     private final RefEntry currency;
@@ -28,11 +28,18 @@ public class Receipt {
     private final LocalDate instrumentDate;
     private final String otherReferenceNumber;
     private final RefEntry bankBranch;
-    private final String pan;
+    private final RefEntry issuingBankBranch;
+    private final String posReferenceNumber;
+
+    public Collection<PaymentPaInfo> getPaInfos() {
+        return payments
+                .stream()
+                .map(Payment::getPaymentAdviceInfo)
+                .collect(Collectors.toUnmodifiableSet());
+    }
 
     public static Receipt withId(
             Long id,
-            String drn,
             PaymentMode paymentMode,
             ReceiptStatus status,
             RefEntry currency,
@@ -46,11 +53,11 @@ public class Receipt {
             LocalDate instrumentDate,
             String otherReferenceNumber,
             RefEntry bankBranch,
-            String pan
+            RefEntry issuingBankBranch,
+            String posReferenceNumber
     ) {
         return new Receipt(
                 id,
-                drn,
                 paymentMode,
                 status,
                 currency,
@@ -64,12 +71,12 @@ public class Receipt {
                 instrumentDate,
                 otherReferenceNumber,
                 bankBranch,
-                pan
+                issuingBankBranch,
+                posReferenceNumber
         );
     }
 
     public static Receipt withoutId(
-            String drn,
             PaymentMode paymentMode,
             ReceiptStatus status,
             RefEntry currency,
@@ -83,11 +90,11 @@ public class Receipt {
             LocalDate instrumentDate,
             String otherReferenceNumber,
             RefEntry bankBranch,
-            String pan
+            RefEntry issuingBankBranch,
+            String posReferenceNumber
     ) {
         return new Receipt(
                 null,
-                drn,
                 paymentMode,
                 status,
                 currency,
@@ -101,12 +108,12 @@ public class Receipt {
                 instrumentDate,
                 otherReferenceNumber,
                 bankBranch,
-                pan
+                issuingBankBranch,
+                posReferenceNumber
         );
     }
 
     public static Receipt chequeWithoutId(
-            String drn,
             PaymentMode paymentMode,
             ReceiptStatus status,
             RefEntry currency,
@@ -119,12 +126,10 @@ public class Receipt {
             String instrumentNumber,
             LocalDate instrumentDate,
             String otherReferenceNumber,
-            RefEntry bankBranch,
-            String pan
+            RefEntry bankBranch
     ) {
         return new Receipt(
                 null,
-                drn,
                 paymentMode,
                 status,
                 currency,
@@ -138,12 +143,12 @@ public class Receipt {
                 instrumentDate,
                 otherReferenceNumber,
                 bankBranch,
-                pan
+                null,
+                null
         );
     }
 
     public static Receipt cashWithoutId(
-            String drn,
             PaymentMode paymentMode,
             ReceiptStatus status,
             RefEntry currency,
@@ -152,12 +157,10 @@ public class Receipt {
             EpTaxpayer taxpayer,
             Collection<Payment> payments,
             BigDecimal totalPaidAmount,
-            String securityNumber,
-            String pan
+            String securityNumber
     ) {
         return new Receipt(
                 null,
-                drn,
                 paymentMode,
                 status,
                 currency,
@@ -171,7 +174,75 @@ public class Receipt {
                 null,
                 null,
                 null,
-                pan
+                null,
+                null
         );
     }
+
+    public static Receipt cashWarrantWithoutId(
+            PaymentMode paymentMode,
+            ReceiptStatus status,
+            RefEntry currency,
+            String receiptNumber,
+            LocalDateTime creationDateTime,
+            EpTaxpayer taxpayer,
+            Collection<Payment> payments,
+            BigDecimal totalPaidAmount,
+            String securityNumber,
+            String instrumentNumber,
+            LocalDate instrumentDate,
+            String otherReferenceNumber,
+            RefEntry bankBranch,
+            RefEntry issuingBankBranch
+    ) {
+        return new Receipt(
+                null,
+                paymentMode,
+                status,
+                currency,
+                receiptNumber,
+                creationDateTime,
+                taxpayer,
+                payments,
+                totalPaidAmount,
+                securityNumber,
+                instrumentNumber,
+                instrumentDate,
+                otherReferenceNumber,
+                bankBranch,
+                issuingBankBranch,
+                null
+        );
+    }
+    public static Receipt posWithoutId(
+            PaymentMode paymentMode,
+            ReceiptStatus status,
+            RefEntry currency,
+            String receiptNumber,
+            LocalDateTime creationDateTime,
+            EpTaxpayer taxpayer,
+            Collection<Payment> payments,
+            BigDecimal totalPaidAmount,
+            String posReferenceNumber
+    ) {
+        return new Receipt(
+                null,
+                paymentMode,
+                status,
+                currency,
+                receiptNumber,
+                creationDateTime,
+                taxpayer,
+                payments,
+                totalPaidAmount,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                posReferenceNumber
+        );
+    }
+
 }

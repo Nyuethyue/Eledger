@@ -28,6 +28,7 @@ public interface SearchReceiptUseCase {
         private final Long refCurrencyId;
         private final PaymentMode paymentMode;
         private final Long bankBranchId;
+        private final Long bankIssuingBranchId;
         private final String glAccountPartFullCode;
         private final LocalDate receiptDate;
     }

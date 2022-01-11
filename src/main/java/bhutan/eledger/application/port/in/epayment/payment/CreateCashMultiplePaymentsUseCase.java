@@ -1,8 +1,6 @@
 package bhutan.eledger.application.port.in.epayment.payment;
 
 import bhutan.eledger.domain.epayment.payment.Receipt;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import lombok.Getter;
 import lombok.ToString;
 import org.springframework.validation.annotation.Validated;
 
@@ -14,19 +12,21 @@ import java.util.Collection;
 @Validated
 public interface CreateCashMultiplePaymentsUseCase {
 
-    Collection<Receipt> create(@Valid CreateCashMultiplePaymentsCommand command);
+    Receipt create(@Valid CreateCashMultiplePaymentsCommand command);
 
-    @Getter
-    @ToString
-    class CreateCashMultiplePaymentsCommand {
-        @Valid
-        @NotNull
-        @NotEmpty
-        private final Collection<CreateCashPaymentUseCase.CreateCashPaymentCommand> receipts;
+    @ToString(callSuper = true)
+    class CreateCashMultiplePaymentsCommand extends CreatePaymentsCommonCommand<CreateCashPaymentCommand> {
 
-        @JsonCreator
-        public CreateCashMultiplePaymentsCommand(Collection<CreateCashPaymentUseCase.CreateCashPaymentCommand> receipts) {
-            this.receipts = receipts;
+        public CreateCashMultiplePaymentsCommand(@NotNull Long refCurrencyId, @Valid @NotNull @NotEmpty Collection<CreateCashPaymentCommand> payments) {
+            super(refCurrencyId, payments);
+        }
+    }
+
+    @ToString(callSuper = true)
+    class CreateCashPaymentCommand extends CreatePaymentCommonCommand {
+
+        public CreateCashPaymentCommand(Long paymentAdviceId, Collection<PayableLineCommand> payments) {
+            super(paymentAdviceId, payments);
         }
     }
 }
