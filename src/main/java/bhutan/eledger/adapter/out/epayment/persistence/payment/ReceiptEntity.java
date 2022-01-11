@@ -32,12 +32,16 @@ class ReceiptEntity {
     private Long refCurrencyId;
     @Column(name = "ref_bank_branch_id")
     private Long refBankBranchId;
+    @Column(name = "ref_issuing_bank_branch_id")
+    private Long refIssuingBankBranchId;
     @Column(name = "receipt_number")
     private String receiptNumber;
     @Column(name = "security_number")
     private String securityNumber;
     @Column(name = "instrument_number")
     private String instrumentNumber;
+    @Column(name = "pos_reference_number")
+    private String posReferenceNumber;
     @Column(name = "instrument_date")
     private LocalDate instrumentDate;
     @Column(name = "other_reference_number")
@@ -59,15 +63,17 @@ class ReceiptEntity {
     )
     private Set<PaymentEntity> payments;
 
-    public ReceiptEntity(Long id, String paymentMode, String status, Long refCurrencyId, Long refBankBranchId, String receiptNumber, String securityNumber, String instrumentNumber, LocalDate instrumentDate, String otherReferenceNumber, LocalDateTime creationDateTime, BigDecimal totalPaidAmount, EpTaxpayer taxpayer) {
+    public ReceiptEntity(Long id, String paymentMode, String status, Long refCurrencyId, Long refBankBranchId,Long refIssuingBankBranchId, String receiptNumber, String securityNumber, String instrumentNumber,String posReferenceNumber, LocalDate instrumentDate, String otherReferenceNumber, LocalDateTime creationDateTime, BigDecimal totalPaidAmount, EpTaxpayer taxpayer) {
         this.id = id;
         this.paymentMode = paymentMode;
         this.status = status;
         this.refCurrencyId = refCurrencyId;
         this.refBankBranchId = refBankBranchId;
+        this.refIssuingBankBranchId = refIssuingBankBranchId;
         this.receiptNumber = receiptNumber;
         this.securityNumber = securityNumber;
         this.instrumentNumber = instrumentNumber;
+        this.posReferenceNumber = posReferenceNumber;
         this.instrumentDate = instrumentDate;
         this.otherReferenceNumber = otherReferenceNumber;
         this.creationDateTime = creationDateTime;

@@ -6,6 +6,7 @@ import lombok.Data;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,7 @@ class ReceiptCreationContext {
     private final boolean isAllPaid;
     private final Collection<Payment> payments;
 
+
     ReceiptCreationContext(Map<Long, PaymentAdvice> idToPaymentAdvice, List<PaymentAdvice> updatedPaymentAdvices, boolean isAllPaid, Collection<Payment> payments) {
         Assert.notEmpty(updatedPaymentAdvices, "updatedPaymentAdvices list can't be empty");
         Assert.notEmpty(idToPaymentAdvice, "idToPaymentAdvice list can't be empty");
@@ -27,7 +29,15 @@ class ReceiptCreationContext {
         this.payments = payments;
     }
 
+    public BigDecimal getTotalPaidAmount() {
+        return payments
+                .stream()
+                .map(Payment::getPaidAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
     PaymentAdvice getAnyPa() {
         return CollectionUtils.firstElement(updatedPaymentAdvices);
     }
+
 }

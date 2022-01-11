@@ -52,6 +52,7 @@ class SearchReceiptService implements SearchReceiptUseCase {
                 command.getRefCurrencyId(),
                 command.getPaymentMode(),
                 command.getBankBranchId(),
+                command.getBankIssuingBranchId(),
                 command.getGlAccountPartFullCode(),
                 command.getReceiptDate(),
                 Arrays.asList(ReceiptStatus.PAID.getValue(), ReceiptStatus.SPLIT_PAYMENT.getValue())
