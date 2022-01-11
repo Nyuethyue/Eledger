@@ -1,4 +1,4 @@
-package bhutan.eledger.application.port.in.ref.rrcocashcounters;
+package bhutan.eledger.application.port.in.ref.rrcocashcounter;
 
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;

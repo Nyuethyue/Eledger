@@ -1,8 +1,8 @@
-package bhutan.eledger.adapter.in.ref.web.rrcocashcounters;
+package bhutan.eledger.adapter.in.ref.web.rrcocashcounter;
 
-import bhutan.eledger.application.port.in.ref.rrcocashcounters.CreateRefRRCOCashCountersUseCase;
-import bhutan.eledger.application.port.in.ref.rrcocashcounters.ReadRefRRCOCashCountersUseCase;
-import bhutan.eledger.domain.ref.rrcocashcounters.RefRRCOCashCounters;
+import bhutan.eledger.application.port.in.ref.rrcocashcounter.CreateRefRRCOCashCountersUseCase;
+import bhutan.eledger.application.port.in.ref.rrcocashcounter.ReadRefRRCOCashCounterUseCase;
+import bhutan.eledger.domain.ref.rrcocashcounter.RefRRCOCashCounter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,12 +13,12 @@ import java.net.URI;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/ref/rrco/cash/counters")
+@RequestMapping("/ref/rrco/cash/counter")
 @RequiredArgsConstructor
-class RefRRCOCashCountersController {
+class RefRRCOCashCounterController {
 
     private final CreateRefRRCOCashCountersUseCase createRefRRCOCashCountersUseCase;
-    private final ReadRefRRCOCashCountersUseCase readRefRRCOCashCountersUseCase;
+    private final ReadRefRRCOCashCounterUseCase readRefRRCOCashCounterUseCase;
 
     @PostMapping
     public ResponseEntity<Object> create(@RequestBody CreateRefRRCOCashCountersUseCase.CreateRefRRCOCashCountersCommand command) {
@@ -31,19 +31,19 @@ class RefRRCOCashCountersController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
-    public Collection<RefRRCOCashCounters> getAll() {
-        return readRefRRCOCashCountersUseCase.readAll();
+    public Collection<RefRRCOCashCounter> getAll() {
+        return readRefRRCOCashCounterUseCase.readAll();
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
-    public RefRRCOCashCounters getById(@PathVariable Long id) {
-        return readRefRRCOCashCountersUseCase.readById(id);
+    public RefRRCOCashCounter getById(@PathVariable Long id) {
+        return readRefRRCOCashCounterUseCase.readById(id);
     }
 
     @GetMapping(value = "/readByCode/{code}")
     @ResponseStatus(value = HttpStatus.OK)
-    public RefRRCOCashCounters readByCode(@PathVariable String code) {
-        return readRefRRCOCashCountersUseCase.readByCode(code);
+    public RefRRCOCashCounter readByCode(@PathVariable String code) {
+        return readRefRRCOCashCounterUseCase.readByCode(code);
     }
 }

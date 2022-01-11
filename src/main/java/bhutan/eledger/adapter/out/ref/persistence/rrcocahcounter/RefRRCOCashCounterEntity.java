@@ -1,4 +1,4 @@
-package bhutan.eledger.adapter.out.ref.persistence.rrcocahcounters;
+package bhutan.eledger.adapter.out.ref.persistence.rrcocahcounter;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,14 +10,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "rrco_cash_counters", schema = "ref")
+@Table(name = "rrco_cash_counter", schema = "ref")
 @NoArgsConstructor
 @Getter
 @Setter
-class RefRRCOCashCountersEntity {
+class RefRRCOCashCounterEntity {
     @Id
-    @SequenceGenerator(name = "rrco_cash_counters_id_seq", schema = "ref", sequenceName = "rrco_cash_counters_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rrco_cash_counters_id_seq")
+    @SequenceGenerator(name = "rrco_cash_counter_id_seq", schema = "ref", sequenceName = "rrco_cash_counter_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rrco_cash_counter_id_seq")
     @Column(name = "id")
     private Long id;
 
@@ -36,16 +36,16 @@ class RefRRCOCashCountersEntity {
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
-    private Set<RefRRCOCashCountersDescriptionEntity> descriptions;
+    private Set<RefRRCOCashCounterDescriptionEntity> descriptions;
 
-    public RefRRCOCashCountersEntity(Long id, String code, LocalDate startOfValidity, LocalDate endOfValidity) {
+    public RefRRCOCashCounterEntity(Long id, String code, LocalDate startOfValidity, LocalDate endOfValidity) {
         this.id = id;
         this.code = code;
         this.startOfValidity = startOfValidity;
         this.endOfValidity = endOfValidity;
     }
 
-    public void addToDescriptions(RefRRCOCashCountersDescriptionEntity description) {
+    public void addToDescriptions(RefRRCOCashCounterDescriptionEntity description) {
         if (descriptions == null) {
             descriptions = new HashSet<>();
         }

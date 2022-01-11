@@ -1,7 +1,7 @@
-package bhutan.eledger.ref.rrcocashcounters;
+package bhutan.eledger.ref.rrcocashcounter;
 
-import bhutan.eledger.application.port.in.ref.rrcocashcounters.CreateRefRRCOCashCountersUseCase;
-import bhutan.eledger.application.port.out.ref.rrcocashcounters.RefRRCOCashCountersRepositoryPort;
+import bhutan.eledger.application.port.in.ref.rrcocashcounter.CreateRefRRCOCashCountersUseCase;
+import bhutan.eledger.application.port.out.ref.rrcocashcounter.RefRRCOCashCounterRepositoryPort;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,17 +14,17 @@ import java.util.Map;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(properties = {"spring.config.location = classpath:application-test.yml"})
-public class CreateRefRRCOCashCountersTest {
+public class CreateRefRRCOCashCounterTest {
 
     @Autowired
     private CreateRefRRCOCashCountersUseCase createRefRRCOCashCountersUseCase;
 
     @Autowired
-    private RefRRCOCashCountersRepositoryPort refRRCOCashCountersRepositoryPort;
+    private RefRRCOCashCounterRepositoryPort refRRCOCashCounterRepositoryPort;
 
     @AfterEach
     void afterEach() {
-        refRRCOCashCountersRepositoryPort.deleteAll();
+        refRRCOCashCounterRepositoryPort.deleteAll();
     }
 
     @Test
@@ -51,7 +51,7 @@ public class CreateRefRRCOCashCountersTest {
                 )
         );
 
-        var rrcoCC = refRRCOCashCountersRepositoryPort.readById(id);
+        var rrcoCC = refRRCOCashCounterRepositoryPort.readById(id);
 
         Assertions.assertTrue(rrcoCC.isPresent());
 

@@ -1,9 +1,9 @@
-package bhutan.eledger.application.service.ref.rrcocashcounters;
+package bhutan.eledger.application.service.ref.rrcocashcounter;
 
 import am.iunetworks.lib.common.validation.RecordNotFoundException;
-import bhutan.eledger.application.port.in.ref.rrcocashcounters.ReadRefRRCOCashCountersUseCase;
-import bhutan.eledger.application.port.out.ref.rrcocashcounters.RefRRCOCashCountersRepositoryPort;
-import bhutan.eledger.domain.ref.rrcocashcounters.RefRRCOCashCounters;
+import bhutan.eledger.application.port.in.ref.rrcocashcounter.ReadRefRRCOCashCounterUseCase;
+import bhutan.eledger.application.port.out.ref.rrcocashcounter.RefRRCOCashCounterRepositoryPort;
+import bhutan.eledger.domain.ref.rrcocashcounter.RefRRCOCashCounter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -16,32 +16,32 @@ import java.util.Collection;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-class ReadRefRRCOCashCountersService implements ReadRefRRCOCashCountersUseCase {
+class ReadRefRRCOCashCounterService implements ReadRefRRCOCashCounterUseCase {
 
-    private final RefRRCOCashCountersRepositoryPort refRRCOCashCountersRepositoryPort;
+    private final RefRRCOCashCounterRepositoryPort refRRCOCashCounterRepositoryPort;
 
     @Override
-    public Collection<RefRRCOCashCounters> readAll() {
+    public Collection<RefRRCOCashCounter> readAll() {
         log.trace("Reading all RRCO Cash Counters list.");
 
-        return refRRCOCashCountersRepositoryPort.readAll();
+        return refRRCOCashCounterRepositoryPort.readAll();
     }
 
     @Override
-    public RefRRCOCashCounters readById(Long id) {
+    public RefRRCOCashCounter readById(Long id) {
         log.trace("Reading RRCO Cash Counter by id: {}", id);
 
-        return refRRCOCashCountersRepositoryPort.readById(id)
+        return refRRCOCashCounterRepositoryPort.readById(id)
                 .orElseThrow(() ->
                         new RecordNotFoundException("RRCO Cash Counter by id: [" + id + "] not found.")
                 );
     }
 
     @Override
-    public RefRRCOCashCounters readByCode(String code) {
+    public RefRRCOCashCounter readByCode(String code) {
         log.trace("Reading RRCO Cash counters by Code : {}", code);
 
-        return refRRCOCashCountersRepositoryPort.readByCode(code, LocalDate.now())
+        return refRRCOCashCounterRepositoryPort.readByCode(code, LocalDate.now())
                 .orElseThrow(() ->
                         new RecordNotFoundException("RRCO Cash Counter by code: [" + code + "] not found.")
                 );

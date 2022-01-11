@@ -37,7 +37,7 @@
     </changeSet>
 
     <changeSet id="RRCO Cash Counters Schema" author="D.T." dbms="postgresql">
-        <sqlFile path="../../sql/ref/009_create_rrco_cash_counters_ref_table.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/ref/009_create_rrco_cash_counter_ref_table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
 </databaseChangeLog>
