@@ -1,13 +1,28 @@
 package bhutan.eledger.epayment.payment;
 
+import bhutan.eledger.application.port.in.eledger.config.glaccount.CreateGLAccountPartTypeUseCase;
+import bhutan.eledger.application.port.in.eledger.config.glaccount.CreateGLAccountPartUseCase;
+import bhutan.eledger.application.port.in.eledger.config.transaction.CreateTransactionTypeAttributeUseCase;
+import bhutan.eledger.application.port.in.eledger.config.transaction.CreateTransactionTypeUseCase;
 import bhutan.eledger.application.port.in.epayment.payment.CreateCashMultiplePaymentsUseCase;
 import bhutan.eledger.application.port.in.epayment.payment.CreatePaymentCommonCommand;
 import bhutan.eledger.application.port.in.epayment.payment.SearchReceiptUseCase;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAdviceUseCase;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.UpsertPaymentAdviceUseCase;
+import bhutan.eledger.application.port.in.ref.bank.CreateRefBankUseCase;
+import bhutan.eledger.application.port.in.ref.bankaccount.CreateRefBankAccountUseCase;
+import bhutan.eledger.application.port.in.ref.bankbranch.CreateRefBankBranchUseCase;
 import bhutan.eledger.application.port.in.ref.currency.CreateRefCurrencyUseCase;
+import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountPartRepositoryPort;
+import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountPartTypeRepositoryPort;
+import bhutan.eledger.application.port.out.eledger.config.transaction.TransactionTypeAttributeRepositoryPort;
+import bhutan.eledger.application.port.out.eledger.config.transaction.TransactionTypeRepositoryPort;
+import bhutan.eledger.application.port.out.eledger.transaction.TransactionRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.payment.ReceiptRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceRepositoryPort;
+import bhutan.eledger.application.port.out.ref.bank.RefBankRepositoryPort;
+import bhutan.eledger.application.port.out.ref.bankaccount.RefBankAccountRepositoryPort;
+import bhutan.eledger.application.port.out.ref.bankbranch.RefBankBranchRepositoryPort;
 import bhutan.eledger.application.port.out.ref.currency.RefCurrencyRepositoryPort;
 import bhutan.eledger.domain.epayment.payment.Receipt;
 import bhutan.eledger.domain.epayment.payment.ReceiptStatus;
@@ -20,6 +35,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -55,8 +71,141 @@ class CreatePaymentTest {
 
     private PaymentAdvice paymentAdvice;
 
+    @Autowired
+    private CreateRefBankUseCase createRefBankUseCase;
+
+    @Autowired
+    private RefBankRepositoryPort refBankRepositoryPort;
+
+    @Autowired
+    private CreateRefBankBranchUseCase createRefBankBranchUseCase;
+
+    @Autowired
+    private RefBankBranchRepositoryPort refBankBranchRepositoryPort;
+
+    @Autowired
+    private CreateGLAccountPartTypeUseCase createGLAccountPartTypeUseCase;
+
+    @Autowired
+    private GLAccountPartTypeRepositoryPort glAccountPartTypeRepositoryPort;
+
+    @Autowired
+    private CreateGLAccountPartUseCase createGLAccountPartUseCase;
+
+    @Autowired
+    private GLAccountPartRepositoryPort glAccountPartRepositoryPort;
+
+    @Autowired
+    private CreateRefBankAccountUseCase createRefBankAccountUseCase;
+
+    @Autowired
+    private RefBankAccountRepositoryPort refBankAccountRepositoryPort;
+
+    @Autowired
+    private CreateTransactionTypeUseCase createTransactionTypeUseCase;
+
+    @Autowired
+    private CreateTransactionTypeAttributeUseCase createTransactionTypeAttributeUseCase;
+
+    @Autowired
+    private TransactionTypeRepositoryPort transactionTypeRepositoryPort;
+
+    @Autowired
+    private TransactionTypeAttributeRepositoryPort transactionTypeAttributeRepositoryPort;
+
+    @Autowired
+    private TransactionRepositoryPort transactionRepositoryPort;
+
     @BeforeEach
     void beforeEach() {
+        Long bankId = createRefBankUseCase.create(
+                new CreateRefBankUseCase.CreateRefBankCommand(
+                        "020202",
+                        LocalDate.now(),
+                        null,
+                        Map.of("en", "Bank of Bhutan")
+
+                )
+
+        );
+
+        Long branchId = createRefBankBranchUseCase.create(
+                new CreateRefBankBranchUseCase.CreateBranchCommand(
+                        "0000",
+                        "111115",
+                        "0000000",
+                        LocalDate.now(),
+                        null,
+                        bankId,
+                        Map.of("en", "Branch A")
+
+                )
+
+        );
+
+        Integer glTypeId = createGLAccountPartTypeUseCase.create(
+                new CreateGLAccountPartTypeUseCase.CreateGLAccountPartTypeCommand(
+                        1,
+                        Map.of("en", "Major group")
+
+                )
+        );
+        createGLAccountPartUseCase.create(
+                new CreateGLAccountPartUseCase.CreateGLAccountPartCommand(
+                        null,
+                        glTypeId,
+                        Set.of(
+                                new CreateGLAccountPartUseCase.GLAccountPartCommand(
+                                        "12345678901",
+                                        Map.of(
+                                                "en", "Revenue"
+                                        )
+                                )
+                        )
+                )
+        );
+
+        createRefBankAccountUseCase.create(
+                new CreateRefBankAccountUseCase.CreateBankAccountCommand(
+                        branchId,
+                        "12345678901",
+                        LocalDate.now(),
+                        null,
+                        true,
+                        Map.of("en", "Account A"),
+                        new CreateRefBankAccountUseCase.BankAccountGLAccountPartCommand(
+                                "12345678901"
+                        )
+
+
+                )
+
+        );
+
+
+
+        createTransactionTypeUseCase.create(
+                new CreateTransactionTypeUseCase.CreateTransactionTypeCommand(
+                        "PAYMENT",
+                        Map.of("en", "PAYMENT")
+
+                )
+
+        );
+
+        createTransactionTypeAttributeUseCase.create(
+                new CreateTransactionTypeAttributeUseCase.CreateTransactionTypeAttributesCommand(
+                        List.of(
+                                new CreateTransactionTypeAttributeUseCase.TransactionTypeAttributeCommand(
+                                        "TARGET_TRANSACTION_ID", Map.of("en", "TARGET_TRANSACTION_ID") , 1
+                                ),
+                                new CreateTransactionTypeAttributeUseCase.TransactionTypeAttributeCommand(
+                                        "TARGET_DRN", Map.of("en", "TARGET_DRN") , 1
+                                )
+                        )
+                )
+        );
+
         UpsertPaymentAdviceUseCase.UpsertPaymentAdviceCommand createCommand =
                 new UpsertPaymentAdviceUseCase.UpsertPaymentAdviceCommand(
                         "TestDrn",
@@ -79,16 +228,6 @@ class CreatePaymentTest {
                                                 )
                                         ),
                                         1L
-                                ),
-                                new UpsertPaymentAdviceUseCase.PayableLineCommand(
-                                        new BigDecimal("500.99"),
-                                        new UpsertPaymentAdviceUseCase.GLAccountCommand(
-                                                "12109876543",
-                                                Map.of(
-                                                        "en", "Test value fine"
-                                                )
-                                        ),
-                                        1L
                                 )
                         )
                 );
@@ -100,7 +239,16 @@ class CreatePaymentTest {
     void afterEach() {
         receiptRepositoryPort.deleteAll();
         paymentAdviceRepositoryPort.deleteAll();
+        transactionRepositoryPort.deleteAll();
+        transactionTypeAttributeRepositoryPort.deleteAll();
+        transactionTypeAttributeRepositoryPort.deleteAll();
+        transactionTypeRepositoryPort.deleteAll();
+        refBankAccountRepositoryPort.deleteAll();
+        glAccountPartRepositoryPort.deleteAll();
+        glAccountPartTypeRepositoryPort.deleteAll();
+        refBankBranchRepositoryPort.deleteAll();
         refCurrencyRepositoryPort.deleteAll();
+        refBankRepositoryPort.deleteAll();
     }
 
     @Test
@@ -132,13 +280,6 @@ class CreatePaymentTest {
                                                         .filter(pl -> pl.getGlAccount().getCode().equals("12345678901"))
                                                         .findAny().get().getId(),
                                                 new BigDecimal("9999.99")
-                                        ),
-                                        new CreatePaymentCommonCommand.PayableLineCommand(
-                                                paymentAdvice.getPayableLines()
-                                                        .stream()
-                                                        .filter(pl -> pl.getGlAccount().getCode().equals("12109876543"))
-                                                        .findAny().get().getId(),
-                                                new BigDecimal("500.99")
                                         )
                                 )
                         )
@@ -160,7 +301,8 @@ class CreatePaymentTest {
                 null,
                 null,
                 null,
-                "12",
+                null,
+                null,
                 LocalDate.now()
         ));
 
@@ -174,8 +316,9 @@ class CreatePaymentTest {
                 null,
                 null,
                 null,
-                "12",
-                null
+                null,
+                null,
+                LocalDate.now()
         ));
 
         Assertions.assertEquals(1, searchResult.getTotalCount());
@@ -188,7 +331,8 @@ class CreatePaymentTest {
                 null,
                 null,
                 null,
-                "12",
+                null,
+                null,
                 LocalDate.now().minusDays(1)
         ));
 
