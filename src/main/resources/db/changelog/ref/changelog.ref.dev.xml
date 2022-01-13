@@ -9,4 +9,8 @@
 
     <include file="changelog.ref.prod.xml" relativeToChangelogFile="true"/>
 
+    <changeSet id="Currency script" author="P.L">
+        <sqlFile path="../../sql/ref/dev/001_insert_currency_ref_data.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog>
