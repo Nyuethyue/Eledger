@@ -7,7 +7,6 @@ import bhutan.eledger.application.port.out.epayment.payment.ReceiptSearchPort;
 import bhutan.eledger.common.ref.refentry.RefEntry;
 import bhutan.eledger.common.ref.refentry.RefEntryRepository;
 import bhutan.eledger.common.ref.refentry.RefName;
-import bhutan.eledger.domain.epayment.payment.PaymentMode;
 import bhutan.eledger.domain.epayment.payment.Receipt;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPQLQuery;

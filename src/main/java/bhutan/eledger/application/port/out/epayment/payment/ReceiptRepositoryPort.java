@@ -1,7 +1,9 @@
 package bhutan.eledger.application.port.out.epayment.payment;
 
 import bhutan.eledger.domain.epayment.payment.Receipt;
+import bhutan.eledger.domain.epayment.payment.FlatReceipt;
 import bhutan.eledger.domain.epayment.payment.ReceiptStatus;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.Collection;
 
@@ -13,4 +15,6 @@ public interface ReceiptRepositoryPort {
     void checkReceipts(Collection<Long> receiptIds);
 
     void updateStatuses(ReceiptStatus status, Collection<Long> receiptIds);
+
+    Collection<FlatReceipt> readAllByIds(Collection<Long> ids);
 }
