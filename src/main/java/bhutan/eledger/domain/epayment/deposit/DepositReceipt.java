@@ -3,8 +3,6 @@ package bhutan.eledger.domain.epayment.deposit;
 import bhutan.eledger.domain.epayment.payment.FlatReceipt;
 import lombok.Data;
 
-import java.time.LocalDate;
-
 @Data
 public class DepositReceipt {
     private final Long id;
@@ -27,7 +25,8 @@ public class DepositReceipt {
             Long id,
             Long receiptId,
             Long depositId,
-            FlatReceipt receipt) {
+            FlatReceipt receipt
+    ) {
         return new DepositReceipt(
                 id,
                 receiptId,

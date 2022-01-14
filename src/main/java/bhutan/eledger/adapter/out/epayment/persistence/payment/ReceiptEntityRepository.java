@@ -4,6 +4,8 @@ import am.iunetworks.lib.common.persistence.spring.querydsl.CustomQuerydslJpaRep
 import bhutan.eledger.domain.epayment.payment.FlatReceipt;
 
 import java.util.Collection;
- interface ReceiptEntityRepository extends CustomQuerydslJpaRepository<ReceiptEntity, Long> {
+
+interface ReceiptEntityRepository extends CustomQuerydslJpaRepository<ReceiptEntity, Long> {
+
     Collection<FlatReceipt> findAllByIdIn(Collection<Long> ids);
 }

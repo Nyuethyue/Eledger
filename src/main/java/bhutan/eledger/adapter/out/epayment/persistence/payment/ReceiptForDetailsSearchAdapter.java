@@ -34,7 +34,6 @@ class ReceiptForDetailsSearchAdapter implements ReceiptForDetailsSearchPort {
                         querydsl -> resolveQuery(command, querydsl),
                         pageable
                 )
-                //todo create fill receipt domain and map all data
                 .map(receiptEntity -> {
                     RefEntry refCurrencyEntry = refEntryRepository.findByRefNameAndId(RefName.CURRENCY.getValue(), receiptEntity.getRefCurrencyId());
                     RefEntry refBankAccountEntry = refEntryRepository.findByRefNameAndId(RefName.BANK_BRANCH.getValue(), receiptEntity.getRefBankBranchId());

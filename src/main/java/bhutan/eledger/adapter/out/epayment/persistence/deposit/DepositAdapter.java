@@ -6,7 +6,8 @@ import bhutan.eledger.domain.epayment.deposit.DepositStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -20,21 +21,39 @@ class DepositAdapter implements DepositRepositoryPort {
     @Override
     public Optional<Deposit> readById(Long id) {
         return depositEntityRepository.findById(id)
-                .map(depositEntity-> depositMapper.mapToDomain(depositEntity, flatReceiptLoaderBean.loadReceiptIdToFlatReceiptMap(depositEntity)));
+                .map(depositEntity ->
+                        depositMapper.mapToDomain(
+                                depositEntity,
+                                flatReceiptLoaderBean.loadReceiptIdToFlatReceiptMap(depositEntity)
+                        )
+                );
     }
 
     @Override
     public Optional<Deposit> readByDepositNumber(String depositNumber) {
         return depositEntityRepository.readByDepositNumber(depositNumber)
-                .map(depositEntity-> depositMapper.mapToDomain(depositEntity, flatReceiptLoaderBean.loadReceiptIdToFlatReceiptMap(depositEntity)));
+                .map(depositEntity ->
+                        depositMapper.mapToDomain(
+                                depositEntity,
+                                flatReceiptLoaderBean.loadReceiptIdToFlatReceiptMap(depositEntity)
+                        )
+                );
     }
 
     @Override
     public Collection<Deposit> readAll() {
-        Collection<DepositEntity> rawDeposits = depositEntityRepository.findAll();
-        return rawDeposits
+        Collection<DepositEntity> depositEntities = depositEntityRepository.findAll();
+
+        var receiptIdToFlatReceiptMap = flatReceiptLoaderBean.loadReceiptIdToFlatReceiptMap(depositEntities);
+
+        return depositEntities
                 .stream()
-                .map(depositEntity-> depositMapper.mapToDomain(depositEntity, flatReceiptLoaderBean.loadReceiptIdToFlatReceiptMap(rawDeposits)))
+                .map(depositEntity ->
+                        depositMapper.mapToDomain(
+                                depositEntity,
+                                receiptIdToFlatReceiptMap
+                        )
+                )
                 .collect(Collectors.toUnmodifiableList());
     }
 
@@ -44,7 +63,10 @@ class DepositAdapter implements DepositRepositoryPort {
                 depositMapper.mapToEntity(deposit)
         );
 
-        return depositMapper.mapToDomain(depositEntity, flatReceiptLoaderBean.loadReceiptIdToFlatReceiptMap(depositEntity));
+        return depositMapper.mapToDomain(
+                depositEntity,
+                flatReceiptLoaderBean.loadReceiptIdToFlatReceiptMap(depositEntity)
+        );
     }
 
     @Override

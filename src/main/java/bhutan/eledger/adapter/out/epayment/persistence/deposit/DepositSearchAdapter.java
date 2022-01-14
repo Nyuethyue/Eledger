@@ -14,7 +14,6 @@ import org.springframework.data.jpa.repository.support.Querydsl;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.*;
 
 @Component
 @RequiredArgsConstructor
@@ -33,11 +32,15 @@ class DepositSearchAdapter implements DepositSearchPort {
                 pageable
         );
 
-        Collection<DepositEntity> depositList = new LinkedList<>();
-        rawPage.map(depositList::add);
+        var receiptIdToFlatReceiptMap =
+                flatReceiptLoaderBean.loadReceiptIdToFlatReceiptMap(rawPage.getContent());
 
         Page<Deposit> page = rawPage.map(depositEntity ->
-                depositMapper.mapToDomain(depositEntity, flatReceiptLoaderBean.loadReceiptIdToFlatReceiptMap(depositList)));
+                depositMapper.mapToDomain(
+                        depositEntity,
+                        receiptIdToFlatReceiptMap
+                )
+        );
 
         return PagedSearchResult.of(page);
     }

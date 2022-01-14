@@ -1,10 +1,15 @@
 package bhutan.eledger.adapter.out.epayment.persistence.deposit;
 
-import bhutan.eledger.domain.epayment.deposit.*;
+import bhutan.eledger.domain.epayment.deposit.DenominationCount;
+import bhutan.eledger.domain.epayment.deposit.Deposit;
+import bhutan.eledger.domain.epayment.deposit.DepositReceipt;
+import bhutan.eledger.domain.epayment.deposit.DepositStatus;
 import bhutan.eledger.domain.epayment.payment.FlatReceipt;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -21,7 +26,7 @@ class DepositMapper {
                 deposit.getCreationDateTime()
         );
         Set<DepositDenominationCountsEntity> denominationCountEntities;
-        if(null != deposit.getDenominationCounts() && !deposit.getDenominationCounts().isEmpty()) {
+        if (null != deposit.getDenominationCounts() && !deposit.getDenominationCounts().isEmpty()) {
             denominationCountEntities = deposit.getDenominationCounts().stream().map(d ->
                     new DepositDenominationCountsEntity(d.getDenominationId(), d.getDenominationCount(), depositEntity)
             ).collect(Collectors.toUnmodifiableSet());
@@ -39,7 +44,7 @@ class DepositMapper {
 
     Deposit mapToDomain(DepositEntity depositEntity, Map<Long, FlatReceipt> receiptIdToFlatReceipt) {
         List<DenominationCount> denominationCounts;
-        if(null != depositEntity.getDepositDenominations()) {
+        if (null != depositEntity.getDepositDenominations()) {
             denominationCounts = depositEntity.getDepositDenominations()
                     .stream()
                     .map(dd ->
@@ -61,15 +66,14 @@ class DepositMapper {
                 DepositStatus.of(depositEntity.getStatus()),
                 depositEntity.getDepositReceipts()
                         .stream()
-                        .map(pe -> {
-                            FlatReceipt drw = receiptIdToFlatReceipt.get(pe.getReceiptId());
-                            return DepositReceipt.withId(
-                                            pe.getId(),
-                                            pe.getReceiptId(),
-                                            pe.getDeposit().getId(),
-                                            drw
-                                    );
-                                }
+                        .map(pe ->
+                                DepositReceipt.withId(
+                                        pe.getId(),
+                                        pe.getReceiptId(),
+                                        pe.getDeposit().getId(),
+                                        receiptIdToFlatReceipt.get(pe.getReceiptId())
+                                )
+
                         )
                         .collect(Collectors.toUnmodifiableList()),
                 denominationCounts,
