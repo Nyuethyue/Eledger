@@ -20,7 +20,7 @@ public class FlatReceiptLoaderBean {
         Set<Long> receiptIds = new HashSet<>();
         for(DepositEntity depositEntity : entities) {
             for (DepositReceiptEntity dre : depositEntity.getDepositReceipts()) {
-                receiptIds.add(dre.getId());
+                receiptIds.add(dre.getReceiptId());
             }
         }
 
