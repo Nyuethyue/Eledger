@@ -1,6 +1,7 @@
 package bhutan.eledger.epayment.deposit;
 
 import bhutan.eledger.application.port.in.epayment.deposit.SearchDepositUseCase;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,6 +26,7 @@ class SearchDepositTest {
     void afterEach() {
     }
 
+
     @Test
     void searchTest() {
         var searchResult = searchDepositUseCase.search(new SearchDepositUseCase.SearchDepositCommand(
@@ -37,7 +39,6 @@ class SearchDepositTest {
                 LocalDate.now().minusDays(10),
                 LocalDate.now().plusDays(10)
         ));
-
         Assertions.assertTrue(searchResult.getTotalCount() == 0);
     }
 }

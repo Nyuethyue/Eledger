@@ -14,21 +14,30 @@ import org.springframework.data.jpa.repository.support.Querydsl;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.*;
 
 @Component
 @RequiredArgsConstructor
 class DepositSearchAdapter implements DepositSearchPort {
-    private final DepositEntityRepository receiptEntityRepository;
+    private final DepositEntityRepository depositEntityRepository;
+    private final FlatReceiptLoaderBean flatReceiptLoaderBean;
     private final DepositMapper depositMapper;
+
 
     @Override
     public SearchResult<Deposit> search(DepositSearchCommand command) {
         Pageable pageable = PageableResolver.resolve(command);
 
-        Page<Deposit> page = receiptEntityRepository.findAll(
-                        querydsl -> resolveQuery(command, querydsl),
-                        pageable
-                ).map(depositMapper::mapToDomain);
+        Page<DepositEntity> rawPage = depositEntityRepository.findAll(
+                querydsl -> resolveQuery(command, querydsl),
+                pageable
+        );
+
+        Collection<DepositEntity> depositList = new LinkedList<>();
+        rawPage.map(depositList::add);
+
+        Page<Deposit> page = rawPage.map(depositEntity ->
+                depositMapper.mapToDomain(depositEntity, flatReceiptLoaderBean.loadReceiptIdToFlatReceiptMap(depositList)));
 
         return PagedSearchResult.of(page);
     }

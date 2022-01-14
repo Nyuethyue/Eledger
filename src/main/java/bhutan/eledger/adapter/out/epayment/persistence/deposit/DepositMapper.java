@@ -1,13 +1,10 @@
 package bhutan.eledger.adapter.out.epayment.persistence.deposit;
 
-import bhutan.eledger.domain.epayment.deposit.DenominationCount;
-import bhutan.eledger.domain.epayment.deposit.Deposit;
-import bhutan.eledger.domain.epayment.deposit.DepositReceipt;
-import bhutan.eledger.domain.epayment.deposit.DepositStatus;
+import bhutan.eledger.domain.epayment.deposit.*;
+import bhutan.eledger.domain.epayment.payment.FlatReceipt;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -40,7 +37,7 @@ class DepositMapper {
         return depositEntity;
     }
 
-    Deposit mapToDomain(DepositEntity depositEntity) {
+    Deposit mapToDomain(DepositEntity depositEntity, Map<Long, FlatReceipt> receiptIdToFlatReceipt) {
         List<DenominationCount> denominationCounts;
         if(null != depositEntity.getDepositDenominations()) {
             denominationCounts = depositEntity.getDepositDenominations()
@@ -64,12 +61,15 @@ class DepositMapper {
                 DepositStatus.of(depositEntity.getStatus()),
                 depositEntity.getDepositReceipts()
                         .stream()
-                        .map(pe ->
-                                DepositReceipt.withId(
-                                        pe.getId(),
-                                        pe.getReceiptId(),
-                                        pe.getDeposit().getId()
-                                )
+                        .map(pe -> {
+                            FlatReceipt drw = receiptIdToFlatReceipt.get(pe.getReceiptId());
+                            return DepositReceipt.withId(
+                                            pe.getId(),
+                                            pe.getReceiptId(),
+                                            pe.getDeposit().getId(),
+                                            drw
+                                    );
+                                }
                         )
                         .collect(Collectors.toUnmodifiableList()),
                 denominationCounts,

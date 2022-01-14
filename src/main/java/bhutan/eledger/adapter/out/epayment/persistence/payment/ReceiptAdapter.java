@@ -5,6 +5,7 @@ import bhutan.eledger.application.port.out.epayment.payment.ReceiptRepositoryPor
 import bhutan.eledger.common.ref.refentry.RefEntry;
 import bhutan.eledger.common.ref.refentry.RefEntryRepository;
 import bhutan.eledger.common.ref.refentry.RefName;
+import bhutan.eledger.domain.epayment.payment.FlatReceipt;
 import bhutan.eledger.domain.epayment.payment.Receipt;
 import bhutan.eledger.domain.epayment.payment.ReceiptStatus;
 import lombok.RequiredArgsConstructor;
@@ -56,5 +57,10 @@ class ReceiptAdapter implements ReceiptRepositoryPort {
                     r.setStatus(status.getValue());
                     receiptEntityRepository.save(r);
                 });
+    }
+
+    @Override
+    public Collection<FlatReceipt> readAllByIds(Collection<Long> ids) {
+        return receiptEntityRepository.findAllByIdIn(ids);
     }
 }

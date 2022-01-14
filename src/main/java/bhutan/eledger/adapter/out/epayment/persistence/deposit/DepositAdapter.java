@@ -6,8 +6,7 @@ import bhutan.eledger.domain.epayment.deposit.DepositStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -15,24 +14,27 @@ import java.util.stream.Collectors;
 class DepositAdapter implements DepositRepositoryPort {
     private final DepositMapper depositMapper;
     private final DepositEntityRepository depositEntityRepository;
+    private final FlatReceiptLoaderBean flatReceiptLoaderBean;
+
 
     @Override
     public Optional<Deposit> readById(Long id) {
         return depositEntityRepository.findById(id)
-                .map(depositMapper::mapToDomain);
+                .map(depositEntity-> depositMapper.mapToDomain(depositEntity, flatReceiptLoaderBean.loadReceiptIdToFlatReceiptMap(depositEntity)));
     }
 
     @Override
     public Optional<Deposit> readByDepositNumber(String depositNumber) {
         return depositEntityRepository.readByDepositNumber(depositNumber)
-                .map(depositMapper::mapToDomain);
+                .map(depositEntity-> depositMapper.mapToDomain(depositEntity, flatReceiptLoaderBean.loadReceiptIdToFlatReceiptMap(depositEntity)));
     }
 
     @Override
     public Collection<Deposit> readAll() {
-        return depositEntityRepository.findAll()
+        Collection<DepositEntity> rawDeposits = depositEntityRepository.findAll();
+        return rawDeposits
                 .stream()
-                .map(depositMapper::mapToDomain)
+                .map(depositEntity-> depositMapper.mapToDomain(depositEntity, flatReceiptLoaderBean.loadReceiptIdToFlatReceiptMap(rawDeposits)))
                 .collect(Collectors.toUnmodifiableList());
     }
 
@@ -42,7 +44,7 @@ class DepositAdapter implements DepositRepositoryPort {
                 depositMapper.mapToEntity(deposit)
         );
 
-        return depositMapper.mapToDomain(depositEntity);
+        return depositMapper.mapToDomain(depositEntity, flatReceiptLoaderBean.loadReceiptIdToFlatReceiptMap(depositEntity));
     }
 
     @Override
