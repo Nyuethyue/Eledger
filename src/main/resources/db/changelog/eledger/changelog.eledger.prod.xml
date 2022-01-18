@@ -115,4 +115,8 @@
         <sqlFile path="../../sql/eledger/027_procedure_sp_repayment_from_net_negative.sql" relativeToChangelogFile="true" splitStatements="false"/>
     </changeSet>
 
+    <changeSet id="Create functions for SSP report" author="V.G.">
+        <sqlFile path="../../sql/eledger/028_function_fn_ssp_report.sql" relativeToChangelogFile="true" splitStatements="false"/>
+    </changeSet>
+
 </databaseChangeLog>
