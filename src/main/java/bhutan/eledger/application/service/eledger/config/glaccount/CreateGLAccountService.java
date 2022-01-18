@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 
 @Log4j2
@@ -95,14 +94,6 @@ class CreateGLAccountService implements CreateGLAccountUseCase {
 
     private GLAccountPart resolveParentOfLastType(CreateGLAccountCommand command) {
         Long parentId = command.getGlAccountLastPart().getParentId();
-
-        //todo remove when parent id will be not nullable
-        if (parentId == null) {
-            List<GLAccountPart> glAccountParts =
-                    glAccountPartRepositoryPort.readAllByIdInSortedByLevel(command.getGlAccountPartIds());
-
-            return glAccountParts.get(glAccountParts.size() - 1);
-        }
 
         return glAccountPartRepositoryPort.readById(parentId)
                 .orElseThrow(() ->

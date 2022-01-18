@@ -6,7 +6,6 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Collection;
 import java.util.Map;
 
 @Validated
@@ -16,10 +15,6 @@ public interface CreateGLAccountUseCase {
 
     @Data
     class CreateGLAccountCommand {
-        @NotEmpty
-        @Valid
-        //todo remove
-        private final Collection<Long> glAccountPartIds;
         @NotNull
         @Valid
         private final GLAccountLastPartCommand glAccountLastPart;
@@ -33,7 +28,7 @@ public interface CreateGLAccountUseCase {
         @NotNull
         private final String code;
 
-        //todo make not null
+        @NotNull
         private final Long parentId;
 
         @NotEmpty
