@@ -1,5 +1,6 @@
 package bhutan.eledger.application.port.in.eledger.config.glaccount;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
@@ -18,5 +19,10 @@ public interface UpdateGLAccountUseCase {
         @NotNull
         @NotEmpty
         private final Map<String, String> descriptions;
+
+        @JsonCreator
+        public UpdateGLAccountCommand(Map<String, String> descriptions) {
+            this.descriptions = descriptions;
+        }
     }
 }
