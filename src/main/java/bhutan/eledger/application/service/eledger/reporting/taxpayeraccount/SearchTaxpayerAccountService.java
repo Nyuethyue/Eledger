@@ -18,7 +18,7 @@ class SearchTaxpayerAccountService implements SearchTaxpayerAccountUseCase {
 
     @Override
     public SearchResult<TaxpayerAccountDto> search(SearchTaxpayerAccountCommand command) {
-        log.trace("Search receipt started with in command: {}", command);
+        log.trace("Search taxpayer account bits report started with in command: {}", command);
 
         var outCommand = makeOutSearchCommand(command);
 

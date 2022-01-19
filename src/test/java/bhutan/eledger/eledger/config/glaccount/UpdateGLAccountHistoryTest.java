@@ -52,13 +52,11 @@ class UpdateGLAccountHistoryTest {
     @Autowired
     private AuditManagementTestHelper auditManagementTestHelper;
 
-
-    private Collection<Long> partIds;
     private Long lastPartId;
 
     @BeforeEach
     void beforeEach() {
-        partIds = GLAccountPartUtils.createParts(
+        Collection<Long> partIds = GLAccountPartUtils.createParts(
                 createGLAccountPartTypeUseCase,
                 createGLAccountPartUseCase,
                 glAccountPartTypeRepositoryPort
@@ -79,7 +77,6 @@ class UpdateGLAccountHistoryTest {
     void updateStatusTest() {
         var glAccountId = createGLAccountUseCase.create(
                 new CreateGLAccountUseCase.CreateGLAccountCommand(
-                        partIds,
                         new CreateGLAccountUseCase.GLAccountLastPartCommand(
                                 "1002",
                                 lastPartId,

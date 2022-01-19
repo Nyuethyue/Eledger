@@ -41,13 +41,12 @@ class CreateGLAccountTest {
     @Autowired
     private AuditManagementTestHelper auditManagementTestHelper;
 
-    private Collection<Long> partIds;
     private Long lastPartId;
 
     @BeforeEach
     void beforeEach() {
 
-        partIds = GLAccountPartUtils.createParts(
+        Collection<Long> partIds = GLAccountPartUtils.createParts(
                 createGLAccountPartTypeUseCase,
                 createGLAccountPartUseCase,
                 glAccountPartTypeRepositoryPort
@@ -68,7 +67,6 @@ class CreateGLAccountTest {
     void createTest() {
         Long id = createGLAccountUseCase.create(
                 new CreateGLAccountUseCase.CreateGLAccountCommand(
-                        partIds,
                         new CreateGLAccountUseCase.GLAccountLastPartCommand(
                                 "1002",
                                 lastPartId,

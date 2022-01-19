@@ -62,7 +62,6 @@ class UpdateGLAccountTest {
 
         glAccountId = createGLAccountUseCase.create(
                 new CreateGLAccountUseCase.CreateGLAccountCommand(
-                        partIds,
                         new CreateGLAccountUseCase.GLAccountLastPartCommand(
                                 "1002",
                                 lastPartId,
