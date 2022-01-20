@@ -45,10 +45,11 @@ class CreateHolidayDateService implements CreateHolidayDateUseCase {
 
     private void validate(CreateHolidayDateCommand holidayDates) {
         holidayDates.getHolidayDates().stream().forEach(holidayDateCommand -> {
-                    LocalDate holidayStartDate = holidayDateCommand.getHolidayStartDate();
-                    LocalDate holidayEndDate = holidayDateCommand.getHolidayEndDate();
-                    if (LocalDate.now().isAfter(holidayStartDate) || LocalDate.now().isEqual(holidayStartDate) ||
-                            LocalDate.now().isAfter(holidayEndDate) || LocalDate.now().isEqual(holidayEndDate)
+                    LocalDate holidayStartDate = holidayDateCommand.getStartOfValidity();
+                    LocalDate holidayEndDate = holidayDateCommand.getEndOfValidity();
+                    LocalDate currentDate = LocalDate.now();
+                    if (currentDate.isAfter(holidayStartDate) || currentDate.isEqual(holidayStartDate) ||
+                            currentDate.isAfter(holidayEndDate) || currentDate.isEqual(holidayEndDate)
                     ) {
                         throw new ViolationException(
                                 new ValidationError()
@@ -68,8 +69,8 @@ class CreateHolidayDateService implements CreateHolidayDateUseCase {
                     return HolidayDate.withoutId(
                             holidayDateCommand.getYear(),
                             ValidityPeriod.of(
-                                    holidayDateCommand.getHolidayStartDate(),
-                                    holidayDateCommand.getHolidayEndDate()
+                                    holidayDateCommand.getStartOfValidity(),
+                                    holidayDateCommand.getEndOfValidity()
                             ),
                             holidayDateCommand.getIsValidForOneYear(),
                             Multilingual.fromMap(holidayDateCommand.getDescriptions()));

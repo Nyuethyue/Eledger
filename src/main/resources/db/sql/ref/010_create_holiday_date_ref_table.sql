@@ -3,8 +3,8 @@ CREATE TABLE IF NOT EXISTS ref.holiday_date
 (
     id                    bigint  NOT NULL,
     year                  varchar NOT NULL,
-    holiday_start_date    date    NOT NULL,
-    holiday_end_date      date    NOT NULL,
+    start_of_validity     date    NOT NULL,
+    end_of_validity       date    NOT NULL,
     is_valid_for_one_year boolean NOT NULL
 );
 
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS ref.holiday_date_description
     id                      bigint  NOT NULL,
     language_code           varchar NOT NULL,
     value                   varchar NOT NULL,
-    holiday_date_id   bigint  NOT NULL
+    holiday_date_id         bigint  NOT NULL
 );
 ALTER TABLE ref.holiday_date_description
     ADD CONSTRAINT pk_holiday_date_description

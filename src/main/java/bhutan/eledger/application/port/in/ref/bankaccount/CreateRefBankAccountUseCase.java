@@ -51,7 +51,6 @@ public interface CreateRefBankAccountUseCase {
 
         @JsonCreator
         public BankAccountGLAccountPartCommand(@JsonProperty("code") String code) {
-
             this.code = code;
         }
 

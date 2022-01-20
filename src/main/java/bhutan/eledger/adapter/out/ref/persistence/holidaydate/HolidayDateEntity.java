@@ -24,11 +24,11 @@ class HolidayDateEntity {
     @Column(name = "year")
     private String year;
 
-    @Column(name = "holiday_start_date")
-    private LocalDate holidayStartDate;
+    @Column(name = "start_of_validity")
+    private LocalDate startOfValidity;
 
-    @Column(name = "holiday_end_date")
-    private LocalDate holidayEndDate;
+    @Column(name = "end_of_validity")
+    private LocalDate endOfValidity;
 
     @Column(name = "is_valid_for_one_year")
     private Boolean isValidForOneYear;
@@ -41,11 +41,11 @@ class HolidayDateEntity {
     )
     private Set<HolidayDateDescriptionEntity> descriptions;
 
-    public HolidayDateEntity(Long id, String year, LocalDate holidayStartDate, LocalDate holidayEndDate, Boolean isValidForOneYear) {
+    public HolidayDateEntity(Long id, String year, LocalDate startOfValidity, LocalDate endOfValidity, Boolean isValidForOneYear) {
         this.id = id;
         this.year = year;
-        this.holidayStartDate = holidayStartDate;
-        this.holidayEndDate = holidayEndDate;
+        this.startOfValidity = startOfValidity;
+        this.endOfValidity = endOfValidity;
         this.isValidForOneYear = isValidForOneYear;
     }
 

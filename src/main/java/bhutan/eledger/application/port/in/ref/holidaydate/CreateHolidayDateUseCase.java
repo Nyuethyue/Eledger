@@ -32,9 +32,9 @@ public interface CreateHolidayDateUseCase {
         @NotNull
         private final String year;
         @NotNull
-        private final LocalDate holidayStartDate;
+        private final LocalDate startOfValidity;
         @NotNull
-        private final LocalDate holidayEndDate;
+        private final LocalDate endOfValidity;
         @NotNull
         private final Boolean isValidForOneYear;
         @NotEmpty

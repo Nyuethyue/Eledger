@@ -38,8 +38,8 @@ class HolidayDateMapper {
                 holidayDateEntity.getId(),
                 holidayDateEntity.getYear(),
                 ValidityPeriod.of(
-                        holidayDateEntity.getHolidayStartDate(),
-                        holidayDateEntity.getHolidayEndDate()
+                        holidayDateEntity.getStartOfValidity(),
+                        holidayDateEntity.getEndOfValidity()
                 ),
                 holidayDateEntity.getIsValidForOneYear(),
                 Multilingual.of(holidayDateEntity.getDescriptions())
