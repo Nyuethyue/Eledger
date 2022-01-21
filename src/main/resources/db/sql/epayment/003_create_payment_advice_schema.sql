@@ -56,16 +56,19 @@ CREATE SEQUENCE epayment.ep_pa_bank_info_description_id_seq
 
 CREATE TABLE epayment.ep_payment_advice
 (
-    id                 bigint    NOT NULL,
-    drn                varchar   NOT NULL,
-    status             varchar   NOT NULL,
-    due_date           date      NOT NULL,
-    period_year        varchar   NOT NULL,
-    period_segment     varchar   NOT NULL,
-    creation_date_time timestamp NOT NULL,
-    pan                varchar   NOT NULL,
-    taxpayer_id        bigint    NOT NULL,
-    pa_bank_info_id    bigint    NOT NULL
+    id                      bigint         NOT NULL,
+    drn                     varchar        NOT NULL,
+    status                  varchar        NOT NULL,
+    due_date                date           NOT NULL,
+    period_year             varchar        NOT NULL,
+    period_segment          varchar        NOT NULL,
+    creation_date_time      timestamp      NOT NULL,
+    pan                     varchar        NOT NULL,
+    taxpayer_id             bigint         NOT NULL,
+    pa_bank_info_id         bigint         NOT NULL,
+    total_liability_amount  numeric(20, 2) NOT NULL DEFAULT 0,
+    total_paid_amount       numeric(20, 2) NOT NULL DEFAULT 0,
+    total_to_be_paid_amount numeric(20, 2) NOT NULL DEFAULT 0
 );
 
 ALTER TABLE epayment.ep_payment_advice
@@ -104,8 +107,9 @@ CREATE SEQUENCE epayment.ep_payment_advice_id_seq
 CREATE TABLE IF NOT EXISTS epayment.ep_pa_payable_line
 (
     id                bigint         NOT NULL,
-    amount            numeric(20, 2) NOT NULL,
+    amount            numeric(20, 2) NOT NULL DEFAULT 0,
     paid_amount       numeric(20, 2) NOT NULL DEFAULT 0,
+    to_be_paid_amount numeric(20, 2) NOT NULL DEFAULT 0,
     gl_account_id     bigint         NOT NULL,
     payment_advice_id bigint         NOT NULL,
     el_transaction_id bigint         NOT NULL

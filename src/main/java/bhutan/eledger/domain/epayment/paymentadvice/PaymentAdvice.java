@@ -2,6 +2,8 @@ package bhutan.eledger.domain.epayment.paymentadvice;
 
 
 import am.iunetworks.lib.common.validation.RecordNotFoundException;
+import am.iunetworks.lib.common.validation.ValidationError;
+import am.iunetworks.lib.common.validation.ViolationException;
 import bhutan.eledger.domain.epayment.taxpayer.EpTaxpayer;
 import lombok.Builder;
 import lombok.Data;
@@ -31,26 +33,32 @@ public class PaymentAdvice {
     //todo replace bank info by ref entry
     private final PaymentAdviceBankInfo bankInfo;
     private final Collection<PayableLine> payableLines;
+    private BigDecimal totalLiabilityAmount;
+    private BigDecimal totalPaidAmount;
+    private BigDecimal totalToBePaidAmount;
 
     public BigDecimal getTotalLiabilityAmount() {
-        return payableLines
-                .stream()
-                .map(PayableLine::getAmount)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        if (totalLiabilityAmount == null) {
+            recalculateTotalLiabilityAmount();
+        }
+
+        return totalLiabilityAmount;
     }
 
-    public BigDecimal getTotalPaidAmountAmount() {
-        return payableLines
-                .stream()
-                .map(PayableLine::getPaidAmount)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    public BigDecimal getTotalPaidAmount() {
+        if (totalPaidAmount == null) {
+            recalculateTotalPaidAmount();
+        }
+
+        return totalPaidAmount;
     }
 
-    public BigDecimal getTotalToBePaidAmountAmount() {
-        return payableLines
-                .stream()
-                .map(PayableLine::getAmountToBePaid)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    public BigDecimal getTotalToBePaidAmount() {
+        if (totalToBePaidAmount == null) {
+            recalculateTotalToBePaidAmount();
+        }
+
+        return totalToBePaidAmount;
     }
 
     public Optional<PayableLine> getPayableLineById(Long payableLineId) {
@@ -64,17 +72,29 @@ public class PaymentAdvice {
                 .orElseThrow(() -> new RecordNotFoundException("PayableLine by id: [" + payableLineId + "] not found."));
     }
 
-    public boolean isPaid() {
-        return BigDecimal.ZERO.compareTo(getTotalToBePaidAmountAmount()) == 0;
+    public void pay(PaymentContext paymentContext) {
+
+        checkStatusForPayment();
+
+        paymentContext.getPayableLinePayments()
+                .forEach(plc -> {
+                            PayableLine payableLine = getRequiredPayableLineById(plc.getPayableLineId());
+
+                            payableLine.pay(plc.getPaidAmount());
+                        }
+                );
+
+        if (isPaid()) {
+            changeStatus(PaymentAdviceStatus.PAID);
+        } else {
+            changeStatus(PaymentAdviceStatus.SPLIT_PAYMENT);
+        }
+
+        recalculateTotalPaidAmount();
+        recalculateTotalToBePaidAmount();
     }
 
-    public PaymentAdvice changeStatus(PaymentAdviceStatus status) {
-        this.status = status;
-
-        return this;
-    }
-
-    public PaymentAdvice upsertPaymentLine(PayableLine payableLine) {
+    public void upsertPaymentLine(PayableLine payableLine) {
         payableLines.
                 stream()
                 .filter(pl -> pl.getGlAccount().getCode().equals(payableLine.getGlAccount().getCode()))
@@ -84,7 +104,50 @@ public class PaymentAdvice {
                         () -> payableLines.add(payableLine)
                 );
 
+        recalculateTotalLiabilityAmount();
+        recalculateTotalPaidAmount();
+        recalculateTotalToBePaidAmount();
+    }
+
+
+    public boolean isPaid() {
+        return BigDecimal.ZERO.compareTo(getTotalToBePaidAmount()) == 0;
+    }
+
+    private PaymentAdvice changeStatus(PaymentAdviceStatus status) {
+        this.status = status;
+
         return this;
+    }
+
+    private void checkStatusForPayment() {
+        if (isPaid()) {
+            throw new ViolationException(
+                    new ValidationError()
+                            .addViolation(
+                                    "paymentAdviceId",
+                                    "Payment advice by pan: [" + pan + "] has been already paid."
+                            )
+            );
+        }
+    }
+
+    private void recalculateTotalLiabilityAmount() {
+        totalLiabilityAmount = payableLines
+                .stream()
+                .map(PayableLine::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    private void recalculateTotalPaidAmount() {
+        totalPaidAmount = payableLines
+                .stream()
+                .map(PayableLine::getPaidAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    private void recalculateTotalToBePaidAmount() {
+        totalToBePaidAmount = getTotalLiabilityAmount().subtract(getTotalPaidAmount());
     }
 
     @Data(staticConstructor = "of")
@@ -93,7 +156,21 @@ public class PaymentAdvice {
         private final String segment;
     }
 
-    public static PaymentAdvice withId(Long id, String drn, LocalDate dueDate, Period period, LocalDateTime creationDateTime, String pan, PaymentAdviceStatus status, EpTaxpayer taxpayer, PaymentAdviceBankInfo bankInfo, Collection<PayableLine> payableLines) {
+    public static PaymentAdvice withId(
+            Long id,
+            String drn,
+            LocalDate dueDate,
+            Period period,
+            LocalDateTime creationDateTime,
+            String pan,
+            PaymentAdviceStatus status,
+            EpTaxpayer taxpayer,
+            PaymentAdviceBankInfo bankInfo,
+            Collection<PayableLine> payableLines,
+            BigDecimal totalLiabilityAmount,
+            BigDecimal totalPaidAmountAmount,
+            BigDecimal totalToBePaidAmount
+    ) {
         return new PaymentAdvice(
                 id,
                 drn,
@@ -104,7 +181,10 @@ public class PaymentAdvice {
                 status,
                 taxpayer,
                 bankInfo,
-                new ArrayList<>(payableLines)
+                new ArrayList<>(payableLines),
+                totalLiabilityAmount,
+                totalPaidAmountAmount,
+                totalToBePaidAmount
         );
     }
 
@@ -119,7 +199,21 @@ public class PaymentAdvice {
                 status,
                 taxpayer,
                 bankInfo,
-                new ArrayList<>(payableLines)
+                new ArrayList<>(payableLines),
+                null,
+                null,
+                null
         );
+    }
+
+    @Data(staticConstructor = "of")
+    public static class PaymentContext {
+        private final Collection<PayableLinePaymentContext> payableLinePayments;
+    }
+
+    @Data(staticConstructor = "of")
+    public static class PayableLinePaymentContext {
+        private final Long payableLineId;
+        private final BigDecimal paidAmount;
     }
 }

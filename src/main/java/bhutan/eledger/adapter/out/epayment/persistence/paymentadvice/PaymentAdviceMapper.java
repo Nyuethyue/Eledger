@@ -44,6 +44,9 @@ class PaymentAdviceMapper {
                 paymentAdvice.getCreationDateTime(),
                 paymentAdvice.getPan(),
                 paymentAdvice.getStatus().getValue(),
+                paymentAdvice.getTotalLiabilityAmount(),
+                paymentAdvice.getTotalPaidAmount(),
+                paymentAdvice.getTotalToBePaidAmount(),
                 paymentAdvice.getTaxpayer(),
                 bankInfoEntity
         );
@@ -56,6 +59,7 @@ class PaymentAdviceMapper {
                                         pl.getId(),
                                         pl.getPaidAmount(),
                                         pl.getAmount(),
+                                        pl.getToBePaidAmount(),
                                         pl.getElTransactionId(),
                                         paymentAdviceEntity,
                                         pl.getGlAccount()
@@ -91,6 +95,7 @@ class PaymentAdviceMapper {
                                 pl.getGlAccount(),
                                 pl.getPaidAmount(),
                                 pl.getAmount(),
+                                pl.getToBePaidAmount(),
                                 pl.getElTransactionId()
                         )
                 )
@@ -107,7 +112,10 @@ class PaymentAdviceMapper {
                 PaymentAdviceStatus.valueOf(paymentAdviceEntity.getStatus()),
                 paymentAdviceEntity.getTaxpayer(),
                 bankInfo,
-                payableLines
+                payableLines,
+                paymentAdviceEntity.getTotalLiabilityAmount(),
+                paymentAdviceEntity.getTotalPaidAmount(),
+                paymentAdviceEntity.getTotalToBePaidAmount()
         );
     }
 }

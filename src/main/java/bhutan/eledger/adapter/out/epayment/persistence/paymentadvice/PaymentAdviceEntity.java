@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -45,6 +46,13 @@ class PaymentAdviceEntity {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "total_liability_amount")
+    private BigDecimal totalLiabilityAmount;
+    @Column(name = "total_paid_amount")
+    private BigDecimal totalPaidAmount;
+    @Column(name = "total_to_be_paid_amount")
+    private BigDecimal totalToBePaidAmount;
+
     @OneToOne
     @JoinColumn(name = "taxpayer_id", nullable = false)
     private EpTaxpayer taxpayer;
@@ -61,7 +69,7 @@ class PaymentAdviceEntity {
     )
     private Set<PayableLineEntity> payableLines;
 
-    public PaymentAdviceEntity(Long id, String drn, LocalDate dueDate, String periodYear, String periodSegment, LocalDateTime creationDateTime, String pan, String status, EpTaxpayer taxpayer, PaymentAdviceBankInfoEntity bankInfo) {
+    public PaymentAdviceEntity(Long id, String drn, LocalDate dueDate, String periodYear, String periodSegment, LocalDateTime creationDateTime, String pan, String status, BigDecimal totalLiabilityAmount, BigDecimal totalPaidAmount, BigDecimal totalToBePaidAmount, EpTaxpayer taxpayer, PaymentAdviceBankInfoEntity bankInfo) {
         this.id = id;
         this.drn = drn;
         this.dueDate = dueDate;
@@ -72,5 +80,8 @@ class PaymentAdviceEntity {
         this.status = status;
         this.taxpayer = taxpayer;
         this.bankInfo = bankInfo;
+        this.totalLiabilityAmount = totalLiabilityAmount;
+        this.totalPaidAmount = totalPaidAmount;
+        this.totalToBePaidAmount = totalToBePaidAmount;
     }
 }

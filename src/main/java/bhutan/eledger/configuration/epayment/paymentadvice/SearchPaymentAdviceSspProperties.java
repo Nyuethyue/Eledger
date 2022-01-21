@@ -11,12 +11,12 @@ import org.springframework.validation.annotation.Validated;
 import java.util.Collection;
 import java.util.Set;
 
-@ConfigurationProperties(prefix = "bhutan.epayment.payment.advice.search.bits")
+@ConfigurationProperties(prefix = "bhutan.epayment.payment.advice.search.ssp")
 @ConstructorBinding
 @Getter
 @Validated
-public class SearchPaymentAdviceProperties extends AbstractSearchProperties {
-    public SearchPaymentAdviceProperties(int page, int size, String sortProperty, String sortDirection, Collection<String> availableSortProperties) {
+public class SearchPaymentAdviceSspProperties extends AbstractSearchProperties {
+    public SearchPaymentAdviceSspProperties(int page, int size, String sortProperty, String sortDirection, Collection<String> availableSortProperties) {
         super(
                 page,
                 size,
@@ -28,7 +28,12 @@ public class SearchPaymentAdviceProperties extends AbstractSearchProperties {
                         QPaymentAdviceEntity.paymentAdviceEntity.drn.getMetadata().getName(),
                         QPaymentAdviceEntity.paymentAdviceEntity.pan.getMetadata().getName(),
                         QPaymentAdviceEntity.paymentAdviceEntity.taxpayer.getMetadata().getName() + CharSequenceConstants.DOT + QPaymentAdviceEntity.paymentAdviceEntity.taxpayer.tpn.getMetadata().getName(),
-                        QPaymentAdviceEntity.paymentAdviceEntity.dueDate.getMetadata().getName()
+                        QPaymentAdviceEntity.paymentAdviceEntity.dueDate.getMetadata().getName(),
+                        QPaymentAdviceEntity.paymentAdviceEntity.creationDateTime.getMetadata().getName(),
+                        QPaymentAdviceEntity.paymentAdviceEntity.totalLiabilityAmount.getMetadata().getName(),
+                        QPaymentAdviceEntity.paymentAdviceEntity.totalPaidAmount.getMetadata().getName(),
+                        QPaymentAdviceEntity.paymentAdviceEntity.totalToBePaidAmount.getMetadata().getName(),
+                        QPaymentAdviceEntity.paymentAdviceEntity.status.getMetadata().getName()
                 )
         );
     }
