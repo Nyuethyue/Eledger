@@ -69,15 +69,15 @@ BEGIN
 
     v_ret_val := p_year ||
                  CASE p_segment
-                     WHEN '01' THEN CASE WHEN p_language_code = 'en' THEN '-Jan' ELSE '' END
-                     WHEN '02' THEN CASE WHEN p_language_code = 'en' THEN '-Feb' ELSE '' END
-                     WHEN '03' THEN CASE WHEN p_language_code = 'en' THEN '-Mar' ELSE '' END
-                     WHEN '04' THEN CASE WHEN p_language_code = 'en' THEN '-Apr' ELSE '' END
-                     WHEN '05' THEN CASE WHEN p_language_code = 'en' THEN '-May' ELSE '' END
-                     WHEN '06' THEN CASE WHEN p_language_code = 'en' THEN '-Jun' ELSE '' END
-                     WHEN '07' THEN CASE WHEN p_language_code = 'en' THEN '-Jul' ELSE '' END
-                     WHEN '08' THEN CASE WHEN p_language_code = 'en' THEN '-Aug' ELSE '' END
-                     WHEN '09' THEN CASE WHEN p_language_code = 'en' THEN '-Sep' ELSE '' END
+                     WHEN '1' THEN CASE WHEN p_language_code = 'en' THEN '-Jan' ELSE '' END
+                     WHEN '2' THEN CASE WHEN p_language_code = 'en' THEN '-Feb' ELSE '' END
+                     WHEN '3' THEN CASE WHEN p_language_code = 'en' THEN '-Mar' ELSE '' END
+                     WHEN '4' THEN CASE WHEN p_language_code = 'en' THEN '-Apr' ELSE '' END
+                     WHEN '5' THEN CASE WHEN p_language_code = 'en' THEN '-May' ELSE '' END
+                     WHEN '6' THEN CASE WHEN p_language_code = 'en' THEN '-Jun' ELSE '' END
+                     WHEN '7' THEN CASE WHEN p_language_code = 'en' THEN '-Jul' ELSE '' END
+                     WHEN '8' THEN CASE WHEN p_language_code = 'en' THEN '-Aug' ELSE '' END
+                     WHEN '9' THEN CASE WHEN p_language_code = 'en' THEN '-Sep' ELSE '' END
                      WHEN '10' THEN CASE WHEN p_language_code = 'en' THEN '-Oct' ELSE '' END
                      WHEN '11' THEN CASE WHEN p_language_code = 'en' THEN '-Nov' ELSE '' END
                      WHEN '12' THEN CASE WHEN p_language_code = 'en' THEN '-Dec' ELSE '' END
