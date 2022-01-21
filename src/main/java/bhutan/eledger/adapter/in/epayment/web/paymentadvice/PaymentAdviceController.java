@@ -5,6 +5,7 @@ import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAd
 import bhutan.eledger.application.port.in.epayment.paymentadvice.SearchPaymentAdviceUseCase;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.UpdatePaymentAdviceUseCase;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.UpsertPaymentAdviceUseCase;
+import bhutan.eledger.domain.epayment.paymentadvice.FlatPaymentAdvice;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/payment/api/paymentadvice")
@@ -46,4 +49,16 @@ class PaymentAdviceController {
     public SearchResult<PaymentAdvice> search(SearchPaymentAdviceUseCase.SearchPaymentAdviseCommand command) {
         return searchPaymentAdviceUseCase.search(command);
     }
+
+    @GetMapping(value = "/getPaDrnToPanByDrns", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.OK)
+    public Map<String, String> getPaDrnToPanByDrns(@RequestBody SearchPaymentAdviceUseCase.SearchPaymentAdviceByDrnCommand command) {
+        return searchPaymentAdviceUseCase
+                .searchByDrns(command)
+                .stream()
+                .collect(Collectors.toMap(FlatPaymentAdvice::getDrn,FlatPaymentAdvice::getPan));
+    }
+
+
 }
+

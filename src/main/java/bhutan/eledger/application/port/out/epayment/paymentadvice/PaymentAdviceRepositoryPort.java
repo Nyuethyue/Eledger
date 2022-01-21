@@ -2,6 +2,7 @@ package bhutan.eledger.application.port.out.epayment.paymentadvice;
 
 
 import am.iunetworks.lib.common.validation.RecordNotFoundException;
+import bhutan.eledger.domain.epayment.paymentadvice.FlatPaymentAdvice;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdviceStatus;
 
@@ -41,4 +42,8 @@ public interface PaymentAdviceRepositoryPort {
     void deleteAll();
 
     void update(PaymentAdvice updatedPaymentAdvice);
+
+    Collection<FlatPaymentAdvice> readAllFlatByDrns(Collection<String> drns);
+
+
 }
