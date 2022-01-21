@@ -1,10 +1,7 @@
 package bhutan.eledger.adapter.in.epayment.web.paymentadvice;
 
 import am.iunetworks.lib.common.persistence.search.SearchResult;
-import bhutan.eledger.application.port.in.epayment.paymentadvice.CreatePaymentAdviceUseCase;
-import bhutan.eledger.application.port.in.epayment.paymentadvice.SearchPaymentAdviceUseCase;
-import bhutan.eledger.application.port.in.epayment.paymentadvice.UpdatePaymentAdviceUseCase;
-import bhutan.eledger.application.port.in.epayment.paymentadvice.UpsertPaymentAdviceUseCase;
+import bhutan.eledger.application.port.in.epayment.paymentadvice.*;
 import bhutan.eledger.domain.epayment.paymentadvice.FlatPaymentAdvice;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +22,7 @@ class PaymentAdviceController {
     private final CreatePaymentAdviceUseCase createPaymentAdviceUseCase;
     private final UpdatePaymentAdviceUseCase updatePaymentAdviceUseCase;
     private final SearchPaymentAdviceUseCase searchPaymentAdviceUseCase;
+    private final SearchFlatPaymentAdviceByDrnsUseCase searchFlatPaymentAdviceByDrnsUseCase;
 
     @PostMapping
     public ResponseEntity<Object> create(@RequestBody UpsertPaymentAdviceUseCase.UpsertPaymentAdviceCommand command) {
@@ -52,11 +50,11 @@ class PaymentAdviceController {
 
     @GetMapping(value = "/getPaDrnToPanByDrns", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
-    public Map<String, String> getPaDrnToPanByDrns(@RequestBody SearchPaymentAdviceUseCase.SearchPaymentAdviceByDrnCommand command) {
-        return searchPaymentAdviceUseCase
+    public Map<String, String> getPaDrnToPanByDrns(@RequestBody SearchFlatPaymentAdviceByDrnsUseCase.SearchPaymentAdviceByDrnCommand command) {
+        return searchFlatPaymentAdviceByDrnsUseCase
                 .searchByDrns(command)
                 .stream()
-                .collect(Collectors.toMap(FlatPaymentAdvice::getDrn,FlatPaymentAdvice::getPan));
+                .collect(Collectors.toMap(FlatPaymentAdvice::getDrn, FlatPaymentAdvice::getPan));
     }
 
 

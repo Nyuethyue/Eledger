@@ -6,17 +6,12 @@ import am.iunetworks.lib.common.validation.ValidationError;
 import am.iunetworks.lib.common.validation.ViolationException;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.SearchPaymentAdvicePort;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.SearchPaymentAdviceUseCase;
-import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceRepositoryPort;
 import bhutan.eledger.configuration.epayment.paymentadvice.SearchPaymentAdviceProperties;
-import bhutan.eledger.domain.epayment.paymentadvice.FlatPaymentAdvice;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collection;
-import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -25,7 +20,6 @@ import java.util.stream.Collectors;
 class SearchPaymentAdviceService implements SearchPaymentAdviceUseCase {
     private final SearchPaymentAdviceProperties searchPaymentAdviceProperties;
     private final SearchPaymentAdvicePort searchPaymentAdvicePort;
-    private final PaymentAdviceRepositoryPort paymentAdviceRepositoryPort;
 
     @Override
     public SearchResult<PaymentAdvice> search(SearchPaymentAdviseCommand command) {
@@ -45,18 +39,6 @@ class SearchPaymentAdviceService implements SearchPaymentAdviceUseCase {
         log.trace("Search result content: {}, out port command: {}", searchResult.getContent(), outCommand);
 
         return searchResult;
-    }
-
-    @Override
-    public Collection<FlatPaymentAdvice> searchByDrns(SearchPaymentAdviceByDrnCommand command) {
-        log.trace("Search execution started with in command: {}", command);
-
-        return paymentAdviceRepositoryPort
-                .readAllFlatByDrns(command
-                        .getDrnCommands()
-                        .stream()
-                        .map(drnCommand -> drnCommand.getDrn())
-                        .collect(Collectors.toList()));
     }
 
 
