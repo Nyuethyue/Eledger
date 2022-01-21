@@ -54,7 +54,7 @@ class PaymentAdviceController {
     @ResponseStatus(value = HttpStatus.OK)
     public Map<String, String> getPaDrnToPanByDrn(@RequestBody SearchPaymentAdviceUseCase.SearchPaymentAdviceByDrnCommand command) {
         return searchPaymentAdviceUseCase
-                .SearchByDrns(command)
+                .searchByDrns(command)
                 .stream()
                 .collect(Collectors.toMap(FlatPaymentAdvice::getDrn,FlatPaymentAdvice::getPan));
     }

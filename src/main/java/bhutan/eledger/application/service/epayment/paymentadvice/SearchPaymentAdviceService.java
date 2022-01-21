@@ -48,8 +48,9 @@ class SearchPaymentAdviceService implements SearchPaymentAdviceUseCase {
     }
 
     @Override
-    public Collection<FlatPaymentAdvice> SearchByDrns(SearchPaymentAdviceByDrnCommand command) {
+    public Collection<FlatPaymentAdvice> searchByDrns(SearchPaymentAdviceByDrnCommand command) {
         log.trace("Search execution started with in command: {}", command);
+
         return paymentAdviceRepositoryPort
                 .readAllFlatByDrns(command
                         .getDrnCommands()

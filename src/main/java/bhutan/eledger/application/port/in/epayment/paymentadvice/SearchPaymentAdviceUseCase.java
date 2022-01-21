@@ -32,7 +32,7 @@ public interface SearchPaymentAdviceUseCase {
         private final String pan;
     }
 
-    Collection<FlatPaymentAdvice> SearchByDrns(@Valid SearchPaymentAdviceUseCase.SearchPaymentAdviceByDrnCommand command);
+    Collection<FlatPaymentAdvice> searchByDrns(@Valid SearchPaymentAdviceUseCase.SearchPaymentAdviceByDrnCommand command);
 
     @Data
     @NoArgsConstructor
