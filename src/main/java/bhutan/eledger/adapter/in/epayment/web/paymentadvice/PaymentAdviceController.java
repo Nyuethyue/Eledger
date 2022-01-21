@@ -50,11 +50,11 @@ class PaymentAdviceController {
         return searchPaymentAdviceUseCase.search(command);
     }
 
-    @GetMapping(value = "/searchPaymentAdviceByDrn", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/getPaDrnToPanByDrn", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
-    public Map<String, String> readPaymentAdviceByDrn(@RequestBody SearchPaymentAdviceUseCase.SearchPaymentAdviceByDrnCommand command) {
+    public Map<String, String> getPaDrnToPanByDrn(@RequestBody SearchPaymentAdviceUseCase.SearchPaymentAdviceByDrnCommand command) {
         return searchPaymentAdviceUseCase
-                .searchPanByDrn(command)
+                .SearchByDrns(command)
                 .stream()
                 .collect(Collectors.toMap(FlatPaymentAdvice::getDrn,FlatPaymentAdvice::getPan));
     }

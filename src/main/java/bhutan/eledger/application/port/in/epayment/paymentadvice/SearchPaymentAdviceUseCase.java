@@ -32,7 +32,7 @@ public interface SearchPaymentAdviceUseCase {
         private final String pan;
     }
 
-    Collection<FlatPaymentAdvice> searchPanByDrn(@Valid SearchPaymentAdviceUseCase.SearchPaymentAdviceByDrnCommand command);
+    Collection<FlatPaymentAdvice> SearchByDrns(@Valid SearchPaymentAdviceUseCase.SearchPaymentAdviceByDrnCommand command);
 
     @Data
     @NoArgsConstructor
@@ -46,7 +46,7 @@ public interface SearchPaymentAdviceUseCase {
         private final String drn;
 
         @JsonCreator
-        public DrnCommand(@JsonProperty("drn") String drn) {
+        public DrnCommand(String drn) {
             this.drn = drn;
         }
     }

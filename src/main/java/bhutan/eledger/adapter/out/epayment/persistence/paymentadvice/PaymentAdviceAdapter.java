@@ -74,7 +74,7 @@ class PaymentAdviceAdapter implements PaymentAdviceRepositoryPort {
     }
 
     @Override
-    public Collection<FlatPaymentAdvice> readAllByDrns(Collection<String> drns) {
+    public Collection<FlatPaymentAdvice> readAllFlatByDrns(Collection<String> drns) {
         return paymentAdviceEntityRepository.findAllByDrnIn(drns);
     }
 }

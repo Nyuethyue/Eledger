@@ -48,10 +48,14 @@ class SearchPaymentAdviceService implements SearchPaymentAdviceUseCase {
     }
 
     @Override
-    public Collection<FlatPaymentAdvice> searchPanByDrn(SearchPaymentAdviceByDrnCommand command) {
-        return paymentAdviceRepositoryPort.readAllByDrns(
-                command.getDrnCommands().stream()
-                        .map(drnCommand -> drnCommand.getDrn()).collect(Collectors.toList()));
+    public Collection<FlatPaymentAdvice> SearchByDrns(SearchPaymentAdviceByDrnCommand command) {
+        log.trace("Search execution started with in command: {}", command);
+        return paymentAdviceRepositoryPort
+                .readAllFlatByDrns(command
+                        .getDrnCommands()
+                        .stream()
+                        .map(drnCommand -> drnCommand.getDrn())
+                        .collect(Collectors.toList()));
     }
 
 

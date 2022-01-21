@@ -43,7 +43,7 @@ public interface PaymentAdviceRepositoryPort {
 
     void update(PaymentAdvice updatedPaymentAdvice);
 
-    Collection<FlatPaymentAdvice> readAllByDrns(Collection<String> drns);
+    Collection<FlatPaymentAdvice> readAllFlatByDrns(Collection<String> drns);
 
 
 }
