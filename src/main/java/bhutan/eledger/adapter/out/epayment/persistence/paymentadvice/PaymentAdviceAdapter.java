@@ -1,6 +1,7 @@
 package bhutan.eledger.adapter.out.epayment.persistence.paymentadvice;
 
 import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceRepositoryPort;
+import bhutan.eledger.domain.epayment.paymentadvice.FlatPaymentAdvice;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdviceStatus;
 import lombok.RequiredArgsConstructor;
@@ -70,5 +71,10 @@ class PaymentAdviceAdapter implements PaymentAdviceRepositoryPort {
         paymentAdviceEntityRepository.save(
                 paymentAdviceMapper.mapToEntity(updatedPaymentAdvice)
         );
+    }
+
+    @Override
+    public Collection<FlatPaymentAdvice> readAllByDrns(Collection<String> drns) {
+        return paymentAdviceEntityRepository.findAllByDrnIn(drns);
     }
 }

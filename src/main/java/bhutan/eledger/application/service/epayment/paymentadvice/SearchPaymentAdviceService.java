@@ -6,12 +6,17 @@ import am.iunetworks.lib.common.validation.ValidationError;
 import am.iunetworks.lib.common.validation.ViolationException;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.SearchPaymentAdvicePort;
 import bhutan.eledger.application.port.in.epayment.paymentadvice.SearchPaymentAdviceUseCase;
+import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceRepositoryPort;
 import bhutan.eledger.configuration.epayment.paymentadvice.SearchPaymentAdviceProperties;
+import bhutan.eledger.domain.epayment.paymentadvice.FlatPaymentAdvice;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -20,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 class SearchPaymentAdviceService implements SearchPaymentAdviceUseCase {
     private final SearchPaymentAdviceProperties searchPaymentAdviceProperties;
     private final SearchPaymentAdvicePort searchPaymentAdvicePort;
+    private final PaymentAdviceRepositoryPort paymentAdviceRepositoryPort;
 
     @Override
     public SearchResult<PaymentAdvice> search(SearchPaymentAdviseCommand command) {
@@ -41,6 +47,14 @@ class SearchPaymentAdviceService implements SearchPaymentAdviceUseCase {
         return searchResult;
     }
 
+    @Override
+    public Collection<FlatPaymentAdvice> searchPanByDrn(SearchPaymentAdviceByDrnCommand command) {
+        return paymentAdviceRepositoryPort.readAllByDrns(
+                command.getDrnCommands().stream()
+                        .map(drnCommand -> drnCommand.getDrn()).collect(Collectors.toList()));
+    }
+
+
     private SearchPaymentAdvicePort.PaymentAdviseSearchCommand mapToSearchCommand(SearchPaymentAdviseCommand command) {
         return new SearchPaymentAdvicePort.PaymentAdviseSearchCommand(
                 searchPaymentAdviceProperties.resolvePage(command.getPage()),
@@ -51,4 +65,6 @@ class SearchPaymentAdviceService implements SearchPaymentAdviceUseCase {
                 command.getPan()
         );
     }
+
+
 }
