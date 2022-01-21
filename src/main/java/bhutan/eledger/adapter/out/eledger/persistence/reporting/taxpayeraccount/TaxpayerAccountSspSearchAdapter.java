@@ -43,7 +43,7 @@ class TaxpayerAccountSspSearchAdapter implements TaxpayerAccountSspSearchPort {
     private TaxpayerAccountSspDto mapResultSetToDto(ResultSet rs, int rowIndex) throws SQLException {
         return TaxpayerAccountSspDto.of(
                 rs.getString("row_type"),
-                rs.getDate("transaction_date").toLocalDate(),
+                rs.getString("transaction_date"),
                 rs.getString("description"),
                 rs.getBigDecimal("debit"),
                 rs.getBigDecimal("credit"),
