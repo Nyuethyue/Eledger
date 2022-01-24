@@ -38,7 +38,7 @@ public interface SearchPaymentAdviceSspUseCase {
         private final BigDecimal totalToBePaidAmountTo;
 
         public PaymentAdviceStatus getStatus() {
-            return PaymentAdviceStatus.of(status);
+            return status == null ? null : PaymentAdviceStatus.of(status);
         }
     }
 }
