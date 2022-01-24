@@ -84,14 +84,14 @@ public class PaymentAdvice {
                         }
                 );
 
+        recalculateTotalPaidAmount();
+        recalculateTotalToBePaidAmount();
+
         if (isPaid()) {
             changeStatus(PaymentAdviceStatus.PAID);
         } else {
             changeStatus(PaymentAdviceStatus.SPLIT_PAYMENT);
         }
-
-        recalculateTotalPaidAmount();
-        recalculateTotalToBePaidAmount();
     }
 
     public void upsertPaymentLine(PayableLine payableLine) {
