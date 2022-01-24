@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @Getter
 @RequiredArgsConstructor
@@ -21,6 +22,12 @@ public enum PaymentAdviceStatus {
         return Arrays.stream(values())
                 .filter(status -> status.value.equals(value))
                 .findAny()
-                .orElseThrow(() -> new IllegalArgumentException("Illegal value: [" + value + "]. Possible values: " + Arrays.toString(values())));
+                .orElseThrow(() -> new IllegalArgumentException(
+                                "Illegal value: [" + value + "]. Possible values: " +
+                                        Arrays.stream(values())
+                                                .map(PaymentAdviceStatus::getValue)
+                                                .collect(Collectors.toUnmodifiableList())
+                        )
+                );
     }
 }
