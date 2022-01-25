@@ -28,6 +28,7 @@ public interface SearchGLAccountPartUseCase {
         private final String languageCode;
         private final String code;
         private final String head;
+        @NotNull
         private final Integer partTypeId;
 
     }
