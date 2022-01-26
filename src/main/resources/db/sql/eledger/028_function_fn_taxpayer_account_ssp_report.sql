@@ -116,10 +116,10 @@ BEGIN
                  , period_description
                  , r.debit
                  , r.credit
-                 , SUM(
-                   (CASE WHEN r.credit IS NULL THEN 0 ELSE r.credit END)
-                       -
+                 , sum(
                    (CASE WHEN r.debit IS NULL THEN 0 ELSE r.debit END)
+                       -
+                   (CASE WHEN r.credit IS NULL THEN 0 ELSE r.credit END)
                 ) OVER (PARTITION BY transaction_year, transaction_segment ORDER BY id) balance
                  , MAX(id) OVER (PARTITION BY transaction_year, transaction_segment)    m_id
                  , parent_id
@@ -133,8 +133,8 @@ BEGIN
                           , t.transaction_year
                           , t.transaction_segment
                           , t.transaction_date::varchar AS                                                        period_description
-                          , CASE WHEN t.accounting_action_type_id IN (4) THEN amount ELSE NULL::numeric END       debit
-                          , CASE WHEN t.accounting_action_type_id IN (1, 2, 3) THEN amount ELSE NULL::numeric END credit
+                          , CASE WHEN t.accounting_action_type_id IN (4) THEN amount ELSE NULL::numeric END       credit
+                          , CASE WHEN t.accounting_action_type_id IN (1, 2, 3) THEN amount ELSE NULL::numeric END debit
                           , t.parent_id
                           , t.gl_account_id
                           , t.transfer_type
@@ -154,11 +154,11 @@ BEGIN
                               WHERE tp.tpn = p_tpn
                                 AND ega.code LIKE COALESCE(p_tax_type_code, ega.code) || '%'
                                 AND (
-                                          accounting_action_type_id IN (2, 3)
+                                      accounting_action_type_id IN (2, 3)
                                       OR
-                                          (accounting_action_type_id = 1 AND account_type = 'A' AND transfer_type = 'D')
+                                      (accounting_action_type_id = 1 AND account_type = 'A' AND transfer_type = 'D')
                                       OR
-                                          (accounting_action_type_id = 4 AND account_type = 'A' AND transfer_type = 'C')
+                                      (accounting_action_type_id = 4 AND account_type = 'A' AND transfer_type = 'C')
                                   )
                           ) t
                      WHERE transaction_year = COALESCE(p_year, transaction_year)
