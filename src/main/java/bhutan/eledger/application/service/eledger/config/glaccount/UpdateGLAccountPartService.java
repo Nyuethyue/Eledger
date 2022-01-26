@@ -27,7 +27,7 @@ class UpdateGLAccountPartService implements UpdateGLAccountPartUseCase {
                 new RecordNotFoundException("GLAccount part by id: [" + id + "] not found.")
         );
 
-        log.trace("GL account to be updated: {}", glAccountPart);
+        log.trace("GL account part to be updated: {}", glAccountPart);
 
         //todo apply validation logic
 
