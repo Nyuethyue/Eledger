@@ -116,7 +116,7 @@ BEGIN
                  , period_description
                  , r.debit
                  , r.credit
-                 , sum(
+                 , SUM(
                    (CASE WHEN r.debit IS NULL THEN 0 ELSE r.debit END)
                        -
                    (CASE WHEN r.credit IS NULL THEN 0 ELSE r.credit END)
