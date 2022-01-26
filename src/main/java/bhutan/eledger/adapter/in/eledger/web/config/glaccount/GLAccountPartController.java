@@ -1,9 +1,7 @@
 package bhutan.eledger.adapter.in.eledger.web.config.glaccount;
 
 import am.iunetworks.lib.common.persistence.search.SearchResult;
-import bhutan.eledger.application.port.in.eledger.config.glaccount.CreateGLAccountPartUseCase;
-import bhutan.eledger.application.port.in.eledger.config.glaccount.ReadGLAccountPartUseCase;
-import bhutan.eledger.application.port.in.eledger.config.glaccount.SearchGLAccountPartUseCase;
+import bhutan.eledger.application.port.in.eledger.config.glaccount.*;
 import bhutan.eledger.domain.eledger.config.glaccount.GLAccountPart;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,6 +18,7 @@ class GLAccountPartController {
     private final CreateGLAccountPartUseCase createGLAccountPartUseCase;
     private final ReadGLAccountPartUseCase readGLAccountPartUseCase;
     private final SearchGLAccountPartUseCase searchGLAccountPartUseCase;
+    private final UpdateGLAccountPartUseCase updateGLAccountPartUseCase;
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> create(@RequestBody CreateGLAccountPartUseCase.CreateGLAccountPartCommand command) {
@@ -53,5 +52,14 @@ class GLAccountPartController {
     @ResponseStatus(value = HttpStatus.OK)
     public SearchResult<GLAccountPart> search(SearchGLAccountPartUseCase.SearchGLAccountPartCommand command) {
         return searchGLAccountPartUseCase.search(command);
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody UpdateGLAccountPartUseCase.UpdateGLAccountPartCommand command) {
+        updateGLAccountPartUseCase.updateGLAccountPart(id, command);
+
+        return ResponseEntity
+                .ok()
+                .build();
     }
 }

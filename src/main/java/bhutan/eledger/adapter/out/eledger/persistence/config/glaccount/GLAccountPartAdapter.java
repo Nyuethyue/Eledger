@@ -96,6 +96,13 @@ class GLAccountPartAdapter implements GLAccountPartRepositoryPort, GetGlAccountP
     }
 
     @Override
+    public void update(GLAccountPart glAccountPart) {
+        glAccountPartEntityRepository.save(
+                glAccountPartMapper.mapToEntity(glAccountPart)
+        );
+    }
+
+    @Override
     public GlAccountPartFullCodeOnly getGlAccountPartFullCodeOnly(Long id) {
 
         return id == null ? () -> EMPTY : glAccountPartEntityRepository.readById(id)
