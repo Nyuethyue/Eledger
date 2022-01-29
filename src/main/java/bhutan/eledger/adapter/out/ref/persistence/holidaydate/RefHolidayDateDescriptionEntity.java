@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
-class HolidayDateDescriptionEntity extends TranslationEntity {
+class RefHolidayDateDescriptionEntity extends TranslationEntity {
     @Id
     @SequenceGenerator(name = "holiday_date_description_id_seq", schema = "ref", sequenceName = "holiday_date_description_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "holiday_date_description_id_seq")
@@ -21,9 +21,9 @@ class HolidayDateDescriptionEntity extends TranslationEntity {
 
     @ManyToOne
     @JoinColumn(name = "holiday_date_id", nullable = false)
-    private HolidayDateEntity holidayDate;
+    private RefHolidayDateEntity holidayDate;
 
-    public HolidayDateDescriptionEntity(Long id, String languageCode, String value) {
+    public RefHolidayDateDescriptionEntity(Long id, String languageCode, String value) {
         super(languageCode, value);
         this.id = id;
     }

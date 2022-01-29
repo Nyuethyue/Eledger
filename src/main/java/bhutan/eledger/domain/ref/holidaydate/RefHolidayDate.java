@@ -5,26 +5,30 @@ import bhutan.eledger.common.dto.ValidityPeriod;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.MonthDay;
 
 @Data(staticConstructor = "withId")
-public class HolidayDate {
+public class RefHolidayDate {
     private final Long id;
     private final String year;
+    private final MonthDay startOfHoliday;
+    private final MonthDay endOfHoliday;
     private final ValidityPeriod<LocalDate> validityPeriod;
-    private final Boolean isValidForOneYear;
     private final Multilingual description;
 
-    public static HolidayDate withoutId(
+    public static RefHolidayDate withoutId(
             String year,
+            MonthDay startOfHoliday,
+            MonthDay endOfHoliday,
             ValidityPeriod<LocalDate> validityPeriod,
-            Boolean isValidForOneYear,
             Multilingual description
     ) {
-        return new HolidayDate(
+        return new RefHolidayDate(
                 null,
                 year,
+                startOfHoliday,
+                endOfHoliday,
                 validityPeriod,
-                isValidForOneYear,
                 description
         );
     }

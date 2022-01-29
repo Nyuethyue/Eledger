@@ -1,7 +1,8 @@
 package bhutan.eledger.ref.holidaydate;
 
-import bhutan.eledger.application.port.in.ref.holidaydate.CreateHolidayDateUseCase;
-import bhutan.eledger.application.port.out.ref.holidaydate.HolidayDateRepositoryPort;
+import bhutan.eledger.application.port.in.ref.holidaydate.CreateRefHolidayDateUseCase;
+import bhutan.eledger.application.port.out.ref.holidaydate.RefHolidayDateRepositoryPort;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
 import java.time.LocalDate;
+import java.time.MonthDay;
 import java.util.Map;
 import java.util.Set;
 
@@ -17,24 +19,30 @@ import java.util.Set;
 @TestPropertySource(
         properties = {"spring.config.location = classpath:application-test.yml"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class CreateHolidayDateTest {
+class CreateRefHolidayDateTest {
 
     @Autowired
-    private CreateHolidayDateUseCase createHolidayDateUseCase;
+    private CreateRefHolidayDateUseCase createHolidayDateUseCase;
 
     @Autowired
-    private HolidayDateRepositoryPort holidayDateRepositoryPort;
+    private RefHolidayDateRepositoryPort holidayDateRepositoryPort;
+
+    @AfterEach
+    void afterEach() {
+        holidayDateRepositoryPort.deleteAll();
+    }
 
     @Test
     void createTest() {
         var holidayDates = createHolidayDateUseCase.create(
-                new CreateHolidayDateUseCase.CreateHolidayDateCommand(
+                new CreateRefHolidayDateUseCase.CreateRefHolidayDateCommand(
                         Set.of(
-                                new CreateHolidayDateUseCase.HolidayDateCommand(
+                                new CreateRefHolidayDateUseCase.RefHolidayDateCommand(
                                         "2022",
+                                        MonthDay.now(),
+                                        MonthDay.now(),
                                         LocalDate.now().plusDays(1),
                                         LocalDate.now().plusDays(1),
-                                        true,
                                         Map.of("en", "Holiday A")
                                 )
                         )
@@ -48,13 +56,14 @@ class CreateHolidayDateTest {
     @Test
     void readTest() {
         var holidayDates = createHolidayDateUseCase.create(
-                new CreateHolidayDateUseCase.CreateHolidayDateCommand(
+                new CreateRefHolidayDateUseCase.CreateRefHolidayDateCommand(
                         Set.of(
-                                new CreateHolidayDateUseCase.HolidayDateCommand(
+                                new CreateRefHolidayDateUseCase.RefHolidayDateCommand(
                                         "2022",
+                                        MonthDay.now(),
+                                        MonthDay.now(),
                                         LocalDate.now().plusDays(1),
                                         LocalDate.now().plusDays(1),
-                                        true,
                                         Map.of("en", "Holiday A")
                                 )
                         )
