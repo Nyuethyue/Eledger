@@ -1,5 +1,5 @@
 --------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS ref.holiday_date
+CREATE TABLE IF NOT EXISTS ref.non_working_days
 (
     id                     bigint  NOT NULL,
     year                   varchar NOT NULL,
@@ -11,39 +11,39 @@ CREATE TABLE IF NOT EXISTS ref.holiday_date
     end_of_validity        date    NOT NULL
 );
 
-ALTER TABLE ref.holiday_date
-    ADD CONSTRAINT pk_holiday_date
+ALTER TABLE ref.non_working_days
+    ADD CONSTRAINT pk_non_working_days
         PRIMARY KEY (id);
 
-CREATE SEQUENCE ref.holiday_date_id_seq
+CREATE SEQUENCE ref.non_working_days_id_seq
     INCREMENT BY 1
     MINVALUE 1
     START 1
     CACHE 1
     NO CYCLE
-    OWNED BY ref.holiday_date.id;
+    OWNED BY ref.non_working_days.id;
 --------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS ref.holiday_date_description
+CREATE TABLE IF NOT EXISTS ref.non_working_days_description
 (
     id                      bigint  NOT NULL,
     language_code           varchar NOT NULL,
     value                   varchar NOT NULL,
-    holiday_date_id         bigint  NOT NULL
+    non_working_days_id     bigint  NOT NULL
 );
-ALTER TABLE ref.holiday_date_description
-    ADD CONSTRAINT pk_holiday_date_description
+ALTER TABLE ref.non_working_days_description
+    ADD CONSTRAINT pk_ref_non_working_days_description
         PRIMARY KEY (id);
 
-ALTER TABLE ref.holiday_date_description
-    ADD CONSTRAINT un_ref_holiday_date_description_ref_holiday_date_id_lng_code
-        UNIQUE (holiday_date_id, language_code);
+ALTER TABLE ref.non_working_days_description
+    ADD CONSTRAINT un_ref_non_working_days_des_ref_non_working_days_id_lng_code
+        UNIQUE (non_working_days_id, language_code);
 
-CREATE SEQUENCE ref.holiday_date_description_id_seq
+CREATE SEQUENCE ref.non_working_days_description_id_seq
     INCREMENT BY 1
     MINVALUE 1
     CACHE 1
     NO CYCLE
-    OWNED BY ref.holiday_date_description.id;
+    OWNED BY ref.non_working_days_description.id;
 
 
 

@@ -1,4 +1,4 @@
-package bhutan.eledger.adapter.out.ref.persistence.holidaydate;
+package bhutan.eledger.adapter.out.ref.persistence.nonworkingdays;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,14 +10,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "holiday_date", schema = "ref")
+@Table(name = "non_working_days", schema = "ref")
 @NoArgsConstructor
 @Getter
 @Setter
-class RefHolidayDateEntity {
+class RefNonWorkingDaysEntity {
     @Id
-    @SequenceGenerator(name = "holiday_date_id_seq", schema = "ref", sequenceName = "holiday_date_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "holiday_date_id_seq")
+    @SequenceGenerator(name = "non_working_days_id_seq", schema = "ref", sequenceName = "non_working_days_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "non_working_days_id_seq")
     @Column(name = "id")
     private Long id;
 
@@ -43,14 +43,14 @@ class RefHolidayDateEntity {
     private LocalDate endOfValidity;
 
     @OneToMany(
-            mappedBy = "holidayDate",
+            mappedBy = "workingDays",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
-    private Set<RefHolidayDateDescriptionEntity> descriptions;
+    private Set<RefNonWorkingDaysDescriptionEntity> descriptions;
 
-    public RefHolidayDateEntity(Long id, String year, int startDayOfHoliday,int startMonthOfHoliday, int endDayOfHoliday,  int endMonthOfHoliday, LocalDate startOfValidity, LocalDate endOfValidity) {
+    public RefNonWorkingDaysEntity(Long id, String year, int startDayOfHoliday,int startMonthOfHoliday, int endDayOfHoliday,  int endMonthOfHoliday, LocalDate startOfValidity, LocalDate endOfValidity) {
         this.id = id;
         this.year = year;
         this.startDayOfHoliday = startDayOfHoliday;
@@ -61,12 +61,12 @@ class RefHolidayDateEntity {
         this.endOfValidity = endOfValidity;
     }
 
-    public void addToDescriptions(RefHolidayDateDescriptionEntity description) {
+    public void addToDescriptions(RefNonWorkingDaysDescriptionEntity description) {
         if (descriptions == null) {
             descriptions = new HashSet<>();
         }
 
-        description.setHolidayDate(this);
+        description.setWorkingDays(this);
         descriptions.add(description);
     }
 }

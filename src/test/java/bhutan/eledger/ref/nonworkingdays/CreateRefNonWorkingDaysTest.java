@@ -1,7 +1,7 @@
-package bhutan.eledger.ref.holidaydate;
+package bhutan.eledger.ref.nonworkingdays;
 
-import bhutan.eledger.application.port.in.ref.holidaydate.CreateRefHolidayDateUseCase;
-import bhutan.eledger.application.port.out.ref.holidaydate.RefHolidayDateRepositoryPort;
+import bhutan.eledger.application.port.in.ref.nonworkingdays.CreateRefNonWorkingDaysUseCase;
+import bhutan.eledger.application.port.out.ref.nonworkingdays.RefNonWorkingDaysRepositoryPort;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -19,25 +19,25 @@ import java.util.Set;
 @TestPropertySource(
         properties = {"spring.config.location = classpath:application-test.yml"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class CreateRefHolidayDateTest {
+class CreateRefNonWorkingDaysTest {
 
     @Autowired
-    private CreateRefHolidayDateUseCase createHolidayDateUseCase;
+    private CreateRefNonWorkingDaysUseCase createRefNonWorkingDaysUseCase;
 
     @Autowired
-    private RefHolidayDateRepositoryPort holidayDateRepositoryPort;
+    private RefNonWorkingDaysRepositoryPort refNonWorkingDaysRepositoryPort;
 
     @AfterEach
     void afterEach() {
-        holidayDateRepositoryPort.deleteAll();
+        refNonWorkingDaysRepositoryPort.deleteAll();
     }
 
     @Test
     void createTest() {
-        var holidayDates = createHolidayDateUseCase.create(
-                new CreateRefHolidayDateUseCase.CreateRefHolidayDateCommand(
+        var nonWorkingDays = createRefNonWorkingDaysUseCase.create(
+                new CreateRefNonWorkingDaysUseCase.CreateRefNonWorkingDaysCommand(
                         Set.of(
-                                new CreateRefHolidayDateUseCase.RefHolidayDateCommand(
+                                new CreateRefNonWorkingDaysUseCase.RefNonWorkingDayCommand(
                                         "2022",
                                         MonthDay.now(),
                                         MonthDay.now(),
@@ -48,17 +48,17 @@ class CreateRefHolidayDateTest {
                         )
                 )
         );
-        Assertions.assertNotNull(holidayDates);
-        Assertions.assertFalse(holidayDates.isEmpty());
-        Assertions.assertNotNull(holidayDates.iterator().next().getId());
+        Assertions.assertNotNull(nonWorkingDays);
+        Assertions.assertFalse(nonWorkingDays.isEmpty());
+        Assertions.assertNotNull(nonWorkingDays.iterator().next().getId());
     }
 
     @Test
     void readTest() {
-        var holidayDates = createHolidayDateUseCase.create(
-                new CreateRefHolidayDateUseCase.CreateRefHolidayDateCommand(
+        var nonWorkingDays = createRefNonWorkingDaysUseCase.create(
+                new CreateRefNonWorkingDaysUseCase.CreateRefNonWorkingDaysCommand(
                         Set.of(
-                                new CreateRefHolidayDateUseCase.RefHolidayDateCommand(
+                                new CreateRefNonWorkingDaysUseCase.RefNonWorkingDayCommand(
                                         "2022",
                                         MonthDay.now(),
                                         MonthDay.now(),
@@ -70,10 +70,10 @@ class CreateRefHolidayDateTest {
                 )
         );
 
-        var holidayDateOptional = holidayDateRepositoryPort.readById(holidayDates.iterator().next().getId());
-        Assertions.assertTrue(holidayDateOptional.isPresent());
-        var holidayDate = holidayDateOptional.get();
-        Assertions.assertNotNull(holidayDate);
-        Assertions.assertNotNull(holidayDate.getDescription());
+        var nonWorkingDaysOptional = refNonWorkingDaysRepositoryPort.readById(nonWorkingDays.iterator().next().getId());
+        Assertions.assertTrue(nonWorkingDaysOptional.isPresent());
+        var nonWorkingDay = nonWorkingDaysOptional.get();
+        Assertions.assertNotNull(nonWorkingDay);
+        Assertions.assertNotNull(nonWorkingDay.getDescription());
     }
 }

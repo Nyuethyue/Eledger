@@ -1,4 +1,4 @@
-package bhutan.eledger.domain.ref.holidaydate;
+package bhutan.eledger.domain.ref.nonworkingdays;
 
 import am.iunetworks.lib.multilingual.core.Multilingual;
 import bhutan.eledger.common.dto.ValidityPeriod;
@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.time.MonthDay;
 
 @Data(staticConstructor = "withId")
-public class RefHolidayDate {
+public class RefNonWorkingDays {
     private final Long id;
     private final String year;
     private final MonthDay startOfHoliday;
@@ -16,14 +16,14 @@ public class RefHolidayDate {
     private final ValidityPeriod<LocalDate> validityPeriod;
     private final Multilingual description;
 
-    public static RefHolidayDate withoutId(
+    public static RefNonWorkingDays withoutId(
             String year,
             MonthDay startOfHoliday,
             MonthDay endOfHoliday,
             ValidityPeriod<LocalDate> validityPeriod,
             Multilingual description
     ) {
-        return new RefHolidayDate(
+        return new RefNonWorkingDays(
                 null,
                 year,
                 startOfHoliday,

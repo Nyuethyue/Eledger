@@ -1,6 +1,7 @@
-package bhutan.eledger.application.port.in.ref.holidaydate;
+package bhutan.eledger.application.port.in.ref.nonworkingdays;
 
-import bhutan.eledger.domain.ref.holidaydate.RefHolidayDate;
+import am.iunetworks.lib.common.validation.constraints.CompareFields;
+import bhutan.eledger.domain.ref.nonworkingdays.RefNonWorkingDays;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -17,22 +18,23 @@ import java.util.Collection;
 import java.util.Map;
 
 @Validated
-public interface CreateRefHolidayDateUseCase {
-    Collection<RefHolidayDate> create(@Valid CreateRefHolidayDateUseCase.CreateRefHolidayDateCommand command);
+public interface CreateRefNonWorkingDaysUseCase {
+    Collection<RefNonWorkingDays> create(@Valid CreateRefNonWorkingDaysUseCase.CreateRefNonWorkingDaysCommand command);
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    class CreateRefHolidayDateCommand {
+    class CreateRefNonWorkingDaysCommand {
         @NotNull
         @NotEmpty
         @Valid
-        private Collection<RefHolidayDateCommand> holidayDates;
+        private Collection<RefNonWorkingDayCommand> nonWorkingDays;
     }
 
     @Data
     @AllArgsConstructor(onConstructor = @__(@JsonCreator))
-    class RefHolidayDateCommand {
+    @CompareFields(type = RefNonWorkingDayCommand.class, leftField = "startOfHoliday", operator = "<=", rightField = "endOfHoliday")
+    class RefNonWorkingDayCommand {
         @NotNull
         private final String year;
         @NotNull
