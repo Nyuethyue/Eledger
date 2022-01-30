@@ -43,4 +43,8 @@
         <sqlFile path="../../sql/ref/009_create_rrco_cash_counter_ref_table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <changeSet id="Agency Schema" author="D.T." dbms="postgresql">
+        <sqlFile path="../../sql/ref/011_create_agency_ref_table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog>
