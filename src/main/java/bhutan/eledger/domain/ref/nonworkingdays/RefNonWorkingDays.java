@@ -10,14 +10,16 @@ import java.time.MonthDay;
 @Data(staticConstructor = "withId")
 public class RefNonWorkingDays {
     private final Long id;
-    private final String year;
+    private final String code;
+    private final int year;
     private final MonthDay startDay;
     private final MonthDay endDay;
     private final ValidityPeriod<LocalDate> validityPeriod;
     private final Multilingual description;
 
     public static RefNonWorkingDays withoutId(
-            String year,
+            String code,
+            int year,
             MonthDay startDay,
             MonthDay endDay,
             ValidityPeriod<LocalDate> validityPeriod,
@@ -25,6 +27,7 @@ public class RefNonWorkingDays {
     ) {
         return new RefNonWorkingDays(
                 null,
+                code,
                 year,
                 startDay,
                 endDay,
