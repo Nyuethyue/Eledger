@@ -40,4 +40,8 @@
         <sqlFile path="../../sql/ref/009_create_rrco_cash_counter_ref_table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <changeSet id="Non Working Days Schema" author="P.L." dbms="postgresql">
+        <sqlFile path="../../sql/ref/010_create_non_working_days_ref_table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog>

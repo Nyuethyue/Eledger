@@ -3,8 +3,8 @@ spring:
     name: eledger
   datasource:
     url: jdbc:postgresql://localhost:5432/eledger_test
-    username: postgres
-    password: postgres
+    username: eledger
+    password: eledger
   liquibase:
     change-log: classpath:db/changelog/changelog.test.xml
     clear-checksums: true
