@@ -18,8 +18,7 @@ public interface CreateRefAgencyGLAccountUseCase {
     @Data
     class CreateAgencyGlAccountCommand {
         @NotNull
-        @Positive
-        private final Long agencyId;
+        private final String agencyCode;
 
         @NotNull
         @Valid

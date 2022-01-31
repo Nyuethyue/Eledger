@@ -10,7 +10,7 @@ class RefAgencyGLAccountMapper {
         RefAgencyGLAccountEntity refAgencyGLAccountEntity = new RefAgencyGLAccountEntity(
                 refAgencyGLAccount.getId(),
                 refAgencyGLAccount.getCode(),
-                refAgencyGLAccount.getAgencyId()
+                refAgencyGLAccount.getAgencyCode()
         );
 
 
@@ -21,7 +21,7 @@ class RefAgencyGLAccountMapper {
         return RefAgencyGLAccount.withId(
                 refAgencyGLAccountEntity.getId(),
                 refAgencyGLAccountEntity.getCode(),
-                refAgencyGLAccountEntity.getAgencyId()
+                refAgencyGLAccountEntity.getAgencyCode()
         );
     }
 }

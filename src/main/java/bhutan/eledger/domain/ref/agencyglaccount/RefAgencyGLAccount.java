@@ -6,16 +6,16 @@ import lombok.Data;
 public class RefAgencyGLAccount {
     private final Long id;
     private final String code;
-    private final Long agencyId;
+    private final String agencyCode;
 
     public static RefAgencyGLAccount withoutId(
             String code,
-            Long agencyId
+            String agencyCode
     ) {
         return new RefAgencyGLAccount(
                 null,
                 code,
-                agencyId
+                agencyCode
         );
     }
 }

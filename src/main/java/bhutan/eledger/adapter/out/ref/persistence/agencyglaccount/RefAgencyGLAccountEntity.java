@@ -21,13 +21,13 @@ class RefAgencyGLAccountEntity {
     @Column(name = "code")
     private String code;
 
-    @Column(name = "agency_id")
-    private Long agencyId;
+    @Column(name = "agency_code")
+    private String agencyCode;
 
-    public RefAgencyGLAccountEntity(Long id, String code,  Long agencyId) {
+    public RefAgencyGLAccountEntity(Long id, String code,  String agencyCode) {
         this.id = id;
         this.code = code;
-        this.agencyId = agencyId;
+        this.agencyCode = agencyCode;
     }
 
 }

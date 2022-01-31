@@ -37,14 +37,14 @@ class CreateRefAgencyGLAccountService implements CreateRefAgencyGLAccountUseCase
     private Collection<RefAgencyGLAccount> mapCommandToRefAgencyGlAccounts(CreateAgencyGlAccountCommand command) {
 
 
-        Long agencyId = command.getAgencyId();
+        String agencyCode = command.getAgencyCode();
 
         return command.getAgencyGlAccounts()
                 .stream()
                 .map(agencyGlAccountCommand -> {
                     return RefAgencyGLAccount.withoutId(
                             agencyGlAccountCommand.getCode(),
-                            agencyId
+                            agencyCode
                     );
                 })
                 .collect(Collectors.toUnmodifiableList());
