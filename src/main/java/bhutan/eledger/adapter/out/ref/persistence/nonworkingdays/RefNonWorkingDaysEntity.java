@@ -43,7 +43,7 @@ class RefNonWorkingDaysEntity {
     private LocalDate endOfValidity;
 
     @OneToMany(
-            mappedBy = "workingDays",
+            mappedBy = "nonWorkingDays",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.EAGER
@@ -66,7 +66,7 @@ class RefNonWorkingDaysEntity {
             descriptions = new HashSet<>();
         }
 
-        description.setWorkingDays(this);
+        description.setNonWorkingDays(this);
         descriptions.add(description);
     }
 }

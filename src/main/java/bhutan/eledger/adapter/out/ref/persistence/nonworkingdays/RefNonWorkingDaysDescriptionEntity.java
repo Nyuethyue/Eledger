@@ -21,7 +21,7 @@ class RefNonWorkingDaysDescriptionEntity extends TranslationEntity {
 
     @ManyToOne
     @JoinColumn(name = "non_working_days_id", nullable = false)
-    private RefNonWorkingDaysEntity workingDays;
+    private RefNonWorkingDaysEntity nonWorkingDays;
 
     public RefNonWorkingDaysDescriptionEntity(Long id, String languageCode, String value) {
         super(languageCode, value);
