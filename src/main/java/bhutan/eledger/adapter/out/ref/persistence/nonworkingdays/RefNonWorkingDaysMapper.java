@@ -14,6 +14,7 @@ class RefNonWorkingDaysMapper {
 
         RefNonWorkingDaysEntity refNonWorkingDaysEntity = new RefNonWorkingDaysEntity(
                 nonWorkingDays.getId(),
+                nonWorkingDays.getCode(),
                 nonWorkingDays.getYear(),
                 nonWorkingDays.getStartDay().getDayOfMonth(),
                 nonWorkingDays.getStartDay().getMonthValue(),
@@ -40,6 +41,7 @@ class RefNonWorkingDaysMapper {
     RefNonWorkingDays mapToDomain(RefNonWorkingDaysEntity nonWorkingDaysEntity) {
         return RefNonWorkingDays.withId(
                 nonWorkingDaysEntity.getId(),
+                nonWorkingDaysEntity.getCode(),
                 nonWorkingDaysEntity.getYear(),
                 MonthDay.of(
                         nonWorkingDaysEntity.getStartMonth(),

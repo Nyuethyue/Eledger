@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -46,6 +47,7 @@ class CreateNonWorkingDaysService implements CreateRefNonWorkingDaysUseCase {
                 .stream()
                 .map(nonWorkingDayCommand -> {
                     return RefNonWorkingDays.withoutId(
+                            UUID.randomUUID().toString(),
                             nonWorkingDayCommand.getYear(),
                             nonWorkingDayCommand.getStartDay(),
                             nonWorkingDayCommand.getEndDay(),

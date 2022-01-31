@@ -38,7 +38,7 @@ class CreateRefNonWorkingDaysTest {
                 new CreateRefNonWorkingDaysUseCase.CreateRefNonWorkingDaysCommand(
                         Set.of(
                                 new CreateRefNonWorkingDaysUseCase.RefNonWorkingDayCommand(
-                                        "2022",
+                                        2022,
                                         MonthDay.now(),
                                         MonthDay.now(),
                                         LocalDate.now().plusDays(1),
@@ -59,7 +59,7 @@ class CreateRefNonWorkingDaysTest {
                 new CreateRefNonWorkingDaysUseCase.CreateRefNonWorkingDaysCommand(
                         Set.of(
                                 new CreateRefNonWorkingDaysUseCase.RefNonWorkingDayCommand(
-                                        "2022",
+                                        2022,
                                         MonthDay.now(),
                                         MonthDay.now(),
                                         LocalDate.now().plusDays(1),
