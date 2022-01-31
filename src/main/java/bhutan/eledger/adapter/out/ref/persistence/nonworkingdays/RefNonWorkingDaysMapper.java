@@ -15,10 +15,10 @@ class RefNonWorkingDaysMapper {
         RefNonWorkingDaysEntity refNonWorkingDaysEntity = new RefNonWorkingDaysEntity(
                 nonWorkingDays.getId(),
                 nonWorkingDays.getYear(),
-                nonWorkingDays.getStartOfHoliday().getDayOfMonth(),
-                nonWorkingDays.getStartOfHoliday().getMonthValue(),
-                nonWorkingDays.getEndOfHoliday().getDayOfMonth(),
-                nonWorkingDays.getEndOfHoliday().getMonthValue(),
+                nonWorkingDays.getStartDay().getDayOfMonth(),
+                nonWorkingDays.getStartDay().getMonthValue(),
+                nonWorkingDays.getEndDay().getDayOfMonth(),
+                nonWorkingDays.getEndDay().getMonthValue(),
                 nonWorkingDays.getValidityPeriod().getStart(),
                 nonWorkingDays.getValidityPeriod().getEnd()
         );
@@ -42,12 +42,12 @@ class RefNonWorkingDaysMapper {
                 nonWorkingDaysEntity.getId(),
                 nonWorkingDaysEntity.getYear(),
                 MonthDay.of(
-                        nonWorkingDaysEntity.getStartMonthOfHoliday(),
-                        nonWorkingDaysEntity.getStartDayOfHoliday()
+                        nonWorkingDaysEntity.getStartMonth(),
+                        nonWorkingDaysEntity.getStartDay()
                 ),
                 MonthDay.of(
-                        nonWorkingDaysEntity.getEndMonthOfHoliday(),
-                        nonWorkingDaysEntity.getEndDayOfHoliday()
+                        nonWorkingDaysEntity.getEndMonth(),
+                        nonWorkingDaysEntity.getEndDay()
                 ),
                 ValidityPeriod.of(
                         nonWorkingDaysEntity.getStartOfValidity(),

@@ -3,10 +3,10 @@ CREATE TABLE IF NOT EXISTS ref.non_working_days
 (
     id                     bigint  NOT NULL,
     year                   varchar NOT NULL,
-    start_day_of_holiday   int     NOT NULL,
-    end_day_of_holiday     int     NOT NULL,
-    start_month_of_holiday int     NOT NULL,
-    end_month_of_holiday   int     NOT NULL,
+    start_day              int     NOT NULL,
+    end_day                int     NOT NULL,
+    start_month            int     NOT NULL,
+    end_month              int     NOT NULL,
     start_of_validity      date    NOT NULL,
     end_of_validity        date    NOT NULL
 );

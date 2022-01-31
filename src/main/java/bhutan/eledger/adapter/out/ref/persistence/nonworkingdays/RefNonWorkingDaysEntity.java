@@ -24,17 +24,17 @@ class RefNonWorkingDaysEntity {
     @Column(name = "year")
     private String year;
 
-    @Column(name = "start_day_of_holiday")
-    private int startDayOfHoliday;
+    @Column(name = "start_day")
+    private int startDay;
 
-    @Column(name = "start_month_of_holiday")
-    private int startMonthOfHoliday;
+    @Column(name = "start_month")
+    private int startMonth;
 
-    @Column(name = "end_day_of_holiday")
-    private int endDayOfHoliday;
+    @Column(name = "end_day")
+    private int endDay;
 
-    @Column(name = "end_month_of_holiday")
-    private int endMonthOfHoliday;
+    @Column(name = "end_month")
+    private int endMonth;
 
     @Column(name = "start_of_validity")
     private LocalDate startOfValidity;
@@ -50,13 +50,13 @@ class RefNonWorkingDaysEntity {
     )
     private Set<RefNonWorkingDaysDescriptionEntity> descriptions;
 
-    public RefNonWorkingDaysEntity(Long id, String year, int startDayOfHoliday,int startMonthOfHoliday, int endDayOfHoliday,  int endMonthOfHoliday, LocalDate startOfValidity, LocalDate endOfValidity) {
+    public RefNonWorkingDaysEntity(Long id, String year, int startDay,int startMonth, int endDay,  int endMonth, LocalDate startOfValidity, LocalDate endOfValidity) {
         this.id = id;
         this.year = year;
-        this.startDayOfHoliday = startDayOfHoliday;
-        this.startMonthOfHoliday = startMonthOfHoliday;
-        this.endDayOfHoliday = endDayOfHoliday;
-        this.endMonthOfHoliday = endMonthOfHoliday;
+        this.startDay = startDay;
+        this.startMonth = startMonth;
+        this.endDay = endDay;
+        this.endMonth = endMonth;
         this.startOfValidity = startOfValidity;
         this.endOfValidity = endOfValidity;
     }

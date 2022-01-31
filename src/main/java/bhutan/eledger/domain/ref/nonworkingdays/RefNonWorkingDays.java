@@ -11,23 +11,23 @@ import java.time.MonthDay;
 public class RefNonWorkingDays {
     private final Long id;
     private final String year;
-    private final MonthDay startOfHoliday;
-    private final MonthDay endOfHoliday;
+    private final MonthDay startDay;
+    private final MonthDay endDay;
     private final ValidityPeriod<LocalDate> validityPeriod;
     private final Multilingual description;
 
     public static RefNonWorkingDays withoutId(
             String year,
-            MonthDay startOfHoliday,
-            MonthDay endOfHoliday,
+            MonthDay startDay,
+            MonthDay endDay,
             ValidityPeriod<LocalDate> validityPeriod,
             Multilingual description
     ) {
         return new RefNonWorkingDays(
                 null,
                 year,
-                startOfHoliday,
-                endOfHoliday,
+                startDay,
+                endDay,
                 validityPeriod,
                 description
         );

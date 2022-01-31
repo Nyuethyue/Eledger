@@ -33,16 +33,16 @@ public interface CreateRefNonWorkingDaysUseCase {
 
     @Data
     @AllArgsConstructor(onConstructor = @__(@JsonCreator))
-    @CompareFields(type = RefNonWorkingDayCommand.class, leftField = "startOfHoliday", operator = "<=", rightField = "endOfHoliday")
+    @CompareFields(type = RefNonWorkingDayCommand.class, leftField = "startDay", operator = "<=", rightField = "endDay")
     class RefNonWorkingDayCommand {
         @NotNull
         private final String year;
         @NotNull
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM")
-        private final MonthDay startOfHoliday;
+        private final MonthDay startDay;
         @NotNull
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM")
-        private final MonthDay endOfHoliday;
+        private final MonthDay endDay;
         @NotNull
         private final LocalDate startOfValidity;
         @NotNull
