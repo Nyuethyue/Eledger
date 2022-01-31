@@ -47,4 +47,8 @@
         <sqlFile path="../../sql/ref/011_create_agency_ref_table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <changeSet id="Agency Gl Account Schema" author="D.T." dbms="postgresql">
+        <sqlFile path="../../sql/ref/012_create_agency_gl_account_ref_table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog>
