@@ -8,4 +8,8 @@ public interface RefAgencyGLAccountRepositoryPort {
 
     Collection<RefAgencyGLAccount> create(Collection<RefAgencyGLAccount> agencyGLAccounts);
 
+    Collection<RefAgencyGLAccount> readAll();
+
+    void deleteAll();
+
 }

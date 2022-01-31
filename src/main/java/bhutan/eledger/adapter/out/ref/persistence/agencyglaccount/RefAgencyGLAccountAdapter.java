@@ -26,4 +26,17 @@ class RefAgencyGLAccountAdapter implements RefAgencyGLAccountRepositoryPort {
                 .map(refAgencyGLAccountMapper::mapToDomain)
                 .collect(Collectors.toUnmodifiableList());
     }
+
+    @Override
+    public Collection<RefAgencyGLAccount> readAll() {
+        return refAgencyGLAccountEntityRepository.findAll()
+                .stream()
+                .map(refAgencyGLAccountMapper::mapToDomain)
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+    @Override
+    public void deleteAll() {
+        refAgencyGLAccountEntityRepository.deleteAll();
+    }
 }

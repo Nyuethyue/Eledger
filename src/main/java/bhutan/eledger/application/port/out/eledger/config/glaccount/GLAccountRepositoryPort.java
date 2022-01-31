@@ -16,4 +16,7 @@ public interface GLAccountRepositoryPort {
     void update(GLAccount glAccount);
 
     void deleteAll();
+
+    boolean existsByCode(String code);
+
 }
