@@ -36,8 +36,6 @@ public interface CreateRefNonWorkingDaysUseCase {
     @CompareFields(type = RefNonWorkingDayCommand.class, leftField = "startDay", operator = "<=", rightField = "endDay")
     class RefNonWorkingDayCommand {
         @NotNull
-        private final Integer year;
-        @NotNull
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM")
         private final MonthDay startDay;
         @NotNull

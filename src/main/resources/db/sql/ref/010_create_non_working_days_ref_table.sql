@@ -3,7 +3,6 @@ CREATE TABLE IF NOT EXISTS ref.non_working_days
 (
     id                     bigint  NOT NULL,
     code                   varchar NOT NULL,
-    year                   int     NOT NULL,
     start_day              int     NOT NULL,
     end_day                int     NOT NULL,
     start_month            int     NOT NULL,

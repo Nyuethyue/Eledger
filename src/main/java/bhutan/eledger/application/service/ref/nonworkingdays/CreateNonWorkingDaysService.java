@@ -48,7 +48,6 @@ class CreateNonWorkingDaysService implements CreateRefNonWorkingDaysUseCase {
                 .map(nonWorkingDayCommand -> {
                     return RefNonWorkingDays.withoutId(
                             UUID.randomUUID().toString(),
-                            nonWorkingDayCommand.getYear(),
                             nonWorkingDayCommand.getStartDay(),
                             nonWorkingDayCommand.getEndDay(),
                             ValidityPeriod.of(
