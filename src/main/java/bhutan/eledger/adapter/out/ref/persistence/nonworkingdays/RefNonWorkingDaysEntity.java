@@ -24,9 +24,6 @@ class RefNonWorkingDaysEntity {
     @Column(name = "code")
     private String code;
 
-    @Column(name = "year")
-    private int year;
-
     @Column(name = "start_day")
     private int startDay;
 
@@ -53,10 +50,9 @@ class RefNonWorkingDaysEntity {
     )
     private Set<RefNonWorkingDaysDescriptionEntity> descriptions;
 
-    public RefNonWorkingDaysEntity(Long id,String code, int year, int startDay,int startMonth, int endDay,  int endMonth, LocalDate startOfValidity, LocalDate endOfValidity) {
+    public RefNonWorkingDaysEntity(Long id, String code, int startDay, int startMonth, int endDay, int endMonth, LocalDate startOfValidity, LocalDate endOfValidity) {
         this.id = id;
         this.code = code;
-        this.year = year;
         this.startDay = startDay;
         this.startMonth = startMonth;
         this.endDay = endDay;
