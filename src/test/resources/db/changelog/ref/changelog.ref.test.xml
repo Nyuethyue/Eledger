@@ -44,4 +44,8 @@
         <sqlFile path="../../sql/ref/010_create_non_working_days_ref_table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <changeSet id="Tax Period Calendar ref table" author="A.A." dbms="postgresql">
+        <sqlFile path="../../sql/ref/011_create_tax_period_ref_table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog>
