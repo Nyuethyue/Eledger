@@ -35,4 +35,12 @@ public class RefNonWorkingDays {
                 description
         );
     }
+
+    public LocalDate getStartDate() {
+        return LocalDate.of(year, startDay.getMonth(), startDay.getDayOfMonth());
+    }
+
+    public LocalDate getEndDate() {
+        return LocalDate.of(year, endDay.getMonth(), endDay.getDayOfMonth());
+    }
 }

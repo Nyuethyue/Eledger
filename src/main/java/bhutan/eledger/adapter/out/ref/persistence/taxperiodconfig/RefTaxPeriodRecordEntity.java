@@ -1,27 +1,23 @@
 package bhutan.eledger.adapter.out.ref.persistence.taxperiodconfig;
 
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
+import java.time.LocalDate;
 
 @Entity
-@Table(name = "TexPeriodRecord", schema = "ref")
+@Table(name = "ref_tax_period_record", schema = "ref")
 @NoArgsConstructor
 @Getter
 @Setter
 class RefTaxPeriodRecordEntity {
     @Id
-    @SequenceGenerator(name = "bank_id_seq", schema = "ref", sequenceName = "bank_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bank_id_seq")
+    @SequenceGenerator(name = "ref_tax_period_record_id_seq", schema = "ref", sequenceName = "ref_tax_period_record_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ref_tax_period_record_id_seq")
     @Column(name = "id")
     private Long id;
 
@@ -48,6 +44,10 @@ class RefTaxPeriodRecordEntity {
 
     @Column(name = "remark")
     private String remark;
+
+    @ManyToOne
+    @JoinColumn(name = "tax_period_config_id", nullable = false)
+    private RefTaxPeriodConfigEntity taxPeriodConfig;
 
 
     public RefTaxPeriodRecordEntity(

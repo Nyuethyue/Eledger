@@ -13,7 +13,7 @@ class RefTaxPeriodMapper {
     RefTaxPeriodConfigEntity mapToEntity(RefTaxPeriodConfig refTaxPeriodConfig) {
         RefTaxPeriodConfigEntity refTaxPeriodConfigEntity =
                 new RefTaxPeriodConfigEntity(
-                        refTaxPeriodConfig.getTaxTypeId(),
+                        refTaxPeriodConfig.getTaxTypeCode(),
                         refTaxPeriodConfig.getCalendarYear(),
                         refTaxPeriodConfig.getTaxPeriodTypeId(),
                         refTaxPeriodConfig.getTransactionTypeId(),
@@ -61,7 +61,7 @@ class RefTaxPeriodMapper {
                         )));
         return RefTaxPeriodConfig.withId(
                 entity.getId(),
-                entity.getTaxTypeId(),
+                entity.getGlAccountPartFullCode(),
                 entity.getCalendarYear(),
                 entity.getTaxPeriodTypeId(),
                 entity.getTransactionTypeId(),

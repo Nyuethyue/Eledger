@@ -1,23 +1,17 @@
 package bhutan.eledger.application.port.out.ref.taxperiodconfig;
 
-import bhutan.eledger.domain.ref.bank.RefBank;
+import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodConfig;
 
-import java.util.Collection;
 import java.util.Optional;
 
 public interface RefTaxPeriodRepositoryPort {
 
-    Long create(RefBank refBank);
+    Long create(RefTaxPeriodConfig bean);
 
-    Collection<RefBank> readAll();
+    Optional<RefTaxPeriodConfig> readBy(String taxTypeCode,
+                                        Integer calendarYear,
+                                        Long taxPeriodTypeId,
+                                        Long transactionTypeId);
 
     void deleteAll();
-
-    Optional<RefBank> readById(Long id);
-
-    Optional<RefBank> readByCode(String code);
-
-    boolean existsByCode(String code);
-
-    boolean existsById(Long id);
 }

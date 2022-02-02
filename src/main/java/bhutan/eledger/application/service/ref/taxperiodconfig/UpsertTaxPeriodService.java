@@ -2,16 +2,15 @@ package bhutan.eledger.application.service.ref.taxperiodconfig;
 
 import am.iunetworks.lib.common.validation.ValidationError;
 import am.iunetworks.lib.common.validation.ViolationException;
-import am.iunetworks.lib.multilingual.core.Multilingual;
-import bhutan.eledger.application.port.in.ref.bank.CreateRefBankUseCase;
 import bhutan.eledger.application.port.in.ref.taxperiodconfig.UpsertTaxPeriodUseCase;
-import bhutan.eledger.application.port.out.ref.bank.RefBankRepositoryPort;
-import bhutan.eledger.common.dto.ValidityPeriod;
-import bhutan.eledger.domain.ref.bank.RefBank;
+import bhutan.eledger.application.port.out.ref.taxperiodconfig.RefTaxPeriodRepositoryPort;
+import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.validation.Valid;
 
 @Log4j2
 @Service
@@ -19,42 +18,46 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 class UpsertTaxPeriodService implements UpsertTaxPeriodUseCase {
 
-    private final RefBankRepositoryPort refBankRepositoryPort;
+    private final RefTaxPeriodRepositoryPort refTaxPeriodRepositoryPort;
+
+    void validate(UpsertTaxPeriodCommand command) {
+        if (null != command.getValidFrom() && command.getValidFrom().getYear() < command.getCalendarYear()) {
+            throw new ViolationException(
+                    new ValidationError()
+                            .addViolation("Year", "Valid from year less than calendar year")
+            );
+        }
+    }
 
     @Override
-    public Long create(CreateRefBankCommand command) {
-        log.trace("Creating bank with command: {}", command);
+    public Long upsert(@Valid UpsertTaxPeriodCommand command) {
+        log.trace("Upserting TaxPeriod with command: {}", command);
+        validate(command);
 
-        RefBank refBank = mapCommandToRefBank(command);
+        RefTaxPeriodConfig refTaxPeriodConfig = mapCommandToRefTaxPeriodConfig(command);
 
-        validate(refBank);
+        log.trace("Persisting TaxPeriod: {}", refTaxPeriodConfig);
 
-        log.trace("Persisting bank: {}", refBank);
+        Long id = refTaxPeriodRepositoryPort.create(refTaxPeriodConfig);
 
-        Long id = refBankRepositoryPort.create(refBank);
-
-        log.debug("Bank with id: {} successfully created.", id);
+        log.debug("TaxPeriod with id: {} successfully created.", id);
 
         return id;
     }
 
-    private RefBank mapCommandToRefBank(CreateRefBankCommand command) {
-        return RefBank.withoutId(
-                command.getCode(),
-                ValidityPeriod.of(
-                  command.getStartOfValidity(),
-                  command.getEndOfValidity()
-                ),
-                Multilingual.fromMap(command.getDescriptions())
+    private RefTaxPeriodConfig mapCommandToRefTaxPeriodConfig(UpsertTaxPeriodCommand command) {
+        return RefTaxPeriodConfig.withId(
+                null,
+                command.getTaxTypeCode(),
+                command.getCalendarYear(),
+                command.getTaxPeriodTypeId(),
+                command.getTransactionTypeId(),
+                command.getDueDateCountForReturnFiling(),
+                command.getDueDateCountForPayment(),
+                command.getValidFrom(),
+                command.getValidTo(),
+                command.getConsiderNonWorkingDays(),
+                null
         );
-    }
-
-    void validate(RefBank refBank) {
-        if (refBankRepositoryPort.isOpenBankExists(refBank)) {
-            throw new ViolationException(
-                    new ValidationError()
-                            .addViolation("Code", "Bank with BFSC code: [" + refBank.getCode() + "] already exists.")
-            );
-        }
     }
 }

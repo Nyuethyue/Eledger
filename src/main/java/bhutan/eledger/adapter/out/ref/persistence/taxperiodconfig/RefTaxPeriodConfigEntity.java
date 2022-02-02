@@ -11,29 +11,28 @@ import java.util.Set;
 
 
 @Entity
-@Table(name = "TexPeriodConfig", schema = "ref")
+@Table(name = "tax_period_config", schema = "ref")
 @NoArgsConstructor
 @Getter
 @Setter
 class RefTaxPeriodConfigEntity {
     @Id
-    @SequenceGenerator(name = "bank_id_seq", schema = "ref", sequenceName = "bank_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bank_id_seq")
+    @SequenceGenerator(name = "tax_period_config_id_seq", schema = "ref", sequenceName = "tax_period_config_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tax_period_config_id_seq")
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "tax_type_id")
-    private Long taxTypeId;
+    @Column(name = "gl_accountpart_full_code")
+    private String glAccountPartFullCode;// taxTypeCode;
 
     @Column(name = "calendar_year")
-    private Long calendarYear;
-
+    private int calendarYear;
 
     @Column(name = "tax_period_type_id")
-    private Long taxPeriodTypeId;
+    private long taxPeriodTypeId;
 
     @Column(name = "transaction_type_id")
-    private Long transactionTypeId;
+    private long transactionTypeId;
 
     @Column(name = "due_date_count_for_return_filing")
     private Long dueDateCountForReturnFiling;
@@ -51,7 +50,7 @@ class RefTaxPeriodConfigEntity {
     private Boolean considerNonWorkingDays;
 
     @OneToMany(
-            mappedBy = "TexPeriodConfig",
+            mappedBy = "taxPeriodConfig",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.EAGER
@@ -59,8 +58,8 @@ class RefTaxPeriodConfigEntity {
     private Set<RefTaxPeriodRecordEntity> records;
 
     public RefTaxPeriodConfigEntity(
-            Long taxTypeId,
-            Long calendarYear,
+            String glAccountPartFullCode,
+            Integer calendarYear,
             Long taxPeriodTypeId,
             Long transactionTypeId,
             Long dueDateCountForReturnFiling,
@@ -69,7 +68,7 @@ class RefTaxPeriodConfigEntity {
             LocalDate validTo,
             Boolean considerNonWorkingDays
     ) {
-        this.taxTypeId = taxTypeId;
+        this.glAccountPartFullCode = glAccountPartFullCode;
         this.calendarYear = calendarYear;
         this.taxPeriodTypeId = taxPeriodTypeId;
         this.transactionTypeId = transactionTypeId;

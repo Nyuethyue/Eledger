@@ -12,8 +12,8 @@ public interface LoadGenTaxPeriodConfigUseCase {
 
     @Data
     class LoadGenTaxPeriodConfigCommand {
-        private final Long taxTypeId;
-        private Long calendarYear;
+        private final String taxTypeCode;
+        private final Integer calendarYear;
         private final Long taxPeriodTypeId;
         private final Long transactionTypeId;
     }

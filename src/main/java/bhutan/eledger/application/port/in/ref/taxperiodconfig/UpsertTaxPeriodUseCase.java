@@ -21,12 +21,12 @@ public interface UpsertTaxPeriodUseCase {
 
         @NotNull
         @NotEmpty
-        private final Long taxTypeId;
+        private final String taxTypeCode;
 
         @Valid
         @NotNull
         @PositiveOrZero
-        private Long calendarYear;
+        private final Integer calendarYear;
 
         @NotNull
         @NotEmpty
@@ -37,24 +37,24 @@ public interface UpsertTaxPeriodUseCase {
         @Valid
         @NotNull
         @PositiveOrZero
-        private Long dueDateCountForReturnFiling;
+        private final Long dueDateCountForReturnFiling;
 
         @Valid
         @NotNull
         @PositiveOrZero
-        private Long dueDateCountForPayment;
+        private final Long dueDateCountForPayment;
 
         @Valid
         @NotNull
-        private LocalDate validFrom;
+        private final LocalDate validFrom;
 
         @Valid
         @NotNull
-        private LocalDate validTo;
+        private final LocalDate validTo;
 
         @Valid
         @NotNull
-        private Boolean considerNonWorkingDays;
+        private final Boolean considerNonWorkingDays;
 
 
         @NotNull
