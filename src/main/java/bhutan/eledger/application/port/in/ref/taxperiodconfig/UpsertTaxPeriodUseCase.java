@@ -37,12 +37,12 @@ public interface UpsertTaxPeriodUseCase {
         @Valid
         @NotNull
         @PositiveOrZero
-        private final Long dueDateCountForReturnFiling;
+        private final Integer dueDateCountForReturnFiling;
 
         @Valid
         @NotNull
         @PositiveOrZero
-        private final Long dueDateCountForPayment;
+        private final Integer dueDateCountForPayment;
 
         @Valid
         @NotNull

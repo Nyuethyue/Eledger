@@ -22,7 +22,7 @@ class RefTaxPeriodConfigEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "gl_accountpart_full_code")
+    @Column(name = "gl_account_part_full_code")
     private String glAccountPartFullCode;// taxTypeCode;
 
     @Column(name = "calendar_year")
@@ -35,10 +35,10 @@ class RefTaxPeriodConfigEntity {
     private long transactionTypeId;
 
     @Column(name = "due_date_count_for_return_filing")
-    private Long dueDateCountForReturnFiling;
+    private int dueDateCountForReturnFiling;
 
     @Column(name = "due_date_count_for_payment")
-    private Long dueDateCountForPayment;
+    private int dueDateCountForPayment;
 
     @Column(name = "valid_from")
     private LocalDate validFrom;
@@ -62,8 +62,8 @@ class RefTaxPeriodConfigEntity {
             Integer calendarYear,
             Long taxPeriodTypeId,
             Long transactionTypeId,
-            Long dueDateCountForReturnFiling,
-            Long dueDateCountForPayment,
+            Integer dueDateCountForReturnFiling,
+            Integer dueDateCountForPayment,
             LocalDate validFrom,
             LocalDate validTo,
             Boolean considerNonWorkingDays

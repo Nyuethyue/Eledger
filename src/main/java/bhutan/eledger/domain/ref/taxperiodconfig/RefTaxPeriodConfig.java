@@ -24,7 +24,6 @@ public class RefTaxPeriodConfig {
     private final String taxTypeCode;
 
     @Valid
-    @NotNull
     @PositiveOrZero
     private int calendarYear;
 
@@ -35,14 +34,12 @@ public class RefTaxPeriodConfig {
     private final Long transactionTypeId;
 
     @Valid
-    @NotNull
     @PositiveOrZero
-    private Long dueDateCountForReturnFiling;
+    private int dueDateCountForReturnFiling;
 
     @Valid
-    @NotNull
     @PositiveOrZero
-    private Long dueDateCountForPayment;
+    private int dueDateCountForPayment;
 
     @Valid
     @NotNull
@@ -69,8 +66,8 @@ public class RefTaxPeriodConfig {
             Integer calendarYear,
             Long taxPeriodTypeId,
             Long transactionTypeId,
-            Long dueDateCountForReturnFiling,
-            Long dueDateCountForPayment,
+            Integer dueDateCountForReturnFiling,
+            Integer dueDateCountForPayment,
             LocalDate validFrom,
             LocalDate validTo,
             Boolean considerNonWorkingDays,
@@ -96,8 +93,8 @@ public class RefTaxPeriodConfig {
             Integer calendarYear,
             Long taxPeriodTypeId,
             Long transactionTypeId,
-            Long dueDateCountForReturnFiling,
-            Long dueDateCountForPayment,
+            Integer dueDateCountForReturnFiling,
+            Integer dueDateCountForPayment,
             LocalDate validFrom,
             LocalDate validTo,
             Boolean considerNonWorkingDays,
