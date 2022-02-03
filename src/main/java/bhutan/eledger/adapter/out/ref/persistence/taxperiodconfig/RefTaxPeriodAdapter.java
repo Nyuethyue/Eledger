@@ -1,20 +1,11 @@
 package bhutan.eledger.adapter.out.ref.persistence.taxperiodconfig;
 
-
-import am.iunetworks.lib.common.persistence.search.PageableResolver;
-import am.iunetworks.lib.common.persistence.search.PagedSearchResult;
-import am.iunetworks.lib.common.persistence.search.SearchResult;
-import bhutan.eledger.application.port.out.epayment.payment.ReceiptForDetailsSearchPort;
 import bhutan.eledger.application.port.out.ref.taxperiodconfig.RefTaxPeriodRepositoryPort;
-import bhutan.eledger.common.ref.refentry.RefEntry;
-import bhutan.eledger.common.ref.refentry.RefName;
-import bhutan.eledger.domain.epayment.payment.Receipt;
 import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodConfig;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.Optional;
 
 
@@ -23,41 +14,41 @@ import java.util.Optional;
 class RefTaxPeriodAdapter implements RefTaxPeriodRepositoryPort {
 
     private final RefTaxPeriodMapper refTaxPeriodMapper;
-    private final RefTaxPeriodEntityRepository refTaxPeriodEntityRepository;
+    private final RefTaxPeriodConfigEntityRepository refTaxPeriodConfigEntityRepository;
+    private final RefTaxPeriodRecordEntityRepository refTaxPeriodRecordEntityRepository;
 
     @Override
-    public Long create(RefTaxPeriodConfig bean) {
-        return null;
+    public Long upsert(RefTaxPeriodConfig b) {
+        var conf =
+                readBy(b.getTaxTypeCode(), b.getCalendarYear(), b.getTaxPeriodTypeId(), b.getTransactionTypeId());
+        if(conf.isPresent()) {
+            var id = refTaxPeriodConfigEntityRepository.save(refTaxPeriodMapper.mapToEntity(conf.get().getId(), b)).getId();
+            refTaxPeriodRecordEntityRepository.deleteByTaxPeriodConfigId(id);
+            b.getRecords().stream().forEach(r ->
+                refTaxPeriodRecordEntityRepository.save(refTaxPeriodMapper.mapToEntity(id, r))
+            );
+            return id;
+
+        } else {
+            var id = refTaxPeriodConfigEntityRepository.save(refTaxPeriodMapper.mapToEntity(b)).getId();
+            b.getRecords().stream().forEach(r ->
+                refTaxPeriodRecordEntityRepository.save(refTaxPeriodMapper.mapToEntity(id, r))
+            );
+            return id;
+        }
     }
 
     @Override
     public Optional<RefTaxPeriodConfig> readBy(String taxTypeCode, Integer calendarYear, Long taxPeriodTypeId, Long transactionTypeId) {
-        var result = refTaxPeriodEntityRepository.readBy(taxTypeCode, calendarYear, taxPeriodTypeId, transactionTypeId);
+        var result =
+                refTaxPeriodConfigEntityRepository.readBy(taxTypeCode, calendarYear, taxPeriodTypeId, transactionTypeId);
         if(result.isPresent()) {
-            return Optional.of(refTaxPeriodMapper.mapToDomain(result.get()));
+            Collection<RefTaxPeriodRecordEntity> entityRecords = refTaxPeriodRecordEntityRepository.readTaxPeriodRecords(result.get().getId());
+            return Optional.of(refTaxPeriodMapper.mapToDomain(result.get(), entityRecords));
         } else {
             return Optional.empty();
         }
     }
-
-//    public SearchResult<Receipt> search(ReceiptForDetailsSearchPort.ReceiptForDetailsCommand command) {
-//        Pageable pageable = PageableResolver.resolve(command);
-//
-//        Page<Receipt> page = receiptEntityRepository.findAll(
-//                querydsl -> resolveQuery(command, querydsl),
-//                pageable
-//        )
-//                .map(receiptEntity -> {
-//                    RefEntry refCurrencyEntry = refEntryRepository.findByRefNameAndId(RefName.CURRENCY.getValue(), receiptEntity.getRefCurrencyId());
-//                    RefEntry refBankAccountEntry = refEntryRepository.findByRefNameAndId(RefName.BANK_BRANCH.getValue(), receiptEntity.getRefBankBranchId());
-//                    RefEntry refIssuingBankAccountEntry = refEntryRepository.findByRefNameAndId(RefName.BANK_BRANCH.getValue(), receiptEntity.getRefIssuingBankBranchId());
-//
-//                    return cashReceiptMapper.mapToDomain(receiptEntity, refCurrencyEntry, refBankAccountEntry,refIssuingBankAccountEntry);
-//                });
-//
-//        return PagedSearchResult.of(page);
-//    }
-
 
     @Override
     public void deleteAll() {

@@ -44,6 +44,8 @@ class CreateRefTaxPeriodConfigTest {
     static final String GST_TAX_TYPE = "11411";// 5
     static final String EET_TAX_TYPE = "11421";// 11
 
+    static final long TRANSACTION_TYPE_LIABILITY = 1;
+
     @Test
     void createTest() {
         LocalDate validFrom = LocalDate.now();
@@ -53,7 +55,7 @@ class CreateRefTaxPeriodConfigTest {
                         GST_TAX_TYPE,
                         2022,
                         MONTHLY,
-                        44L,
+                        TRANSACTION_TYPE_LIABILITY,
                         11,
                         11,
                         validFrom,
@@ -97,6 +99,6 @@ class CreateRefTaxPeriodConfigTest {
 
         RefTaxPeriodConfig configLoaded = loadGenTaxPeriodConfigUseCase.loadGen(generateCommand);
         Assertions.assertNotNull(configLoaded);
-//        Assertions.assertNotNull(configLoaded.getId());
+        Assertions.assertEquals(recordId, configLoaded.getId());
     }
 }
