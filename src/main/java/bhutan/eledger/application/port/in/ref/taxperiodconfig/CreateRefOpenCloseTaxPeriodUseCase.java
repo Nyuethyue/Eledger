@@ -1,4 +1,4 @@
-package bhutan.eledger.application.port.in.ref.taxperiod;
+package bhutan.eledger.application.port.in.ref.taxperiodconfig;
 
 import com.sun.istack.NotNull;
 import lombok.Data;

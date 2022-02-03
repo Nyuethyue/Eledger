@@ -1,6 +1,6 @@
 package bhutan.eledger.application.service.ref.taxperiodconfig;
 
-import bhutan.eledger.application.port.in.ref.taxperiod.CreateRefOpenCloseTaxPeriodUseCase;
+import bhutan.eledger.application.port.in.ref.taxperiodconfig.CreateRefOpenCloseTaxPeriodUseCase;
 import bhutan.eledger.application.port.out.ref.taxperiodconfig.RefOpenCloseTaxPeriodRepositoryPort;
 import bhutan.eledger.domain.ref.taxperiod.OpenCloseTaxPeriodRecord;
 import bhutan.eledger.domain.ref.taxperiod.RefOpenCloseTaxPeriodConfig;
