@@ -1,4 +1,4 @@
-package bhutan.eledger.adapter.out.ref.persistence.taxperiod;
+package bhutan.eledger.adapter.out.ref.persistence.taxperiodconfig;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "tax_period_config", schema = "ref")
+@Table(name = "open_close_tax_period_config", schema = "ref")
 @NoArgsConstructor
 @Getter
 @Setter
@@ -39,7 +39,7 @@ class RefOpenCloseTaxPeriodEntity {
     private int month;
 
     @OneToMany(
-            mappedBy = "openCloseTaxPeriodRecordConfig",
+            mappedBy = "openCloseTaxPeriodEntity",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.EAGER
@@ -63,10 +63,11 @@ class RefOpenCloseTaxPeriodEntity {
     }
 
     public void addToRecords(RefOpenCloseTaxPeriodRecordEntity record) {
-        if (record == null) {
+        if (records == null) {
             records = new HashSet<>();
         }
 
+        record.setOpenCloseTaxPeriodEntity(this);
         records.add(record);
     }
 }

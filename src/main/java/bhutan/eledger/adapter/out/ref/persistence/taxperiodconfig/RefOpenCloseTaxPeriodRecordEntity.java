@@ -1,4 +1,4 @@
-package bhutan.eledger.adapter.out.ref.persistence.taxperiod;
+package bhutan.eledger.adapter.out.ref.persistence.taxperiodconfig;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,16 +34,17 @@ class RefOpenCloseTaxPeriodRecordEntity {
 
     @ManyToOne
     @JoinColumn(name = "open_close_tax_period_config_id", nullable = false)
-    private RefOpenCloseTaxPeriodRecordEntity openCloseTaxPeriodRecordConfig;
-
+    private RefOpenCloseTaxPeriodEntity openCloseTaxPeriodEntity;
 
     public RefOpenCloseTaxPeriodRecordEntity(
             Long id,
+            Integer periodId,
             String period,
             LocalDate periodStartDate,
             LocalDate periodEndDate
     ) {
         this.id = id;
+        this.periodId = periodId;
         this.period = period;
         this.periodStartDate = periodStartDate;
         this.periodEndDate = periodEndDate;

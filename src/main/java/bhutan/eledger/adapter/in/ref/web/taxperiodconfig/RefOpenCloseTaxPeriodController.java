@@ -1,6 +1,6 @@
-package bhutan.eledger.adapter.in.ref.web.taxperiod;
+package bhutan.eledger.adapter.in.ref.web.taxperiodconfig;
 
-import bhutan.eledger.application.port.in.ref.taxperiod.UpsertOpenCloseTaxPeriodUseCase;
+import bhutan.eledger.application.port.in.ref.taxperiod.CreateRefOpenCloseTaxPeriodUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,12 +14,13 @@ import java.net.URI;
 @RequestMapping("/ref/openclosetaxperiod")
 @RequiredArgsConstructor
 class RefOpenCloseTaxPeriodController {
-    private final UpsertOpenCloseTaxPeriodUseCase upsertOpenCloseTaxPeriodUseCase;
-    @PostMapping("/upsert")
-    public ResponseEntity<Object> upsert(@RequestBody UpsertOpenCloseTaxPeriodUseCase.UpsertOpenCloseTaxPeriodCommand command) {
-        Long id = upsertOpenCloseTaxPeriodUseCase.upsert(command);
+    private final CreateRefOpenCloseTaxPeriodUseCase createRefOpenCloseTaxPeriodUseCase;
+    @PostMapping
+    public ResponseEntity<Object> create(@RequestBody CreateRefOpenCloseTaxPeriodUseCase.CreateOpenCloseTaxPeriodCommand command) {
+        Long id = createRefOpenCloseTaxPeriodUseCase.create(command);
         return ResponseEntity
                 .created(URI.create("/" + id))
                 .build();
     }
+
 }

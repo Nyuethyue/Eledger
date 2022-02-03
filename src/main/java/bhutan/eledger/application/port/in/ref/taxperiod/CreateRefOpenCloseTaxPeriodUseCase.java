@@ -11,12 +11,11 @@ import java.time.LocalDate;
 import java.util.Collection;
 
 @Validated
-public interface UpsertOpenCloseTaxPeriodUseCase {
-    Long upsert(@Valid UpsertOpenCloseTaxPeriodCommand command);
+public interface CreateRefOpenCloseTaxPeriodUseCase {
+    Long create(@Valid CreateOpenCloseTaxPeriodCommand command);
 
     @Data
-    class UpsertOpenCloseTaxPeriodCommand {
-        private final Long id;
+    class CreateOpenCloseTaxPeriodCommand {
 
         @NotNull
         @NotEmpty
@@ -28,7 +27,6 @@ public interface UpsertOpenCloseTaxPeriodUseCase {
         private final Integer calendarYear;
 
         @NotNull
-        @NotEmpty
         private final Long taxPeriodTypeId;
 
         private final Long transactionTypeId;
@@ -46,6 +44,10 @@ public interface UpsertOpenCloseTaxPeriodUseCase {
 
     @Data
     class OpenCloseTaxPeriodRecordCommand {
+
+        @Valid
+        @NotNull
+        private Integer periodId;
 
         @Valid
         @NotNull
