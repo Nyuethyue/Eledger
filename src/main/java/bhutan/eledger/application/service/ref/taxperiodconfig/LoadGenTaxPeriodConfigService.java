@@ -34,6 +34,7 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
         if(refTaxPeriodConfig.isPresent()) {
             return refTaxPeriodConfig.get();
         } else {
+            validateGenerate(command);
             return generate(command);
         }
     }
@@ -122,5 +123,8 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                 command.getConsiderNonWorkingDays(),
                 records
         );
+    }
+
+    public void validateGenerate(LoadGenTaxPeriodConfigCommand command) {
     }
 }
