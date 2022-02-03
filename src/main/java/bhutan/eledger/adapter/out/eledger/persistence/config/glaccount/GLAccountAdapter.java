@@ -51,7 +51,8 @@ class GLAccountAdapter implements GLAccountRepositoryPort {
     }
 
     @Override
-    public boolean existsByCode(String code) {
-        return glAccountEntityRepository.existsByCode(code);
+    public boolean existsByCode(Collection<String> codes) {
+
+        return glAccountEntityRepository.existsByCodeIn(codes);
     }
 }

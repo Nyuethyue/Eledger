@@ -41,15 +41,17 @@ class CreateRefAgencyGLAccountService implements CreateRefAgencyGLAccountUseCase
     }
 
     private void validate(CreateAgencyGlAccountCommand command) {
-        command.getGlAccounts().stream().forEach(agencyGlAccountCommand -> {
-                    if (!glAccountRepositoryPort.existsByCode(agencyGlAccountCommand.getCode())) {
-                        throw new ViolationException(
-                                new ValidationError()
-                                        .addViolation("Code", "GL account with code: [" + agencyGlAccountCommand.getCode() + "] does not exists.")
-                        );
-                    }
-                }
-        );
+        boolean isGlAccountCodeExist = glAccountRepositoryPort.existsByCode(command
+                .getGlAccounts()
+                .stream()
+                .map(agencyGlAccountCommand -> agencyGlAccountCommand.getCode())
+                .collect(Collectors.toList()));
+        if (!isGlAccountCodeExist) {
+            throw new ViolationException(
+                    new ValidationError()
+                            .addViolation("Code", "One or more gl account does not exists.")
+            );
+        }
     }
 
     private Collection<RefAgencyGLAccount> mapCommandToRefAgencyGlAccounts(CreateAgencyGlAccountCommand command) {

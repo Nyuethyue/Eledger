@@ -4,6 +4,8 @@ import am.iunetworks.lib.common.persistence.spring.querydsl.CustomQuerydslJpaRep
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.history.RevisionRepository;
 
+import java.util.Collection;
+
 interface GLAccountEntityRepository extends CustomQuerydslJpaRepository<GLAccountEntity, Long>, QuerydslPredicateExecutor<GLAccountEntity>, RevisionRepository<GLAccountEntity, Long, Long> {
-    boolean existsByCode(String code);
+    boolean existsByCodeIn(Collection<String> codes);
 }
