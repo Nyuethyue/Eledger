@@ -41,7 +41,7 @@ class UpsertTaxPeriodService implements UpsertTaxPeriodUseCase {
 
         log.trace("Persisting TaxPeriod: {}", refTaxPeriodConfig);
 
-        Long id = refTaxPeriodRepositoryPort.create(refTaxPeriodConfig);
+        Long id = refTaxPeriodRepositoryPort.upsert(refTaxPeriodConfig);
 
         log.debug("TaxPeriod with id: {} successfully created.", id);
 
