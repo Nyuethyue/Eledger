@@ -1,4 +1,4 @@
-package bhutan.eledger.adapter.in.ref.web.taxperiod;
+package bhutan.eledger.adapter.out.ref.persistence.taxperiod;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
