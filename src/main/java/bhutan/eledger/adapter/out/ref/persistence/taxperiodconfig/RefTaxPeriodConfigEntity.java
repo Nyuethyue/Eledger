@@ -79,7 +79,7 @@ class RefTaxPeriodConfigEntity {
         this.considerNonWorkingDays = considerNonWorkingDays;
     }
 
-    public void addToRecords(RefTaxPeriodRecordEntity record) {
+    public void addToRecord(RefTaxPeriodRecordEntity record) {
         if (records == null) {
             records = new HashSet<>();
         }
