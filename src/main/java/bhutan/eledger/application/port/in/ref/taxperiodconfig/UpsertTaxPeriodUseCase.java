@@ -29,7 +29,6 @@ public interface UpsertTaxPeriodUseCase {
         private final Integer calendarYear;
 
         @NotNull
-        @NotEmpty
         private final Long taxPeriodTypeId;
 
         private final Long transactionTypeId;
@@ -67,36 +66,38 @@ public interface UpsertTaxPeriodUseCase {
     class TaxPeriodRecordCommand {
         @Valid
         @NotNull
-        private LocalDate periodStart;
+        private final Integer periodId;
 
         @Valid
         @NotNull
-        private LocalDate periodEnd;
+        private final LocalDate periodStart;
 
         @Valid
         @NotNull
-        private LocalDate filingDueDate;
+        private final LocalDate periodEnd;
 
         @Valid
         @NotNull
-        private LocalDate paymentDueDate;
+        private final LocalDate filingDueDate;
 
         @Valid
         @NotNull
-        private LocalDate interestCalcStartDate;
-
-
-        @Valid
-        @NotNull
-        private LocalDate finePenaltyCalcStartDate;
+        private final LocalDate paymentDueDate;
 
         @Valid
         @NotNull
-        private LocalDate validFrom;
-
+        private final LocalDate interestCalcStartDate;
 
         @Valid
         @NotNull
-        private String remark;
+        private final LocalDate finePenaltyCalcStartDate;
+
+        @Valid
+        @NotNull
+        private final LocalDate validFrom;
+
+        @Valid
+        @NotNull
+        private final String taxTypeCode;
     }
 }

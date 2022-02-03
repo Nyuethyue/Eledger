@@ -5,12 +5,15 @@ import am.iunetworks.lib.common.validation.ViolationException;
 import bhutan.eledger.application.port.in.ref.taxperiodconfig.UpsertTaxPeriodUseCase;
 import bhutan.eledger.application.port.out.ref.taxperiodconfig.RefTaxPeriodRepositoryPort;
 import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodConfig;
+import bhutan.eledger.domain.ref.taxperiodconfig.TaxPeriodRecord;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
+import java.util.Collection;
+import java.util.LinkedList;
 
 @Log4j2
 @Service
@@ -46,8 +49,24 @@ class UpsertTaxPeriodService implements UpsertTaxPeriodUseCase {
     }
 
     private RefTaxPeriodConfig mapCommandToRefTaxPeriodConfig(UpsertTaxPeriodCommand command) {
+        Collection<TaxPeriodRecord> records = new LinkedList<>();
+        for (TaxPeriodRecordCommand tpc : command.getRecords()) {
+            records.add(
+                    TaxPeriodRecord.withoutId(
+                            tpc.getPeriodId(),
+                            tpc.getPeriodStart(),
+                            tpc.getPeriodEnd(),
+                            tpc.getFilingDueDate(),
+                            tpc.getPaymentDueDate(),
+                            tpc.getInterestCalcStartDate(),
+                            tpc.getFinePenaltyCalcStartDate(),
+                            tpc.getValidFrom(),
+                            tpc.getTaxTypeCode()
+                    )
+            );
+        }
         return RefTaxPeriodConfig.withId(
-                null,
+                command.getId(),
                 command.getTaxTypeCode(),
                 command.getCalendarYear(),
                 command.getTaxPeriodTypeId(),
@@ -57,7 +76,7 @@ class UpsertTaxPeriodService implements UpsertTaxPeriodUseCase {
                 command.getValidFrom(),
                 command.getValidTo(),
                 command.getConsiderNonWorkingDays(),
-                null
+                records
         );
     }
 }

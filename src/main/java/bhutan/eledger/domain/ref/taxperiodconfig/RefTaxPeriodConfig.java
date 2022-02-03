@@ -28,7 +28,6 @@ public class RefTaxPeriodConfig {
     private int calendarYear;
 
     @NotNull
-    @NotEmpty
     private final Long taxPeriodTypeId;
 
     private final Long transactionTypeId;
