@@ -39,7 +39,7 @@ class RefTaxPeriodMapper {
                                 r.getTaxTypeCode()
                         )
                 )
-                .forEach(refTaxPeriodConfigEntity::addToRecords);
+                .forEach(refTaxPeriodConfigEntity::addToRecord);
 
         return refTaxPeriodConfigEntity;
     }
