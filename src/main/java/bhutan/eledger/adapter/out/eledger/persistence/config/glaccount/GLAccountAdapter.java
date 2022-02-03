@@ -49,4 +49,10 @@ class GLAccountAdapter implements GLAccountRepositoryPort {
     public void deleteAll() {
         glAccountEntityRepository.deleteAll();
     }
+
+    @Override
+    public boolean existsByCode(Collection<String> codes) {
+
+        return glAccountEntityRepository.existsByCodeIn(codes);
+    }
 }

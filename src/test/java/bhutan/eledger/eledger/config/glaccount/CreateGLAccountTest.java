@@ -3,9 +3,11 @@ package bhutan.eledger.eledger.config.glaccount;
 import bhutan.eledger.application.port.in.eledger.config.glaccount.CreateGLAccountPartTypeUseCase;
 import bhutan.eledger.application.port.in.eledger.config.glaccount.CreateGLAccountPartUseCase;
 import bhutan.eledger.application.port.in.eledger.config.glaccount.CreateGLAccountUseCase;
+import bhutan.eledger.application.port.in.ref.agencyglaccount.CreateRefAgencyGLAccountUseCase;
 import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountPartRepositoryPort;
 import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountPartTypeRepositoryPort;
 import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountRepositoryPort;
+import bhutan.eledger.application.port.out.ref.agencyglaccount.RefAgencyGLAccountRepositoryPort;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,6 +15,7 @@ import org.springframework.test.context.TestPropertySource;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(
@@ -36,10 +39,16 @@ class CreateGLAccountTest {
     private GLAccountRepositoryPort glAccountRepositoryPort;
 
     @Autowired
+    private RefAgencyGLAccountRepositoryPort refAgencyGLAccountRepositoryPort;
+
+    @Autowired
     private CreateGLAccountUseCase createGLAccountUseCase;
 
     @Autowired
     private AuditManagementTestHelper auditManagementTestHelper;
+
+    @Autowired
+    private CreateRefAgencyGLAccountUseCase createRefAgencyGLAccountUseCase;
 
     private Long lastPartId;
 
@@ -57,6 +66,7 @@ class CreateGLAccountTest {
 
     @AfterEach
     void afterEach() {
+        refAgencyGLAccountRepositoryPort.deleteAll();
         glAccountRepositoryPort.deleteAll();
         glAccountPartRepositoryPort.deleteAll();
         glAccountPartTypeRepositoryPort.deleteAll();
@@ -88,6 +98,20 @@ class CreateGLAccountTest {
 
         var glAccount = glAccountOptional.get();
 
+        var agencyGLAccounts = createRefAgencyGLAccountUseCase.create(
+                new CreateRefAgencyGLAccountUseCase.CreateAgencyGlAccountCommand(
+                        "A-123",
+                        Set.of(
+                                new CreateRefAgencyGLAccountUseCase.AgencyGlAccountCommand(
+                                        glAccountOptional.get().getCode()
+                                )
+                        )
+                )
+        );
+
         Assertions.assertEquals("111102201002", glAccount.getCode());
+
+        Assertions.assertNotNull(agencyGLAccounts);
+        Assertions.assertFalse(agencyGLAccounts.isEmpty());
     }
 }
