@@ -37,8 +37,8 @@ CREATE SEQUENCE ref.tax_period_config_id_seq
 CREATE TABLE IF NOT EXISTS ref.ref_tax_period_record
 (
     id                              bigint  NOT NULL,
-    period_id                       bigint  NOT NULL,
     tax_period_config_id            bigint  NOT NULL,
+    period_id                       int     NOT NULL,
     period_start_date               date    NOT NULL,
     period_end_date                 date    NOT NULL,
     filing_due_date                 date    NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS ref.ref_tax_period_record
     interest_calc_start_day         date    NOT NULL,
     fine_and_penalty_calc_start_day date    NOT NULL,
     valid_from                      date    NOT NULL,
-    remark                          varchar NOT NULL
+    tax_type_code                   varchar NOT NULL
 );
 ALTER TABLE ref.ref_tax_period_record
     ADD CONSTRAINT pk_ref_tax_period_record
