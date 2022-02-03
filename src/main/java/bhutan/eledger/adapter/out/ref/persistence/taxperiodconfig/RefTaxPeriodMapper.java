@@ -50,6 +50,7 @@ class RefTaxPeriodMapper {
                 records.add(
                         TaxPeriodRecord.withId(
                                 re.getId(),
+                                re.getPeriodId(),
                                 re.getPeriodStartDate(),
                                 re.getPeriodEndDate(),
                                 re.getFilingDueDate(),

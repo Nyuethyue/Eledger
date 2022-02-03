@@ -37,6 +37,7 @@ CREATE SEQUENCE ref.tax_period_config_id_seq
 CREATE TABLE IF NOT EXISTS ref.ref_tax_period_record
 (
     id                              bigint  NOT NULL,
+    period_id                       bigint  NOT NULL,
     tax_period_config_id            bigint  NOT NULL,
     period_start_date               date    NOT NULL,
     period_end_date                 date    NOT NULL,

@@ -21,6 +21,9 @@ class RefTaxPeriodRecordEntity {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "period_id")
+    private int periodId;
+
     @Column(name = "period_start_date")
     private LocalDate periodStartDate;
 
