@@ -80,7 +80,7 @@ class RefTaxPeriodConfigEntity {
     }
 
     public void addToRecords(RefTaxPeriodRecordEntity record) {
-        if (record == null) {
+        if (records == null) {
             records = new HashSet<>();
         }
 

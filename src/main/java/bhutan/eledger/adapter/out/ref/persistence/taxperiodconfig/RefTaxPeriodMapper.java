@@ -24,7 +24,7 @@ class RefTaxPeriodMapper {
                         refTaxPeriodConfig.getConsiderNonWorkingDays()
                 );
 
-        refTaxPeriodConfigEntity.getRecords()
+        refTaxPeriodConfig.getRecords()
                 .stream()
                 .map(r ->
                         new RefTaxPeriodRecordEntity(
