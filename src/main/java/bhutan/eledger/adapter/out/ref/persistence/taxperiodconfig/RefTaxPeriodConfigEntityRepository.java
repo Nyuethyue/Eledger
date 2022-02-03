@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
-interface RefTaxPeriodEntityRepository extends JpaRepository<RefTaxPeriodConfigEntity, Long> {
+interface RefTaxPeriodConfigEntityRepository extends JpaRepository<RefTaxPeriodConfigEntity, Long> {
 
     @Query(value = "SELECT tpc.*" +
             " FROM ref.tax_period_config tpc" +

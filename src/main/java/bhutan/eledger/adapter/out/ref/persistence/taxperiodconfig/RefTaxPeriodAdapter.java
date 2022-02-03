@@ -5,6 +5,7 @@ import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.Optional;
 
 
@@ -13,25 +14,37 @@ import java.util.Optional;
 class RefTaxPeriodAdapter implements RefTaxPeriodRepositoryPort {
 
     private final RefTaxPeriodMapper refTaxPeriodMapper;
-    private final RefTaxPeriodEntityRepository refTaxPeriodEntityRepository;
+    private final RefTaxPeriodConfigEntityRepository refTaxPeriodConfigEntityRepository;
+    private final RefTaxPeriodRecordEntityRepository refTaxPeriodRecordEntityRepository;
 
     @Override
     public Long upsert(RefTaxPeriodConfig b) {
         var conf =
                 readBy(b.getTaxTypeCode(), b.getCalendarYear(), b.getTaxPeriodTypeId(), b.getTransactionTypeId());
         if(conf.isPresent()) {
-            return refTaxPeriodEntityRepository.save(refTaxPeriodMapper.mapToEntity(b)).getId();
+            var id = refTaxPeriodConfigEntityRepository.save(refTaxPeriodMapper.mapToEntity(conf.get().getId(), b)).getId();
+            refTaxPeriodRecordEntityRepository.deleteByTaxPeriodConfigId(id);
+            b.getRecords().stream().forEach(r ->
+                refTaxPeriodRecordEntityRepository.save(refTaxPeriodMapper.mapToEntity(id, r))
+            );
+            return id;
+
         } else {
-            return refTaxPeriodEntityRepository.save(refTaxPeriodMapper.mapToEntity(b)).getId();
+            var id = refTaxPeriodConfigEntityRepository.save(refTaxPeriodMapper.mapToEntity(b)).getId();
+            b.getRecords().stream().forEach(r ->
+                refTaxPeriodRecordEntityRepository.save(refTaxPeriodMapper.mapToEntity(id, r))
+            );
+            return id;
         }
     }
 
     @Override
     public Optional<RefTaxPeriodConfig> readBy(String taxTypeCode, Integer calendarYear, Long taxPeriodTypeId, Long transactionTypeId) {
         var result =
-                refTaxPeriodEntityRepository.readBy(taxTypeCode, calendarYear, taxPeriodTypeId, transactionTypeId);
+                refTaxPeriodConfigEntityRepository.readBy(taxTypeCode, calendarYear, taxPeriodTypeId, transactionTypeId);
         if(result.isPresent()) {
-            return Optional.of(refTaxPeriodMapper.mapToDomain(result.get()));
+            Collection<RefTaxPeriodRecordEntity> entityRecords = refTaxPeriodRecordEntityRepository.readRecords(result.get().getId());
+            return Optional.of(refTaxPeriodMapper.mapToDomain(result.get(), entityRecords));
         } else {
             return Optional.empty();
         }
