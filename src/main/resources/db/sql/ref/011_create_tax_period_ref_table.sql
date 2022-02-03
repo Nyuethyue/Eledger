@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS ref.ref_tax_period_record
     interest_calc_start_day         date    NOT NULL,
     fine_and_penalty_calc_start_day date    NOT NULL,
     valid_from                      date    NOT NULL,
-    remark                          varchar NOT NULL
+    tax_type_code                   varchar NOT NULL
 );
 ALTER TABLE ref.ref_tax_period_record
     ADD CONSTRAINT pk_ref_tax_period_record

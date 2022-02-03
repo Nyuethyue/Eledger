@@ -45,8 +45,8 @@ class RefTaxPeriodRecordEntity {
     @Column(name = "valid_from")
     private LocalDate validFrom;
 
-    @Column(name = "remark")
-    private String remark;
+    @Column(name = "tax_type_code")
+    private String taxTypeCode;
 
     @ManyToOne
     @JoinColumn(name = "tax_period_config_id", nullable = false)
@@ -62,7 +62,7 @@ class RefTaxPeriodRecordEntity {
             LocalDate interestCalcStartDay,
             LocalDate fineAndPenaltyCalcStartDay,
             LocalDate validFrom,
-            String remark
+            String taxTypeCode
     ) {
         this.id = id;
         this.periodStartDate = periodStartDate;
@@ -72,6 +72,6 @@ class RefTaxPeriodRecordEntity {
         this.interestCalcStartDay = interestCalcStartDay;
         this.fineAndPenaltyCalcStartDay = fineAndPenaltyCalcStartDay;
         this.validFrom = validFrom;
-        this.remark = remark;
+        this.taxTypeCode = taxTypeCode;
     }
 }

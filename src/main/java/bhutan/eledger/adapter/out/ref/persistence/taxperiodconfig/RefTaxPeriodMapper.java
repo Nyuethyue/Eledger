@@ -36,7 +36,7 @@ class RefTaxPeriodMapper {
                                 r.getInterestCalcStartDay(),
                                 r.getFineAndPenaltyCalcStartDay(),
                                 r.getValidFrom(),
-                                r.getRemark()
+                                r.getTaxTypeCode()
                         )
                 )
                 .forEach(refTaxPeriodConfigEntity::addToRecords);
@@ -58,7 +58,7 @@ class RefTaxPeriodMapper {
                                 re.getInterestCalcStartDay(),
                                 re.getFineAndPenaltyCalcStartDay(),
                                 re.getValidFrom(),
-                                re.getRemark()
+                                re.getTaxTypeCode()
                         )));
         return RefTaxPeriodConfig.withId(
                 entity.getId(),

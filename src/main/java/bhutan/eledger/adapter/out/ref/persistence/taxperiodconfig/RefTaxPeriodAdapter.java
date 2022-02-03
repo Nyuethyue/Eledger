@@ -17,14 +17,13 @@ class RefTaxPeriodAdapter implements RefTaxPeriodRepositoryPort {
 
     @Override
     public Long upsert(RefTaxPeriodConfig b) {
-        return 0L;
-//        var conf =
-//                readBy(b.getTaxTypeCode(), b.getCalendarYear(), b.getTaxPeriodTypeId(), b.getTransactionTypeId());
-//        if(conf.isPresent()) {
-//            return refTaxPeriodEntityRepository.save(refTaxPeriodMapper.mapToEntity(b)).getId();
-//        } else {
-//            return refTaxPeriodEntityRepository.save(refTaxPeriodMapper.mapToEntity(b)).getId();
-//        }
+        var conf =
+                readBy(b.getTaxTypeCode(), b.getCalendarYear(), b.getTaxPeriodTypeId(), b.getTransactionTypeId());
+        if(conf.isPresent()) {
+            return refTaxPeriodEntityRepository.save(refTaxPeriodMapper.mapToEntity(b)).getId();
+        } else {
+            return refTaxPeriodEntityRepository.save(refTaxPeriodMapper.mapToEntity(b)).getId();
+        }
     }
 
     @Override
