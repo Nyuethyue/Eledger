@@ -5,6 +5,7 @@ import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 
 @Validated
 public interface LoadGenTaxPeriodConfigUseCase {
@@ -16,5 +17,11 @@ public interface LoadGenTaxPeriodConfigUseCase {
         private final Integer calendarYear;
         private final Long taxPeriodTypeId;
         private final Long transactionTypeId;
+
+        private final Integer dueDateCountForReturnFiling;
+        private final Integer dueDateCountForPayment;
+        private final LocalDate validFrom;
+        private final LocalDate validTo;
+        private final Boolean considerNonWorkingDays;
     }
 }

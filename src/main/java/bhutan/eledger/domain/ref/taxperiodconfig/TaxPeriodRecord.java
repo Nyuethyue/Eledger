@@ -15,6 +15,8 @@ import java.time.LocalDate;
 public class TaxPeriodRecord {
     private final Long id;
 
+    private final Integer periodId;
+
     @NotNull
     @NotEmpty
     private final LocalDate periodStartDate;
@@ -45,10 +47,11 @@ public class TaxPeriodRecord {
 
     @Valid
     @NotNull
-    private String remark;
+    private String taxTypeCode;
 
     public static TaxPeriodRecord withId(
             Long id,
+            Integer periodId,
             LocalDate periodStartDate,
             LocalDate periodEndDate,
             LocalDate filingDueDate,
@@ -56,10 +59,11 @@ public class TaxPeriodRecord {
             LocalDate interestCalcStartDay,
             LocalDate fineAndPenaltyCalcStartDay,
             LocalDate validFrom,
-            String remark
+            String taxTypeCode
     ) {
         return new TaxPeriodRecord(
                 id,
+                periodId,
                 periodStartDate,
                 periodEndDate,
                 filingDueDate,
@@ -67,11 +71,12 @@ public class TaxPeriodRecord {
                 interestCalcStartDay,
                 fineAndPenaltyCalcStartDay,
                 validFrom,
-                remark
+                taxTypeCode
         );
     }
 
     public static TaxPeriodRecord withoutId(
+            Integer periodId,
             LocalDate periodStartDate,
             LocalDate periodEndDate,
             LocalDate filingDueDate,
@@ -79,10 +84,11 @@ public class TaxPeriodRecord {
             LocalDate interestCalcStartDay,
             LocalDate fineAndPenaltyCalcStartDay,
             LocalDate validFrom,
-            String remark
+            String taxTypeCode
     ) {
         return new TaxPeriodRecord(
                 null,
+                periodId,
                 periodStartDate,
                 periodEndDate,
                 filingDueDate,
@@ -90,7 +96,7 @@ public class TaxPeriodRecord {
                 interestCalcStartDay,
                 fineAndPenaltyCalcStartDay,
                 validFrom,
-                remark
+                taxTypeCode
         );
     }
 }

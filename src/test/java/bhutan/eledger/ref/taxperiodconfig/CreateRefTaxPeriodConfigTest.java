@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -35,14 +36,28 @@ class CreateRefTaxPeriodConfigTest {
         refTaxPeriodRepositoryPort.deleteAll();
     }
 
+    private static final long MONTHLY = 1;// 12 rows
+    private static final long QUARTERLY = 2; // 4 rows
+    private static final long FORTNIGHTLY = 3; // 24 rows
+
+    static final String GST_TAX_TYPE = "11411";// 5
+    static final String EET_TAX_TYPE = "11421";// 11
+
     @Test
     void createTest() {
+        LocalDate validFrom = LocalDate.now();
+        LocalDate validTo = LocalDate.now();
         LoadGenTaxPeriodConfigUseCase.LoadGenTaxPeriodConfigCommand generateCommand =
                 new LoadGenTaxPeriodConfigUseCase.LoadGenTaxPeriodConfigCommand(
-                        "111",
+                        GST_TAX_TYPE,
                         2022,
-                        33L,
-                        44L);
+                        MONTHLY,
+                        44L,
+                        11,
+                        11,
+                        validFrom,
+                        validTo,
+                        false);
 
         RefTaxPeriodConfig configGenerated = loadGenTaxPeriodConfigUseCase.loadGen(generateCommand);
         Assertions.assertNotNull(configGenerated);
