@@ -48,12 +48,13 @@ class RefTaxPeriodRecordEntity {
     @Column(name = "tax_type_code")
     private String taxTypeCode;
 
-    @Column(name = "tax_period_config_id")
-    private Long taxPeriodConfigId;
+    @ManyToOne
+    @JoinColumn(name = "tax_period_config_id", nullable = false)
+    private RefTaxPeriodConfigEntity taxPeriodConfig;
+
 
     public RefTaxPeriodRecordEntity(
-            Long taxPeriodConfigId,
-            Integer periodId,
+            Long id,
             LocalDate periodStartDate,
             LocalDate periodEndDate,
             LocalDate filingDueDate,
@@ -63,9 +64,7 @@ class RefTaxPeriodRecordEntity {
             LocalDate validFrom,
             String taxTypeCode
     ) {
-        this.taxPeriodConfigId = taxPeriodConfigId;
-        this.periodId = periodId;
-
+        this.id = id;
         this.periodStartDate = periodStartDate;
         this.periodEndDate = periodEndDate;
         this.filingDueDate = filingDueDate;
