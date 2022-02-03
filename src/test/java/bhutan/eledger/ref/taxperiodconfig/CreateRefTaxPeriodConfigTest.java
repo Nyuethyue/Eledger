@@ -99,6 +99,6 @@ class CreateRefTaxPeriodConfigTest {
 
         RefTaxPeriodConfig configLoaded = loadGenTaxPeriodConfigUseCase.loadGen(generateCommand);
         Assertions.assertNotNull(configLoaded);
-//        Assertions.assertNotNull(configLoaded.getId());
+        Assertions.assertEquals(recordId, configLoaded.getId());
     }
 }
