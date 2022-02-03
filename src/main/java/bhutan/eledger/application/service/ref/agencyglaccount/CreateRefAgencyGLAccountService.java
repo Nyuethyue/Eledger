@@ -41,7 +41,7 @@ class CreateRefAgencyGLAccountService implements CreateRefAgencyGLAccountUseCase
     }
 
     private void validate(CreateAgencyGlAccountCommand command) {
-        command.getAgencyGlAccounts().stream().forEach(agencyGlAccountCommand -> {
+        command.getGlAccounts().stream().forEach(agencyGlAccountCommand -> {
                     if (!glAccountRepositoryPort.existsByCode(agencyGlAccountCommand.getCode())) {
                         throw new ViolationException(
                                 new ValidationError()
@@ -56,7 +56,7 @@ class CreateRefAgencyGLAccountService implements CreateRefAgencyGLAccountUseCase
 
         String agencyCode = command.getAgencyCode();
 
-        return command.getAgencyGlAccounts()
+        return command.getGlAccounts()
                 .stream()
                 .map(agencyGlAccountCommand -> {
                     return RefAgencyGLAccount.withoutId(

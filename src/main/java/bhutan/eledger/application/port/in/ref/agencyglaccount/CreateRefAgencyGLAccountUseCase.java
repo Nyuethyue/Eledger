@@ -22,7 +22,7 @@ public interface CreateRefAgencyGLAccountUseCase {
 
         @NotNull
         @Valid
-        private final Collection<AgencyGlAccountCommand> agencyGlAccounts;
+        private final Collection<AgencyGlAccountCommand> glAccounts;
     }
 
     @Data
