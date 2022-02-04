@@ -37,7 +37,7 @@ class CreateRefOpenCloseTaxPeriodService implements CreateRefOpenCloseTaxPeriodU
 
     private RefOpenCloseTaxPeriodConfig mapCommandToRefOpenCloseTaxPeriodConfig(CreateOpenCloseTaxPeriodCommand command) {
         return RefOpenCloseTaxPeriodConfig.withoutId(
-                command.getTaxTypeCode(),
+                command.getGlAccountFullCode(),
                 command.getCalendarYear(),
                 command.getTaxPeriodTypeId(),
                 command.getTransactionTypeId(),

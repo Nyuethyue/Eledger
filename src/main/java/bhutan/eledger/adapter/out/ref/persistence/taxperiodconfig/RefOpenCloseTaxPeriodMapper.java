@@ -26,8 +26,8 @@ class RefOpenCloseTaxPeriodMapper {
                                 r.getId(),
                                 r.getPeriodId(),
                                 r.getPeriod(),
-                                r.getPeriodStartDate(),
-                                r.getPeriodEndDate()
+                                r.getPeriodOpenDate(),
+                                r.getPeriodCloseDate()
                         )
                 )
                 .forEach(refOpenCloseTaxPeriodEntity::addToRecords);

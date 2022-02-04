@@ -19,7 +19,7 @@ public interface CreateRefOpenCloseTaxPeriodUseCase {
 
         @NotNull
         @NotEmpty
-        private final String taxTypeCode;
+        private final String glAccountFullCode;
 
         @Valid
         @NotNull

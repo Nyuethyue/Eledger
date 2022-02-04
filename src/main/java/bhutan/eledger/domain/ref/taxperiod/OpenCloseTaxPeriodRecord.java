@@ -9,21 +9,21 @@ public class OpenCloseTaxPeriodRecord {
     private final Long id;
     private final Integer periodId;
     private final String period;
-    private final LocalDate periodStartDate;
-    private final LocalDate periodEndDate;
+    private final LocalDate periodOpenDate;
+    private final LocalDate periodCloseDate;
 
     public static OpenCloseTaxPeriodRecord withoutId(
             Integer periodId,
             String period,
-            LocalDate periodStartDate,
-            LocalDate periodEndDate
+            LocalDate periodOpenDate,
+            LocalDate periodCloseDate
     ) {
         return new OpenCloseTaxPeriodRecord(
                 null,
                 periodId,
                 period,
-                periodStartDate,
-                periodEndDate
+                periodOpenDate,
+                periodCloseDate
         );
     }
 }
