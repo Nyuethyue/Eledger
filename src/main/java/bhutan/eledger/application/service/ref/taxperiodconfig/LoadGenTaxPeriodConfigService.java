@@ -1,8 +1,10 @@
 package bhutan.eledger.application.service.ref.taxperiodconfig;
 
+import bhutan.eledger.application.port.in.eledger.config.glaccount.ReadGLAccountPartUseCase;
 import bhutan.eledger.application.port.in.ref.nonworkingdays.ReadRefNonWorkingDaysUseCase;
 import bhutan.eledger.application.port.in.ref.taxperiodconfig.LoadGenTaxPeriodConfigUseCase;
 import bhutan.eledger.application.port.out.ref.taxperiodconfig.RefTaxPeriodRepositoryPort;
+import bhutan.eledger.domain.eledger.config.glaccount.GLAccountPart;
 import bhutan.eledger.domain.ref.nonworkingdays.RefNonWorkingDays;
 import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodConfig;
 import bhutan.eledger.domain.ref.taxperiodconfig.TaxPeriodRecord;
@@ -17,10 +19,7 @@ import java.time.LocalDate;
 import java.time.MonthDay;
 import java.time.Year;
 import java.time.YearMonth;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Set;
+import java.util.*;
 
 @Log4j2
 @Service
@@ -29,6 +28,7 @@ import java.util.Set;
 class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
     private final RefTaxPeriodRepositoryPort refTaxPeriodRepositoryPort;
     private final ReadRefNonWorkingDaysUseCase readRefNonWorkingDaysUseCase;
+    private final ReadGLAccountPartUseCase readGLAccountPartUseCase;
 
     @Override
     public RefTaxPeriodConfig loadGen(@Valid LoadGenTaxPeriodConfigCommand command) {
@@ -49,8 +49,37 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
     private static final long MONTHLY = 1;// 12 rows
     private static final long QUARTERLY = 2; // 4 rows
     private static final long FORTNIGHTLY = 3; // 24 rows
+    private static final int TAX_TYPE_GL_ACCOUNT_PART_TYPE_ID = 5;
+
+    private Map<String, String> loadTaxTypeFullCodeMap() {
+        Map<String, String> result = new HashMap<>();
+        Collection<GLAccountPart> taxTypes = readGLAccountPartUseCase.readAllByPartTypeId(TAX_TYPE_GL_ACCOUNT_PART_TYPE_ID);
+        taxTypes.stream().forEach(tt -> {
+            var tv = tt.getDescription().translationValue("en");
+            if(tv.isPresent()) {
+                result.put(tt.getFullCode(), tv.get());
+            }
+        });
+        return result;
+    }
+
+    private static String taxTypeCodeDisplayValue(String taxTypeCode, Map<String, String> taxTypeCodeMap) {
+        if(taxTypeCodeMap.containsKey(taxTypeCode)) {
+            return taxTypeCodeMap.get(taxTypeCode);
+        } else {
+            if("11411".equals(taxTypeCode)) {
+                return "GST";
+            }
+            if("11421".equals(taxTypeCode)) {
+                return "EET";
+            }
+            return taxTypeCode;
+        }
+    }
 
     public RefTaxPeriodConfig generate(LoadGenTaxPeriodConfigCommand command) {
+        Map<String, String> taxTypeFullCodeMap = loadTaxTypeFullCodeMap();
+        String taxTypeCodeDisplayValue = taxTypeCodeDisplayValue(command.getTaxTypeCode(), taxTypeFullCodeMap);
         int year = command.getCalendarYear();
         Set<Integer> nonWorkingDays = loadNonWorkingDays(year);
         Collection<TaxPeriodRecord> records = new LinkedList<>();
@@ -68,7 +97,7 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                                 addDays( endOfMonth, command.getDueDateCountForReturnFiling() + 1, consider, nonWorkingDays),
                                 addDays( endOfMonth, command.getDueDateCountForPayment() + 1, consider, nonWorkingDays),
                                 command.getValidFrom(),
-                                command.getTaxTypeCode()
+                                taxTypeCodeDisplayValue
                         ));
             }
         } else if (QUARTERLY == command.getTaxPeriodTypeId()) {
@@ -84,7 +113,7 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                                 addDays(endOfQuarter, command.getDueDateCountForReturnFiling() + 1, consider, nonWorkingDays),
                                 addDays(endOfQuarter, command.getDueDateCountForPayment() + 1, consider, nonWorkingDays),
                                 command.getValidFrom(),
-                                command.getTaxTypeCode()
+                                taxTypeCodeDisplayValue
                         ));
             }
         } else if (FORTNIGHTLY == command.getTaxPeriodTypeId()) {
@@ -111,7 +140,7 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                                 addDays(endOfFortnight, command.getDueDateCountForReturnFiling() + 1, consider, nonWorkingDays),
                                 addDays(endOfFortnight, command.getDueDateCountForPayment() + 1, consider, nonWorkingDays),
                                 command.getValidFrom(),
-                                command.getTaxTypeCode()
+                                taxTypeCodeDisplayValue
                         ));
             }
         }
