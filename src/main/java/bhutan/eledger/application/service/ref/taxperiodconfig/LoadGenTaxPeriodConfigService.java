@@ -10,13 +10,11 @@ import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodConfig;
 import bhutan.eledger.domain.ref.taxperiodconfig.TaxPeriodRecord;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
-import java.time.MonthDay;
 import java.time.Year;
 import java.time.YearMonth;
 import java.util.*;
@@ -32,18 +30,12 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
 
     @Override
     public RefTaxPeriodConfig loadGen(@Valid LoadGenTaxPeriodConfigCommand command) {
-        var refTaxPeriodConfig =
-                refTaxPeriodRepositoryPort.readBy(
-                        command.getTaxTypeCode(),
-                        command.getCalendarYear(),
-                        command.getTaxPeriodTypeId(),
-                        command.getTransactionTypeId()
-                );
-        if (refTaxPeriodConfig.isPresent()) {
-            return refTaxPeriodConfig.get();
-        } else {
-            return generate(command);
-        }
+        return refTaxPeriodRepositoryPort.readBy(
+                command.getTaxTypeCode(),
+                command.getCalendarYear(),
+                command.getTaxPeriodTypeId(),
+                command.getTransactionTypeId()
+        ).orElse(generate(command));
     }
 
     private static final long MONTHLY = 1;// 12 rows
