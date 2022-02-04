@@ -248,7 +248,7 @@ BEGIN
                           SELECT DISTINCT 0                                                       id
                                         , eledger.fn_get_attribute_value(et.id, 'PERIOD_YEAR')    transaction_year
                                         , eledger.fn_get_attribute_value(et.id, 'PERIOD_SEGMENT') transaction_segment
-                                        , et.transaction_type_id
+                                        --, et.transaction_type_id
                           FROM eledger.el_taxpayer tp
                                    INNER JOIN eledger.el_transaction et
                                               ON et.taxpayer_id = tp.id
