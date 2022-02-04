@@ -58,8 +58,8 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                             endOfMonth.plusDays(command.getDueDateCountForPayment() + 1),
                             endOfMonth.plusDays(command.getDueDateCountForPayment() + 1),
                             command.getValidFrom(),
-                            command.getTaxTypeCode()
-                    ));
+                           "11411".equals(command.getTaxTypeCode()) ? "GST" : "EET")
+                    );
             }
         } else
         if(QUARTERLY == command.getTaxPeriodTypeId()) {
