@@ -10,7 +10,7 @@ interface RefTaxPeriodRecordEntityRepository extends JpaRepository<RefTaxPeriodR
             " FROM ref.ref_tax_period_record tpr" +
             " WHERE tpr.tax_period_config_id = :taxPeriodConfigId"
             , nativeQuery = true)
-    Collection<RefTaxPeriodRecordEntity> readRecords(long taxPeriodConfigId);
+    Collection<RefTaxPeriodRecordEntity> readTaxPeriodRecords(long taxPeriodConfigId);
 
     void deleteByTaxPeriodConfigId(Long taxPeriodConfigId);
 }
