@@ -27,7 +27,7 @@ class RefOpenCloseTaxPeriodController {
     }
     @GetMapping(value = "/loadGen", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
-    public RefOpenCloseTaxPeriodConfig loadGen(@RequestBody LoadGenOpenCloseTaxPeriodUseCase.LoadGenOpenCloseTaxPeriodConfigCommand command) {
+    public RefOpenCloseTaxPeriodConfig loadGen(LoadGenOpenCloseTaxPeriodUseCase.LoadGenOpenCloseTaxPeriodConfigCommand command) {
         return loadGenOpenCloseTaxPeriodUseCase.loadGen(command);
     }
 
