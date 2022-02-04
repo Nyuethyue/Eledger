@@ -103,7 +103,6 @@ class LoadGenOpenCloseTaxPeriodService implements LoadGenOpenCloseTaxPeriodUseCa
                         ));
             }
         }
-        System.out.println("I am here" + command);
 
         return RefOpenCloseTaxPeriodConfig.withoutId(
                 command.getGlAccountFullCode(),

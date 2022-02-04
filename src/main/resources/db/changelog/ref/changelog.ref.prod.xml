@@ -59,4 +59,8 @@
         <sqlFile path="../../sql/ref/011_create_tax_period_ref_table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <changeSet id="Open close Tax Period  ref table" author="P.L" dbms="postgresql">
+        <sqlFile path="../../sql/ref/013_create_open_close_tax_period_ref_table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog>
