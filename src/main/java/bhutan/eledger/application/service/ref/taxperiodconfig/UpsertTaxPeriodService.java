@@ -24,12 +24,47 @@ class UpsertTaxPeriodService implements UpsertTaxPeriodUseCase {
     private final RefTaxPeriodRepositoryPort refTaxPeriodRepositoryPort;
 
     void validate(UpsertTaxPeriodCommand command) {
-        if (null != command.getValidFrom() && command.getValidFrom().getYear() < command.getCalendarYear()) {
+        if (command.getValidFrom().isAfter(command.getValidTo())) {
+            throw new ViolationException(
+                    new ValidationError()
+                            .addViolation("validFrom", "Valid from is after valid to:" + command.getValidFrom())
+            );
+        }
+
+        if (command.getValidFrom().getYear() < command.getCalendarYear()) {
             throw new ViolationException(
                     new ValidationError()
                             .addViolation("Year", "Valid from year less than calendar year")
             );
         }
+
+        command.getRecords().forEach(r -> {
+           if(r.getPeriodStart().isAfter(r.getPeriodEnd())) {
+               throw new ViolationException(
+                       new ValidationError()
+                               .addViolation("periodStart", "Period start is after period end")
+               );
+           }
+            if(r.getPeriodEnd().isAfter(r.getFilingDueDate())) {
+                throw new ViolationException(
+                        new ValidationError()
+                                .addViolation("periodStart", "Period end is after filling date")
+                );
+            }
+            if(r.getFilingDueDate().isAfter(r.getPaymentDueDate())) {
+                throw new ViolationException(
+                        new ValidationError()
+                                .addViolation("filingDueDate", "filingDueDate end is after paymentDueDate date")
+                );
+            }
+            if(r.getPaymentDueDate().isAfter(r.getFinePenaltyCalcStartDate())) {
+                throw new ViolationException(
+                        new ValidationError()
+                                .addViolation("paymentDueDate", "paymentDueDate end is after FinePenaltyCalcStartDate date")
+                );
+            }
+
+        });
     }
 
     @Override
