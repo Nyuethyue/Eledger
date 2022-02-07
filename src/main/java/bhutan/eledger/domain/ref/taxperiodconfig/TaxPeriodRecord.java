@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.MonthDay;
 
 @Builder(toBuilder = true)
 @Getter
@@ -17,29 +18,31 @@ public class TaxPeriodRecord {
 
     private final Integer periodId;
 
-    @NotNull
-    @NotEmpty
-    private final LocalDate periodStartDate;
+    private final int year;
 
     @NotNull
     @NotEmpty
-    private final LocalDate periodEndDate;
+    private final MonthDay periodStartDate;
 
     @NotNull
     @NotEmpty
-    private final LocalDate filingDueDate;
+    private final MonthDay periodEndDate;
 
     @NotNull
     @NotEmpty
-    private final LocalDate paymentDueDate;
+    private final MonthDay filingDueDate;
 
     @NotNull
     @NotEmpty
-    private final LocalDate interestCalcStartDay;
+    private final MonthDay paymentDueDate;
 
     @NotNull
     @NotEmpty
-    private final LocalDate fineAndPenaltyCalcStartDay;
+    private final MonthDay interestCalcStartDay;
+
+    @NotNull
+    @NotEmpty
+    private final MonthDay fineAndPenaltyCalcStartDay;
 
     @Valid
     @NotNull
@@ -52,18 +55,20 @@ public class TaxPeriodRecord {
     public static TaxPeriodRecord withId(
             Long id,
             Integer periodId,
-            LocalDate periodStartDate,
-            LocalDate periodEndDate,
-            LocalDate filingDueDate,
-            LocalDate paymentDueDate,
-            LocalDate interestCalcStartDay,
-            LocalDate fineAndPenaltyCalcStartDay,
+            int year,
+            MonthDay periodStartDate,
+            MonthDay periodEndDate,
+            MonthDay filingDueDate,
+            MonthDay paymentDueDate,
+            MonthDay interestCalcStartDay,
+            MonthDay fineAndPenaltyCalcStartDay,
             LocalDate validFrom,
             String taxTypeCode
     ) {
         return new TaxPeriodRecord(
                 id,
                 periodId,
+                year,
                 periodStartDate,
                 periodEndDate,
                 filingDueDate,
@@ -77,18 +82,20 @@ public class TaxPeriodRecord {
 
     public static TaxPeriodRecord withoutId(
             Integer periodId,
-            LocalDate periodStartDate,
-            LocalDate periodEndDate,
-            LocalDate filingDueDate,
-            LocalDate paymentDueDate,
-            LocalDate interestCalcStartDay,
-            LocalDate fineAndPenaltyCalcStartDay,
+            int year,
+            MonthDay periodStartDate,
+            MonthDay periodEndDate,
+            MonthDay filingDueDate,
+            MonthDay paymentDueDate,
+            MonthDay interestCalcStartDay,
+            MonthDay fineAndPenaltyCalcStartDay,
             LocalDate validFrom,
             String taxTypeCode
     ) {
         return new TaxPeriodRecord(
                 null,
                 periodId,
+                year,
                 periodStartDate,
                 periodEndDate,
                 filingDueDate,

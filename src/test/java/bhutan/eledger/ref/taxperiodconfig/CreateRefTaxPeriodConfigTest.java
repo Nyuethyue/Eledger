@@ -5,6 +5,7 @@ import bhutan.eledger.application.port.in.ref.taxperiodconfig.UpsertTaxPeriodUse
 import bhutan.eledger.application.port.out.ref.taxperiodconfig.RefTaxPeriodRepositoryPort;
 import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodConfig;
 import bhutan.eledger.domain.ref.taxperiodconfig.TaxPeriodRecord;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -28,9 +29,11 @@ class CreateRefTaxPeriodConfigTest {
     @Autowired
     private UpsertTaxPeriodUseCase upsertTaxPeriodUseCase;
 
-
     @Autowired
     private RefTaxPeriodRepositoryPort refTaxPeriodRepositoryPort;
+
+    @Autowired
+    ObjectMapper objectMapper;
 
     @AfterEach
     void afterEach() {
@@ -98,6 +101,10 @@ class CreateRefTaxPeriodConfigTest {
         Long recordId = upsertTaxPeriodUseCase.upsert(upsertCommand);
 
         RefTaxPeriodConfig configLoaded = loadGenTaxPeriodConfigUseCase.loadGen(generateCommand);
+
+//        try {
+//            System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(configLoaded));
+//        } catch (Exception i) {}
         Assertions.assertNotNull(configLoaded);
         Assertions.assertEquals(recordId, configLoaded.getId());
     }

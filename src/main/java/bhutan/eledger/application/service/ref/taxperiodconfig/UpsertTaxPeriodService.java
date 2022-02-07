@@ -45,18 +45,18 @@ class UpsertTaxPeriodService implements UpsertTaxPeriodUseCase {
                                .addViolation("periodStart", "Period start is after period end")
                );
            }
-            if(r.getPeriodEnd().isAfter(r.getFilingDueDate())) {
-                throw new ViolationException(
-                        new ValidationError()
-                                .addViolation("periodStart", "Period end is after filling date")
-                );
-            }
-            if(r.getFilingDueDate().isAfter(r.getPaymentDueDate())) {
-                throw new ViolationException(
-                        new ValidationError()
-                                .addViolation("filingDueDate", "filingDueDate end is after paymentDueDate date")
-                );
-            }
+//            if(r.getPeriodEnd().isAfter(r.getFilingDueDate())) {
+//                throw new ViolationException(
+//                        new ValidationError()
+//                                .addViolation("periodStart", "Period end is after filling date")
+//                );
+//            }
+//            if(r.getFilingDueDate().isAfter(r.getPaymentDueDate())) {
+//                throw new ViolationException(
+//                        new ValidationError()
+//                                .addViolation("filingDueDate", "filingDueDate end is after paymentDueDate date")
+//                );
+//            }
             if(r.getPaymentDueDate().isAfter(r.getFinePenaltyCalcStartDate())) {
                 throw new ViolationException(
                         new ValidationError()
@@ -89,6 +89,7 @@ class UpsertTaxPeriodService implements UpsertTaxPeriodUseCase {
             records.add(
                     TaxPeriodRecord.withoutId(
                             tpc.getPeriodId(),
+                            command.getCalendarYear(),
                             tpc.getPeriodStart(),
                             tpc.getPeriodEnd(),
                             tpc.getFilingDueDate(),
