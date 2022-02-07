@@ -13,12 +13,12 @@ public interface LoadGenOpenCloseTaxPeriodUseCase {
 
     @Data
     class LoadGenOpenCloseTaxPeriodConfigCommand {
-        private final String glAccountFullCode;
+        private final String glAccountPartFullCode;
         @NotNull
         private final Integer calendarYear;
         private final Long taxPeriodTypeId;
         private final Long transactionTypeId;
-        private final int years;
-        private final int month;
+        private final Integer years;
+        private final Integer month;
     }
 }

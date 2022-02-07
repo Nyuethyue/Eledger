@@ -37,8 +37,8 @@ CREATE TABLE IF NOT EXISTS ref.open_close_tax_period_config_record
     period_id                       bigint  NOT NULL,
     period                          varchar  NOT NULL,
     open_close_tax_period_config_id bigint  NOT NULL,
-    period_start_date               date    NOT NULL,
-    period_end_date                 date    NOT NULL
+    period_open_date                date    NOT NULL,
+    period_close_date               date    NOT NULL
 );
 ALTER TABLE ref.open_close_tax_period_config_record
     ADD CONSTRAINT pk_open_close_tax_period_config_record

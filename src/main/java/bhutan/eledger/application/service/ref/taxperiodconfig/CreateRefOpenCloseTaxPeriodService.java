@@ -49,8 +49,8 @@ class CreateRefOpenCloseTaxPeriodService implements CreateRefOpenCloseTaxPeriodU
                                 OpenCloseTaxPeriodRecord.withoutId(
                                         record.getPeriodId(),
                                         record.getPeriod(),
-                                        record.getPeriodStart(),
-                                        record.getPeriodEnd()
+                                        record.getPeriodOpenDate(),
+                                        record.getPeriodCloseDate()
                                 )
                         )
                         .collect(Collectors.toUnmodifiableSet())
