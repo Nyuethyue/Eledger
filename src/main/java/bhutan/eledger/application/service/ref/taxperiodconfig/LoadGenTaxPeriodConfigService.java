@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.time.MonthDay;
 import java.time.Year;
 import java.time.YearMonth;
 import java.util.*;
@@ -82,8 +83,9 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                 records.add(
                         TaxPeriodRecord.withoutId(
                                 monthIndex,
-                                LocalDate.of(year, monthIndex, 1),// Start period
-                                endOfMonth,// End period
+                                year,
+                                MonthDay.of(monthIndex, 1),// Start period
+                                MonthDay.of(monthIndex, endOfMonth.getDayOfMonth()),// End period
                                 addDays(endOfMonth, command.getDueDateCountForReturnFiling(), consider, nonWorkingDays),
                                 addDays(endOfMonth, command.getDueDateCountForPayment(), consider, nonWorkingDays),
                                 addDays(endOfMonth, command.getDueDateCountForReturnFiling() + 1, consider, nonWorkingDays),
@@ -98,8 +100,9 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                 records.add(
                         TaxPeriodRecord.withoutId(
                                 quarterIndex,
-                                LocalDate.of(year, (3 * quarterIndex) - 2, 1),// Start period
-                                endOfQuarter,// End period
+                                year,
+                                MonthDay.of( (3 * quarterIndex) - 2, 1),// Start period
+                                MonthDay.of(quarterIndex, endOfQuarter.getDayOfMonth()),// End period
                                 addDays(endOfQuarter, command.getDueDateCountForReturnFiling(), consider, nonWorkingDays),
                                 addDays(endOfQuarter, command.getDueDateCountForPayment(), consider, nonWorkingDays),
                                 addDays(endOfQuarter, command.getDueDateCountForReturnFiling() + 1, consider, nonWorkingDays),
@@ -125,8 +128,9 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                 records.add(
                         TaxPeriodRecord.withoutId(
                                 fortnightIndex,
-                                LocalDate.of(year, fortnightMonth, fortnightFirstDay),// Start period
-                                endOfFortnight,// End period
+                                year,
+                                MonthDay.of(fortnightMonth, fortnightFirstDay),// Start period
+                                MonthDay.of(fortnightIndex, endOfFortnight.getDayOfMonth()),// End period
                                 addDays(endOfFortnight, command.getDueDateCountForReturnFiling(), consider, nonWorkingDays),
                                 addDays(endOfFortnight, command.getDueDateCountForPayment(), consider, nonWorkingDays),
                                 addDays(endOfFortnight, command.getDueDateCountForReturnFiling() + 1, consider, nonWorkingDays),
@@ -174,10 +178,10 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
         }
     }
 
-    private LocalDate addDays(LocalDate dateFrom, int dayCount, boolean considerNonWorkingDays, Set<Integer> nonWorkingDays) {
+    private MonthDay addDays(LocalDate dateFrom, int dayCount, boolean considerNonWorkingDays, Set<Integer> nonWorkingDays) {
         LocalDate dateTo = dateFrom.plusDays(dayCount);
         if(!considerNonWorkingDays) {
-            return dateTo;
+            return MonthDay.of(dateTo.getMonth(), dateTo.getDayOfMonth());
         }
         int startDay = dateFrom.getDayOfYear();
         int endDay = dateTo.getDayOfYear();
@@ -189,7 +193,8 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
             numberOfNonWorkingDays = countNWDays(nonWorkingDays, startDay, middleDay)
                                      + countNWDays(nonWorkingDays, 1, endDay);
         }
-        return dateFrom.plusDays(dayCount + numberOfNonWorkingDays);
+        LocalDate result = dateFrom.plusDays(dayCount + numberOfNonWorkingDays);
+        return MonthDay.of(result.getMonth(), result.getDayOfMonth());
     }
 
     private int countNWDays(Set<Integer> nonWorkingDays, int startDay, int endDay) {

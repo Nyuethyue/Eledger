@@ -8,6 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDate;
+import java.time.MonthDay;
 import java.util.Collection;
 
 @Validated
@@ -69,27 +70,27 @@ public interface UpsertTaxPeriodUseCase {
 
         @Valid
         @NotNull
-        private final LocalDate periodStart;
+        private final MonthDay periodStart;
 
         @Valid
         @NotNull
-        private final LocalDate periodEnd;
+        private final MonthDay periodEnd;
 
         @Valid
         @NotNull
-        private final LocalDate filingDueDate;
+        private final MonthDay filingDueDate;
 
         @Valid
         @NotNull
-        private final LocalDate paymentDueDate;
+        private final MonthDay paymentDueDate;
 
         @Valid
         @NotNull
-        private final LocalDate interestCalcStartDate;
+        private final MonthDay interestCalcStartDate;
 
         @Valid
         @NotNull
-        private final LocalDate finePenaltyCalcStartDate;
+        private final MonthDay finePenaltyCalcStartDate;
 
         @Valid
         @NotNull

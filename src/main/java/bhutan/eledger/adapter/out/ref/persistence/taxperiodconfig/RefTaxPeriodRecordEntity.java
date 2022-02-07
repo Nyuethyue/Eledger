@@ -24,23 +24,43 @@ class RefTaxPeriodRecordEntity {
     @Column(name = "period_id")
     private int periodId;
 
-    @Column(name = "period_start_date")
-    private LocalDate periodStartDate;
+    @Column(name = "calendar_year")
+    private int year;
 
-    @Column(name = "period_end_date")
-    private LocalDate periodEndDate;
+    @Column(name = "period_start_month")
+    private int periodStartMonth;
+    @Column(name = "period_start_day")
+    private int periodStartDay;
 
-    @Column(name = "filing_due_date")
-    private LocalDate filingDueDate;
 
-    @Column(name = "payment_due_date")
-    private LocalDate paymentDueDate;
+    @Column(name = "period_end_month")
+    private int periodEndMonth;
+    @Column(name = "period_end_day")
+    private int periodEndDay;
 
+    @Column(name = "payment_due_month")
+    private int paymentDueMonth;
+    @Column(name = "payment_due_day")
+    private int paymentDueDay;
+
+
+    @Column(name = "filing_due_month")
+    private int filingDueMonth;
+    @Column(name = "filing_due_day")
+    private int filingDueDay;
+
+
+    @Column(name = "interest_calc_start_month")
+    private int interestCalcStartMonth;
     @Column(name = "interest_calc_start_day")
-    private LocalDate interestCalcStartDay;
+    private int interestCalcStartDay;
 
+
+    @Column(name = "fine_and_penalty_calc_start_month")
+    private int fineAndPenaltyCalcStartMonth;
     @Column(name = "fine_and_penalty_calc_start_day")
-    private LocalDate fineAndPenaltyCalcStartDay;
+    private int fineAndPenaltyCalcStartDay;
+
 
     @Column(name = "valid_from")
     private LocalDate validFrom;
@@ -54,23 +74,51 @@ class RefTaxPeriodRecordEntity {
     public RefTaxPeriodRecordEntity(
             Long taxPeriodConfigId,
             Integer periodId,
-            LocalDate periodStartDate,
-            LocalDate periodEndDate,
-            LocalDate filingDueDate,
-            LocalDate paymentDueDate,
-            LocalDate interestCalcStartDay,
-            LocalDate fineAndPenaltyCalcStartDay,
+
+            int year,
+
+            int periodStartMonth,
+            int periodStartDay,
+
+            int periodEndMonth,
+            int periodEndDay,
+
+            int filingDueMonth,
+            int filingDueDay,
+
+            int paymentDueMonth,
+            int paymentDueDay,
+
+            int interestCalcStartMonth,
+            int interestCalcStartDay,
+
+            int fineAndPenaltyCalcStartMonth,
+            int fineAndPenaltyCalcStartDay,
+
             LocalDate validFrom,
             String taxTypeCode
     ) {
         this.taxPeriodConfigId = taxPeriodConfigId;
         this.periodId = periodId;
 
-        this.periodStartDate = periodStartDate;
-        this.periodEndDate = periodEndDate;
-        this.filingDueDate = filingDueDate;
-        this.paymentDueDate = paymentDueDate;
+        this.year = year;
+
+        this.periodStartMonth = periodStartMonth;
+        this.periodStartDay = periodStartDay;
+
+        this.periodEndMonth = periodEndMonth;
+        this.periodEndDay = periodEndDay;
+
+        this.filingDueMonth = filingDueMonth;
+        this.filingDueDay = filingDueDay;
+
+        this.paymentDueMonth = paymentDueMonth;
+        this.paymentDueDay = paymentDueDay;
+
+        this.interestCalcStartMonth = interestCalcStartMonth;
         this.interestCalcStartDay = interestCalcStartDay;
+
+        this.fineAndPenaltyCalcStartMonth = fineAndPenaltyCalcStartMonth;
         this.fineAndPenaltyCalcStartDay = fineAndPenaltyCalcStartDay;
         this.validFrom = validFrom;
         this.taxTypeCode = taxTypeCode;
