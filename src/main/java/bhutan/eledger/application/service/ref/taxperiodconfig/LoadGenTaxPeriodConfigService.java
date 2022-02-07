@@ -93,9 +93,9 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                                 LocalDate.of(year, monthIndex, 1),// Start period
                                 endOfMonth,// End period
                                 addDays(endOfMonth, command.getDueDateCountForReturnFiling(), consider, nonWorkingDays),
-                                addDays( endOfMonth, command.getDueDateCountForPayment(), consider, nonWorkingDays),
-                                addDays( endOfMonth, command.getDueDateCountForReturnFiling() + 1, consider, nonWorkingDays),
-                                addDays( endOfMonth, command.getDueDateCountForPayment() + 1, consider, nonWorkingDays),
+                                addDays(endOfMonth, command.getDueDateCountForPayment(), consider, nonWorkingDays),
+                                addDays(endOfMonth, command.getDueDateCountForReturnFiling() + 1, consider, nonWorkingDays),
+                                addDays(endOfMonth, command.getDueDateCountForPayment() + 1, consider, nonWorkingDays),
                                 command.getValidFrom(),
                                 taxTypeCodeDisplayValue
                         ));

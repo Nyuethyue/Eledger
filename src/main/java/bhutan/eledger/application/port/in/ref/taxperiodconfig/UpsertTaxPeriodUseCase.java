@@ -55,7 +55,6 @@ public interface UpsertTaxPeriodUseCase {
         @NotNull
         private final Boolean considerNonWorkingDays;
 
-
         @NotNull
         @NotEmpty
         @Valid
