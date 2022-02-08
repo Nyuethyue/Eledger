@@ -58,8 +58,8 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                             endOfMonth.plusDays(command.getDueDateCountForPayment() + 1),
                             endOfMonth.plusDays(command.getDueDateCountForPayment() + 1),
                             command.getValidFrom(),
-                            command.getTaxTypeCode()
-                    ));
+                           "11411".equals(command.getTaxTypeCode()) ? "GST" : "EET")
+                    );
             }
         } else
         if(QUARTERLY == command.getTaxPeriodTypeId()) {
@@ -76,7 +76,7 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                                 endOfQuarter.plusDays(command.getDueDateCountForPayment() + 1),
                                 endOfQuarter.plusDays(command.getDueDateCountForPayment() + 1),
                                 command.getValidFrom(),
-                                command.getTaxTypeCode()
+                                "11411".equals(command.getTaxTypeCode()) ? "GST" : "EET"
                         ));
             }
         } else
@@ -105,7 +105,7 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                                 endOfFortnight.plusDays(command.getDueDateCountForPayment() + 1),
                                 endOfFortnight.plusDays(command.getDueDateCountForPayment() + 1),
                                 command.getValidFrom(),
-                                command.getTaxTypeCode()
+                                "11411".equals(command.getTaxTypeCode()) ? "GST" : "EET"
                         ));
             }
         }
