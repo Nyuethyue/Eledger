@@ -7,13 +7,13 @@ import java.util.Collection;
 
 @Data(staticConstructor = "withId")
 public class RefOpenCloseTaxPeriodConfig {
-    private final Long id;
-    private final String taxTypeCode;
-    private final int calendarYear;
-    private final Long taxPeriodTypeId;
-    private final Long transactionTypeId;
-    private final int years;
-    private final int month;
+    private final Long    id;
+    private final String  taxTypeCode;
+    private final Integer calendarYear;
+    private final Long    taxPeriodTypeId;
+    private final Long    transactionTypeId;
+    private final Integer years;
+    private final Integer month;
     private final Collection<OpenCloseTaxPeriodRecord> records;
 
     public static RefOpenCloseTaxPeriodConfig withoutId(

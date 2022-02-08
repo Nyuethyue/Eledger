@@ -51,8 +51,8 @@ class RefOpenCloseTaxPeriodMapper {
                                 OpenCloseTaxPeriodRecord.withoutId(
                                         record.getPeriodId(),
                                         record.getPeriod(),
-                                        record.getPeriodStartDate(),
-                                        record.getPeriodEndDate()
+                                        record.getPeriodOpenDate(),
+                                        record.getPeriodCloseDate()
                                 )
                         )
                         .collect(Collectors.toUnmodifiableSet())

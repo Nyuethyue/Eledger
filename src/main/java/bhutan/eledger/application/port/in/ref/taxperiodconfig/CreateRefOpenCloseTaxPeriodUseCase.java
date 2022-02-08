@@ -55,10 +55,10 @@ public interface CreateRefOpenCloseTaxPeriodUseCase {
 
         @Valid
         @NotNull
-        private LocalDate periodStart;
+        private LocalDate periodOpenDate;
 
         @Valid
         @NotNull
-        private LocalDate periodEnd;
+        private LocalDate periodCloseDate;
     }
 }

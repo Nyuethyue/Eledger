@@ -25,11 +25,11 @@ class RefOpenCloseTaxPeriodRecordEntity {
     @Column(name = "period")
     private String period;
 
-    @Column(name = "period_start_date")
-    private LocalDate periodStartDate;
+    @Column(name = "period_open_date")
+    private LocalDate periodOpenDate;
 
-    @Column(name = "period_end_date")
-    private LocalDate periodEndDate;
+    @Column(name = "period_close_date")
+    private LocalDate periodCloseDate;
 
 
     @ManyToOne
@@ -40,13 +40,13 @@ class RefOpenCloseTaxPeriodRecordEntity {
             Long id,
             Integer periodId,
             String period,
-            LocalDate periodStartDate,
-            LocalDate periodEndDate
+            LocalDate periodOpenDate,
+            LocalDate periodCloseDate
     ) {
         this.id = id;
         this.periodId = periodId;
         this.period = period;
-        this.periodStartDate = periodStartDate;
-        this.periodEndDate = periodEndDate;
+        this.periodOpenDate = periodOpenDate;
+        this.periodCloseDate = periodCloseDate;
     }
 }
