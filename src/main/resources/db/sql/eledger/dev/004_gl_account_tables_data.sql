@@ -192,162 +192,160 @@ ALTER SEQUENCE eledger_config.el_gl_account_part_description_id_seq RESTART WITH
 ------------------------------------------------------------------------------------------------------------------------------------
 
 /*
-	truncate table eledger_config.el_gl_account_part_aud cascade;
-	truncate table eledger_config.el_gl_account_aud cascade;
 	truncate table public.revision cascade;
 */
 
 ------------------------------------------------------------------------------------------------------------------------------------
 
 insert into public.revision (id, "timestamp", username)
-values (1, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (1, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_part_aud
 select 1, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account_part p
 where id = 1;
 
 insert into public.revision (id, "timestamp", username)
-values (2, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (2, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_part_aud
 select 2, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account_part p
 where id = 2;
 
 insert into public.revision (id, "timestamp", username)
-values (3, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (3, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_part_aud
 select 3, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account_part p
 where id = 3;
 
 insert into public.revision (id, "timestamp", username)
-values (4, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (4, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_part_aud
 select 4, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account_part p
 where id = 4;
 
 insert into public.revision (id, "timestamp", username)
-values (5, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (5, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_part_aud
 select 5, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account_part p
 where id = 5;
 
 insert into public.revision (id, "timestamp", username)
-values (6, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (6, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_part_aud
 select 6, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account_part p
 where id = 6;
 
 insert into public.revision (id, "timestamp", username)
-values (7, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (7, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_part_aud
 select 7, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account_part p
 where id = 7;
 
 insert into public.revision (id, "timestamp", username)
-values (8, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (8, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_part_aud
 select 8, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account_part p
 where id = 8;
 
 insert into public.revision (id, "timestamp", username)
-values (9, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (9, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_part_aud
 select 9, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account_part p
 where id = 9;
 
 insert into public.revision (id, "timestamp", username)
-values (10, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (10, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_part_aud
 select 10, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account_part p
 where id = 10;
 
 insert into public.revision (id, "timestamp", username)
-values (11, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (11, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_part_aud
 select 11, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account_part p
 where id = 11;
 
 insert into public.revision (id, "timestamp", username)
-values (12, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (12, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_part_aud
 select 12, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account_part p
 where id = 12;
 
 insert into public.revision (id, "timestamp", username)
-values (13, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (13, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_part_aud
 select 13, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account_part p
 where id = 13;
 
 insert into public.revision (id, "timestamp", username)
-values (14, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (14, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_part_aud
 select 14, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account_part p
 where id = 14;
 
 insert into public.revision (id, "timestamp", username)
-values (15, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (15, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_part_aud
 select 15, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account_part p
 where id = 15;
 
 insert into public.revision (id, "timestamp", username)
-values (16, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (16, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_part_aud
 select 16, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account_part p
 where id = 16;
 
 insert into public.revision (id, "timestamp", username)
-values (19, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (19, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_part_aud
 select 19, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account_part p
 where id = 19;
 
 insert into public.revision (id, "timestamp", username)
-values (20, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (20, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_part_aud
 select 20, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account_part p
 where id = 20;
 
 insert into public.revision (id, "timestamp", username)
-values (21, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (21, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_part_aud
 select 21, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account_part p
 where id = 21;
 
 insert into public.revision (id, "timestamp", username)
-values (22, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (22, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_part_aud
 select 22, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account_part p
 where id = 22;
 
 insert into public.revision (id, "timestamp", username)
-values (23, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (23, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_part_aud
 select 23, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account_part p
 where id = 23;
 
 insert into public.revision (id, "timestamp", username)
-values (24, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (24, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_part_aud
 select 24, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account_part p
@@ -356,59 +354,213 @@ where id = 24;
 ------------------------------------------------------------------------------------------------------------------------------------
 
 insert into public.revision (id, "timestamp", username)
-values (25, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (25, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_aud
 select 25, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account p
 where id = 1;
 
 insert into public.revision (id, "timestamp", username)
-values (26, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (26, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_aud
 select 26, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account p
 where id = 2;
 
 insert into public.revision (id, "timestamp", username)
-values (27, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (27, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_aud
 select 27, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account p
 where id = 3;
 
 insert into public.revision (id, "timestamp", username)
-values (28, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (28, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_aud
 select 28, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account p
 where id = 4;
 
 insert into public.revision (id, "timestamp", username)
-values (29, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (29, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_aud
 select 29, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account p
 where id = 5;
 
 insert into public.revision (id, "timestamp", username)
-values (30, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (30, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_aud
 select 30, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account p
 where id = 6;
 
 insert into public.revision (id, "timestamp", username)
-values (31, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (31, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_aud
 select 31, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account p
 where id = 7;
 
 insert into public.revision (id, "timestamp", username)
-values (32, (select EXTRACT(MILLISECONDS FROM current_timestamp)), 'system');
+values (32, (SELECT EXTRACT(EPOCH FROM current_timestamp) * 1000), 'system');
 insert into eledger_config.el_gl_account_aud
 select 32, null::bigint, 0 rev_type, p.*
 from eledger_config.el_gl_account p
+where id = 8;
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+insert into eledger_config.el_gl_account_part_description_aud
+select 1, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_part_description p
+where id = 1;
+
+insert into eledger_config.el_gl_account_part_description_aud
+select 2, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_part_description p
+where id = 2;
+
+insert into eledger_config.el_gl_account_part_description_aud
+select 3, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_part_description p
+where id = 3;
+
+insert into eledger_config.el_gl_account_part_description_aud
+select 4, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_part_description p
+where id = 4;
+
+insert into eledger_config.el_gl_account_part_description_aud
+select 5, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_part_description p
+where id = 5;
+
+insert into eledger_config.el_gl_account_part_description_aud
+select 6, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_part_description p
+where id = 6;
+
+insert into eledger_config.el_gl_account_part_description_aud
+select 7, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_part_description p
+where id = 7;
+
+insert into eledger_config.el_gl_account_part_description_aud
+select 8, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_part_description p
+where id = 8;
+
+insert into eledger_config.el_gl_account_part_description_aud
+select 9, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_part_description p
+where id = 9;
+
+insert into eledger_config.el_gl_account_part_description_aud
+select 10, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_part_description p
+where id = 10;
+
+insert into eledger_config.el_gl_account_part_description_aud
+select 11, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_part_description p
+where id = 11;
+
+insert into eledger_config.el_gl_account_part_description_aud
+select 12, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_part_description p
+where id = 12;
+
+insert into eledger_config.el_gl_account_part_description_aud
+select 13, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_part_description p
+where id = 13;
+
+insert into eledger_config.el_gl_account_part_description_aud
+select 14, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_part_description p
+where id = 14;
+
+insert into eledger_config.el_gl_account_part_description_aud
+select 15, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_part_description p
+where id = 15;
+
+insert into eledger_config.el_gl_account_part_description_aud
+select 16, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_part_description p
+where id = 16;
+
+insert into eledger_config.el_gl_account_part_description_aud
+select 19, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_part_description p
+where id = 19;
+
+insert into eledger_config.el_gl_account_part_description_aud
+select 20, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_part_description p
+where id = 20;
+
+insert into eledger_config.el_gl_account_part_description_aud
+select 21, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_part_description p
+where id = 21;
+
+insert into eledger_config.el_gl_account_part_description_aud
+select 22, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_part_description p
+where id = 22;
+
+insert into eledger_config.el_gl_account_part_description_aud
+select 23, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_part_description p
+where id = 23;
+
+insert into eledger_config.el_gl_account_part_description_aud
+select 24, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_part_description p
+where id = 24;
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+insert into eledger_config.el_gl_account_description_aud
+select 25, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_description p
+where id = 1;
+
+insert into eledger_config.el_gl_account_description_aud
+select 26, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_description p
+where id = 2;
+
+insert into eledger_config.el_gl_account_description_aud
+select 27, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_description p
+where id = 3;
+
+insert into eledger_config.el_gl_account_description_aud
+select 28, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_description p
+where id = 4;
+
+insert into eledger_config.el_gl_account_description_aud
+select 29, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_description p
+where id = 5;
+
+insert into eledger_config.el_gl_account_description_aud
+select 30, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_description p
+where id = 6;
+
+insert into eledger_config.el_gl_account_description_aud
+select 31, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_description p
+where id = 7;
+
+insert into eledger_config.el_gl_account_description_aud
+select 32, null::bigint, 0 rev_type, p.*
+from eledger_config.el_gl_account_description p
 where id = 8;
 
 ------------------------------------------------------------------------------------------------------------------------------------
