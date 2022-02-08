@@ -24,7 +24,35 @@ $function$
 
 --------------------------------------------------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION eledger.fn_get_accounting_descrption(p_account_id bigint, p_language_code varchar)
+CREATE OR REPLACE FUNCTION eledger.fn_get_gl_account_value(p_account_id bigint, p_language_code character varying)
+    RETURNS character varying
+    LANGUAGE plpgsql
+AS
+$function$
+DECLARE
+    v_ret_val varchar;
+BEGIN
+
+    SELECT egad.value
+    INTO v_ret_val
+    FROM eledger.el_accounting ea
+             inner join eledger_config.el_gl_account ega
+                        on ega.id = ea.gl_account_id
+             inner join eledger_config.el_gl_account_description egad
+                        on egad.gl_account_id = ega.id
+    WHERE ea.id = p_account_id
+      and egad.language_code = p_language_code
+    limit 1;
+
+    RETURN COALESCE(v_ret_val, '');
+
+END;
+$function$
+;
+
+--------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION eledger.fn_get_accounting_descrption(p_account_id bigint, p_language_code character varying)
     RETURNS character varying
     LANGUAGE plpgsql
 AS
@@ -41,8 +69,13 @@ BEGIN
                WHEN ea.accounting_action_type_id = 3 AND ea.transfer_type = 'D' AND ea.account_type = 'A'
                    THEN 'Penalty assessed'
                WHEN ea.accounting_action_type_id = 4 THEN 'Payment Received with'
+               WHEN ea.accounting_action_type_id = 5 THEN 'Net Off'
                ELSE ''
-               END || ' ' || egad.value AS description
+               END || ' ' ||
+           case
+               when ea.accounting_action_type_id = 5 and ea.transfer_type = 'D'
+                   then eledger.fn_get_gl_account_value(ea.parent_id, p_language_code)
+               else eledger.fn_get_gl_account_value(ea.id, p_language_code) end AS description
     INTO v_ret_val
     FROM eledger.el_accounting ea
              INNER JOIN eledger_config.el_gl_account_description egad
@@ -55,6 +88,7 @@ BEGIN
 END;
 $function$
 ;
+
 
 --------------------------------------------------------------------------------------------------
 
@@ -91,18 +125,19 @@ $function$
 
 --------------------------------------------------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION eledger.fn_taxpayer_account_ssp_report(p_tpn varchar, p_tax_type_code varchar,
-                                                                  p_year varchar,
-                                                                  p_segment varchar, p_language_code varchar)
+CREATE OR REPLACE FUNCTION eledger.fn_taxpayer_account_ssp_report(p_tpn character varying,
+                                                                  p_tax_type_code character varying,
+                                                                  p_year character varying, p_segment character varying,
+                                                                  p_language_code character varying)
     RETURNS TABLE
             (
-                row_type         varchar,
-                transaction_date varchar,
-                description      varchar,
+                row_type         character varying,
+                transaction_date character varying,
+                description      character varying,
                 debit            numeric,
                 credit           numeric,
                 balance          numeric,
-                drn              varchar
+                drn              character varying
             )
     LANGUAGE plpgsql
 AS
@@ -132,9 +167,16 @@ BEGIN
                      SELECT t.id
                           , t.transaction_year
                           , t.transaction_segment
-                          , t.transaction_date::varchar AS                                                        period_description
-                          , CASE WHEN t.accounting_action_type_id IN (4) THEN amount ELSE NULL::numeric END       credit
-                          , CASE WHEN t.accounting_action_type_id IN (1, 2, 3) THEN amount ELSE NULL::numeric END debit
+                          , t.transaction_date::varchar AS period_description
+                          , CASE
+                                WHEN t.accounting_action_type_id IN (4) THEN amount
+                                WHEN t.accounting_action_type_id IN (5) and account_type = 'A' THEN amount
+                                WHEN t.accounting_action_type_id IN (1) and account_type = 'P' THEN amount
+                                ELSE NULL::numeric END     credit
+                          , CASE
+                                WHEN t.accounting_action_type_id IN (1, 2, 3) and account_type = 'A' THEN amount
+                                WHEN t.accounting_action_type_id IN (5) and account_type = 'P' THEN amount
+                                ELSE NULL::numeric END     debit
                           , t.parent_id
                           , t.gl_account_id
                           , t.transfer_type
@@ -158,7 +200,12 @@ BEGIN
                                       OR
                                       (accounting_action_type_id = 1 AND account_type = 'A' AND transfer_type = 'D')
                                       OR
+                                      (accounting_action_type_id = 1 AND account_type = 'P' AND transfer_type = 'C' and
+                                       et.transaction_type_id = 2)
+                                      OR
                                       (accounting_action_type_id = 4 AND account_type = 'A' AND transfer_type = 'C')
+                                      OR
+                                      (accounting_action_type_id = 5)
                                   )
                           ) t
                      WHERE transaction_year = COALESCE(p_year, transaction_year)
@@ -201,7 +248,7 @@ BEGIN
                           SELECT DISTINCT 0                                                       id
                                         , eledger.fn_get_attribute_value(et.id, 'PERIOD_YEAR')    transaction_year
                                         , eledger.fn_get_attribute_value(et.id, 'PERIOD_SEGMENT') transaction_segment
-                                        , et.transaction_type_id
+                                        --, et.transaction_type_id
                           FROM eledger.el_taxpayer tp
                                    INNER JOIN eledger.el_transaction et
                                               ON et.taxpayer_id = tp.id
@@ -223,6 +270,7 @@ BEGIN
                       , bal.balance
                       , CASE
                             WHEN accounting_action_type_id = 4 THEN eledger.fn_get_accounting_drn(parent_id)
+                            WHEN accounting_action_type_id = 5 THEN eledger.fn_get_accounting_drn(parent_id)
                             ELSE eledger.fn_get_accounting_drn(id) END drn
                       , parent_id
                       , gl_account_id
@@ -236,5 +284,6 @@ BEGIN
 END;
 $function$
 ;
+
 
 --------------------------------------------------------------------------------------------------
