@@ -77,8 +77,8 @@ class CreateRefTaxPeriodConfigTest {
                     gr.getPeriodEndDate(),
                     gr.getFilingDueDate(),
                     gr.getPaymentDueDate(),
-                    gr.getInterestCalcStartDay(),
-                    gr.getFineAndPenaltyCalcStartDay(),
+                    gr.getInterestCalcStartDate(),
+                    gr.getFineAndPenaltyCalcStartDate(),
                     gr.getValidFrom(),
                     gr.getTaxTypeCode()
             ));

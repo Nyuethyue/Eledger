@@ -43,8 +43,8 @@ CREATE TABLE IF NOT EXISTS ref.ref_tax_period_record
     period_end_date                 date    NOT NULL,
     filing_due_date                 date    NOT NULL,
     payment_due_date                date    NOT NULL,
-    interest_calc_start_day         date    NOT NULL,
-    fine_and_penalty_calc_start_day date    NOT NULL,
+    interest_calc_start_date        date    NOT NULL,
+    fine_and_penalty_calc_start_date date    NOT NULL,
     valid_from                      date    NOT NULL,
     tax_type_code                   varchar NOT NULL
 );

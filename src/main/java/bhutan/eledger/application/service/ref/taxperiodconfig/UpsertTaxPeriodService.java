@@ -85,10 +85,12 @@ class UpsertTaxPeriodService implements UpsertTaxPeriodUseCase {
 
     private RefTaxPeriodConfig mapCommandToRefTaxPeriodConfig(UpsertTaxPeriodCommand command) {
         Collection<TaxPeriodRecord> records = new LinkedList<>();
+        String periodName = "January";
         for (TaxPeriodRecordCommand tpc : command.getRecords()) {
             records.add(
                     TaxPeriodRecord.withoutId(
                             tpc.getPeriodId(),
+                            periodName,
                             tpc.getPeriodStart(),
                             tpc.getPeriodEnd(),
                             tpc.getFilingDueDate(),

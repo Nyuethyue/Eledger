@@ -48,17 +48,19 @@ class RefTaxPeriodMapper {
 
     RefTaxPeriodConfig mapToDomain(RefTaxPeriodConfigEntity entity, Collection<RefTaxPeriodRecordEntity> entityRecords) {
         List<TaxPeriodRecord> records = new LinkedList<>();
+        String periodName = "January";
         entityRecords.stream().forEach(re ->
                 records.add(
                         TaxPeriodRecord.withId(
                                 re.getId(),
                                 re.getPeriodId(),
+                                periodName,
                                 re.getPeriodStartDate(),
                                 re.getPeriodEndDate(),
                                 re.getFilingDueDate(),
                                 re.getPaymentDueDate(),
-                                re.getInterestCalcStartDay(),
-                                re.getFineAndPenaltyCalcStartDay(),
+                                re.getInterestCalcStartDate(),
+                                re.getFineAndPenaltyCalcStartDate(),
                                 re.getValidFrom(),
                                 re.getTaxTypeCode()
                         )));
@@ -85,8 +87,8 @@ class RefTaxPeriodMapper {
                 re.getPeriodEndDate(),
                 re.getFilingDueDate(),
                 re.getPaymentDueDate(),
-                re.getInterestCalcStartDay(),
-                re.getFineAndPenaltyCalcStartDay(),
+                re.getInterestCalcStartDate(),
+                re.getFineAndPenaltyCalcStartDate(),
                 re.getValidFrom(),
                 re.getTaxTypeCode()
         );

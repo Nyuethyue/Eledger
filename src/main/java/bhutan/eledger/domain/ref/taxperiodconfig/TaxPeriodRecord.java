@@ -15,7 +15,11 @@ import java.time.LocalDate;
 public class TaxPeriodRecord {
     private final Long id;
 
+    @NotNull
     private final Integer periodId;
+
+    @NotNull
+    private final String periodName;
 
     @NotNull
     @NotEmpty
@@ -35,11 +39,11 @@ public class TaxPeriodRecord {
 
     @NotNull
     @NotEmpty
-    private final LocalDate interestCalcStartDay;
+    private final LocalDate interestCalcStartDate;
 
     @NotNull
     @NotEmpty
-    private final LocalDate fineAndPenaltyCalcStartDay;
+    private final LocalDate fineAndPenaltyCalcStartDate;
 
     @Valid
     @NotNull
@@ -52,24 +56,26 @@ public class TaxPeriodRecord {
     public static TaxPeriodRecord withId(
             Long id,
             Integer periodId,
+            String periodName,
             LocalDate periodStartDate,
             LocalDate periodEndDate,
             LocalDate filingDueDate,
             LocalDate paymentDueDate,
-            LocalDate interestCalcStartDay,
-            LocalDate fineAndPenaltyCalcStartDay,
+            LocalDate interestCalcStartDate,
+            LocalDate fineAndPenaltyCalcStartDate,
             LocalDate validFrom,
             String taxTypeCode
     ) {
         return new TaxPeriodRecord(
                 id,
                 periodId,
+                periodName,
                 periodStartDate,
                 periodEndDate,
                 filingDueDate,
                 paymentDueDate,
-                interestCalcStartDay,
-                fineAndPenaltyCalcStartDay,
+                interestCalcStartDate,
+                fineAndPenaltyCalcStartDate,
                 validFrom,
                 taxTypeCode
         );
@@ -77,24 +83,26 @@ public class TaxPeriodRecord {
 
     public static TaxPeriodRecord withoutId(
             Integer periodId,
+            String periodName,
             LocalDate periodStartDate,
             LocalDate periodEndDate,
             LocalDate filingDueDate,
             LocalDate paymentDueDate,
-            LocalDate interestCalcStartDay,
-            LocalDate fineAndPenaltyCalcStartDay,
+            LocalDate interestCalcStartDate,
+            LocalDate fineAndPenaltyCalcStartDate,
             LocalDate validFrom,
             String taxTypeCode
     ) {
         return new TaxPeriodRecord(
                 null,
                 periodId,
+                periodName,
                 periodStartDate,
                 periodEndDate,
                 filingDueDate,
                 paymentDueDate,
-                interestCalcStartDay,
-                fineAndPenaltyCalcStartDay,
+                interestCalcStartDate,
+                fineAndPenaltyCalcStartDate,
                 validFrom,
                 taxTypeCode
         );
