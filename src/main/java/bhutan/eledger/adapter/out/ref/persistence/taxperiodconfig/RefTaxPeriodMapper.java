@@ -4,7 +4,6 @@ import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodConfig;
 import bhutan.eledger.domain.ref.taxperiodconfig.TaxPeriodRecord;
 import org.springframework.stereotype.Component;
 
-import java.time.MonthDay;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -54,14 +53,12 @@ class RefTaxPeriodMapper {
                         TaxPeriodRecord.withId(
                                 re.getId(),
                                 re.getPeriodId(),
-                                entity.getCalendarYear(),
-                                MonthDay.of(re.getPeriodStartMonth(), re.getPeriodStartDay()),
-                                MonthDay.of(re.getPeriodEndMonth(), re.getPeriodEndDay()),
-                                MonthDay.of(re.getFilingDueMonth(), re.getFilingDueDay()),
-                                MonthDay.of(re.getPaymentDueMonth(), re.getPaymentDueDay()),
-                                MonthDay.of(re.getInterestCalcStartMonth(), re.getInterestCalcStartDay()),
-                                MonthDay.of(re.getFineAndPenaltyCalcStartMonth(), re.getFineAndPenaltyCalcStartDay()),
-
+                                re.getPeriodStartDate(),
+                                re.getPeriodEndDate(),
+                                re.getFilingDueDate(),
+                                re.getPaymentDueDate(),
+                                re.getInterestCalcStartDay(),
+                                re.getFineAndPenaltyCalcStartDay(),
                                 re.getValidFrom(),
                                 re.getTaxTypeCode()
                         )));
@@ -80,29 +77,16 @@ class RefTaxPeriodMapper {
         );
     }
 
-    RefTaxPeriodRecordEntity mapToEntity(long parentId, int year, TaxPeriodRecord re) {
+    RefTaxPeriodRecordEntity mapToEntity(long parentId, TaxPeriodRecord re) {
         return new RefTaxPeriodRecordEntity(
                 parentId,
                 re.getPeriodId(),
-                year,
-                re.getPeriodStartDate().getMonthValue(),
-                re.getPeriodStartDate().getDayOfMonth(),
-
-                re.getPeriodEndDate().getMonthValue(),
-                re.getPeriodEndDate().getDayOfMonth(),
-
-                re.getFilingDueDate().getMonthValue(),
-                re.getFilingDueDate().getDayOfMonth(),
-
-                re.getPaymentDueDate().getMonthValue(),
-                re.getPaymentDueDate().getDayOfMonth(),
-
-                re.getInterestCalcStartDay().getMonthValue(),
-                re.getInterestCalcStartDay().getDayOfMonth(),
-
-                re.getFineAndPenaltyCalcStartDay().getMonthValue(),
-                re.getFineAndPenaltyCalcStartDay().getDayOfMonth(),
-
+                re.getPeriodStartDate(),
+                re.getPeriodEndDate(),
+                re.getFilingDueDate(),
+                re.getPaymentDueDate(),
+                re.getInterestCalcStartDay(),
+                re.getFineAndPenaltyCalcStartDay(),
                 re.getValidFrom(),
                 re.getTaxTypeCode()
         );

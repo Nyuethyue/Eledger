@@ -29,6 +29,7 @@ class CreateRefTaxPeriodConfigTest {
     @Autowired
     private UpsertTaxPeriodUseCase upsertTaxPeriodUseCase;
 
+
     @Autowired
     private RefTaxPeriodRepositoryPort refTaxPeriodRepositoryPort;
 

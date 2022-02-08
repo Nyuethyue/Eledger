@@ -39,27 +39,12 @@ CREATE TABLE IF NOT EXISTS ref.ref_tax_period_record
     id                              bigint  NOT NULL,
     tax_period_config_id            bigint  NOT NULL,
     period_id                       int     NOT NULL,
-
-    calendar_year                   int     NOT NULL,
-
-    period_start_month              int     NOT NULL,
-    period_start_day                int     NOT NULL,
-
-    period_end_month                int     NOT NULL,
-    period_end_day                  int     NOT NULL,
-
-    payment_due_month               int     NOT NULL,
-    payment_due_day                 int     NOT NULL,
-
-    filing_due_month                int     NOT NULL,
-    filing_due_day                  int     NOT NULL,
-
-    interest_calc_start_month       int     NOT NULL,
-    interest_calc_start_day         int     NOT NULL,
-
-    fine_and_penalty_calc_start_month   int     NOT NULL,
-    fine_and_penalty_calc_start_day     int     NOT NULL,
-
+    period_start_date               date    NOT NULL,
+    period_end_date                 date    NOT NULL,
+    filing_due_date                 date    NOT NULL,
+    payment_due_date                date    NOT NULL,
+    interest_calc_start_day         date    NOT NULL,
+    fine_and_penalty_calc_start_day date    NOT NULL,
     valid_from                      date    NOT NULL,
     tax_type_code                   varchar NOT NULL
 );

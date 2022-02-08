@@ -25,14 +25,14 @@ class RefTaxPeriodAdapter implements RefTaxPeriodRepositoryPort {
             var id = refTaxPeriodConfigEntityRepository.save(refTaxPeriodMapper.mapToEntity(conf.get().getId(), b)).getId();
             refTaxPeriodRecordEntityRepository.deleteByTaxPeriodConfigId(id);
             b.getRecords().stream().forEach(r ->
-                refTaxPeriodRecordEntityRepository.save(refTaxPeriodMapper.mapToEntity(id, b.getCalendarYear(), r))
+                refTaxPeriodRecordEntityRepository.save(refTaxPeriodMapper.mapToEntity(id, r))
             );
             return id;
 
         } else {
             var id = refTaxPeriodConfigEntityRepository.save(refTaxPeriodMapper.mapToEntity(b)).getId();
             b.getRecords().stream().forEach(r ->
-                refTaxPeriodRecordEntityRepository.save(refTaxPeriodMapper.mapToEntity(id, b.getCalendarYear(), r))
+                refTaxPeriodRecordEntityRepository.save(refTaxPeriodMapper.mapToEntity(id, r))
             );
             return id;
         }
