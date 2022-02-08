@@ -1,6 +1,8 @@
 package bhutan.eledger.ref.taxperiodconfig;
 
 import bhutan.eledger.application.port.in.ref.taxperiodconfig.LoadGenTaxPeriodConfigUseCase;
+import bhutan.eledger.application.port.in.ref.taxperiodconfig.LoadTaxPeriodSegmentsUseCase;
+import bhutan.eledger.application.port.in.ref.taxperiodconfig.ReadTaxPeriodTypesUseCase;
 import bhutan.eledger.application.port.in.ref.taxperiodconfig.UpsertTaxPeriodUseCase;
 import bhutan.eledger.application.port.out.ref.taxperiodconfig.RefTaxPeriodRepositoryPort;
 import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodConfig;
@@ -23,6 +25,12 @@ import java.util.LinkedList;
         properties = {"spring.config.location = classpath:application-test.yml"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CreateRefTaxPeriodConfigTest {
+    @Autowired
+    private ReadTaxPeriodTypesUseCase readTaxPeriodTypesUseCase;
+
+    @Autowired
+    private LoadTaxPeriodSegmentsUseCase loadTaxPeriodSegmentsUseCase;
+
     @Autowired
     private LoadGenTaxPeriodConfigUseCase loadGenTaxPeriodConfigUseCase;
 
@@ -108,5 +116,16 @@ class CreateRefTaxPeriodConfigTest {
 //        } catch (Exception i) {}
         Assertions.assertNotNull(configLoaded);
         Assertions.assertEquals(recordId, configLoaded.getId());
+    }
+
+    @Test
+    void loadTaxPeriods() {
+        var taxPeriodTypesList = readTaxPeriodTypesUseCase.readAll();
+        taxPeriodTypesList.forEach(taxPeriod -> {
+            var code = taxPeriod.getCode();
+            var taxPeriodSegments =
+                    loadTaxPeriodSegmentsUseCase.findByTaxPeriodTypeId(taxPeriod.getId());
+        });
+        Assertions.assertNotNull(taxPeriodTypesList);
     }
 }
