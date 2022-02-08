@@ -89,7 +89,6 @@ class UpsertTaxPeriodService implements UpsertTaxPeriodUseCase {
             records.add(
                     TaxPeriodRecord.withoutId(
                             tpc.getPeriodId(),
-                            command.getCalendarYear(),
                             tpc.getPeriodStart(),
                             tpc.getPeriodEnd(),
                             tpc.getFilingDueDate(),
