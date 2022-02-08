@@ -25,8 +25,4 @@
         <sqlFile path="../../sql/ref/dev/004_insert_bank_account_ref_data.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="Tax Period insertion script" author="V.G.">
-        <sqlFile path="../../sql/ref/dev/005_insert_tax_period_ref_data.sql" relativeToChangelogFile="true"/>
-    </changeSet>
-
 </databaseChangeLog>

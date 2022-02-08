@@ -67,4 +67,8 @@
         <sqlFile path="../../sql/ref/014_create_tax_period_ref_table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <changeSet id="Tax Period insertion script" author="V.G." dbms="postgresql">
+        <sqlFile path="../../sql/ref/015_insert_tax_period_ref_data.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog>
