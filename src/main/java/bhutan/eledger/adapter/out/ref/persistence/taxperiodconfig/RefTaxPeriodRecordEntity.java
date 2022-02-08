@@ -1,6 +1,5 @@
 package bhutan.eledger.adapter.out.ref.persistence.taxperiodconfig;
 
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -37,10 +36,10 @@ class RefTaxPeriodRecordEntity {
     private LocalDate paymentDueDate;
 
     @Column(name = "interest_calc_start_day")
-    private LocalDate interestCalcStartDay;
+    private LocalDate interestCalcStartDate;
 
     @Column(name = "fine_and_penalty_calc_start_day")
-    private LocalDate fineAndPenaltyCalcStartDay;
+    private LocalDate fineAndPenaltyCalcStartDate;
 
     @Column(name = "valid_from")
     private LocalDate validFrom;
@@ -58,8 +57,8 @@ class RefTaxPeriodRecordEntity {
             LocalDate periodEndDate,
             LocalDate filingDueDate,
             LocalDate paymentDueDate,
-            LocalDate interestCalcStartDay,
-            LocalDate fineAndPenaltyCalcStartDay,
+            LocalDate interestCalcStartDate,
+            LocalDate fineAndPenaltyCalcStartDate,
             LocalDate validFrom,
             String taxTypeCode
     ) {
@@ -70,8 +69,8 @@ class RefTaxPeriodRecordEntity {
         this.periodEndDate = periodEndDate;
         this.filingDueDate = filingDueDate;
         this.paymentDueDate = paymentDueDate;
-        this.interestCalcStartDay = interestCalcStartDay;
-        this.fineAndPenaltyCalcStartDay = fineAndPenaltyCalcStartDay;
+        this.interestCalcStartDate = interestCalcStartDate;
+        this.fineAndPenaltyCalcStartDate = fineAndPenaltyCalcStartDate;
         this.validFrom = validFrom;
         this.taxTypeCode = taxTypeCode;
     }

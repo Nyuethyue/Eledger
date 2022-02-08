@@ -85,10 +85,12 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
         boolean consider = command.getConsiderNonWorkingDays();
         if (MONTHLY == command.getTaxPeriodTypeId()) {
             for (int monthIndex = 1; monthIndex <= 12; monthIndex++) {
+                String periodName = "January";
                 LocalDate endOfMonth = YearMonth.of(year, monthIndex).atEndOfMonth();
                 records.add(
                         TaxPeriodRecord.withoutId(
                                 monthIndex,
+                                periodName,
                                 LocalDate.of(year, monthIndex, 1),// Start period
                                 endOfMonth,// End period
                                 addDays(endOfMonth, command.getDueDateCountForReturnFiling(), consider, nonWorkingDays),
@@ -101,10 +103,12 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
             }
         } else if (QUARTERLY == command.getTaxPeriodTypeId()) {
             for (int quarterIndex = 1; quarterIndex <= 4; quarterIndex++) {
+                String periodName = "1st quarter";
                 LocalDate endOfQuarter = YearMonth.of(year, 3 * quarterIndex).atEndOfMonth();
                 records.add(
                         TaxPeriodRecord.withoutId(
                                 quarterIndex,
+                                periodName,
                                 LocalDate.of(year, (3 * quarterIndex) - 2, 1),// Start period
                                 endOfQuarter,// End period
                                 addDays(endOfQuarter, command.getDueDateCountForReturnFiling(), consider, nonWorkingDays),
@@ -118,6 +122,7 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
         } else if (FORTNIGHTLY == command.getTaxPeriodTypeId()) {
             LocalDate endOfFortnight;
             for (int fortnightIndex = 1; fortnightIndex <= 24; fortnightIndex++) {
+                String periodName = fortnightIndex + "nth forthnignt";
                 int fortnightFirstDay;
                 int fortnightMonth;
                 if (1 == (fortnightIndex % 2)) {
@@ -132,6 +137,7 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                 records.add(
                         TaxPeriodRecord.withoutId(
                                 fortnightIndex,
+                                periodName,
                                 LocalDate.of(year, fortnightMonth, fortnightFirstDay),// Start period
                                 endOfFortnight,// End period
                                 addDays(endOfFortnight, command.getDueDateCountForReturnFiling(), consider, nonWorkingDays),
