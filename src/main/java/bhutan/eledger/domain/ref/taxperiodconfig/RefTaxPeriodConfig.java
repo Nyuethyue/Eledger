@@ -28,7 +28,7 @@ public class RefTaxPeriodConfig {
     private int calendarYear;
 
     @NotNull
-    private final Long taxPeriodTypeId;
+    private final String taxPeriodTypeCode;
 
     private final Long transactionTypeId;
 
@@ -63,7 +63,7 @@ public class RefTaxPeriodConfig {
             Long id,
             String taxTypeCode,
             Integer calendarYear,
-            Long taxPeriodTypeId,
+            String taxPeriodTypeCode,
             Long transactionTypeId,
             Integer dueDateCountForReturnFiling,
             Integer dueDateCountForPayment,
@@ -76,7 +76,7 @@ public class RefTaxPeriodConfig {
                 id,
                 taxTypeCode,
                 calendarYear,
-                taxPeriodTypeId,
+                taxPeriodTypeCode,
                 transactionTypeId,
                 dueDateCountForReturnFiling,
                 dueDateCountForPayment,
@@ -90,7 +90,7 @@ public class RefTaxPeriodConfig {
     public static RefTaxPeriodConfig withoutId(
             String taxTypeCode,
             Integer calendarYear,
-            Long taxPeriodTypeId,
+            String taxPeriodTypeCode,
             Long transactionTypeId,
             Integer dueDateCountForReturnFiling,
             Integer dueDateCountForPayment,
@@ -103,7 +103,7 @@ public class RefTaxPeriodConfig {
                 null,
                 taxTypeCode,
                 calendarYear,
-                taxPeriodTypeId,
+                taxPeriodTypeCode,
                 transactionTypeId,
                 dueDateCountForReturnFiling,
                 dueDateCountForPayment,

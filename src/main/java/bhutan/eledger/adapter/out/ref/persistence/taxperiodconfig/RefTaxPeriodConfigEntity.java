@@ -25,8 +25,8 @@ class RefTaxPeriodConfigEntity {
     @Column(name = "calendar_year")
     private int calendarYear;
 
-    @Column(name = "tax_period_type_id")
-    private long taxPeriodTypeId;
+    @Column(name = "tax_period_type_code")
+    private String taxPeriodTypeCode;
 
     @Column(name = "transaction_type_id")
     private long transactionTypeId;
@@ -50,7 +50,7 @@ class RefTaxPeriodConfigEntity {
     public static RefTaxPeriodConfigEntity withoutId(
             String glAccountPartFullCode,
             Integer calendarYear,
-            Long taxPeriodTypeId,
+            String taxPeriodTypeCode,
             Long transactionTypeId,
             Integer dueDateCountForReturnFiling,
             Integer dueDateCountForPayment,
@@ -62,7 +62,7 @@ class RefTaxPeriodConfigEntity {
                 null,
                 glAccountPartFullCode,
                 calendarYear,
-                taxPeriodTypeId,
+                taxPeriodTypeCode,
                 transactionTypeId,
                 dueDateCountForReturnFiling,
                 dueDateCountForPayment,
@@ -76,7 +76,7 @@ class RefTaxPeriodConfigEntity {
             long id,
             String glAccountPartFullCode,
             Integer calendarYear,
-            Long taxPeriodTypeId,
+            String taxPeriodTypeCode,
             Long transactionTypeId,
             Integer dueDateCountForReturnFiling,
             Integer dueDateCountForPayment,
@@ -88,7 +88,7 @@ class RefTaxPeriodConfigEntity {
                 id,
                 glAccountPartFullCode,
                 calendarYear,
-                taxPeriodTypeId,
+                taxPeriodTypeCode,
                 transactionTypeId,
                 dueDateCountForReturnFiling,
                 dueDateCountForPayment,
@@ -102,7 +102,7 @@ class RefTaxPeriodConfigEntity {
             Long id,
             String glAccountPartFullCode,
             Integer calendarYear,
-            Long taxPeriodTypeId,
+            String taxPeriodTypeCode,
             Long transactionTypeId,
             Integer dueDateCountForReturnFiling,
             Integer dueDateCountForPayment,
@@ -113,7 +113,7 @@ class RefTaxPeriodConfigEntity {
         this.id = id;
         this.glAccountPartFullCode = glAccountPartFullCode;
         this.calendarYear = calendarYear;
-        this.taxPeriodTypeId = taxPeriodTypeId;
+        this.taxPeriodTypeCode = taxPeriodTypeCode;
         this.transactionTypeId = transactionTypeId;
         this.dueDateCountForReturnFiling = dueDateCountForReturnFiling;
         this.dueDateCountForPayment = dueDateCountForPayment;

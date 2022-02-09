@@ -10,7 +10,7 @@ public interface RefTaxPeriodRepositoryPort {
 
     Optional<RefTaxPeriodConfig> readBy(String taxTypeCode,
                                         Integer calendarYear,
-                                        Long taxPeriodTypeId,
+                                        String taxPeriodTypeCode,
                                         Long transactionTypeId);
 
     void deleteAll();

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Log4j2
 @Service
@@ -21,5 +22,10 @@ class ReadTaxPeriodTypesService implements ReadTaxPeriodTypesUseCase {
     @Override
     public Collection<RefTaxPeriodType> readAll() {
         return refTaxPeriodTypeRepositoryPort.readAll();
+    }
+
+    @Override
+    public Optional<RefTaxPeriodType> readByCode(String code) {
+        return refTaxPeriodTypeRepositoryPort.readByCode(code);
     }
 }

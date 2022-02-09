@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS ref.tax_period_config
     id                                  bigint  NOT NULL,
     gl_account_part_full_code           varchar NOT NULL,
     calendar_year                       integer NOT NULL,
-    tax_period_type_id                  bigint  NOT NULL,
+    tax_period_type_code                varchar NOT NULL,
     transaction_type_id                 bigint  NOT NULL,
     due_date_count_for_return_filing    integer NOT NULL,
     due_date_count_for_payment          integer NOT NULL,
@@ -18,13 +18,13 @@ ALTER TABLE ref.tax_period_config
         PRIMARY KEY (id);
 
 ALTER TABLE ref.tax_period_config
-    ADD CONSTRAINT un_tax_type_code_calendar_year_tax_period_type_id_transaction_type_id
-        UNIQUE (gl_account_part_full_code, calendar_year, tax_period_type_id, transaction_type_id);
+    ADD CONSTRAINT un_tax_type_code_calendar_year_tax_period_type_code_transaction_type_id
+        UNIQUE (gl_account_part_full_code, calendar_year, tax_period_type_code, transaction_type_id);
 
 ALTER TABLE ONLY ref.tax_period_config
-    ADD CONSTRAINT fk_tax_period_config_tax_period_type_id
-        FOREIGN KEY (tax_period_type_id)
-            REFERENCES ref.tax_period (id);
+    ADD CONSTRAINT fk_tax_period_config_tax_period_type_code
+        FOREIGN KEY (tax_period_type_code)
+            REFERENCES ref.tax_period (code);
 
 ALTER TABLE ONLY ref.tax_period_config
     ADD CONSTRAINT fk_tax_period_config_transaction_type_id

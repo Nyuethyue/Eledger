@@ -35,10 +35,10 @@ class RefTaxPeriodRecordEntity {
     @Column(name = "payment_due_date")
     private LocalDate paymentDueDate;
 
-    @Column(name = "interest_calc_start_day")
+    @Column(name = "interest_calc_start_date")
     private LocalDate interestCalcStartDate;
 
-    @Column(name = "fine_and_penalty_calc_start_day")
+    @Column(name = "fine_and_penalty_calc_start_date")
     private LocalDate fineAndPenaltyCalcStartDate;
 
     @Column(name = "valid_from")

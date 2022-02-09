@@ -38,13 +38,13 @@ public class RefTaxPeriodSegment {
     @JsonIgnore
     private Collection<RefTaxPeriodSegmentDescription> descriptions;
 
-    @ManyToOne
-    @JoinColumn(name = "tax_period_id", nullable = false)
-    private RefTaxPeriodType taxPeriodType;
+    @Column(name = "tax_period_id")
+    private Long taxPeriodTypeId;
 
-    private RefTaxPeriodSegment(String code, Multilingual description) {
+    private RefTaxPeriodSegment(String code, Multilingual description, Long taxPeriodTypeId) {
         this.code = code;
         this.description = description;
+        this.taxPeriodTypeId = taxPeriodTypeId;
     }
 
     protected Collection<RefTaxPeriodSegmentDescription> getDescriptions() {
@@ -58,11 +58,13 @@ public class RefTaxPeriodSegment {
 
     public static RefTaxPeriodSegment withoutId(
             String code,
-            Multilingual description
+            Multilingual description,
+            Long taxPeriodTypeId
     ) {
         return new RefTaxPeriodSegment(
                 code,
-                description
+                description,
+                taxPeriodTypeId
         );
     }
 }

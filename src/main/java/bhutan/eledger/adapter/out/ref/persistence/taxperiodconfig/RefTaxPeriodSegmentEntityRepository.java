@@ -11,5 +11,5 @@ interface RefTaxPeriodSegmentEntityRepository extends JpaRepository<RefTaxPeriod
             " FROM ref.tax_period_segment tps" +
             " WHERE tps.tax_period_id = :taxPeriodId", nativeQuery = true)
     Collection<RefTaxPeriodSegment> readAllByTaxPeriodId(Long taxPeriodId);
-    List<RefTaxPeriodSegment> findByTaxPeriodIdOrderByCodeAsc(Long taxPeriodId);
+    List<RefTaxPeriodSegment> findByTaxPeriodTypeIdOrderByCodeAsc(Long taxPeriodTypeId);
 }

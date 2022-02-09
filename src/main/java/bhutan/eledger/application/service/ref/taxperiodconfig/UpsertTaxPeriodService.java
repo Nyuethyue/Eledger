@@ -4,6 +4,7 @@ import am.iunetworks.lib.common.validation.ValidationError;
 import am.iunetworks.lib.common.validation.ViolationException;
 import bhutan.eledger.application.port.in.ref.taxperiodconfig.UpsertTaxPeriodUseCase;
 import bhutan.eledger.application.port.out.ref.taxperiodconfig.RefTaxPeriodRepositoryPort;
+import bhutan.eledger.common.ref.taxperiodconfig.TaxPeriodType;
 import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodConfig;
 import bhutan.eledger.domain.ref.taxperiodconfig.TaxPeriodRecord;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,16 @@ class UpsertTaxPeriodService implements UpsertTaxPeriodUseCase {
     private final RefTaxPeriodRepositoryPort refTaxPeriodRepositoryPort;
 
     void validate(UpsertTaxPeriodCommand command) {
+        try {
+            TaxPeriodType.of(command.getTaxPeriodTypeCode());
+        } catch (Exception e) {
+            throw new ViolationException(
+                    new ValidationError()
+                            .addViolation("taxPeriodTypeCode",
+                                    "Invalid tax period type code:" + command.getTaxPeriodTypeCode()));
+
+        }
+
         if (command.getValidFrom().isAfter(command.getValidTo())) {
             throw new ViolationException(
                     new ValidationError()
@@ -85,7 +96,6 @@ class UpsertTaxPeriodService implements UpsertTaxPeriodUseCase {
 
     private RefTaxPeriodConfig mapCommandToRefTaxPeriodConfig(UpsertTaxPeriodCommand command) {
         Collection<TaxPeriodRecord> records = new LinkedList<>();
-        String periodName = "January";
         for (TaxPeriodRecordCommand tpc : command.getRecords()) {
             records.add(
                     TaxPeriodRecord.withoutId(
@@ -106,7 +116,7 @@ class UpsertTaxPeriodService implements UpsertTaxPeriodUseCase {
                 command.getId(),
                 command.getTaxTypeCode(),
                 command.getCalendarYear(),
-                command.getTaxPeriodTypeId(),
+                command.getTaxPeriodTypeCode(),
                 command.getTransactionTypeId(),
                 command.getDueDateCountForReturnFiling(),
                 command.getDueDateCountForPayment(),

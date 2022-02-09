@@ -5,6 +5,7 @@ import bhutan.eledger.application.port.in.ref.taxperiodconfig.LoadTaxPeriodSegme
 import bhutan.eledger.application.port.in.ref.taxperiodconfig.ReadTaxPeriodTypesUseCase;
 import bhutan.eledger.application.port.in.ref.taxperiodconfig.UpsertTaxPeriodUseCase;
 import bhutan.eledger.application.port.out.ref.taxperiodconfig.RefTaxPeriodRepositoryPort;
+import bhutan.eledger.common.ref.taxperiodconfig.TaxPeriodType;
 import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodConfig;
 import bhutan.eledger.domain.ref.taxperiodconfig.TaxPeriodRecord;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -49,10 +50,6 @@ class CreateRefTaxPeriodConfigTest {
         refTaxPeriodRepositoryPort.deleteAll();
     }
 
-    private static final long MONTHLY = 1;// 12 rows
-    private static final long QUARTERLY = 2; // 4 rows
-    private static final long FORTNIGHTLY = 3; // 24 rows
-
     static final String GST_TAX_TYPE = "11411";// 5
     static final String EET_TAX_TYPE = "11421";// 11
 
@@ -66,7 +63,7 @@ class CreateRefTaxPeriodConfigTest {
                 new LoadGenTaxPeriodConfigUseCase.LoadGenTaxPeriodConfigCommand(
                         GST_TAX_TYPE,
                         2022,
-                        MONTHLY,
+                        TaxPeriodType.MONTHLY.getValue(),
                         TRANSACTION_TYPE_LIABILITY,
                         11,
                         11,
@@ -97,7 +94,7 @@ class CreateRefTaxPeriodConfigTest {
                         configGenerated.getId(),
                         configGenerated.getTaxTypeCode(),
                         configGenerated.getCalendarYear(),
-                        configGenerated.getTaxPeriodTypeId(),
+                        configGenerated.getTaxPeriodTypeCode(),
                         configGenerated.getTransactionTypeId(),
                         configGenerated.getDueDateCountForReturnFiling(),
                         configGenerated.getDueDateCountForPayment(),
