@@ -1,5 +1,6 @@
 package bhutan.eledger.domain.ref.taxperiodconfig;
 
+import am.iunetworks.lib.multilingual.core.Multilingual;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -16,10 +17,10 @@ public class TaxPeriodRecord {
     private final Long id;
 
     @NotNull
-    private final Integer periodId;
+    private final Long periodId;
 
     @NotNull
-    private final String periodName;
+    private final Multilingual periodName;
 
     @NotNull
     @NotEmpty
@@ -55,8 +56,8 @@ public class TaxPeriodRecord {
 
     public static TaxPeriodRecord withId(
             Long id,
-            Integer periodId,
-            String periodName,
+            Long periodId,
+            Multilingual periodName,
             LocalDate periodStartDate,
             LocalDate periodEndDate,
             LocalDate filingDueDate,
@@ -82,8 +83,8 @@ public class TaxPeriodRecord {
     }
 
     public static TaxPeriodRecord withoutId(
-            Integer periodId,
-            String periodName,
+            Long periodSegmentId,
+            Multilingual periodSegmentName,
             LocalDate periodStartDate,
             LocalDate periodEndDate,
             LocalDate filingDueDate,
@@ -95,8 +96,8 @@ public class TaxPeriodRecord {
     ) {
         return new TaxPeriodRecord(
                 null,
-                periodId,
-                periodName,
+                periodSegmentId,
+                periodSegmentName,
                 periodStartDate,
                 periodEndDate,
                 filingDueDate,

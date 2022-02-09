@@ -1,11 +1,14 @@
 package bhutan.eledger.adapter.out.ref.persistence.taxperiodconfig;
 
+import am.iunetworks.lib.multilingual.core.Multilingual;
 import bhutan.eledger.application.port.out.ref.taxperiodconfig.RefTaxPeriodRepositoryPort;
 import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -14,6 +17,8 @@ import java.util.Optional;
 class RefTaxPeriodAdapter implements RefTaxPeriodRepositoryPort {
 
     private final RefTaxPeriodMapper refTaxPeriodMapper;
+
+    private final RefTaxPeriodSegmentEntityRepository refTaxPeriodSegmentEntityRepository;
     private final RefTaxPeriodConfigEntityRepository refTaxPeriodConfigEntityRepository;
     private final RefTaxPeriodRecordEntityRepository refTaxPeriodRecordEntityRepository;
 
@@ -43,8 +48,11 @@ class RefTaxPeriodAdapter implements RefTaxPeriodRepositoryPort {
         var result =
                 refTaxPeriodConfigEntityRepository.readBy(taxTypeCode, calendarYear, taxPeriodTypeId, transactionTypeId);
         if(result.isPresent()) {
+            var segments = refTaxPeriodSegmentEntityRepository.findByTaxPeriodIdOrderByCodeAsc(taxPeriodTypeId);
+            Map<Long, Multilingual> segmentMap = new HashMap<>();
+            segments.forEach(segment ->  segmentMap.put(Long.parseLong(segment.getCode()), segment.getDescription()));
             Collection<RefTaxPeriodRecordEntity> entityRecords = refTaxPeriodRecordEntityRepository.readTaxPeriodRecords(result.get().getId());
-            return Optional.of(refTaxPeriodMapper.mapToDomain(result.get(), entityRecords));
+            return Optional.of(refTaxPeriodMapper.mapToDomain(result.get(), entityRecords, segmentMap));
         } else {
             return Optional.empty();
         }

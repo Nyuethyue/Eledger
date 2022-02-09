@@ -1,16 +1,18 @@
 package bhutan.eledger.application.service.ref.taxperiodconfig;
 
+import am.iunetworks.lib.multilingual.core.Multilingual;
 import bhutan.eledger.application.port.in.eledger.config.glaccount.ReadGLAccountPartUseCase;
 import bhutan.eledger.application.port.in.ref.nonworkingdays.ReadRefNonWorkingDaysUseCase;
 import bhutan.eledger.application.port.in.ref.taxperiodconfig.LoadGenTaxPeriodConfigUseCase;
+import bhutan.eledger.application.port.in.ref.taxperiodconfig.LoadTaxPeriodSegmentsUseCase;
 import bhutan.eledger.application.port.out.ref.taxperiodconfig.RefTaxPeriodRepositoryPort;
 import bhutan.eledger.domain.eledger.config.glaccount.GLAccountPart;
 import bhutan.eledger.domain.ref.nonworkingdays.RefNonWorkingDays;
 import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodConfig;
+import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodSegment;
 import bhutan.eledger.domain.ref.taxperiodconfig.TaxPeriodRecord;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,8 @@ import java.util.*;
 @Transactional(readOnly = true)
 class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
     private final RefTaxPeriodRepositoryPort refTaxPeriodRepositoryPort;
+
+    private final LoadTaxPeriodSegmentsUseCase loadTaxPeriodSegmentsUseCase;
     private final ReadRefNonWorkingDaysUseCase readRefNonWorkingDaysUseCase;
     private final ReadGLAccountPartUseCase readGLAccountPartUseCase;
 
@@ -62,6 +66,15 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
         return result;
     }
 
+    private Map<Long, Multilingual> loadTaxPeriodSegmentNames(Long taxPeriodId) {
+        Map<Long, Multilingual> result = new HashMap<>();
+        var segments = loadTaxPeriodSegmentsUseCase.findByTaxPeriodTypeId(taxPeriodId);
+        segments.forEach(segment ->
+                result.put(segment.getId(),
+                            segment.getDescription()));
+        return result;
+    }
+
     private static String taxTypeCodeDisplayValue(String taxTypeCode, Map<String, String> taxTypeCodeMap) {
         if(taxTypeCodeMap.containsKey(taxTypeCode)) {
             return taxTypeCodeMap.get(taxTypeCode);
@@ -77,6 +90,8 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
     }
 
     public RefTaxPeriodConfig generate(LoadGenTaxPeriodConfigCommand command) {
+        Collection<RefTaxPeriodSegment> segments =
+                loadTaxPeriodSegmentsUseCase.findByTaxPeriodTypeId(command.getTaxPeriodTypeId());
         Map<String, String> taxTypeFullCodeMap = loadTaxTypeFullCodeMap();
         String taxTypeCodeDisplayValue = taxTypeCodeDisplayValue(command.getTaxTypeCode(), taxTypeFullCodeMap);
         int year = command.getCalendarYear();
@@ -84,13 +99,14 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
         Collection<TaxPeriodRecord> records = new LinkedList<>();
         boolean consider = command.getConsiderNonWorkingDays();
         if (MONTHLY == command.getTaxPeriodTypeId()) {
-            for (int monthIndex = 1; monthIndex <= 12; monthIndex++) {
-                String periodName = "January";
+            int monthIndex = 0;
+            for (RefTaxPeriodSegment segment : segments) {
+                monthIndex++;
                 LocalDate endOfMonth = YearMonth.of(year, monthIndex).atEndOfMonth();
                 records.add(
                         TaxPeriodRecord.withoutId(
-                                monthIndex,
-                                periodName,
+                                segment.getId(),
+                                segment.getDescription(),
                                 LocalDate.of(year, monthIndex, 1),// Start period
                                 endOfMonth,// End period
                                 addDays(endOfMonth, command.getDueDateCountForReturnFiling(), consider, nonWorkingDays),
@@ -102,13 +118,14 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                         ));
             }
         } else if (QUARTERLY == command.getTaxPeriodTypeId()) {
-            for (int quarterIndex = 1; quarterIndex <= 4; quarterIndex++) {
-                String periodName = "1st quarter";
+            int quarterIndex = 0;
+            for (RefTaxPeriodSegment segment : segments) {
+                quarterIndex++;
                 LocalDate endOfQuarter = YearMonth.of(year, 3 * quarterIndex).atEndOfMonth();
                 records.add(
                         TaxPeriodRecord.withoutId(
-                                quarterIndex,
-                                periodName,
+                                segment.getId(),
+                                segment.getDescription(),
                                 LocalDate.of(year, (3 * quarterIndex) - 2, 1),// Start period
                                 endOfQuarter,// End period
                                 addDays(endOfQuarter, command.getDueDateCountForReturnFiling(), consider, nonWorkingDays),
@@ -120,9 +137,10 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                         ));
             }
         } else if (FORTNIGHTLY == command.getTaxPeriodTypeId()) {
+            int fortnightIndex = 0;
             LocalDate endOfFortnight;
-            for (int fortnightIndex = 1; fortnightIndex <= 24; fortnightIndex++) {
-                String periodName = fortnightIndex + "nth forthnignt";
+            for (RefTaxPeriodSegment segment : segments) {
+                fortnightIndex++;
                 int fortnightFirstDay;
                 int fortnightMonth;
                 if (1 == (fortnightIndex % 2)) {
@@ -136,8 +154,8 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                 }
                 records.add(
                         TaxPeriodRecord.withoutId(
-                                fortnightIndex,
-                                periodName,
+                                segment.getId(),
+                                segment.getDescription(),
                                 LocalDate.of(year, fortnightMonth, fortnightFirstDay),// Start period
                                 endOfFortnight,// End period
                                 addDays(endOfFortnight, command.getDueDateCountForReturnFiling(), consider, nonWorkingDays),

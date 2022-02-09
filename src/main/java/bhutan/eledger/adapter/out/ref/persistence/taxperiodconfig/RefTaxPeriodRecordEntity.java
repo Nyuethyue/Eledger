@@ -20,8 +20,8 @@ class RefTaxPeriodRecordEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "period_id")
-    private int periodId;
+    @Column(name = "period_segment_id")
+    private long periodSegmentId;
 
     @Column(name = "period_start_date")
     private LocalDate periodStartDate;
@@ -52,7 +52,7 @@ class RefTaxPeriodRecordEntity {
 
     public RefTaxPeriodRecordEntity(
             Long taxPeriodConfigId,
-            Integer periodId,
+            Long periodSegmentId,
             LocalDate periodStartDate,
             LocalDate periodEndDate,
             LocalDate filingDueDate,
@@ -63,7 +63,7 @@ class RefTaxPeriodRecordEntity {
             String taxTypeCode
     ) {
         this.taxPeriodConfigId = taxPeriodConfigId;
-        this.periodId = periodId;
+        this.periodSegmentId = periodSegmentId;
 
         this.periodStartDate = periodStartDate;
         this.periodEndDate = periodEndDate;

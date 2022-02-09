@@ -66,7 +66,7 @@ public interface UpsertTaxPeriodUseCase {
     class TaxPeriodRecordCommand {
         @Valid
         @NotNull
-        private final Integer periodId;
+        private final Long periodSegmentId;
 
         @Valid
         @NotNull

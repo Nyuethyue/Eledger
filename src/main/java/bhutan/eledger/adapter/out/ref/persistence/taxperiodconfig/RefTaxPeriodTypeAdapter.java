@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 
 @Component
@@ -17,8 +16,6 @@ class RefTaxPeriodTypeAdapter implements RefTaxPeriodTypeRepositoryPort {
 
     @Override
     public Collection<RefTaxPeriodType> readAll() {
-        return refTaxPeriodTypeEntityRepository.findAll()
-                .stream()
-                .collect(Collectors.toUnmodifiableList());
+        return refTaxPeriodTypeEntityRepository.findAll();
     }
 }

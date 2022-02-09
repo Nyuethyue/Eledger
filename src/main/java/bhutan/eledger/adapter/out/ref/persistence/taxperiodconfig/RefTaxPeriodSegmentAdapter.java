@@ -11,12 +11,9 @@ import java.util.Collection;
 @RequiredArgsConstructor
 class RefTaxPeriodSegmentAdapter implements RefTaxPeriodSegmentRepositoryPort {
 
-    private final RefTaxPeriodTypeEntityRepository refTaxPeriodTypeEntityRepository;
+    private final RefTaxPeriodSegmentEntityRepository refTaxPeriodSegmentEntityRepository;
     @Override
     public Collection<RefTaxPeriodSegment> loadByTaxPeriodTypeId(Long taxPeriodTypeId) {
-        return refTaxPeriodTypeEntityRepository.readAllTaxPeriodTypeId(taxPeriodTypeId);
-
+        return refTaxPeriodSegmentEntityRepository.findByTaxPeriodIdOrderByCodeAsc(taxPeriodTypeId);
     }
-
-
 }

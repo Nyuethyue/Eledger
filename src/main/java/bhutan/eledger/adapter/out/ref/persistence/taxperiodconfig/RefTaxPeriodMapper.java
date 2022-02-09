@@ -1,12 +1,11 @@
 package bhutan.eledger.adapter.out.ref.persistence.taxperiodconfig;
 
+import am.iunetworks.lib.multilingual.core.Multilingual;
 import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodConfig;
 import bhutan.eledger.domain.ref.taxperiodconfig.TaxPeriodRecord;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Component
 class RefTaxPeriodMapper {
@@ -46,15 +45,16 @@ class RefTaxPeriodMapper {
         return refTaxPeriodConfigEntity;
     }
 
-    RefTaxPeriodConfig mapToDomain(RefTaxPeriodConfigEntity entity, Collection<RefTaxPeriodRecordEntity> entityRecords) {
+    RefTaxPeriodConfig mapToDomain(RefTaxPeriodConfigEntity entity,
+                                   Collection<RefTaxPeriodRecordEntity> entityRecords,
+                                   Map<Long, Multilingual> segmentNames) {
         List<TaxPeriodRecord> records = new LinkedList<>();
-        String periodName = "January";
         entityRecords.stream().forEach(re ->
                 records.add(
                         TaxPeriodRecord.withId(
                                 re.getId(),
-                                re.getPeriodId(),
-                                periodName,
+                                re.getPeriodSegmentId(),
+                                segmentNames.get(re.getPeriodSegmentId()),
                                 re.getPeriodStartDate(),
                                 re.getPeriodEndDate(),
                                 re.getFilingDueDate(),

@@ -121,11 +121,12 @@ class CreateRefTaxPeriodConfigTest {
     @Test
     void loadTaxPeriods() {
         var taxPeriodTypesList = readTaxPeriodTypesUseCase.readAll();
+        Assertions.assertNotNull(taxPeriodTypesList);
         taxPeriodTypesList.forEach(taxPeriod -> {
             var code = taxPeriod.getCode();
             var taxPeriodSegments =
                     loadTaxPeriodSegmentsUseCase.findByTaxPeriodTypeId(taxPeriod.getId());
+            Assertions.assertNotNull(taxPeriodSegments);
         });
-        Assertions.assertNotNull(taxPeriodTypesList);
     }
 }
