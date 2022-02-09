@@ -1,7 +1,7 @@
 package bhutan.eledger.adapter.out.ref.persistence.taxperiodconfig;
 
 import bhutan.eledger.application.port.out.ref.taxperiodconfig.RefOpenCloseTaxPeriodRepositoryPort;
-import bhutan.eledger.domain.ref.taxperiod.RefOpenCloseTaxPeriodConfig;
+import bhutan.eledger.domain.ref.taxperiod.RefOpenCloseTaxPeriod;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +14,7 @@ class RefOpenCloseTaxPeriodAdapter implements RefOpenCloseTaxPeriodRepositoryPor
     private final RefOpenCloseTaxPeriodEntityRepository refOpenCloseTaxPeriodEntityRepository;
 
     @Override
-    public Long create(RefOpenCloseTaxPeriodConfig refOpenCloseTaxPeriodConfig) {
+    public Long create(RefOpenCloseTaxPeriod refOpenCloseTaxPeriodConfig) {
         RefOpenCloseTaxPeriodEntity refOpenCloseTaxPeriodEntity = refOpenCloseTaxPeriodEntityRepository.save(
                 refOpenCloseTaxPeriodMapper.mapToEntity(refOpenCloseTaxPeriodConfig)
         );
@@ -22,12 +22,29 @@ class RefOpenCloseTaxPeriodAdapter implements RefOpenCloseTaxPeriodRepositoryPor
     }
 
     @Override
-    public Optional<RefOpenCloseTaxPeriodConfig> readBy(String glAccountPartFullCode, Integer calendarYear, Long taxPeriodTypeId, Long transactionTypeId) {
+    public Optional<RefOpenCloseTaxPeriod> readByGlFullCodeYearTaxPeriodTransType(String glAccountPartFullCode, Integer calendarYear, Long taxPeriodTypeId, Long transactionTypeId) {
+        System.out.println("Plesae chekc"+glAccountPartFullCode);
+        System.out.println("Plesae chekc"+calendarYear);
+        System.out.println("Plesae chekc"+taxPeriodTypeId);
+        System.out.println("Plesae chekc"+transactionTypeId);
         var result = refOpenCloseTaxPeriodEntityRepository.readBy(glAccountPartFullCode, calendarYear, taxPeriodTypeId, transactionTypeId);
         if(result.isPresent()) {
             return Optional.of(refOpenCloseTaxPeriodMapper.mapToDomain(result.get()));
         } else {
             return Optional.empty();
         }
+    }
+
+    @Override
+    public Optional<RefOpenCloseTaxPeriod> readById(Long id) {
+        return refOpenCloseTaxPeriodEntityRepository.findById(id)
+                .map(refOpenCloseTaxPeriodMapper::mapToDomain);
+    }
+
+    @Override
+    public void update(RefOpenCloseTaxPeriod refOpenCloseTaxPeriod) {
+        refOpenCloseTaxPeriodEntityRepository.save(
+                refOpenCloseTaxPeriodMapper.mapToEntity(refOpenCloseTaxPeriod)
+        );
     }
 }

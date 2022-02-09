@@ -2,8 +2,8 @@ package bhutan.eledger.application.service.ref.taxperiodconfig;
 
 import bhutan.eledger.application.port.in.ref.taxperiodconfig.LoadGenOpenCloseTaxPeriodUseCase;
 import bhutan.eledger.application.port.out.ref.taxperiodconfig.RefOpenCloseTaxPeriodRepositoryPort;
-import bhutan.eledger.domain.ref.taxperiod.OpenCloseTaxPeriodRecord;
-import bhutan.eledger.domain.ref.taxperiod.RefOpenCloseTaxPeriodConfig;
+import bhutan.eledger.domain.ref.taxperiod.RefOpenCloseTaxPeriodRecord;
+import bhutan.eledger.domain.ref.taxperiod.RefOpenCloseTaxPeriod;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -32,14 +32,14 @@ class LoadGenOpenCloseTaxPeriodService implements LoadGenOpenCloseTaxPeriodUseCa
     private static final String fortnight = " fortnight";
 
     @Override
-    public RefOpenCloseTaxPeriodConfig loadGen(@Valid LoadGenOpenCloseTaxPeriodUseCase.LoadGenOpenCloseTaxPeriodConfigCommand command) {
+    public RefOpenCloseTaxPeriod loadGen(@Valid LoadGenOpenCloseTaxPeriodUseCase.LoadGenOpenCloseTaxPeriodConfigCommand command) {
 
         if (command.getGlAccountPartFullCode() == null || command.getCalendarYear() == null ||
                 command.getTaxPeriodTypeId() == null || command.getTransactionTypeId() == null) {
             return generate(command);
         }
         var refOpenCloseTaxPeriodConfig =
-                refOpenCloseTaxPeriodRepositoryPort.readBy(
+                refOpenCloseTaxPeriodRepositoryPort.readByGlFullCodeYearTaxPeriodTransType(
                         command.getGlAccountPartFullCode(),
                         command.getCalendarYear(),
                         command.getTaxPeriodTypeId(),
@@ -52,8 +52,8 @@ class LoadGenOpenCloseTaxPeriodService implements LoadGenOpenCloseTaxPeriodUseCa
         }
     }
 
-    public RefOpenCloseTaxPeriodConfig generate(LoadGenOpenCloseTaxPeriodConfigCommand command) {
-        Collection<OpenCloseTaxPeriodRecord> records = new LinkedList<>();
+    public RefOpenCloseTaxPeriod generate(LoadGenOpenCloseTaxPeriodConfigCommand command) {
+        Collection<RefOpenCloseTaxPeriodRecord> records = new LinkedList<>();
 
         int year = command.getCalendarYear();
         if (MONTHLY == command.getTaxPeriodTypeId()) {
@@ -63,7 +63,7 @@ class LoadGenOpenCloseTaxPeriodService implements LoadGenOpenCloseTaxPeriodUseCa
                         ? YearMonth.of(startDate.plusYears(command.getYears()).getYear(), startDate.plusYears(command.getYears()).getMonth()).atEndOfMonth()
                         : YearMonth.of(startDate.plusMonths(command.getMonth() - 1).getYear(), startDate.plusMonths(command.getMonth() - 1).getMonth()).atEndOfMonth();
                 records.add(
-                        OpenCloseTaxPeriodRecord.withoutId(
+                        RefOpenCloseTaxPeriodRecord.withoutId(
                                 monthIndex,
                                 String.valueOf(Month.of(monthIndex)),
                                 startDate,
@@ -79,7 +79,7 @@ class LoadGenOpenCloseTaxPeriodService implements LoadGenOpenCloseTaxPeriodUseCa
             for (int quarterIndex = 1; quarterIndex <= 4; quarterIndex++) {
                 endOfQuarter = command.getMonth() != 0 ? startOfQuarter.plusMonths(command.getMonth() - 1) : startOfQuarter.plusYears(command.getYears());
                 records.add(
-                        OpenCloseTaxPeriodRecord.withoutId(
+                        RefOpenCloseTaxPeriodRecord.withoutId(
                                 20 + quarterIndex,
                                 quarterIndex + quarter,
                                 startOfQuarter,
@@ -108,7 +108,7 @@ class LoadGenOpenCloseTaxPeriodService implements LoadGenOpenCloseTaxPeriodUseCa
                 startOfFortnight = LocalDate.of(year, fortnightMonth, fortnightFirstDay);
                 endOfFortnight = startOfFortnight.plusMonths(command.getMonth()).minusDays(1);
                 records.add(
-                        OpenCloseTaxPeriodRecord.withoutId(
+                        RefOpenCloseTaxPeriodRecord.withoutId(
                                 30 + (fortnightIndex - 1),
                                 (fortnightIndex - 1) + fortnight,
                                 startOfFortnight,
@@ -117,7 +117,7 @@ class LoadGenOpenCloseTaxPeriodService implements LoadGenOpenCloseTaxPeriodUseCa
             }
         }
 
-        return RefOpenCloseTaxPeriodConfig.withoutId(
+        return RefOpenCloseTaxPeriod.withoutId(
                 command.getGlAccountPartFullCode(),
                 command.getCalendarYear(),
                 command.getTaxPeriodTypeId(),

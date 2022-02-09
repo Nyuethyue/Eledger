@@ -1,25 +1,27 @@
 package bhutan.eledger.adapter.out.ref.persistence.taxperiodconfig;
 
-import bhutan.eledger.domain.ref.taxperiod.OpenCloseTaxPeriodRecord;
-import bhutan.eledger.domain.ref.taxperiod.RefOpenCloseTaxPeriodConfig;
+import bhutan.eledger.domain.ref.taxperiod.RefOpenCloseTaxPeriodRecord;
+import bhutan.eledger.domain.ref.taxperiod.RefOpenCloseTaxPeriod;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
 @Component
 class RefOpenCloseTaxPeriodMapper {
-    RefOpenCloseTaxPeriodEntity mapToEntity(RefOpenCloseTaxPeriodConfig refOpenCloseTaxPeriodConfig) {
+    RefOpenCloseTaxPeriodEntity mapToEntity(RefOpenCloseTaxPeriod refOpenCloseTaxPeriod) {
+        System.out.println("in mapper"+refOpenCloseTaxPeriod);
         RefOpenCloseTaxPeriodEntity refOpenCloseTaxPeriodEntity =
                 new RefOpenCloseTaxPeriodEntity(
-                        refOpenCloseTaxPeriodConfig.getTaxTypeCode(),
-                        refOpenCloseTaxPeriodConfig.getCalendarYear(),
-                        refOpenCloseTaxPeriodConfig.getTaxPeriodTypeId(),
-                        refOpenCloseTaxPeriodConfig.getTransactionTypeId(),
-                        refOpenCloseTaxPeriodConfig.getYears(),
-                        refOpenCloseTaxPeriodConfig.getMonth()
+                        refOpenCloseTaxPeriod.getId(),
+                        refOpenCloseTaxPeriod.getGlAccountFullCode(),
+                        refOpenCloseTaxPeriod.getCalendarYear(),
+                        refOpenCloseTaxPeriod.getTaxPeriodTypeId(),
+                        refOpenCloseTaxPeriod.getTransactionTypeId(),
+                        refOpenCloseTaxPeriod.getYears(),
+                        refOpenCloseTaxPeriod.getMonth()
                 );
 
-        refOpenCloseTaxPeriodConfig.getRecords()
+        refOpenCloseTaxPeriod.getRecords()
                 .stream()
                 .map(r ->
                         new RefOpenCloseTaxPeriodRecordEntity(
@@ -36,8 +38,8 @@ class RefOpenCloseTaxPeriodMapper {
         return refOpenCloseTaxPeriodEntity;
     }
 
-    RefOpenCloseTaxPeriodConfig mapToDomain(RefOpenCloseTaxPeriodEntity entity) {
-        return RefOpenCloseTaxPeriodConfig.withId(
+    RefOpenCloseTaxPeriod mapToDomain(RefOpenCloseTaxPeriodEntity entity) {
+        return RefOpenCloseTaxPeriod.withId(
                 entity.getId(),
                 entity.getGlAccountPartFullCode(),
                 entity.getCalendarYear(),
@@ -48,7 +50,7 @@ class RefOpenCloseTaxPeriodMapper {
                 entity.getRecords()
                         .stream()
                         .map(record ->
-                                OpenCloseTaxPeriodRecord.withoutId(
+                                RefOpenCloseTaxPeriodRecord.withoutId(
                                         record.getPeriodId(),
                                         record.getPeriod(),
                                         record.getPeriodOpenDate(),

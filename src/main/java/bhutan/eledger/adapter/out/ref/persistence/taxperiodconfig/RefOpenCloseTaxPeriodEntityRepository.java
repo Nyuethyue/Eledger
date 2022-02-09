@@ -13,5 +13,5 @@ interface RefOpenCloseTaxPeriodEntityRepository extends JpaRepository<RefOpenClo
             " AND tpc.tax_period_type_id = :taxPeriodTypeId" +
             " AND tpc.transaction_type_id = :transactionTypeId"
             , nativeQuery = true)
-    Optional<RefOpenCloseTaxPeriodEntity> readBy(String glAccountPartFullCode, int calendarYear, long taxPeriodTypeId, long transactionTypeId);
+    Optional<RefOpenCloseTaxPeriodEntity> readBy(String glAccountPartFullCode, Integer calendarYear, long taxPeriodTypeId, long transactionTypeId);
 }

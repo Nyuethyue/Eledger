@@ -1,9 +1,10 @@
 package bhutan.eledger.application.service.ref.taxperiodconfig;
 
 import bhutan.eledger.application.port.in.ref.taxperiodconfig.CreateRefOpenCloseTaxPeriodUseCase;
+import bhutan.eledger.application.port.in.ref.taxperiodconfig.UpsertRefOpenCloseTaxPeriodUseCase;
 import bhutan.eledger.application.port.out.ref.taxperiodconfig.RefOpenCloseTaxPeriodRepositoryPort;
-import bhutan.eledger.domain.ref.taxperiod.OpenCloseTaxPeriodRecord;
-import bhutan.eledger.domain.ref.taxperiod.RefOpenCloseTaxPeriodConfig;
+import bhutan.eledger.domain.ref.taxperiod.RefOpenCloseTaxPeriod;
+import bhutan.eledger.domain.ref.taxperiod.RefOpenCloseTaxPeriodRecord;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -17,14 +18,13 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 class CreateRefOpenCloseTaxPeriodService implements CreateRefOpenCloseTaxPeriodUseCase {
-
     private final RefOpenCloseTaxPeriodRepositoryPort refOpenCloseTaxPeriodRepositoryPort;
 
     @Override
-    public Long create(@Valid CreateOpenCloseTaxPeriodCommand command) {
+    public Long create(@Valid UpsertRefOpenCloseTaxPeriodUseCase.UpsertOpenCloseTaxPeriodCommand command) {
         log.trace("Creating TaxPeriod with command: {}", command);
 
-        RefOpenCloseTaxPeriodConfig refOpenCloseTaxPeriodConfig = mapCommandToRefOpenCloseTaxPeriodConfig(command);
+        RefOpenCloseTaxPeriod refOpenCloseTaxPeriodConfig = mapCommandToRefOpenCloseTaxPeriodConfig(command);
 
         log.trace("Persisting open and close taxPeriod: {}", refOpenCloseTaxPeriodConfig);
 
@@ -35,8 +35,8 @@ class CreateRefOpenCloseTaxPeriodService implements CreateRefOpenCloseTaxPeriodU
         return id;
     }
 
-    private RefOpenCloseTaxPeriodConfig mapCommandToRefOpenCloseTaxPeriodConfig(CreateOpenCloseTaxPeriodCommand command) {
-        return RefOpenCloseTaxPeriodConfig.withoutId(
+    private RefOpenCloseTaxPeriod mapCommandToRefOpenCloseTaxPeriodConfig(UpsertRefOpenCloseTaxPeriodUseCase.UpsertOpenCloseTaxPeriodCommand  command) {
+        return RefOpenCloseTaxPeriod.withoutId(
                 command.getGlAccountFullCode(),
                 command.getCalendarYear(),
                 command.getTaxPeriodTypeId(),
@@ -46,7 +46,7 @@ class CreateRefOpenCloseTaxPeriodService implements CreateRefOpenCloseTaxPeriodU
                 command.getRecords()
                         .stream()
                         .map(record ->
-                                OpenCloseTaxPeriodRecord.withoutId(
+                                RefOpenCloseTaxPeriodRecord.withoutId(
                                         record.getPeriodId(),
                                         record.getPeriod(),
                                         record.getPeriodOpenDate(),
@@ -57,3 +57,4 @@ class CreateRefOpenCloseTaxPeriodService implements CreateRefOpenCloseTaxPeriodU
         );
     }
 }
+

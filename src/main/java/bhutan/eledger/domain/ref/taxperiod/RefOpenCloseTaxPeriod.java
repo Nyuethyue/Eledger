@@ -6,28 +6,28 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Data(staticConstructor = "withId")
-public class RefOpenCloseTaxPeriodConfig {
+public class RefOpenCloseTaxPeriod {
     private final Long    id;
-    private final String  taxTypeCode;
+    private final String  glAccountFullCode;
     private final Integer calendarYear;
     private final Long    taxPeriodTypeId;
     private final Long    transactionTypeId;
     private final Integer years;
     private final Integer month;
-    private final Collection<OpenCloseTaxPeriodRecord> records;
+    private final Collection<RefOpenCloseTaxPeriodRecord> records;
 
-    public static RefOpenCloseTaxPeriodConfig withoutId(
-            String taxTypeCode,
+    public static RefOpenCloseTaxPeriod withoutId(
+            String glAccountFullCode,
             Integer calendarYear,
             Long taxPeriodTypeId,
             Long transactionTypeId,
             Integer years,
             Integer month,
-            Collection<OpenCloseTaxPeriodRecord> records
+            Collection<RefOpenCloseTaxPeriodRecord> records
     ) {
-        return new RefOpenCloseTaxPeriodConfig(
+        return new RefOpenCloseTaxPeriod(
                 null,
-                taxTypeCode,
+                glAccountFullCode,
                 calendarYear,
                 taxPeriodTypeId,
                 transactionTypeId,
@@ -37,4 +37,12 @@ public class RefOpenCloseTaxPeriodConfig {
         );
 
     }
+
+    public void upsertOpenCloseTaxPeriodRecord(RefOpenCloseTaxPeriodRecord refOpenCloseTaxPeriodRecord) {
+        records.
+                stream()
+                .filter(record -> record.getPeriodId().equals(refOpenCloseTaxPeriodRecord.getPeriodId()))
+                .findAny();
+    }
+
 }
