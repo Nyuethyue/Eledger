@@ -43,20 +43,16 @@
         <sqlFile path="../../sql/ref/009_create_rrco_cash_counter_ref_table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <changeSet id="Non Working Days Date Schema" author="P.L." dbms="postgresql">
+        <sqlFile path="../../sql/ref/010_create_non_working_days_ref_table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
     <changeSet id="Agency Schema" author="D.T." dbms="postgresql">
         <sqlFile path="../../sql/ref/011_create_agency_ref_table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
     <changeSet id="Agency Gl Account Schema" author="D.T." dbms="postgresql">
         <sqlFile path="../../sql/ref/012_create_agency_gl_account_ref_table.sql" relativeToChangelogFile="true"/>
-    </changeSet>
-
-    <changeSet id="Non Working Days Date Schema" author="P.L." dbms="postgresql">
-        <sqlFile path="../../sql/ref/010_create_non_working_days_ref_table.sql" relativeToChangelogFile="true"/>
-    </changeSet>
-
-    <changeSet id="Tax Period Calendar ref table" author="A.A." dbms="postgresql">
-        <sqlFile path="../../sql/ref/011_create_tax_period_ref_table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
     <changeSet id="Open close Tax Period  ref table" author="P.L" dbms="postgresql">
@@ -71,4 +67,7 @@
         <sqlFile path="../../sql/ref/015_insert_tax_period_ref_data.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <changeSet id="Tax Period Calendar ref table" author="A.A." dbms="postgresql">
+        <sqlFile path="../../sql/ref/016_create_tax_period_config_ref_table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
 </databaseChangeLog>

@@ -4,8 +4,9 @@ import am.iunetworks.lib.common.validation.ValidationError;
 import am.iunetworks.lib.common.validation.ViolationException;
 import bhutan.eledger.application.port.in.ref.taxperiodconfig.UpsertTaxPeriodUseCase;
 import bhutan.eledger.application.port.out.ref.taxperiodconfig.RefTaxPeriodRepositoryPort;
+import bhutan.eledger.common.ref.taxperiodconfig.TaxPeriodType;
 import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodConfig;
-import bhutan.eledger.domain.ref.taxperiodconfig.TaxPeriodRecord;
+import bhutan.eledger.domain.ref.taxperiodconfig.TaxPeriodConfigRecord;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -24,12 +25,45 @@ class UpsertTaxPeriodService implements UpsertTaxPeriodUseCase {
     private final RefTaxPeriodRepositoryPort refTaxPeriodRepositoryPort;
 
     void validate(UpsertTaxPeriodCommand command) {
-        if (null != command.getValidFrom() && command.getValidFrom().getYear() < command.getCalendarYear()) {
+        try {
+            TaxPeriodType.of(command.getTaxPeriodCode());
+        } catch (Exception e) {
+            throw new ViolationException(
+                    new ValidationError()
+                            .addViolation("taxPeriodCode",
+                                    "Invalid tax period type code:" + command.getTaxPeriodCode()));
+
+        }
+
+        if (command.getValidFrom().isAfter(command.getValidTo())) {
+            throw new ViolationException(
+                    new ValidationError()
+                            .addViolation("validFrom", "Valid from is after valid to:" + command.getValidFrom())
+            );
+        }
+
+        if (command.getValidFrom().getYear() < command.getCalendarYear()) {
             throw new ViolationException(
                     new ValidationError()
                             .addViolation("Year", "Valid from year less than calendar year")
             );
         }
+
+        command.getRecords().forEach(r -> {
+           if(r.getPeriodStart().isAfter(r.getPeriodEnd())) {
+               throw new ViolationException(
+                       new ValidationError()
+                               .addViolation("periodStart", "Period start is after period end")
+               );
+           }
+            if(r.getPaymentDueDate().isAfter(r.getFinePenaltyCalcStartDate())) {
+                throw new ViolationException(
+                        new ValidationError()
+                                .addViolation("paymentDueDate", "paymentDueDate end is after FinePenaltyCalcStartDate date")
+                );
+            }
+
+        });
     }
 
     @Override
@@ -41,7 +75,18 @@ class UpsertTaxPeriodService implements UpsertTaxPeriodUseCase {
 
         log.trace("Persisting TaxPeriod: {}", refTaxPeriodConfig);
 
-        Long id = refTaxPeriodRepositoryPort.create(refTaxPeriodConfig);
+        var conf =
+                refTaxPeriodRepositoryPort.readBy(refTaxPeriodConfig.getTaxTypeCode(),
+                                    refTaxPeriodConfig.getCalendarYear(),
+                                    refTaxPeriodConfig.getTaxPeriodCode(),
+                                    refTaxPeriodConfig.getTransactionTypeId());
+        Long id;
+        if(conf.isPresent()) {
+            id = refTaxPeriodRepositoryPort.update(refTaxPeriodConfig);
+
+        } else {
+            id = refTaxPeriodRepositoryPort.create(refTaxPeriodConfig);
+        }
 
         log.debug("TaxPeriod with id: {} successfully created.", id);
 
@@ -49,11 +94,12 @@ class UpsertTaxPeriodService implements UpsertTaxPeriodUseCase {
     }
 
     private RefTaxPeriodConfig mapCommandToRefTaxPeriodConfig(UpsertTaxPeriodCommand command) {
-        Collection<TaxPeriodRecord> records = new LinkedList<>();
+        Collection<TaxPeriodConfigRecord> records = new LinkedList<>();
         for (TaxPeriodRecordCommand tpc : command.getRecords()) {
             records.add(
-                    TaxPeriodRecord.withoutId(
-                            tpc.getPeriodId(),
+                    TaxPeriodConfigRecord.withoutId(
+                            tpc.getPeriodSegmentId(),
+                            null,
                             tpc.getPeriodStart(),
                             tpc.getPeriodEnd(),
                             tpc.getFilingDueDate(),
@@ -69,7 +115,7 @@ class UpsertTaxPeriodService implements UpsertTaxPeriodUseCase {
                 command.getId(),
                 command.getTaxTypeCode(),
                 command.getCalendarYear(),
-                command.getTaxPeriodTypeId(),
+                command.getTaxPeriodCode(),
                 command.getTransactionTypeId(),
                 command.getDueDateCountForReturnFiling(),
                 command.getDueDateCountForPayment(),

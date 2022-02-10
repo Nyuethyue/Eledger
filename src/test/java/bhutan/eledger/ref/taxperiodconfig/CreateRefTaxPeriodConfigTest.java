@@ -1,10 +1,14 @@
 package bhutan.eledger.ref.taxperiodconfig;
 
 import bhutan.eledger.application.port.in.ref.taxperiodconfig.LoadGenTaxPeriodConfigUseCase;
+import bhutan.eledger.application.port.in.ref.taxperiodconfig.LoadTaxPeriodSegmentsUseCase;
+import bhutan.eledger.application.port.in.ref.taxperiodconfig.ReadTaxPeriodTypesUseCase;
 import bhutan.eledger.application.port.in.ref.taxperiodconfig.UpsertTaxPeriodUseCase;
 import bhutan.eledger.application.port.out.ref.taxperiodconfig.RefTaxPeriodRepositoryPort;
+import bhutan.eledger.common.ref.taxperiodconfig.TaxPeriodType;
 import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodConfig;
-import bhutan.eledger.domain.ref.taxperiodconfig.TaxPeriodRecord;
+import bhutan.eledger.domain.ref.taxperiodconfig.TaxPeriodConfigRecord;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -23,6 +27,12 @@ import java.util.LinkedList;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CreateRefTaxPeriodConfigTest {
     @Autowired
+    private ReadTaxPeriodTypesUseCase readTaxPeriodTypesUseCase;
+
+    @Autowired
+    private LoadTaxPeriodSegmentsUseCase loadTaxPeriodSegmentsUseCase;
+
+    @Autowired
     private LoadGenTaxPeriodConfigUseCase loadGenTaxPeriodConfigUseCase;
 
     @Autowired
@@ -32,28 +42,37 @@ class CreateRefTaxPeriodConfigTest {
     @Autowired
     private RefTaxPeriodRepositoryPort refTaxPeriodRepositoryPort;
 
+    @Autowired
+    ObjectMapper objectMapper;
+
     @AfterEach
     void afterEach() {
         refTaxPeriodRepositoryPort.deleteAll();
     }
 
-    private static final long MONTHLY = 1;// 12 rows
-    private static final long QUARTERLY = 2; // 4 rows
-    private static final long FORTNIGHTLY = 3; // 24 rows
-
     static final String GST_TAX_TYPE = "11411";// 5
     static final String EET_TAX_TYPE = "11421";// 11
 
+    static final long TRANSACTION_TYPE_LIABILITY = 1;
+
     @Test
-    void createTest() {
+    void createAllTaxPeriodTypesTest() {
+        testTaxPeriodType(TaxPeriodType.MONTHLY);
+        testTaxPeriodType(TaxPeriodType.FORTNIGHTLY);
+        testTaxPeriodType(TaxPeriodType.QUARTERLY);
+        testTaxPeriodType(TaxPeriodType.HALFYEARLY);
+        testTaxPeriodType(TaxPeriodType.YEARLY);
+    }
+
+    void testTaxPeriodType(TaxPeriodType taxPeriodType) {
         LocalDate validFrom = LocalDate.now();
         LocalDate validTo = LocalDate.now();
         LoadGenTaxPeriodConfigUseCase.LoadGenTaxPeriodConfigCommand generateCommand =
                 new LoadGenTaxPeriodConfigUseCase.LoadGenTaxPeriodConfigCommand(
                         GST_TAX_TYPE,
                         2022,
-                        MONTHLY,
-                        44L,
+                        taxPeriodType.getValue(),
+                        TRANSACTION_TYPE_LIABILITY,
                         11,
                         11,
                         validFrom,
@@ -61,18 +80,18 @@ class CreateRefTaxPeriodConfigTest {
                         false);
 
         RefTaxPeriodConfig configGenerated = loadGenTaxPeriodConfigUseCase.loadGen(generateCommand);
-        Assertions.assertNotNull(configGenerated);
+        validate(configGenerated);
 
         Collection<UpsertTaxPeriodUseCase.TaxPeriodRecordCommand> records = new LinkedList<>();
-        for(TaxPeriodRecord gr : configGenerated.getRecords()) {
+        for(TaxPeriodConfigRecord gr : configGenerated.getRecords()) {
             records.add(new UpsertTaxPeriodUseCase.TaxPeriodRecordCommand(
                     gr.getPeriodId(),
                     gr.getPeriodStartDate(),
                     gr.getPeriodEndDate(),
                     gr.getFilingDueDate(),
                     gr.getPaymentDueDate(),
-                    gr.getInterestCalcStartDay(),
-                    gr.getFineAndPenaltyCalcStartDay(),
+                    gr.getInterestCalcStartDate(),
+                    gr.getFineAndPenaltyCalcStartDate(),
                     gr.getValidFrom(),
                     gr.getTaxTypeCode()
             ));
@@ -83,7 +102,7 @@ class CreateRefTaxPeriodConfigTest {
                         configGenerated.getId(),
                         configGenerated.getTaxTypeCode(),
                         configGenerated.getCalendarYear(),
-                        configGenerated.getTaxPeriodTypeId(),
+                        configGenerated.getTaxPeriodCode(),
                         configGenerated.getTransactionTypeId(),
                         configGenerated.getDueDateCountForReturnFiling(),
                         configGenerated.getDueDateCountForPayment(),
@@ -95,8 +114,31 @@ class CreateRefTaxPeriodConfigTest {
 
         Long recordId = upsertTaxPeriodUseCase.upsert(upsertCommand);
 
-        RefTaxPeriodConfig configLoaded = loadGenTaxPeriodConfigUseCase.loadGen(generateCommand);
-        Assertions.assertNotNull(configLoaded);
-//        Assertions.assertNotNull(configLoaded.getId());
+        RefTaxPeriodConfig configPersisted = loadGenTaxPeriodConfigUseCase.loadGen(generateCommand);
+        validate(configPersisted);
+        Assertions.assertEquals(recordId, configPersisted.getId());
+
+//        try {
+//            System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(configLoaded));
+//        } catch (Exception i) {}
+    }
+
+    private void validate(RefTaxPeriodConfig configLoaded) {
+        configLoaded.getRecords().forEach(record -> {
+            Assertions.assertNotNull(record.getPeriodName());
+            Assertions.assertNotNull(record.getPeriodName().getTranslation("en"));
+        });
+    }
+
+    @Test
+    void loadTaxPeriods() {
+        var taxPeriodTypesList = readTaxPeriodTypesUseCase.readAll();
+        Assertions.assertNotNull(taxPeriodTypesList);
+        taxPeriodTypesList.forEach(taxPeriod -> {
+            var code = taxPeriod.getCode();
+            var taxPeriodSegments =
+                    loadTaxPeriodSegmentsUseCase.findByTaxPeriodTypeId(taxPeriod.getId());
+            Assertions.assertNotNull(taxPeriodSegments);
+        });
     }
 }

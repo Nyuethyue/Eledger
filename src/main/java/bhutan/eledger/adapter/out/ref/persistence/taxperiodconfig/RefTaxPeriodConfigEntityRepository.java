@@ -4,14 +4,14 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
-interface RefTaxPeriodEntityRepository extends JpaRepository<RefTaxPeriodConfigEntity, Long> {
+interface RefTaxPeriodConfigEntityRepository extends JpaRepository<RefTaxPeriodConfigEntity, Long> {
 
     @Query(value = "SELECT tpc.*" +
             " FROM ref.tax_period_config tpc" +
             " WHERE tpc.gl_account_part_full_code = :glAccountPartFullCode" +
             " AND tpc.calendar_year = :calendarYear" +
-            " AND tpc.tax_period_type_id = :taxPeriodTypeId" +
+            " AND tpc.tax_period_code = :taxPeriodCode" +
             " AND tpc.transaction_type_id = :transactionTypeId"
             , nativeQuery = true)
-    Optional<RefTaxPeriodConfigEntity> readBy(String glAccountPartFullCode, int calendarYear, long taxPeriodTypeId, long transactionTypeId);
+    Optional<RefTaxPeriodConfigEntity> readBy(String glAccountPartFullCode, int calendarYear, String taxPeriodCode, long transactionTypeId);
 }

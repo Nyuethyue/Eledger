@@ -1,21 +1,22 @@
 package bhutan.eledger.adapter.out.ref.persistence.taxperiodconfig;
 
+import am.iunetworks.lib.multilingual.core.Multilingual;
 import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodConfig;
-import bhutan.eledger.domain.ref.taxperiodconfig.TaxPeriodRecord;
+import bhutan.eledger.domain.ref.taxperiodconfig.TaxPeriodConfigRecord;
 import org.springframework.stereotype.Component;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Component
 class RefTaxPeriodMapper {
 
-    RefTaxPeriodConfigEntity mapToEntity(RefTaxPeriodConfig refTaxPeriodConfig) {
+    RefTaxPeriodConfigEntity mapToEntity(long id, RefTaxPeriodConfig refTaxPeriodConfig) {
         RefTaxPeriodConfigEntity refTaxPeriodConfigEntity =
-                new RefTaxPeriodConfigEntity(
+                RefTaxPeriodConfigEntity.withId(
+                        id,
                         refTaxPeriodConfig.getTaxTypeCode(),
                         refTaxPeriodConfig.getCalendarYear(),
-                        refTaxPeriodConfig.getTaxPeriodTypeId(),
+                        refTaxPeriodConfig.getTaxPeriodCode(),
                         refTaxPeriodConfig.getTransactionTypeId(),
                         refTaxPeriodConfig.getDueDateCountForReturnFiling(),
                         refTaxPeriodConfig.getDueDateCountForPayment(),
@@ -24,47 +25,50 @@ class RefTaxPeriodMapper {
                         refTaxPeriodConfig.getConsiderNonWorkingDays()
                 );
 
-        refTaxPeriodConfigEntity.getRecords()
-                .stream()
-                .map(r ->
-                        new RefTaxPeriodRecordEntity(
-                                r.getId(),
-                                r.getPeriodStartDate(),
-                                r.getPeriodEndDate(),
-                                r.getFilingDueDate(),
-                                r.getPaymentDueDate(),
-                                r.getInterestCalcStartDay(),
-                                r.getFineAndPenaltyCalcStartDay(),
-                                r.getValidFrom(),
-                                r.getRemark()
-                        )
-                )
-                .forEach(refTaxPeriodConfigEntity::addToRecords);
+        return refTaxPeriodConfigEntity;
+    }
+
+    RefTaxPeriodConfigEntity mapToEntity(RefTaxPeriodConfig refTaxPeriodConfig) {
+        RefTaxPeriodConfigEntity refTaxPeriodConfigEntity =
+                RefTaxPeriodConfigEntity.withoutId(
+                        refTaxPeriodConfig.getTaxTypeCode(),
+                        refTaxPeriodConfig.getCalendarYear(),
+                        refTaxPeriodConfig.getTaxPeriodCode(),
+                        refTaxPeriodConfig.getTransactionTypeId(),
+                        refTaxPeriodConfig.getDueDateCountForReturnFiling(),
+                        refTaxPeriodConfig.getDueDateCountForPayment(),
+                        refTaxPeriodConfig.getValidFrom(),
+                        refTaxPeriodConfig.getValidTo(),
+                        refTaxPeriodConfig.getConsiderNonWorkingDays()
+                );
 
         return refTaxPeriodConfigEntity;
     }
 
-    RefTaxPeriodConfig mapToDomain(RefTaxPeriodConfigEntity entity) {
-        List<TaxPeriodRecord> records = new LinkedList<>();
-        entity.getRecords().stream().map(re ->
+    RefTaxPeriodConfig mapToDomain(RefTaxPeriodConfigEntity entity,
+                                   Collection<RefTaxPeriodRecordEntity> entityRecords,
+                                   Map<Long, Multilingual> segmentNames) {
+        List<TaxPeriodConfigRecord> records = new LinkedList<>();
+        entityRecords.stream().forEach(re ->
                 records.add(
-                        TaxPeriodRecord.withId(
+                        TaxPeriodConfigRecord.withId(
                                 re.getId(),
-                                re.getPeriodId(),
+                                re.getPeriodSegmentId(),
+                                segmentNames.get(re.getPeriodSegmentId()),
                                 re.getPeriodStartDate(),
                                 re.getPeriodEndDate(),
                                 re.getFilingDueDate(),
                                 re.getPaymentDueDate(),
-                                re.getInterestCalcStartDay(),
-                                re.getFineAndPenaltyCalcStartDay(),
+                                re.getInterestCalcStartDate(),
+                                re.getFineAndPenaltyCalcStartDate(),
                                 re.getValidFrom(),
-                                re.getRemark()
+                                re.getTaxTypeCode()
                         )));
         return RefTaxPeriodConfig.withId(
                 entity.getId(),
                 entity.getGlAccountPartFullCode(),
                 entity.getCalendarYear(),
-                entity.getTaxPeriodTypeId(),
+                entity.getTaxPeriodCode(),
                 entity.getTransactionTypeId(),
                 entity.getDueDateCountForReturnFiling(),
                 entity.getDueDateCountForPayment(),
@@ -72,6 +76,21 @@ class RefTaxPeriodMapper {
                 entity.getValidTo(),
                 entity.getConsiderNonWorkingDays(),
                 records
+        );
+    }
+
+    RefTaxPeriodRecordEntity mapToEntity(long parentId, TaxPeriodConfigRecord re) {
+        return new RefTaxPeriodRecordEntity(
+                parentId,
+                re.getPeriodId(),
+                re.getPeriodStartDate(),
+                re.getPeriodEndDate(),
+                re.getFilingDueDate(),
+                re.getPaymentDueDate(),
+                re.getInterestCalcStartDate(),
+                re.getFineAndPenaltyCalcStartDate(),
+                re.getValidFrom(),
+                re.getTaxTypeCode()
         );
     }
 }

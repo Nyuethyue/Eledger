@@ -6,9 +6,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
-
 
 @Entity
 @Table(name = "tax_period_config", schema = "ref")
@@ -28,8 +25,8 @@ class RefTaxPeriodConfigEntity {
     @Column(name = "calendar_year")
     private int calendarYear;
 
-    @Column(name = "tax_period_type_id")
-    private long taxPeriodTypeId;
+    @Column(name = "tax_period_code")
+    private String taxPeriodCode;
 
     @Column(name = "transaction_type_id")
     private long transactionTypeId;
@@ -49,18 +46,11 @@ class RefTaxPeriodConfigEntity {
     @Column(name = "consider_non_working_days")
     private Boolean considerNonWorkingDays;
 
-    @OneToMany(
-            mappedBy = "taxPeriodConfig",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.EAGER
-    )
-    private Set<RefTaxPeriodRecordEntity> records;
 
-    public RefTaxPeriodConfigEntity(
+    public static RefTaxPeriodConfigEntity withoutId(
             String glAccountPartFullCode,
             Integer calendarYear,
-            Long taxPeriodTypeId,
+            String taxPeriodCode,
             Long transactionTypeId,
             Integer dueDateCountForReturnFiling,
             Integer dueDateCountForPayment,
@@ -68,22 +58,67 @@ class RefTaxPeriodConfigEntity {
             LocalDate validTo,
             Boolean considerNonWorkingDays
     ) {
+        return new RefTaxPeriodConfigEntity(
+                null,
+                glAccountPartFullCode,
+                calendarYear,
+                taxPeriodCode,
+                transactionTypeId,
+                dueDateCountForReturnFiling,
+                dueDateCountForPayment,
+                validFrom,
+                validTo,
+                considerNonWorkingDays
+                );
+    }
+
+    public static RefTaxPeriodConfigEntity withId(
+            long id,
+            String glAccountPartFullCode,
+            Integer calendarYear,
+            String taxPeriodCode,
+            Long transactionTypeId,
+            Integer dueDateCountForReturnFiling,
+            Integer dueDateCountForPayment,
+            LocalDate validFrom,
+            LocalDate validTo,
+            Boolean considerNonWorkingDays
+    ) {
+        return new RefTaxPeriodConfigEntity(
+                id,
+                glAccountPartFullCode,
+                calendarYear,
+                taxPeriodCode,
+                transactionTypeId,
+                dueDateCountForReturnFiling,
+                dueDateCountForPayment,
+                validFrom,
+                validTo,
+                considerNonWorkingDays
+                );
+    }
+
+    public RefTaxPeriodConfigEntity(
+            Long id,
+            String glAccountPartFullCode,
+            Integer calendarYear,
+            String taxPeriodCode,
+            Long transactionTypeId,
+            Integer dueDateCountForReturnFiling,
+            Integer dueDateCountForPayment,
+            LocalDate validFrom,
+            LocalDate validTo,
+            Boolean considerNonWorkingDays
+    ) {
+        this.id = id;
         this.glAccountPartFullCode = glAccountPartFullCode;
         this.calendarYear = calendarYear;
-        this.taxPeriodTypeId = taxPeriodTypeId;
+        this.taxPeriodCode = taxPeriodCode;
         this.transactionTypeId = transactionTypeId;
         this.dueDateCountForReturnFiling = dueDateCountForReturnFiling;
         this.dueDateCountForPayment = dueDateCountForPayment;
         this.validFrom = validFrom;
         this.validTo = validTo;
         this.considerNonWorkingDays = considerNonWorkingDays;
-    }
-
-    public void addToRecords(RefTaxPeriodRecordEntity record) {
-        if (record == null) {
-            records = new HashSet<>();
-        }
-
-        records.add(record);
     }
 }

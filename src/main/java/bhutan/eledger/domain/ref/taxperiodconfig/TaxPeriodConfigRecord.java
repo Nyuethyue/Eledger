@@ -1,5 +1,6 @@
 package bhutan.eledger.domain.ref.taxperiodconfig;
 
+import am.iunetworks.lib.multilingual.core.Multilingual;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -12,10 +13,14 @@ import java.time.LocalDate;
 @Builder(toBuilder = true)
 @Getter
 @ToString
-public class TaxPeriodRecord {
+public class TaxPeriodConfigRecord {
     private final Long id;
 
-    private final Integer periodId;
+    @NotNull
+    private final Long periodId;
+
+    @NotNull
+    private final Multilingual periodName;
 
     @NotNull
     @NotEmpty
@@ -35,11 +40,11 @@ public class TaxPeriodRecord {
 
     @NotNull
     @NotEmpty
-    private final LocalDate interestCalcStartDay;
+    private final LocalDate interestCalcStartDate;
 
     @NotNull
     @NotEmpty
-    private final LocalDate fineAndPenaltyCalcStartDay;
+    private final LocalDate fineAndPenaltyCalcStartDate;
 
     @Valid
     @NotNull
@@ -49,52 +54,56 @@ public class TaxPeriodRecord {
     @NotNull
     private String taxTypeCode;
 
-    public static TaxPeriodRecord withId(
+    public static TaxPeriodConfigRecord withId(
             Long id,
-            Integer periodId,
+            Long periodId,
+            Multilingual periodSegmentName,
             LocalDate periodStartDate,
             LocalDate periodEndDate,
             LocalDate filingDueDate,
             LocalDate paymentDueDate,
-            LocalDate interestCalcStartDay,
-            LocalDate fineAndPenaltyCalcStartDay,
+            LocalDate interestCalcStartDate,
+            LocalDate fineAndPenaltyCalcStartDate,
             LocalDate validFrom,
             String taxTypeCode
     ) {
-        return new TaxPeriodRecord(
+        return new TaxPeriodConfigRecord(
                 id,
                 periodId,
+                periodSegmentName,
                 periodStartDate,
                 periodEndDate,
                 filingDueDate,
                 paymentDueDate,
-                interestCalcStartDay,
-                fineAndPenaltyCalcStartDay,
+                interestCalcStartDate,
+                fineAndPenaltyCalcStartDate,
                 validFrom,
                 taxTypeCode
         );
     }
 
-    public static TaxPeriodRecord withoutId(
-            Integer periodId,
+    public static TaxPeriodConfigRecord withoutId(
+            Long periodSegmentId,
+            Multilingual periodSegmentName,
             LocalDate periodStartDate,
             LocalDate periodEndDate,
             LocalDate filingDueDate,
             LocalDate paymentDueDate,
-            LocalDate interestCalcStartDay,
-            LocalDate fineAndPenaltyCalcStartDay,
+            LocalDate interestCalcStartDate,
+            LocalDate fineAndPenaltyCalcStartDate,
             LocalDate validFrom,
             String taxTypeCode
     ) {
-        return new TaxPeriodRecord(
+        return new TaxPeriodConfigRecord(
                 null,
-                periodId,
+                periodSegmentId,
+                periodSegmentName,
                 periodStartDate,
                 periodEndDate,
                 filingDueDate,
                 paymentDueDate,
-                interestCalcStartDay,
-                fineAndPenaltyCalcStartDay,
+                interestCalcStartDate,
+                fineAndPenaltyCalcStartDate,
                 validFrom,
                 taxTypeCode
         );

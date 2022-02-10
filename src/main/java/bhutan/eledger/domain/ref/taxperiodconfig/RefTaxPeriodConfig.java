@@ -28,7 +28,7 @@ public class RefTaxPeriodConfig {
     private int calendarYear;
 
     @NotNull
-    private final Long taxPeriodTypeId;
+    private final String taxPeriodCode;
 
     private final Long transactionTypeId;
 
@@ -56,27 +56,27 @@ public class RefTaxPeriodConfig {
     @NotNull
     @NotEmpty
     @Valid
-    private final Collection<TaxPeriodRecord> records;
+    private final Collection<TaxPeriodConfigRecord> records;
 
 
     public static RefTaxPeriodConfig withId(
             Long id,
             String taxTypeCode,
             Integer calendarYear,
-            Long taxPeriodTypeId,
+            String taxPeriodCode,
             Long transactionTypeId,
             Integer dueDateCountForReturnFiling,
             Integer dueDateCountForPayment,
             LocalDate validFrom,
             LocalDate validTo,
             Boolean considerNonWorkingDays,
-            Collection<TaxPeriodRecord> records
+            Collection<TaxPeriodConfigRecord> records
     ) {
         return new RefTaxPeriodConfig(
                 id,
                 taxTypeCode,
                 calendarYear,
-                taxPeriodTypeId,
+                taxPeriodCode,
                 transactionTypeId,
                 dueDateCountForReturnFiling,
                 dueDateCountForPayment,
@@ -90,20 +90,20 @@ public class RefTaxPeriodConfig {
     public static RefTaxPeriodConfig withoutId(
             String taxTypeCode,
             Integer calendarYear,
-            Long taxPeriodTypeId,
+            String taxPeriodCode,
             Long transactionTypeId,
             Integer dueDateCountForReturnFiling,
             Integer dueDateCountForPayment,
             LocalDate validFrom,
             LocalDate validTo,
             Boolean considerNonWorkingDays,
-            Collection<TaxPeriodRecord> records
+            Collection<TaxPeriodConfigRecord> records
     ) {
         return new RefTaxPeriodConfig(
                 null,
                 taxTypeCode,
                 calendarYear,
-                taxPeriodTypeId,
+                taxPeriodCode,
                 transactionTypeId,
                 dueDateCountForReturnFiling,
                 dueDateCountForPayment,
