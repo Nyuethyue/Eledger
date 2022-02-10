@@ -6,8 +6,8 @@ CREATE TABLE IF NOT EXISTS ref.open_close_tax_period_config
     calendar_year                       integer NOT NULL,
     tax_period_type_id                  bigint  NOT NULL,
     transaction_type_id                 bigint  NOT NULL,
-    years                               integer NULL,
-    month                               integer NULL
+    no_of_years                         integer NULL,
+    no_of_month                         integer NULL
 );
 
 ALTER TABLE ref.open_close_tax_period_config

@@ -12,8 +12,8 @@ public class RefOpenCloseTaxPeriod {
     private final Integer calendarYear;
     private final Long    taxPeriodTypeId;
     private final Long    transactionTypeId;
-    private final Integer years;
-    private final Integer month;
+    private final Integer noOfYears;
+    private final Integer noOfMonth;
     private final Collection<RefOpenCloseTaxPeriodRecord> records;
 
     public static RefOpenCloseTaxPeriod withoutId(
@@ -21,8 +21,8 @@ public class RefOpenCloseTaxPeriod {
             Integer calendarYear,
             Long taxPeriodTypeId,
             Long transactionTypeId,
-            Integer years,
-            Integer month,
+            Integer noOfYears,
+            Integer noOfMonth,
             Collection<RefOpenCloseTaxPeriodRecord> records
     ) {
         return new RefOpenCloseTaxPeriod(
@@ -31,8 +31,8 @@ public class RefOpenCloseTaxPeriod {
                 calendarYear,
                 taxPeriodTypeId,
                 transactionTypeId,
-                years,
-                month,
+                noOfYears,
+                noOfMonth,
                 new ArrayList<>(records)
         );
 

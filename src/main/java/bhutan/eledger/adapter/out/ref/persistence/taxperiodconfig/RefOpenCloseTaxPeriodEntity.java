@@ -32,10 +32,10 @@ class RefOpenCloseTaxPeriodEntity {
     @Column(name = "transaction_type_id")
     private long transactionTypeId;
 
-    @Column(name = "years")
-    private Integer years;
+    @Column(name = "no_of_years")
+    private Integer yearsNo;
 
-    @Column(name = "month")
+    @Column(name = "no_of_month")
     private Integer month;
 
     @OneToMany(
@@ -52,7 +52,7 @@ class RefOpenCloseTaxPeriodEntity {
             Integer calendarYear,
             Long taxPeriodTypeId,
             Long transactionTypeId,
-            Integer years,
+            Integer yearsNo,
             Integer month
     ) {
         this.id = id;
@@ -60,7 +60,7 @@ class RefOpenCloseTaxPeriodEntity {
         this.calendarYear = calendarYear;
         this.taxPeriodTypeId = taxPeriodTypeId;
         this.transactionTypeId = transactionTypeId;
-        this.years = years;
+        this.yearsNo = yearsNo;
         this.month = month;
     }
 

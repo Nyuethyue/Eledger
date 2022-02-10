@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 
 @Validated
 public interface UpdateOpenCloseTaxPeriodUseCase {
-    void update(@NotNull Long id, @Valid UpsertRefOpenCloseTaxPeriodUseCase.UpsertOpenCloseTaxPeriodCommand command);
 
     void update(@NotNull RefOpenCloseTaxPeriod refOpenCloseTaxPeriod, @Valid UpsertRefOpenCloseTaxPeriodUseCase.UpsertOpenCloseTaxPeriodCommand command);
 }

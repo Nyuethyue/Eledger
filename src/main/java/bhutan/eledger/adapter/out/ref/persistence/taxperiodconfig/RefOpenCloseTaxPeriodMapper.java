@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 @Component
 class RefOpenCloseTaxPeriodMapper {
     RefOpenCloseTaxPeriodEntity mapToEntity(RefOpenCloseTaxPeriod refOpenCloseTaxPeriod) {
-        System.out.println("in mapper"+refOpenCloseTaxPeriod);
         RefOpenCloseTaxPeriodEntity refOpenCloseTaxPeriodEntity =
                 new RefOpenCloseTaxPeriodEntity(
                         refOpenCloseTaxPeriod.getId(),
@@ -17,8 +16,8 @@ class RefOpenCloseTaxPeriodMapper {
                         refOpenCloseTaxPeriod.getCalendarYear(),
                         refOpenCloseTaxPeriod.getTaxPeriodTypeId(),
                         refOpenCloseTaxPeriod.getTransactionTypeId(),
-                        refOpenCloseTaxPeriod.getYears(),
-                        refOpenCloseTaxPeriod.getMonth()
+                        refOpenCloseTaxPeriod.getNoOfYears(),
+                        refOpenCloseTaxPeriod.getNoOfMonth()
                 );
 
         refOpenCloseTaxPeriod.getRecords()
@@ -45,12 +44,13 @@ class RefOpenCloseTaxPeriodMapper {
                 entity.getCalendarYear(),
                 entity.getTaxPeriodTypeId(),
                 entity.getTransactionTypeId(),
+                entity.getYearsNo(),
                 entity.getMonth(),
-                entity.getYears(),
                 entity.getRecords()
                         .stream()
                         .map(record ->
-                                RefOpenCloseTaxPeriodRecord.withoutId(
+                                RefOpenCloseTaxPeriodRecord.withId(
+                                        record.getId(),
                                         record.getPeriodId(),
                                         record.getPeriod(),
                                         record.getPeriodOpenDate(),

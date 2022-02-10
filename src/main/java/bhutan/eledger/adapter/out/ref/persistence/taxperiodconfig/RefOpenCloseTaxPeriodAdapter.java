@@ -23,10 +23,6 @@ class RefOpenCloseTaxPeriodAdapter implements RefOpenCloseTaxPeriodRepositoryPor
 
     @Override
     public Optional<RefOpenCloseTaxPeriod> readByGlFullCodeYearTaxPeriodTransType(String glAccountPartFullCode, Integer calendarYear, Long taxPeriodTypeId, Long transactionTypeId) {
-        System.out.println("Plesae chekc"+glAccountPartFullCode);
-        System.out.println("Plesae chekc"+calendarYear);
-        System.out.println("Plesae chekc"+taxPeriodTypeId);
-        System.out.println("Plesae chekc"+transactionTypeId);
         var result = refOpenCloseTaxPeriodEntityRepository.readBy(glAccountPartFullCode, calendarYear, taxPeriodTypeId, transactionTypeId);
         if(result.isPresent()) {
             return Optional.of(refOpenCloseTaxPeriodMapper.mapToDomain(result.get()));
