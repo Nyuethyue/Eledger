@@ -29,7 +29,7 @@ public interface UpsertTaxPeriodUseCase {
         private final Integer calendarYear;
 
         @NotNull
-        private final Long taxPeriodTypeId;
+        private final String taxPeriodCode;
 
         private final Long transactionTypeId;
 
@@ -66,7 +66,7 @@ public interface UpsertTaxPeriodUseCase {
     class TaxPeriodRecordCommand {
         @Valid
         @NotNull
-        private final Integer periodId;
+        private final Long periodSegmentId;
 
         @Valid
         @NotNull
