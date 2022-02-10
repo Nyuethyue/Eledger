@@ -12,7 +12,7 @@ import java.util.Collection;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class RefTaxPeriodType {
+public class RefTaxPeriod {
 
     @Id
     @SequenceGenerator(name = "tax_period_id_seq", schema = "ref", sequenceName = "tax_period_id_seq", allocationSize = 1)
@@ -35,7 +35,7 @@ public class RefTaxPeriodType {
     @JsonIgnore
     private Collection<RefTaxPeriodTypeDescription> descriptions;
 
-    private RefTaxPeriodType(String code, Multilingual description) {
+    private RefTaxPeriod(String code, Multilingual description) {
         this.code = code;
         this.description = description;
     }
@@ -49,11 +49,11 @@ public class RefTaxPeriodType {
         description = Multilingual.of(getDescriptions());
     }
 
-    public static RefTaxPeriodType withoutId(
+    public static RefTaxPeriod withoutId(
             String code,
             Multilingual description
     ) {
-        return new RefTaxPeriodType(
+        return new RefTaxPeriod(
                 code,
                 description
         );

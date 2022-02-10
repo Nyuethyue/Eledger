@@ -2,7 +2,7 @@ package bhutan.eledger.adapter.out.ref.persistence.taxperiodconfig;
 
 import am.iunetworks.lib.multilingual.core.Multilingual;
 import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodConfig;
-import bhutan.eledger.domain.ref.taxperiodconfig.TaxPeriodRecord;
+import bhutan.eledger.domain.ref.taxperiodconfig.TaxPeriodConfigRecord;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -16,7 +16,7 @@ class RefTaxPeriodMapper {
                         id,
                         refTaxPeriodConfig.getTaxTypeCode(),
                         refTaxPeriodConfig.getCalendarYear(),
-                        refTaxPeriodConfig.getTaxPeriodTypeCode(),
+                        refTaxPeriodConfig.getTaxPeriodCode(),
                         refTaxPeriodConfig.getTransactionTypeId(),
                         refTaxPeriodConfig.getDueDateCountForReturnFiling(),
                         refTaxPeriodConfig.getDueDateCountForPayment(),
@@ -33,7 +33,7 @@ class RefTaxPeriodMapper {
                 RefTaxPeriodConfigEntity.withoutId(
                         refTaxPeriodConfig.getTaxTypeCode(),
                         refTaxPeriodConfig.getCalendarYear(),
-                        refTaxPeriodConfig.getTaxPeriodTypeCode(),
+                        refTaxPeriodConfig.getTaxPeriodCode(),
                         refTaxPeriodConfig.getTransactionTypeId(),
                         refTaxPeriodConfig.getDueDateCountForReturnFiling(),
                         refTaxPeriodConfig.getDueDateCountForPayment(),
@@ -48,10 +48,10 @@ class RefTaxPeriodMapper {
     RefTaxPeriodConfig mapToDomain(RefTaxPeriodConfigEntity entity,
                                    Collection<RefTaxPeriodRecordEntity> entityRecords,
                                    Map<Long, Multilingual> segmentNames) {
-        List<TaxPeriodRecord> records = new LinkedList<>();
+        List<TaxPeriodConfigRecord> records = new LinkedList<>();
         entityRecords.stream().forEach(re ->
                 records.add(
-                        TaxPeriodRecord.withId(
+                        TaxPeriodConfigRecord.withId(
                                 re.getId(),
                                 re.getPeriodSegmentId(),
                                 segmentNames.get(re.getPeriodSegmentId()),
@@ -68,7 +68,7 @@ class RefTaxPeriodMapper {
                 entity.getId(),
                 entity.getGlAccountPartFullCode(),
                 entity.getCalendarYear(),
-                entity.getTaxPeriodTypeCode(),
+                entity.getTaxPeriodCode(),
                 entity.getTransactionTypeId(),
                 entity.getDueDateCountForReturnFiling(),
                 entity.getDueDateCountForPayment(),
@@ -79,7 +79,7 @@ class RefTaxPeriodMapper {
         );
     }
 
-    RefTaxPeriodRecordEntity mapToEntity(long parentId, TaxPeriodRecord re) {
+    RefTaxPeriodRecordEntity mapToEntity(long parentId, TaxPeriodConfigRecord re) {
         return new RefTaxPeriodRecordEntity(
                 parentId,
                 re.getPeriodId(),

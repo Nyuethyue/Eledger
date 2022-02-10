@@ -22,9 +22,9 @@ class RefTaxPeriodTypeDescription extends TranslationEntity {
 
     @ManyToOne
     @JoinColumn(name = "tax_period_id", nullable = false)
-    private RefTaxPeriodType taxPeriodType;
+    private RefTaxPeriod taxPeriodType;
 
-    RefTaxPeriodTypeDescription(Long id, String languageCode, String value, RefTaxPeriodType taxPeriodType) {
+    RefTaxPeriodTypeDescription(Long id, String languageCode, String value, RefTaxPeriod taxPeriodType) {
         super(languageCode, value);
         this.id = id;
         this.taxPeriodType = taxPeriodType;

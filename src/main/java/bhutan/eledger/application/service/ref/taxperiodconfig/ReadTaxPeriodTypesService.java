@@ -2,7 +2,7 @@ package bhutan.eledger.application.service.ref.taxperiodconfig;
 
 import bhutan.eledger.application.port.in.ref.taxperiodconfig.ReadTaxPeriodTypesUseCase;
 import bhutan.eledger.application.port.out.ref.taxperiodconfig.RefTaxPeriodTypeRepositoryPort;
-import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodType;
+import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriod;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -20,12 +20,12 @@ class ReadTaxPeriodTypesService implements ReadTaxPeriodTypesUseCase {
     private final RefTaxPeriodTypeRepositoryPort refTaxPeriodTypeRepositoryPort;
 
     @Override
-    public Collection<RefTaxPeriodType> readAll() {
+    public Collection<RefTaxPeriod> readAll() {
         return refTaxPeriodTypeRepositoryPort.readAll();
     }
 
     @Override
-    public Optional<RefTaxPeriodType> readByCode(String code) {
+    public Optional<RefTaxPeriod> readByCode(String code) {
         return refTaxPeriodTypeRepositoryPort.readByCode(code);
     }
 }

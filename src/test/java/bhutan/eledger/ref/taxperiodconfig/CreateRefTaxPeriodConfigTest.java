@@ -7,7 +7,7 @@ import bhutan.eledger.application.port.in.ref.taxperiodconfig.UpsertTaxPeriodUse
 import bhutan.eledger.application.port.out.ref.taxperiodconfig.RefTaxPeriodRepositoryPort;
 import bhutan.eledger.common.ref.taxperiodconfig.TaxPeriodType;
 import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodConfig;
-import bhutan.eledger.domain.ref.taxperiodconfig.TaxPeriodRecord;
+import bhutan.eledger.domain.ref.taxperiodconfig.TaxPeriodConfigRecord;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -83,7 +83,7 @@ class CreateRefTaxPeriodConfigTest {
         validate(configGenerated);
 
         Collection<UpsertTaxPeriodUseCase.TaxPeriodRecordCommand> records = new LinkedList<>();
-        for(TaxPeriodRecord gr : configGenerated.getRecords()) {
+        for(TaxPeriodConfigRecord gr : configGenerated.getRecords()) {
             records.add(new UpsertTaxPeriodUseCase.TaxPeriodRecordCommand(
                     gr.getPeriodId(),
                     gr.getPeriodStartDate(),
@@ -102,7 +102,7 @@ class CreateRefTaxPeriodConfigTest {
                         configGenerated.getId(),
                         configGenerated.getTaxTypeCode(),
                         configGenerated.getCalendarYear(),
-                        configGenerated.getTaxPeriodTypeCode(),
+                        configGenerated.getTaxPeriodCode(),
                         configGenerated.getTransactionTypeId(),
                         configGenerated.getDueDateCountForReturnFiling(),
                         configGenerated.getDueDateCountForPayment(),

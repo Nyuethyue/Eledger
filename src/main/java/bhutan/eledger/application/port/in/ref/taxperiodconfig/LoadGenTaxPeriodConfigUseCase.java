@@ -1,11 +1,13 @@
 package bhutan.eledger.application.port.in.ref.taxperiodconfig;
 
-import bhutan.eledger.common.ref.taxperiodconfig.TaxPeriodType;
 import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodConfig;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.time.LocalDate;
 
 @Validated
@@ -14,9 +16,19 @@ public interface LoadGenTaxPeriodConfigUseCase {
 
     @Data
     class LoadGenTaxPeriodConfigCommand {
+        @NotNull
+        @NotEmpty
         private final String taxTypeCode;
+
+        @NotNull
+        @Positive
         private final Integer calendarYear;
-        private final String taxPeriodTypeCode;
+
+        @NotNull
+        @NotEmpty
+        private final String taxPeriodCode;
+
+        @NotNull
         private final Long transactionTypeId;
 
         private final Integer dueDateCountForReturnFiling;

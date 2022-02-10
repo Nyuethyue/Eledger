@@ -9,14 +9,14 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "ref_tax_period_record", schema = "ref")
+@Table(name = "tax_period_config_record", schema = "ref")
 @NoArgsConstructor
 @Getter
 @Setter
 class RefTaxPeriodRecordEntity {
     @Id
-    @SequenceGenerator(name = "ref_tax_period_record_id_seq", schema = "ref", sequenceName = "ref_tax_period_record_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ref_tax_period_record_id_seq")
+    @SequenceGenerator(name = "tax_period_config_record_id_seq", schema = "ref", sequenceName = "tax_period_config_record_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tax_period_config_record_id_seq")
     @Column(name = "id")
     private Long id;
 

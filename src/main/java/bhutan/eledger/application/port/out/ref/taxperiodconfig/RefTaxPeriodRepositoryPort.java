@@ -6,11 +6,12 @@ import java.util.Optional;
 
 public interface RefTaxPeriodRepositoryPort {
 
-    Long upsert(RefTaxPeriodConfig bean);
+    Long create(RefTaxPeriodConfig bean);
+    Long update(RefTaxPeriodConfig bean);
 
     Optional<RefTaxPeriodConfig> readBy(String taxTypeCode,
                                         Integer calendarYear,
-                                        String taxPeriodTypeCode,
+                                        String taxPeriodCode,
                                         Long transactionTypeId);
 
     void deleteAll();

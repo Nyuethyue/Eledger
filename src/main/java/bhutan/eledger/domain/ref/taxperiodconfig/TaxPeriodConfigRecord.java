@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Builder(toBuilder = true)
 @Getter
 @ToString
-public class TaxPeriodRecord {
+public class TaxPeriodConfigRecord {
     private final Long id;
 
     @NotNull
@@ -54,7 +54,7 @@ public class TaxPeriodRecord {
     @NotNull
     private String taxTypeCode;
 
-    public static TaxPeriodRecord withId(
+    public static TaxPeriodConfigRecord withId(
             Long id,
             Long periodId,
             Multilingual periodSegmentName,
@@ -67,7 +67,7 @@ public class TaxPeriodRecord {
             LocalDate validFrom,
             String taxTypeCode
     ) {
-        return new TaxPeriodRecord(
+        return new TaxPeriodConfigRecord(
                 id,
                 periodId,
                 periodSegmentName,
@@ -82,7 +82,7 @@ public class TaxPeriodRecord {
         );
     }
 
-    public static TaxPeriodRecord withoutId(
+    public static TaxPeriodConfigRecord withoutId(
             Long periodSegmentId,
             Multilingual periodSegmentName,
             LocalDate periodStartDate,
@@ -94,7 +94,7 @@ public class TaxPeriodRecord {
             LocalDate validFrom,
             String taxTypeCode
     ) {
-        return new TaxPeriodRecord(
+        return new TaxPeriodConfigRecord(
                 null,
                 periodSegmentId,
                 periodSegmentName,

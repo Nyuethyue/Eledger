@@ -25,33 +25,32 @@ class RefTaxPeriodAdapter implements RefTaxPeriodRepositoryPort {
     private final RefTaxPeriodRecordEntityRepository refTaxPeriodRecordEntityRepository;
 
     @Override
-    public Long upsert(RefTaxPeriodConfig b) {
-        var conf =
-                readBy(b.getTaxTypeCode(), b.getCalendarYear(), b.getTaxPeriodTypeCode(), b.getTransactionTypeId());
-        if(conf.isPresent()) {
-            var id = refTaxPeriodConfigEntityRepository.save(refTaxPeriodMapper.mapToEntity(conf.get().getId(), b)).getId();
-            refTaxPeriodRecordEntityRepository.deleteByTaxPeriodConfigId(id);
-            b.getRecords().stream().forEach(r ->
+    public Long create(RefTaxPeriodConfig b) {
+        var id = refTaxPeriodConfigEntityRepository.save(refTaxPeriodMapper.mapToEntity(b)).getId();
+        b.getRecords().stream().forEach(r ->
                 refTaxPeriodRecordEntityRepository.save(refTaxPeriodMapper.mapToEntity(id, r))
-            );
-            return id;
-
-        } else {
-            var id = refTaxPeriodConfigEntityRepository.save(refTaxPeriodMapper.mapToEntity(b)).getId();
-            b.getRecords().stream().forEach(r ->
-                refTaxPeriodRecordEntityRepository.save(refTaxPeriodMapper.mapToEntity(id, r))
-            );
-            return id;
-        }
+        );
+        return id;
     }
 
     @Override
-    public Optional<RefTaxPeriodConfig> readBy(String taxTypeCode, Integer calendarYear, String taxPeriodTypeCode, Long transactionTypeId) {
+    public Long update(RefTaxPeriodConfig conf) {
+        var id = refTaxPeriodConfigEntityRepository.save(refTaxPeriodMapper.mapToEntity(conf.getId(), conf)).getId();
+        refTaxPeriodRecordEntityRepository.deleteByTaxPeriodConfigId(id);
+        conf.getRecords().stream().forEach(r ->
+                refTaxPeriodRecordEntityRepository.save(refTaxPeriodMapper.mapToEntity(id, r))
+        );
+        return id;
+    }
+
+
+    @Override
+    public Optional<RefTaxPeriodConfig> readBy(String taxTypeCode, Integer calendarYear, String taxPeriodCode, Long transactionTypeId) {
         var result =
-                refTaxPeriodConfigEntityRepository.readBy(taxTypeCode, calendarYear, taxPeriodTypeCode, transactionTypeId);
+                refTaxPeriodConfigEntityRepository.readBy(taxTypeCode, calendarYear, taxPeriodCode, transactionTypeId);
         if(result.isPresent()) {
             var taxPeriodConfig = result.get();
-            var taxPeriodType = readTaxPeriodTypesUseCase.readByCode(taxPeriodConfig.getTaxPeriodTypeCode());
+            var taxPeriodType = readTaxPeriodTypesUseCase.readByCode(taxPeriodConfig.getTaxPeriodCode());
             var segments = refTaxPeriodSegmentEntityRepository.findByTaxPeriodTypeIdOrderByCodeAsc(taxPeriodType.get().getId());
             Map<Long, Multilingual> segmentMap = new HashMap<>();
             segments.forEach(segment ->  segmentMap.put(segment.getId(), segment.getDescription()));

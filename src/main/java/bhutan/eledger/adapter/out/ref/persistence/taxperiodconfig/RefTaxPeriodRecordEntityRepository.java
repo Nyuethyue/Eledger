@@ -7,7 +7,7 @@ import java.util.Collection;
 interface RefTaxPeriodRecordEntityRepository extends JpaRepository<RefTaxPeriodRecordEntity, Long> {
 
     @Query(value = "SELECT *" +
-            " FROM ref.ref_tax_period_record tpr" +
+            " FROM ref.tax_period_config_record tpr" +
             " WHERE tpr.tax_period_config_id = :taxPeriodConfigId"
             , nativeQuery = true)
     Collection<RefTaxPeriodRecordEntity> readTaxPeriodRecords(long taxPeriodConfigId);

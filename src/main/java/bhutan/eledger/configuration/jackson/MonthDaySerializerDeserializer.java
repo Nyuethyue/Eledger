@@ -13,7 +13,7 @@ import java.time.MonthDay;
 import java.time.format.DateTimeFormatter;
 
 @JsonComponent
-public class MonthDaySerializerDeserializer {
+class MonthDaySerializerDeserializer {
     static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM-dd");
 
     public static class MonthDaySerializer

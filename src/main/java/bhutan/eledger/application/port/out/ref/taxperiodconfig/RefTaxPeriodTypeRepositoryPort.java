@@ -1,11 +1,11 @@
 package bhutan.eledger.application.port.out.ref.taxperiodconfig;
 
-import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodType;
+import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriod;
 
 import java.util.Collection;
 import java.util.Optional;
 
 public interface RefTaxPeriodTypeRepositoryPort {
-    Collection<RefTaxPeriodType> readAll();
-    Optional<RefTaxPeriodType> readByCode(String code);
+    Collection<RefTaxPeriod> readAll();
+    Optional<RefTaxPeriod> readByCode(String code);
 }
