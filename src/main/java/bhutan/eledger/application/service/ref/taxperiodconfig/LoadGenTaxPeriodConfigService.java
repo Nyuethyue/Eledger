@@ -52,9 +52,6 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
         }
     }
 
-    private static final long MONTHLY = 1;// 12 rows
-    private static final long QUARTERLY = 2; // 4 rows
-    private static final long FORTNIGHTLY = 3; // 24 rows
     private static final int TAX_TYPE_GL_ACCOUNT_PART_TYPE_ID = 5;
 
     private Map<String, String> loadTaxTypeFullCodeMap() {
@@ -170,6 +167,41 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                                 taxTypeCodeDisplayValue
                         ));
             }
+        }  else if (TaxPeriodType.HALFYEARLY.getValue().equals(command.getTaxPeriodTypeCode())) {
+            int halfIndex = 0;
+            for (RefTaxPeriodSegment segment : segments) {
+                halfIndex++;
+                LocalDate endOfHalf = YearMonth.of(year, 6 * halfIndex).atEndOfMonth();
+                records.add(
+                        TaxPeriodRecord.withoutId(
+                                segment.getId(),
+                                segment.getDescription(),
+                                LocalDate.of(year, (6 * halfIndex) - 5, 1),// Start period
+                                endOfHalf,// End period
+                                addDays(endOfHalf, command.getDueDateCountForReturnFiling(), consider, nonWorkingDays),
+                                addDays(endOfHalf, command.getDueDateCountForPayment(), consider, nonWorkingDays),
+                                addDays(endOfHalf, command.getDueDateCountForReturnFiling() + 1, consider, nonWorkingDays),
+                                addDays(endOfHalf, command.getDueDateCountForPayment() + 1, consider, nonWorkingDays),
+                                command.getValidFrom(),
+                                taxTypeCodeDisplayValue
+                        ));
+            }
+        }  else if (TaxPeriodType.YEARLY.getValue().equals(command.getTaxPeriodTypeCode())) {
+            RefTaxPeriodSegment segment = segments.iterator().next();
+                LocalDate endOfYear = YearMonth.of(year, 12).atEndOfMonth();
+                records.add(
+                        TaxPeriodRecord.withoutId(
+                                segment.getId(),
+                                segment.getDescription(),
+                                LocalDate.of(year, 1, 1),// Start period
+                                endOfYear,// End period
+                                addDays(endOfYear, command.getDueDateCountForReturnFiling(), consider, nonWorkingDays),
+                                addDays(endOfYear, command.getDueDateCountForPayment(), consider, nonWorkingDays),
+                                addDays(endOfYear, command.getDueDateCountForReturnFiling() + 1, consider, nonWorkingDays),
+                                addDays(endOfYear, command.getDueDateCountForPayment() + 1, consider, nonWorkingDays),
+                                command.getValidFrom(),
+                                taxTypeCodeDisplayValue
+                        ));
         }
 
         return RefTaxPeriodConfig.withoutId(

@@ -56,14 +56,22 @@ class CreateRefTaxPeriodConfigTest {
     static final long TRANSACTION_TYPE_LIABILITY = 1;
 
     @Test
-    void createTest() {
+    void createAllTaxPeriodTypesTest() {
+        testTaxPeriodType(TaxPeriodType.MONTHLY);
+        testTaxPeriodType(TaxPeriodType.FORTNIGHTLY);
+        testTaxPeriodType(TaxPeriodType.QUARTERLY);
+        testTaxPeriodType(TaxPeriodType.QUARTERLY);
+        testTaxPeriodType(TaxPeriodType.YEARLY);
+    }
+
+    void testTaxPeriodType(TaxPeriodType taxPeriodType) {
         LocalDate validFrom = LocalDate.now();
         LocalDate validTo = LocalDate.now();
         LoadGenTaxPeriodConfigUseCase.LoadGenTaxPeriodConfigCommand generateCommand =
                 new LoadGenTaxPeriodConfigUseCase.LoadGenTaxPeriodConfigCommand(
                         GST_TAX_TYPE,
                         2022,
-                        TaxPeriodType.MONTHLY.getValue(),
+                        taxPeriodType.getValue(),
                         TRANSACTION_TYPE_LIABILITY,
                         11,
                         11,
@@ -72,7 +80,7 @@ class CreateRefTaxPeriodConfigTest {
                         false);
 
         RefTaxPeriodConfig configGenerated = loadGenTaxPeriodConfigUseCase.loadGen(generateCommand);
-        Assertions.assertNotNull(configGenerated);
+        validate(configGenerated);
 
         Collection<UpsertTaxPeriodUseCase.TaxPeriodRecordCommand> records = new LinkedList<>();
         for(TaxPeriodRecord gr : configGenerated.getRecords()) {
@@ -106,13 +114,22 @@ class CreateRefTaxPeriodConfigTest {
 
         Long recordId = upsertTaxPeriodUseCase.upsert(upsertCommand);
 
-        RefTaxPeriodConfig configLoaded = loadGenTaxPeriodConfigUseCase.loadGen(generateCommand);
+        RefTaxPeriodConfig configPersisted = loadGenTaxPeriodConfigUseCase.loadGen(generateCommand);
+        validate(configPersisted);
+        Assertions.assertEquals(recordId, configPersisted.getId());
 
 //        try {
 //            System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(configLoaded));
 //        } catch (Exception i) {}
+    }
+
+    private void validate(RefTaxPeriodConfig configLoaded) {
         Assertions.assertNotNull(configLoaded);
-        Assertions.assertEquals(recordId, configLoaded.getId());
+
+        configLoaded.getRecords().forEach(record -> {
+            Assertions.assertNotNull(record.getPeriodName());
+            Assertions.assertNotNull(record.getPeriodName().getTranslation("en"));
+        });
     }
 
     @Test

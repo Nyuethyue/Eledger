@@ -57,7 +57,7 @@ public class TaxPeriodRecord {
     public static TaxPeriodRecord withId(
             Long id,
             Long periodId,
-            Multilingual periodName,
+            Multilingual periodSegmentName,
             LocalDate periodStartDate,
             LocalDate periodEndDate,
             LocalDate filingDueDate,
@@ -70,7 +70,7 @@ public class TaxPeriodRecord {
         return new TaxPeriodRecord(
                 id,
                 periodId,
-                periodName,
+                periodSegmentName,
                 periodStartDate,
                 periodEndDate,
                 filingDueDate,

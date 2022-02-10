@@ -50,9 +50,11 @@ class RefTaxPeriodAdapter implements RefTaxPeriodRepositoryPort {
         var result =
                 refTaxPeriodConfigEntityRepository.readBy(taxTypeCode, calendarYear, taxPeriodTypeCode, transactionTypeId);
         if(result.isPresent()) {
-            var segments = refTaxPeriodSegmentEntityRepository.findByTaxPeriodTypeIdOrderByCodeAsc(result.get().getId());
+            var taxPeriodConfig = result.get();
+            var taxPeriodType = readTaxPeriodTypesUseCase.readByCode(taxPeriodConfig.getTaxPeriodTypeCode());
+            var segments = refTaxPeriodSegmentEntityRepository.findByTaxPeriodTypeIdOrderByCodeAsc(taxPeriodType.get().getId());
             Map<Long, Multilingual> segmentMap = new HashMap<>();
-            segments.forEach(segment ->  segmentMap.put(Long.parseLong(segment.getCode()), segment.getDescription()));
+            segments.forEach(segment ->  segmentMap.put(segment.getId(), segment.getDescription()));
             Collection<RefTaxPeriodRecordEntity> entityRecords = refTaxPeriodRecordEntityRepository.readTaxPeriodRecords(result.get().getId());
             return Optional.of(refTaxPeriodMapper.mapToDomain(result.get(),  entityRecords, segmentMap));
         } else {
