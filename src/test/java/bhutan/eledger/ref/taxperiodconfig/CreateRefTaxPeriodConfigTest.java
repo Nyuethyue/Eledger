@@ -60,7 +60,7 @@ class CreateRefTaxPeriodConfigTest {
         testTaxPeriodType(TaxPeriodType.MONTHLY);
         testTaxPeriodType(TaxPeriodType.FORTNIGHTLY);
         testTaxPeriodType(TaxPeriodType.QUARTERLY);
-        testTaxPeriodType(TaxPeriodType.QUARTERLY);
+        testTaxPeriodType(TaxPeriodType.HALFYEARLY);
         testTaxPeriodType(TaxPeriodType.YEARLY);
     }
 
@@ -124,8 +124,6 @@ class CreateRefTaxPeriodConfigTest {
     }
 
     private void validate(RefTaxPeriodConfig configLoaded) {
-        Assertions.assertNotNull(configLoaded);
-
         configLoaded.getRecords().forEach(record -> {
             Assertions.assertNotNull(record.getPeriodName());
             Assertions.assertNotNull(record.getPeriodName().getTranslation("en"));
