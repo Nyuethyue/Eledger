@@ -4,12 +4,13 @@ import am.iunetworks.lib.multilingual.core.Multilingual;
 import bhutan.eledger.application.port.in.ref.taxperiodconfig.ReadTaxPeriodTypesUseCase;
 import bhutan.eledger.application.port.out.ref.taxperiodconfig.RefOpenCloseTaxPeriodRepositoryPort;
 import bhutan.eledger.domain.ref.taxperiodconfig.RefOpenCloseTaxPeriod;
+import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodSegment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -32,9 +33,11 @@ class RefOpenCloseTaxPeriodAdapter implements RefOpenCloseTaxPeriodRepositoryPor
         return refOpenCloseTaxPeriodEntityRepository.readBy(glAccountPartFullCode, calendarYear, taxPeriodCode, transactionTypeId)
                 .map(res -> {
                     var taxPeriodType = readTaxPeriodTypesUseCase.readByCode(res.getTaxPeriodCode());
-                    var segments = refTaxPeriodSegmentEntityRepository.findAllByTaxPeriodIdOrderByIdAsc(taxPeriodType.get().getId());
-                    Map<Long, Multilingual> segmentMap = new HashMap<>();
-                    segments.forEach(segment -> segmentMap.put(segment.getId(), segment.getDescription()));
+                    Map<Long, Multilingual> segmentMap = refTaxPeriodSegmentEntityRepository.findAllByTaxPeriodIdOrderByIdAsc(taxPeriodType.get().getId())
+                            .stream()
+                            .collect(
+                                    Collectors.toMap(RefTaxPeriodSegment::getId, RefTaxPeriodSegment::getDescription)
+                            );
                     return refOpenCloseTaxPeriodMapper.mapToDomain(res, segmentMap);
                 });
     }
@@ -44,9 +47,11 @@ class RefOpenCloseTaxPeriodAdapter implements RefOpenCloseTaxPeriodRepositoryPor
         return refOpenCloseTaxPeriodEntityRepository.findById(id)
                 .map(res -> {
                     var taxPeriodType = readTaxPeriodTypesUseCase.readByCode(res.getTaxPeriodCode());
-                    var segments = refTaxPeriodSegmentEntityRepository.findAllByTaxPeriodIdOrderByIdAsc(taxPeriodType.get().getId());
-                    Map<Long, Multilingual> segmentMap = new HashMap<>();
-                    segments.forEach(segment -> segmentMap.put(segment.getId(), segment.getDescription()));
+                    Map<Long, Multilingual> segmentMap = refTaxPeriodSegmentEntityRepository.findAllByTaxPeriodIdOrderByIdAsc(taxPeriodType.get().getId())
+                            .stream()
+                            .collect(
+                                    Collectors.toMap(RefTaxPeriodSegment::getId, RefTaxPeriodSegment::getDescription)
+                            );
                     return refOpenCloseTaxPeriodMapper.mapToDomain(res, segmentMap);
                 });
     }
