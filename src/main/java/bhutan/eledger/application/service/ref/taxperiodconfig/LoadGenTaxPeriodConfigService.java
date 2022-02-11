@@ -76,7 +76,7 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
     public RefTaxPeriodConfig generate(LoadGenTaxPeriodConfigCommand command) {
         var taxPeriodType = readTaxPeriodTypesUseCase.readByCode(command.getTaxPeriodCode());
         Collection<RefTaxPeriodSegment> segments =
-                loadTaxPeriodSegmentsUseCase.findByTaxPeriodTypeId(taxPeriodType.get().getId());
+                loadTaxPeriodSegmentsUseCase.findByTaxPeriodId(taxPeriodType.get().getId());
         Map<String, String> taxTypeFullCodeMap = loadTaxTypeFullCodeMap();
         String taxTypeCodeDisplayValue = taxTypeCodeDisplayValue(command.getTaxTypeCode(), taxTypeFullCodeMap);
         int year = command.getCalendarYear();

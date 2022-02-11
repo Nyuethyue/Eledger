@@ -39,12 +39,12 @@ public class RefTaxPeriodSegment {
     private Collection<RefTaxPeriodSegmentDescription> descriptions;
 
     @Column(name = "tax_period_id")
-    private Long taxPeriodTypeId;
+    private Long taxPeriodId;
 
-    private RefTaxPeriodSegment(String code, Multilingual description, Long taxPeriodTypeId) {
+    private RefTaxPeriodSegment(String code, Multilingual description, Long taxPeriodId) {
         this.code = code;
         this.description = description;
-        this.taxPeriodTypeId = taxPeriodTypeId;
+        this.taxPeriodId = taxPeriodId;
     }
 
     protected Collection<RefTaxPeriodSegmentDescription> getDescriptions() {
@@ -59,12 +59,12 @@ public class RefTaxPeriodSegment {
     public static RefTaxPeriodSegment withoutId(
             String code,
             Multilingual description,
-            Long taxPeriodTypeId
+            Long taxPeriodId
     ) {
         return new RefTaxPeriodSegment(
                 code,
                 description,
-                taxPeriodTypeId
+                taxPeriodId
         );
     }
 }
