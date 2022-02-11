@@ -61,11 +61,11 @@
         <sqlFile path="../../sql/ref/014_insert_tax_period_ref_data.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="Tax Period Calendar ref table" author="A.A." dbms="postgresql">
-        <sqlFile path="../../sql/ref/016_create_tax_period_config_ref_table.sql" relativeToChangelogFile="true"/>
-    </changeSet>
-
     <changeSet id="Open close Tax Period  ref table" author="P.L" dbms="postgresql">
         <sqlFile path="../../sql/ref/015_create_open_close_tax_period_ref_table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="Tax Period Calendar ref table" author="A.A." dbms="postgresql">
+        <sqlFile path="../../sql/ref/016_create_tax_period_config_ref_table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 </databaseChangeLog>
