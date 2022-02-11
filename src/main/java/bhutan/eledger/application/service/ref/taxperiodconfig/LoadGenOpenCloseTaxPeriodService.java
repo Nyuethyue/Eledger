@@ -59,7 +59,7 @@ class LoadGenOpenCloseTaxPeriodService implements LoadGenOpenCloseTaxPeriodUseCa
         var taxPeriodType = readTaxPeriodTypesUseCase.readByCode(command.getTaxPeriodCode());
 
         Collection<RefTaxPeriodSegment> segments =
-                loadTaxPeriodSegmentsUseCase.findByTaxPeriodTypeId(taxPeriodType.get().getId());
+                loadTaxPeriodSegmentsUseCase.findByTaxPeriodId(taxPeriodType.get().getId());
 
         Collection<RefOpenCloseTaxPeriodRecord> records = new LinkedList<>();
         int year = command.getCalendarYear();

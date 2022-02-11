@@ -32,11 +32,11 @@ class RefOpenCloseTaxPeriodAdapter implements RefOpenCloseTaxPeriodRepositoryPor
         return refOpenCloseTaxPeriodEntityRepository.readBy(glAccountPartFullCode, calendarYear, taxPeriodCode, transactionTypeId)
                 .map(res -> {
                     var taxPeriodType = readTaxPeriodTypesUseCase.readByCode(res.getTaxPeriodCode());
-                    var segments = refTaxPeriodSegmentEntityRepository.findByTaxPeriodTypeIdOrderByCodeAsc(taxPeriodType.get().getId());
+                    var segments = refTaxPeriodSegmentEntityRepository.findAllByTaxPeriodIdOrderByIdAsc(taxPeriodType.get().getId());
                     Map<Long, Multilingual> segmentMap = new HashMap<>();
                     segments.forEach(segment -> segmentMap.put(segment.getId(), segment.getDescription()));
-                    return Optional.of(refOpenCloseTaxPeriodMapper.mapToDomain(res, segmentMap));
-                }).orElse(Optional.empty());
+                    return refOpenCloseTaxPeriodMapper.mapToDomain(res, segmentMap);
+                });
     }
 
     @Override
@@ -44,11 +44,11 @@ class RefOpenCloseTaxPeriodAdapter implements RefOpenCloseTaxPeriodRepositoryPor
         return refOpenCloseTaxPeriodEntityRepository.findById(id)
                 .map(res -> {
                     var taxPeriodType = readTaxPeriodTypesUseCase.readByCode(res.getTaxPeriodCode());
-                    var segments = refTaxPeriodSegmentEntityRepository.findByTaxPeriodTypeIdOrderByCodeAsc(taxPeriodType.get().getId());
+                    var segments = refTaxPeriodSegmentEntityRepository.findAllByTaxPeriodIdOrderByIdAsc(taxPeriodType.get().getId());
                     Map<Long, Multilingual> segmentMap = new HashMap<>();
                     segments.forEach(segment -> segmentMap.put(segment.getId(), segment.getDescription()));
-                    return Optional.of(refOpenCloseTaxPeriodMapper.mapToDomain(res, segmentMap));
-                }).orElse(Optional.empty());
+                    return refOpenCloseTaxPeriodMapper.mapToDomain(res, segmentMap);
+                });
     }
 
     @Override
