@@ -19,7 +19,7 @@ class ReadTaxPeriodSegmentsService implements LoadTaxPeriodSegmentsUseCase {
     private final RefTaxPeriodSegmentRepositoryPort refTaxPeriodSegmentRepositoryPort;
 
     @Override
-    public Collection<RefTaxPeriodSegment> findByTaxPeriodTypeId(Long taxPeriodTypeId) {
-        return refTaxPeriodSegmentRepositoryPort.loadByTaxPeriodTypeId(taxPeriodTypeId);
+    public Collection<RefTaxPeriodSegment> findByTaxPeriodId(Long taxPeriodId) {
+        return refTaxPeriodSegmentRepositoryPort.loadByTaxPeriodId(taxPeriodId);
     }
 }

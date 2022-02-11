@@ -137,7 +137,7 @@ class CreateRefTaxPeriodConfigTest {
         taxPeriodTypesList.forEach(taxPeriod -> {
             var code = taxPeriod.getCode();
             var taxPeriodSegments =
-                    loadTaxPeriodSegmentsUseCase.findByTaxPeriodTypeId(taxPeriod.getId());
+                    loadTaxPeriodSegmentsUseCase.findByTaxPeriodId(taxPeriod.getId());
             Assertions.assertNotNull(taxPeriodSegments);
         });
     }
