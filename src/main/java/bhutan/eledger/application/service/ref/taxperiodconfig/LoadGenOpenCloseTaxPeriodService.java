@@ -1,9 +1,14 @@
 package bhutan.eledger.application.service.ref.taxperiodconfig;
 
 import bhutan.eledger.application.port.in.ref.taxperiodconfig.LoadGenOpenCloseTaxPeriodUseCase;
+import bhutan.eledger.application.port.in.ref.taxperiodconfig.LoadTaxPeriodSegmentsUseCase;
+import bhutan.eledger.application.port.in.ref.taxperiodconfig.ReadTaxPeriodTypesUseCase;
 import bhutan.eledger.application.port.out.ref.taxperiodconfig.RefOpenCloseTaxPeriodRepositoryPort;
-import bhutan.eledger.domain.ref.taxperiod.OpenCloseTaxPeriodRecord;
-import bhutan.eledger.domain.ref.taxperiod.RefOpenCloseTaxPeriodConfig;
+import bhutan.eledger.common.ref.taxperiodconfig.TaxPeriodType;
+import bhutan.eledger.domain.ref.taxperiodconfig.RefOpenCloseTaxPeriodRecord;
+import bhutan.eledger.domain.ref.taxperiodconfig.RefOpenCloseTaxPeriod;
+import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodSegment;
+import bhutan.eledger.domain.ref.taxperiodconfig.TaxPeriodConfigRecord;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -12,9 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.Year;
 import java.time.YearMonth;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Map;
 
 @Log4j2
 @Service
@@ -23,26 +30,20 @@ import java.util.LinkedList;
 class LoadGenOpenCloseTaxPeriodService implements LoadGenOpenCloseTaxPeriodUseCase {
 
     private final RefOpenCloseTaxPeriodRepositoryPort refOpenCloseTaxPeriodRepositoryPort;
+    private final LoadTaxPeriodSegmentsUseCase loadTaxPeriodSegmentsUseCase;
+    private final ReadTaxPeriodTypesUseCase readTaxPeriodTypesUseCase;
 
-    private static final long MONTHLY = 1;// 12 rows
-    private static final long QUARTERLY = 2; // 4 rows
-    private static final long FORTNIGHTLY = 3; // 24 rows
-
-    private static final String quarter = " quarter";
     private static final String fortnight = " fortnight";
 
     @Override
-    public RefOpenCloseTaxPeriodConfig loadGen(@Valid LoadGenOpenCloseTaxPeriodUseCase.LoadGenOpenCloseTaxPeriodConfigCommand command) {
+    public RefOpenCloseTaxPeriod loadGen(@Valid LoadGenOpenCloseTaxPeriodUseCase.LoadGenOpenCloseTaxPeriodConfigCommand command) {
+        log.trace("Loading open close tax period record with command: {}", command);
 
-        if (command.getGlAccountPartFullCode() == null || command.getCalendarYear() == null ||
-                command.getTaxPeriodTypeId() == null || command.getTransactionTypeId() == null) {
-            return generate(command);
-        }
         var refOpenCloseTaxPeriodConfig =
-                refOpenCloseTaxPeriodRepositoryPort.readBy(
+                refOpenCloseTaxPeriodRepositoryPort.readByGlFullCodeYearTaxPeriodTransType(
                         command.getGlAccountPartFullCode(),
                         command.getCalendarYear(),
-                        command.getTaxPeriodTypeId(),
+                        command.getTaxPeriodCode(),
                         command.getTransactionTypeId()
                 );
         if (refOpenCloseTaxPeriodConfig.isPresent()) {
@@ -52,47 +53,56 @@ class LoadGenOpenCloseTaxPeriodService implements LoadGenOpenCloseTaxPeriodUseCa
         }
     }
 
-    public RefOpenCloseTaxPeriodConfig generate(LoadGenOpenCloseTaxPeriodConfigCommand command) {
-        Collection<OpenCloseTaxPeriodRecord> records = new LinkedList<>();
 
+    public RefOpenCloseTaxPeriod generate(LoadGenOpenCloseTaxPeriodConfigCommand command) {
+        log.trace("Generating open close tax period record with command: {}", command);
+        var taxPeriodType = readTaxPeriodTypesUseCase.readByCode(command.getTaxPeriodCode());
+
+        Collection<RefTaxPeriodSegment> segments =
+                loadTaxPeriodSegmentsUseCase.findByTaxPeriodId(taxPeriodType.get().getId());
+
+        Collection<RefOpenCloseTaxPeriodRecord> records = new LinkedList<>();
         int year = command.getCalendarYear();
-        if (MONTHLY == command.getTaxPeriodTypeId()) {
-            for (int monthIndex = 1; monthIndex <= 12; monthIndex++) {
-                LocalDate startDate = LocalDate.of(year, monthIndex, 1).plusMonths(1);
-                LocalDate endDate = command.getYears() != null
-                        ? YearMonth.of(startDate.plusYears(command.getYears()).getYear(), startDate.plusYears(command.getYears()).getMonth()).atEndOfMonth()
-                        : YearMonth.of(startDate.plusMonths(command.getMonth() - 1).getYear(), startDate.plusMonths(command.getMonth() - 1).getMonth()).atEndOfMonth();
+        if (TaxPeriodType.MONTHLY.getValue().equals(command.getTaxPeriodCode())) {
+            int monthIndex = 0;
+            for (RefTaxPeriodSegment segment : segments) {
+                monthIndex++;
+                LocalDate openDate = LocalDate.of(year, monthIndex, 1).plusMonths(1);
+                LocalDate closeDate = command.getYears() != null
+                        ? YearMonth.of(openDate.plusYears(command.getYears()).getYear(), openDate.plusYears(command.getYears()).getMonth()).atEndOfMonth()
+                        : YearMonth.of(openDate.plusMonths(command.getMonth() - 1).getYear(), openDate.plusMonths(command.getMonth() - 1).getMonth()).atEndOfMonth();
                 records.add(
-                        OpenCloseTaxPeriodRecord.withoutId(
-                                monthIndex,
-                                String.valueOf(Month.of(monthIndex)),
-                                startDate,
-                                endDate
+                        RefOpenCloseTaxPeriodRecord.withoutId(
+                                segment.getId(),
+                                segment.getDescription(),
+                                openDate,
+                                closeDate
 
                         ));
             }
 
-        } else if (QUARTERLY == command.getTaxPeriodTypeId()) {
-            LocalDate startOfQuarter = command.getMonth() != null ? LocalDate.of(year, 4, 1) :
+        } else if (TaxPeriodType.QUARTERLY.getValue().equals(command.getTaxPeriodCode())) {
+            LocalDate openOfQuarter = command.getMonth() != null ? LocalDate.of(year, 4, 1) :
                     LocalDate.of(year, 4, 1).plusYears(command.getYears());
-            LocalDate endOfQuarter = startOfQuarter;
-            for (int quarterIndex = 1; quarterIndex <= 4; quarterIndex++) {
-                endOfQuarter = command.getMonth() != 0 ? startOfQuarter.plusMonths(command.getMonth() - 1) : startOfQuarter.plusYears(command.getYears());
+            LocalDate closeOfQuarter = openOfQuarter;
+            for (RefTaxPeriodSegment segment : segments) {
+                closeOfQuarter = command.getMonth() != null ? openOfQuarter.plusMonths(command.getMonth() - 1) : openOfQuarter.plusYears(command.getYears());
                 records.add(
-                        OpenCloseTaxPeriodRecord.withoutId(
-                                20 + quarterIndex,
-                                quarterIndex + quarter,
-                                startOfQuarter,
-                                YearMonth.of(endOfQuarter.getYear(), endOfQuarter.getMonth()).atEndOfMonth()
+                        RefOpenCloseTaxPeriodRecord.withoutId(
+                                segment.getId(),
+                                segment.getDescription(),
+                                openOfQuarter,
+                                YearMonth.of(closeOfQuarter.getYear(), closeOfQuarter.getMonth()).atEndOfMonth()
                         ));
-                startOfQuarter = startOfQuarter.plusMonths(3);
+                openOfQuarter = openOfQuarter.plusMonths(3);
             }
 
-        } else if (FORTNIGHTLY == command.getTaxPeriodTypeId()) {
-
-            LocalDate startOfFortnight;
-            LocalDate endOfFortnight;
-            for (int fortnightIndex = 2; fortnightIndex <= 25; fortnightIndex++) {
+        }else if (TaxPeriodType.FORTNIGHTLY.getValue().equals(command.getTaxPeriodCode())) {
+            int fortnightIndex = 1;
+            LocalDate openOfFortnight;
+            LocalDate closeOfFortnight;
+            for (RefTaxPeriodSegment segment : segments) {
+                fortnightIndex++;
                 int fortnightFirstDay;
                 int fortnightMonth;
                 if (1 == (fortnightIndex % 2)) {
@@ -100,27 +110,56 @@ class LoadGenOpenCloseTaxPeriodService implements LoadGenOpenCloseTaxPeriodUseCa
                     fortnightFirstDay = 1;
                 } else {
                     fortnightMonth = fortnightIndex / 2;
-                    fortnightFirstDay = 15;
+                    fortnightFirstDay = 16;
                 }
 
                 year = fortnightMonth == 13 ? year + 1 : year;
                 fortnightMonth = fortnightMonth == 13 ? 1 : fortnightMonth;
-                startOfFortnight = LocalDate.of(year, fortnightMonth, fortnightFirstDay);
-                endOfFortnight = startOfFortnight.plusMonths(command.getMonth()).minusDays(1);
+                openOfFortnight = LocalDate.of(year, fortnightMonth, fortnightFirstDay);
+                closeOfFortnight = command.getMonth()!=null?openOfFortnight.plusMonths(command.getMonth()).minusDays(1):
+                        openOfFortnight.plusYears(command.getYears()).minusDays(1);
                 records.add(
-                        OpenCloseTaxPeriodRecord.withoutId(
-                                30 + (fortnightIndex - 1),
-                                (fortnightIndex - 1) + fortnight,
-                                startOfFortnight,
-                                endOfFortnight
+                        RefOpenCloseTaxPeriodRecord.withoutId(
+                                segment.getId(),
+                                segment.getDescription(),
+                                openOfFortnight,
+                                closeOfFortnight
                         ));
             }
+        }else if (TaxPeriodType.HALFYEARLY.getValue().equals(command.getTaxPeriodCode())) {
+            int halfIndex = 0;
+            LocalDate openOfHalf = LocalDate.of(year,1,1 );
+            for (RefTaxPeriodSegment segment : segments) {
+                halfIndex++;
+                openOfHalf = openOfHalf.plusMonths(6);
+                LocalDate closeOfHalf = command.getMonth()!=null?openOfHalf.plusMonths(command.getMonth()-1)
+                        :openOfHalf.plusYears(command.getYears());
+                records.add(
+                        RefOpenCloseTaxPeriodRecord.withoutId(
+                                segment.getId(),
+                                segment.getDescription(),
+                                openOfHalf,
+                                YearMonth.of(closeOfHalf.getYear(),closeOfHalf.getMonth()).atEndOfMonth()
+                        ));
+            }
+        }else if (TaxPeriodType.YEARLY.getValue().equals(command.getTaxPeriodCode())) {
+            RefTaxPeriodSegment segment = segments.iterator().next();
+            LocalDate openYear = LocalDate.of(year, 1, 1).plusYears(1);
+            LocalDate closeYear =command.getMonth()!=null?openYear.plusMonths(command.getMonth()-1)
+                    :openYear.plusMonths(command.getYears());
+            records.add(
+                    RefOpenCloseTaxPeriodRecord.withoutId(
+                            segment.getId(),
+                            segment.getDescription(),
+                            openYear,
+                            YearMonth.of(closeYear.getYear(),closeYear.getMonth()).atEndOfMonth()
+                    ));
         }
 
-        return RefOpenCloseTaxPeriodConfig.withoutId(
+        return RefOpenCloseTaxPeriod.withoutId(
                 command.getGlAccountPartFullCode(),
                 command.getCalendarYear(),
-                command.getTaxPeriodTypeId(),
+                command.getTaxPeriodCode(),
                 command.getTransactionTypeId(),
                 command.getYears(),
                 command.getMonth(),

@@ -19,11 +19,8 @@ class RefOpenCloseTaxPeriodRecordEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "period_id")
-    private int periodId;
-
-    @Column(name = "period")
-    private String period;
+    @Column(name = "period_segment_id")
+    private Long periodSegmentId;
 
     @Column(name = "period_open_date")
     private LocalDate periodOpenDate;
@@ -38,14 +35,12 @@ class RefOpenCloseTaxPeriodRecordEntity {
 
     public RefOpenCloseTaxPeriodRecordEntity(
             Long id,
-            Integer periodId,
-            String period,
+            Long periodSegmentId,
             LocalDate periodOpenDate,
             LocalDate periodCloseDate
     ) {
         this.id = id;
-        this.periodId = periodId;
-        this.period = period;
+        this.periodSegmentId = periodSegmentId;
         this.periodOpenDate = periodOpenDate;
         this.periodCloseDate = periodCloseDate;
     }

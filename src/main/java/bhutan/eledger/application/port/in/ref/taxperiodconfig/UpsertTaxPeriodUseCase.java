@@ -31,6 +31,7 @@ public interface UpsertTaxPeriodUseCase {
         @NotNull
         private final String taxPeriodCode;
 
+        @NotNull
         private final Long transactionTypeId;
 
         @Valid

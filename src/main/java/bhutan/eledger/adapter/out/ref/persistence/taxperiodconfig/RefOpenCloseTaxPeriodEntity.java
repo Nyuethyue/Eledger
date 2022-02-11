@@ -24,19 +24,19 @@ class RefOpenCloseTaxPeriodEntity {
     private String glAccountPartFullCode;// taxTypeCode;
 
     @Column(name = "calendar_year")
-    private int calendarYear;
+    private Integer calendarYear;
 
-    @Column(name = "tax_period_type_id")
-    private long taxPeriodTypeId;
+    @Column(name = "tax_period_code")
+    private String taxPeriodCode;
 
     @Column(name = "transaction_type_id")
     private long transactionTypeId;
 
-    @Column(name = "years")
-    private int years;
+    @Column(name = "no_of_years")
+    private Integer yearsNo;
 
-    @Column(name = "month")
-    private int month;
+    @Column(name = "no_of_month")
+    private Integer month;
 
     @OneToMany(
             mappedBy = "openCloseTaxPeriodEntity",
@@ -47,18 +47,20 @@ class RefOpenCloseTaxPeriodEntity {
     private Set<RefOpenCloseTaxPeriodRecordEntity> records;
 
     public RefOpenCloseTaxPeriodEntity(
+            Long id,
             String glAccountPartFullCode,
             Integer calendarYear,
-            Long taxPeriodTypeId,
+            String taxPeriodCode,
             Long transactionTypeId,
-            Integer years,
+            Integer yearsNo,
             Integer month
     ) {
+        this.id = id;
         this.glAccountPartFullCode = glAccountPartFullCode;
         this.calendarYear = calendarYear;
-        this.taxPeriodTypeId = taxPeriodTypeId;
+        this.taxPeriodCode = taxPeriodCode;
         this.transactionTypeId = transactionTypeId;
-        this.years = years;
+        this.yearsNo = yearsNo;
         this.month = month;
     }
 
