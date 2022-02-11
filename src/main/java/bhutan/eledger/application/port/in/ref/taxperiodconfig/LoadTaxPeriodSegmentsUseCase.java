@@ -8,5 +8,5 @@ import java.util.Collection;
 
 @Validated
 public interface LoadTaxPeriodSegmentsUseCase {
-    Collection<RefTaxPeriodSegment> findByTaxPeriodTypeId(@NotNull Long taxPeriodTypeId);
+    Collection<RefTaxPeriodSegment> findByTaxPeriodId(@NotNull Long taxPeriodTypeId);
 }
