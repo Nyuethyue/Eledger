@@ -22,7 +22,7 @@ class RefTaxPeriodSegmentController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
-    public Collection<RefTaxPeriodSegment> findByTaxPeriodTypeId(@NotNull Long taxPeriodId) {
+    public Collection<RefTaxPeriodSegment> findByTaxPeriodId(@NotNull Long taxPeriodId) {
         return loadTaxPeriodSegmentsUseCase.findByTaxPeriodId(taxPeriodId);
     }
 }
