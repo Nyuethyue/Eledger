@@ -1,6 +1,6 @@
 package bhutan.eledger.application.port.in.ref.taxperiodconfig;
 
-import bhutan.eledger.domain.ref.taxperiod.RefOpenCloseTaxPeriod;
+import bhutan.eledger.domain.ref.taxperiodconfig.RefOpenCloseTaxPeriod;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;

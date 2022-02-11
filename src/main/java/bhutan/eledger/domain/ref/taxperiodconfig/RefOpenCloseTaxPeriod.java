@@ -1,4 +1,4 @@
-package bhutan.eledger.domain.ref.taxperiod;
+package bhutan.eledger.domain.ref.taxperiodconfig;
 
 import lombok.Data;
 
@@ -7,19 +7,19 @@ import java.util.Collection;
 
 @Data(staticConstructor = "withId")
 public class RefOpenCloseTaxPeriod {
-    private final Long    id;
-    private final String  glAccountFullCode;
+    private final Long id;
+    private final String glAccountPartFullCode;
     private final Integer calendarYear;
-    private final Long    taxPeriodTypeId;
-    private final Long    transactionTypeId;
+    private final String taxPeriodCode;
+    private final Long transactionTypeId;
     private final Integer noOfYears;
     private final Integer noOfMonth;
     private final Collection<RefOpenCloseTaxPeriodRecord> records;
 
     public static RefOpenCloseTaxPeriod withoutId(
-            String glAccountFullCode,
+            String glAccountPartFullCode,
             Integer calendarYear,
-            Long taxPeriodTypeId,
+            String taxPeriodCode,
             Long transactionTypeId,
             Integer noOfYears,
             Integer noOfMonth,
@@ -27,9 +27,9 @@ public class RefOpenCloseTaxPeriod {
     ) {
         return new RefOpenCloseTaxPeriod(
                 null,
-                glAccountFullCode,
+                glAccountPartFullCode,
                 calendarYear,
-                taxPeriodTypeId,
+                taxPeriodCode,
                 transactionTypeId,
                 noOfYears,
                 noOfMonth,
@@ -38,11 +38,5 @@ public class RefOpenCloseTaxPeriod {
 
     }
 
-    public void upsertOpenCloseTaxPeriodRecord(RefOpenCloseTaxPeriodRecord refOpenCloseTaxPeriodRecord) {
-        records.
-                stream()
-                .filter(record -> record.getPeriodId().equals(refOpenCloseTaxPeriodRecord.getPeriodId()))
-                .findAny();
-    }
 
 }

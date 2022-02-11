@@ -1,5 +1,6 @@
-package bhutan.eledger.domain.ref.taxperiod;
+package bhutan.eledger.domain.ref.taxperiodconfig;
 
+import am.iunetworks.lib.multilingual.core.Multilingual;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -7,21 +8,21 @@ import java.time.LocalDate;
 @Data(staticConstructor = "withId")
 public class RefOpenCloseTaxPeriodRecord {
     private final Long id;
-    private final Integer periodId;
-    private final String period;
+    private final Long periodSegmentId;
+    private final Multilingual periodSegmentName;
     private final LocalDate periodOpenDate;
     private final LocalDate periodCloseDate;
 
     public static RefOpenCloseTaxPeriodRecord withoutId(
-            Integer periodId,
-            String period,
+            Long periodSegmentId,
+            Multilingual periodSegmentName,
             LocalDate periodOpenDate,
             LocalDate periodCloseDate
     ) {
         return new RefOpenCloseTaxPeriodRecord(
                 null,
-                periodId,
-                period,
+                periodSegmentId,
+                periodSegmentName,
                 periodOpenDate,
                 periodCloseDate
         );

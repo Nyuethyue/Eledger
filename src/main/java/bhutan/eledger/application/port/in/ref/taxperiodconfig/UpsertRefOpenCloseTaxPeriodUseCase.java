@@ -18,14 +18,14 @@ public interface UpsertRefOpenCloseTaxPeriodUseCase {
     class UpsertOpenCloseTaxPeriodCommand {
         @NotNull
         @NotEmpty
-        private final String glAccountFullCode;
+        private final String glAccountPartFullCode;
 
         @NotNull
         @PositiveOrZero
         private final Integer calendarYear;
 
         @NotNull
-        private final Long taxPeriodTypeId;
+        private final String taxPeriodCode;
 
         @NotNull
         private final Long transactionTypeId;
@@ -33,7 +33,6 @@ public interface UpsertRefOpenCloseTaxPeriodUseCase {
         private final Integer years;
 
         private final Integer month;
-
 
         @NotNull
         @NotEmpty
@@ -46,11 +45,7 @@ public interface UpsertRefOpenCloseTaxPeriodUseCase {
 
         @Valid
         @NotNull
-        private Integer periodId;
-
-        @Valid
-        @NotNull
-        private String period;
+        private Long periodSegmentId;
 
         @Valid
         @NotNull

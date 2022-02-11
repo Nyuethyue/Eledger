@@ -1,6 +1,6 @@
 package bhutan.eledger.application.port.in.ref.taxperiodconfig;
 
-import bhutan.eledger.domain.ref.taxperiod.RefOpenCloseTaxPeriod;
+import bhutan.eledger.domain.ref.taxperiodconfig.RefOpenCloseTaxPeriod;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
@@ -16,7 +16,7 @@ public interface LoadGenOpenCloseTaxPeriodUseCase {
         private final String glAccountPartFullCode;
         @NotNull
         private final Integer calendarYear;
-        private final Long taxPeriodTypeId;
+        private final String taxPeriodCode;
         private final Long transactionTypeId;
         private final Integer years;
         private final Integer month;

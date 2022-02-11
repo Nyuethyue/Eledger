@@ -26,8 +26,8 @@ class RefOpenCloseTaxPeriodEntity {
     @Column(name = "calendar_year")
     private Integer calendarYear;
 
-    @Column(name = "tax_period_type_id")
-    private long taxPeriodTypeId;
+    @Column(name = "tax_period_code")
+    private String taxPeriodCode;
 
     @Column(name = "transaction_type_id")
     private long transactionTypeId;
@@ -50,7 +50,7 @@ class RefOpenCloseTaxPeriodEntity {
             Long id,
             String glAccountPartFullCode,
             Integer calendarYear,
-            Long taxPeriodTypeId,
+            String taxPeriodCode,
             Long transactionTypeId,
             Integer yearsNo,
             Integer month
@@ -58,7 +58,7 @@ class RefOpenCloseTaxPeriodEntity {
         this.id = id;
         this.glAccountPartFullCode = glAccountPartFullCode;
         this.calendarYear = calendarYear;
-        this.taxPeriodTypeId = taxPeriodTypeId;
+        this.taxPeriodCode = taxPeriodCode;
         this.transactionTypeId = transactionTypeId;
         this.yearsNo = yearsNo;
         this.month = month;

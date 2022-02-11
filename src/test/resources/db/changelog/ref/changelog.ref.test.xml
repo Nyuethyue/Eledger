@@ -52,20 +52,20 @@
         <sqlFile path="../../sql/ref/012_create_agency_gl_account_ref_table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="Open close Tax Period  ref table" author="P.L" dbms="postgresql">
-        <sqlFile path="../../sql/ref/013_create_open_close_tax_period_ref_table.sql" relativeToChangelogFile="true"/>
-    </changeSet>
 
     <changeSet id="Tax Period ref table" author="V.G." dbms="postgresql">
-        <sqlFile path="../../sql/ref/014_create_tax_period_ref_table.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/ref/013_create_tax_period_ref_table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
     <changeSet id="Tax Period insertion script" author="V.G." dbms="postgresql">
-        <sqlFile path="../../sql/ref/015_insert_tax_period_ref_data.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/ref/014_insert_tax_period_ref_data.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
     <changeSet id="Tax Period Calendar ref table" author="A.A." dbms="postgresql">
         <sqlFile path="../../sql/ref/016_create_tax_period_config_ref_table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <changeSet id="Open close Tax Period  ref table" author="P.L" dbms="postgresql">
+        <sqlFile path="../../sql/ref/015_create_open_close_tax_period_ref_table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
 </databaseChangeLog>

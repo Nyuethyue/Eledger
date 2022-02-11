@@ -1,6 +1,6 @@
 package bhutan.eledger.application.port.out.ref.taxperiodconfig;
 
-import bhutan.eledger.domain.ref.taxperiod.RefOpenCloseTaxPeriod;
+import bhutan.eledger.domain.ref.taxperiodconfig.RefOpenCloseTaxPeriod;
 
 import java.util.Optional;
 
@@ -9,7 +9,7 @@ public interface RefOpenCloseTaxPeriodRepositoryPort {
 
     Optional<RefOpenCloseTaxPeriod> readByGlFullCodeYearTaxPeriodTransType(String glAccountPartFullCode,
                                                                            Integer calendarYear,
-                                                                           Long taxPeriodTypeId,
+                                                                           String taxPeriodCode,
                                                                            Long transactionTypeId);
 
     Optional<RefOpenCloseTaxPeriod> readById(Long id);
