@@ -14,6 +14,6 @@ class RefTaxPeriodSegmentAdapter implements RefTaxPeriodSegmentRepositoryPort {
     private final RefTaxPeriodSegmentEntityRepository refTaxPeriodSegmentEntityRepository;
     @Override
     public List<RefTaxPeriodSegment> loadByTaxPeriodId(Long taxPeriodId) {
-        return refTaxPeriodSegmentEntityRepository.findByTaxPeriodIdOrderByIdAsc(taxPeriodId);
+        return refTaxPeriodSegmentEntityRepository.findAllByTaxPeriodIdOrderByIdAsc(taxPeriodId);
     }
 }
