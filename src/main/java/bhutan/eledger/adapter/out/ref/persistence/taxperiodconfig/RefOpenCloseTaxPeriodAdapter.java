@@ -29,35 +29,27 @@ class RefOpenCloseTaxPeriodAdapter implements RefOpenCloseTaxPeriodRepositoryPor
 
     @Override
     public Optional<RefOpenCloseTaxPeriod> readByGlFullCodeYearTaxPeriodTransType(String glAccountPartFullCode, Integer calendarYear, String taxPeriodCode, Long transactionTypeId) {
-        var result = refOpenCloseTaxPeriodEntityRepository.readBy(glAccountPartFullCode, calendarYear, taxPeriodCode, transactionTypeId);
-        if (result.isPresent()) {
-            var taxPeriodConfig = result.get();
-            var taxPeriodType = readTaxPeriodTypesUseCase.readByCode(taxPeriodConfig.getTaxPeriodCode());
-            var segments = refTaxPeriodSegmentEntityRepository.findByTaxPeriodTypeIdOrderByCodeAsc(taxPeriodType.get().getId());
-            Map<Long, Multilingual> segmentMap = new HashMap<>();
-            segments.forEach(segment -> segmentMap.put(segment.getId(), segment.getDescription()));
-            return Optional.of(refOpenCloseTaxPeriodMapper.mapToDomain(result.get(), segmentMap));
-        } else {
-            return Optional.empty();
-        }
+        return refOpenCloseTaxPeriodEntityRepository.readBy(glAccountPartFullCode, calendarYear, taxPeriodCode, transactionTypeId)
+                .map(res -> {
+                    var taxPeriodType = readTaxPeriodTypesUseCase.readByCode(res.getTaxPeriodCode());
+                    var segments = refTaxPeriodSegmentEntityRepository.findByTaxPeriodTypeIdOrderByCodeAsc(taxPeriodType.get().getId());
+                    Map<Long, Multilingual> segmentMap = new HashMap<>();
+                    segments.forEach(segment -> segmentMap.put(segment.getId(), segment.getDescription()));
+                    return Optional.of(refOpenCloseTaxPeriodMapper.mapToDomain(res, segmentMap));
+                }).orElse(Optional.empty());
     }
 
     @Override
     public Optional<RefOpenCloseTaxPeriod> readById(Long id) {
-        var result = refOpenCloseTaxPeriodEntityRepository.findById(id);
-        if (result.isPresent()) {
-            var taxPeriodConfig = result.get();
-            var taxPeriodType = readTaxPeriodTypesUseCase.readByCode(taxPeriodConfig.getTaxPeriodCode());
-            var segments = refTaxPeriodSegmentEntityRepository.findByTaxPeriodTypeIdOrderByCodeAsc(taxPeriodType.get().getId());
-            Map<Long, Multilingual> segmentMap = new HashMap<>();
-            segments.forEach(segment -> segmentMap.put(segment.getId(), segment.getDescription()));
-            return Optional.of(refOpenCloseTaxPeriodMapper.mapToDomain(result.get(), segmentMap));
-
-        } else {
-            return Optional.empty();
-        }
+        return refOpenCloseTaxPeriodEntityRepository.findById(id)
+                .map(res -> {
+                    var taxPeriodType = readTaxPeriodTypesUseCase.readByCode(res.getTaxPeriodCode());
+                    var segments = refTaxPeriodSegmentEntityRepository.findByTaxPeriodTypeIdOrderByCodeAsc(taxPeriodType.get().getId());
+                    Map<Long, Multilingual> segmentMap = new HashMap<>();
+                    segments.forEach(segment -> segmentMap.put(segment.getId(), segment.getDescription()));
+                    return Optional.of(refOpenCloseTaxPeriodMapper.mapToDomain(res, segmentMap));
+                }).orElse(Optional.empty());
     }
-
 
     @Override
     public void update(RefOpenCloseTaxPeriod refOpenCloseTaxPeriod) {
