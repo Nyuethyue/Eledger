@@ -7,9 +7,5 @@ import java.util.Collection;
 import java.util.List;
 
 interface RefTaxPeriodSegmentEntityRepository extends JpaRepository<RefTaxPeriodSegment, Long> {
-    @Query(value = "SELECT  *" +
-            " FROM ref.tax_period_segment tps" +
-            " WHERE tps.tax_period_id = :taxPeriodId", nativeQuery = true)
-    Collection<RefTaxPeriodSegment> readAllByTaxPeriodId(Long taxPeriodId);
-    List<RefTaxPeriodSegment> findByTaxPeriodTypeIdOrderByCodeAsc(Long taxPeriodTypeId);
+    List<RefTaxPeriodSegment> findByTaxPeriodTypeIdOrderByIdAsc(Long taxPeriodTypeId);
 }

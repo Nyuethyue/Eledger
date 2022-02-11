@@ -5,7 +5,7 @@ import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodSegment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -13,7 +13,7 @@ class RefTaxPeriodSegmentAdapter implements RefTaxPeriodSegmentRepositoryPort {
 
     private final RefTaxPeriodSegmentEntityRepository refTaxPeriodSegmentEntityRepository;
     @Override
-    public Collection<RefTaxPeriodSegment> loadByTaxPeriodTypeId(Long taxPeriodTypeId) {
-        return refTaxPeriodSegmentEntityRepository.findByTaxPeriodTypeIdOrderByCodeAsc(taxPeriodTypeId);
+    public List<RefTaxPeriodSegment> loadByTaxPeriodTypeId(Long taxPeriodTypeId) {
+        return refTaxPeriodSegmentEntityRepository.findByTaxPeriodTypeIdOrderByIdAsc(taxPeriodTypeId);
     }
 }
