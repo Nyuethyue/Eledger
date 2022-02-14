@@ -45,23 +45,20 @@ class RefTaxPeriodAdapter implements RefTaxPeriodRepositoryPort {
 
     @Override
     public Optional<RefTaxPeriodConfig> readBy(String taxTypeCode, Integer calendarYear, String taxPeriodCode, Long transactionTypeId) {
-        var result =
-                refTaxPeriodConfigEntityRepository.readBy(taxTypeCode, calendarYear, taxPeriodCode, transactionTypeId);
-        if(result.isPresent()) {
-            var taxPeriodConfig = result.get();
-            var taxPeriodType = readTaxPeriodTypesUseCase.readByCode(taxPeriodConfig.getTaxPeriodCode());
-            var segments = refTaxPeriodSegmentEntityRepository.findAllByTaxPeriodIdOrderByIdAsc(taxPeriodType.get().getId());
-            Map<Long, Multilingual> segmentMap = new HashMap<>();
-            segments.forEach(segment ->  segmentMap.put(segment.getId(), segment.getDescription()));
-            Collection<RefTaxPeriodRecordEntity> entityRecords = refTaxPeriodRecordEntityRepository.readTaxPeriodRecords(result.get().getId());
-            return Optional.of(refTaxPeriodMapper.mapToDomain(result.get(),  entityRecords, segmentMap));
-        } else {
-            return Optional.empty();
-        }
+        return refTaxPeriodConfigEntityRepository.readBy(taxTypeCode, calendarYear, taxPeriodCode, transactionTypeId)
+                .map(taxPeriodConfig -> {
+                    var taxPeriodType = readTaxPeriodTypesUseCase.readByCode(taxPeriodConfig.getTaxPeriodCode());
+                    var segments = refTaxPeriodSegmentEntityRepository.findAllByTaxPeriodIdOrderByIdAsc(taxPeriodType.get().getId());
+                    Map<Long, Multilingual> segmentMap = new HashMap<>();
+                    segments.forEach(segment -> segmentMap.put(segment.getId(), segment.getDescription()));
+                    Collection<RefTaxPeriodRecordEntity> entityRecords = refTaxPeriodRecordEntityRepository.readTaxPeriodRecords(taxPeriodConfig.getId());
+                    return Optional.of(refTaxPeriodMapper.mapToDomain(taxPeriodConfig, entityRecords, segmentMap));
+                }).orElse(Optional.empty());
     }
 
     @Override
     public void deleteAll() {
+        refTaxPeriodRecordEntityRepository.deleteAll();
         refTaxPeriodConfigEntityRepository.deleteAll();
     }
 }
