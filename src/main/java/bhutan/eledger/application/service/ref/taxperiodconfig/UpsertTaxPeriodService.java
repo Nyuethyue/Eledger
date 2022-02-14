@@ -35,7 +35,7 @@ class UpsertTaxPeriodService implements UpsertTaxPeriodUseCase {
 
         }
 
-        if (command.getValidFrom().isAfter(command.getValidTo())) {
+        if (null != command.getValidTo() && command.getValidFrom().isAfter(command.getValidTo())) {
             throw new ViolationException(
                     new ValidationError()
                             .addViolation("validFrom", "Valid from is after valid to:" + command.getValidFrom())
@@ -83,7 +83,6 @@ class UpsertTaxPeriodService implements UpsertTaxPeriodUseCase {
         Long id;
         if(conf.isPresent()) {
             id = refTaxPeriodRepositoryPort.update(refTaxPeriodConfig);
-
         } else {
             id = refTaxPeriodRepositoryPort.create(refTaxPeriodConfig);
         }

@@ -4,6 +4,7 @@ import am.iunetworks.lib.multilingual.core.Multilingual;
 import bhutan.eledger.application.port.in.ref.taxperiodconfig.ReadTaxPeriodTypesUseCase;
 import bhutan.eledger.application.port.out.ref.taxperiodconfig.RefTaxPeriodRepositoryPort;
 import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodConfig;
+import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodSegment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -43,26 +45,21 @@ class RefTaxPeriodAdapter implements RefTaxPeriodRepositoryPort {
         return id;
     }
 
-
     @Override
     public Optional<RefTaxPeriodConfig> readBy(String taxTypeCode, Integer calendarYear, String taxPeriodCode, Long transactionTypeId) {
-        var result =
-                refTaxPeriodConfigEntityRepository.readBy(taxTypeCode, calendarYear, taxPeriodCode, transactionTypeId);
-        if(result.isPresent()) {
-            var taxPeriodConfig = result.get();
-            var taxPeriodType = readTaxPeriodTypesUseCase.readByCode(taxPeriodConfig.getTaxPeriodCode());
-            var segments = refTaxPeriodSegmentEntityRepository.findAllByTaxPeriodIdOrderByIdAsc(taxPeriodType.get().getId());
-            Map<Long, Multilingual> segmentMap = new HashMap<>();
-            segments.forEach(segment ->  segmentMap.put(segment.getId(), segment.getDescription()));
-            Collection<RefTaxPeriodRecordEntity> entityRecords = refTaxPeriodRecordEntityRepository.readTaxPeriodRecords(result.get().getId());
-            return Optional.of(refTaxPeriodMapper.mapToDomain(result.get(),  entityRecords, segmentMap));
-        } else {
-            return Optional.empty();
-        }
+        return refTaxPeriodConfigEntityRepository.readBy(taxTypeCode, calendarYear, taxPeriodCode, transactionTypeId)
+                .map(taxPeriodConfig -> {
+                    var taxPeriodType = readTaxPeriodTypesUseCase.readByCode(taxPeriodConfig.getTaxPeriodCode());
+                    var segmentMap = refTaxPeriodSegmentEntityRepository.findAllByTaxPeriodIdOrderByIdAsc(taxPeriodType.get().getId())
+                            .stream().collect(Collectors.toMap(RefTaxPeriodSegment::getId, RefTaxPeriodSegment::getDescription));
+                    Collection<RefTaxPeriodRecordEntity> entityRecords = refTaxPeriodRecordEntityRepository.readTaxPeriodRecords(taxPeriodConfig.getId());
+                    return refTaxPeriodMapper.mapToDomain(taxPeriodConfig, entityRecords, segmentMap);
+                });
     }
 
     @Override
     public void deleteAll() {
+        refTaxPeriodRecordEntityRepository.deleteAll();
         refTaxPeriodConfigEntityRepository.deleteAll();
     }
 }
