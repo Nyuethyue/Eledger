@@ -4,6 +4,7 @@ import am.iunetworks.lib.multilingual.core.Multilingual;
 import bhutan.eledger.application.port.in.ref.taxperiodconfig.ReadTaxPeriodTypesUseCase;
 import bhutan.eledger.application.port.out.ref.taxperiodconfig.RefTaxPeriodRepositoryPort;
 import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodConfig;
+import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodSegment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -48,12 +50,11 @@ class RefTaxPeriodAdapter implements RefTaxPeriodRepositoryPort {
         return refTaxPeriodConfigEntityRepository.readBy(taxTypeCode, calendarYear, taxPeriodCode, transactionTypeId)
                 .map(taxPeriodConfig -> {
                     var taxPeriodType = readTaxPeriodTypesUseCase.readByCode(taxPeriodConfig.getTaxPeriodCode());
-                    var segments = refTaxPeriodSegmentEntityRepository.findAllByTaxPeriodIdOrderByIdAsc(taxPeriodType.get().getId());
-                    Map<Long, Multilingual> segmentMap = new HashMap<>();
-                    segments.forEach(segment -> segmentMap.put(segment.getId(), segment.getDescription()));
+                    var segmentMap = refTaxPeriodSegmentEntityRepository.findAllByTaxPeriodIdOrderByIdAsc(taxPeriodType.get().getId())
+                            .stream().collect(Collectors.toMap(RefTaxPeriodSegment::getId, RefTaxPeriodSegment::getDescription));
                     Collection<RefTaxPeriodRecordEntity> entityRecords = refTaxPeriodRecordEntityRepository.readTaxPeriodRecords(taxPeriodConfig.getId());
-                    return Optional.of(refTaxPeriodMapper.mapToDomain(taxPeriodConfig, entityRecords, segmentMap));
-                }).orElse(Optional.empty());
+                    return refTaxPeriodMapper.mapToDomain(taxPeriodConfig, entityRecords, segmentMap);
+                });
     }
 
     @Override
