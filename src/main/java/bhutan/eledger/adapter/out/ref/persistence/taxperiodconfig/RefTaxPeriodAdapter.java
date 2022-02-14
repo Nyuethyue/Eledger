@@ -43,7 +43,6 @@ class RefTaxPeriodAdapter implements RefTaxPeriodRepositoryPort {
         return id;
     }
 
-
     @Override
     public Optional<RefTaxPeriodConfig> readBy(String taxTypeCode, Integer calendarYear, String taxPeriodCode, Long transactionTypeId) {
         var result =
@@ -63,7 +62,6 @@ class RefTaxPeriodAdapter implements RefTaxPeriodRepositoryPort {
 
     @Override
     public void deleteAll() {
-        refTaxPeriodRecordEntityRepository.deleteAll();
         refTaxPeriodConfigEntityRepository.deleteAll();
     }
 }
