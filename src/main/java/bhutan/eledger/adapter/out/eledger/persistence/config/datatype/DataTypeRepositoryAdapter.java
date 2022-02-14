@@ -24,6 +24,7 @@ class DataTypeRepositoryAdapter implements DataTypeRepositoryPort {
 
     @Override
     public Optional<DataType> readById(Integer id) {
+        var x = dataTypeEntityRepository.findById(id);
         return dataTypeEntityRepository.findById(id)
                 .map(DataType.class::cast);
     }

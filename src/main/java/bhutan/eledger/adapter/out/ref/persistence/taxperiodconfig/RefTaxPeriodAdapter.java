@@ -63,6 +63,7 @@ class RefTaxPeriodAdapter implements RefTaxPeriodRepositoryPort {
 
     @Override
     public void deleteAll() {
+        refTaxPeriodRecordEntityRepository.deleteAll();
         refTaxPeriodConfigEntityRepository.deleteAll();
     }
 }

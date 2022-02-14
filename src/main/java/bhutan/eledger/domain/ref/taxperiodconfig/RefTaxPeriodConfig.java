@@ -44,8 +44,6 @@ public class RefTaxPeriodConfig {
     @NotNull
     private LocalDate validFrom;
 
-    @Valid
-    @NotNull
     private LocalDate validTo;
 
     @Valid
