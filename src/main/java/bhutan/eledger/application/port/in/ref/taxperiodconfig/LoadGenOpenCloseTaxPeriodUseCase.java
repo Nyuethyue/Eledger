@@ -5,7 +5,10 @@ import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 
 @Validated
 public interface LoadGenOpenCloseTaxPeriodUseCase {
@@ -13,11 +16,20 @@ public interface LoadGenOpenCloseTaxPeriodUseCase {
 
     @Data
     class LoadGenOpenCloseTaxPeriodConfigCommand {
-        private final String glAccountPartFullCode;
         @NotNull
+        @NotEmpty
+        private final String glAccountPartFullCode;
+
+        @NotNull
+        @Positive
         private final Integer calendarYear;
+
+        @NotNull
         private final String taxPeriodCode;
+
+        @NotNull
         private final Long transactionTypeId;
+
         private final Integer years;
         private final Integer month;
     }
