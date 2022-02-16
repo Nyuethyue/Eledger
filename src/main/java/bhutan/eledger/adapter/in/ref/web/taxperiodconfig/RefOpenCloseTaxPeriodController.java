@@ -1,6 +1,7 @@
 package bhutan.eledger.adapter.in.ref.web.taxperiodconfig;
 
 import bhutan.eledger.application.port.in.ref.taxperiodconfig.LoadGenOpenCloseTaxPeriodUseCase;
+import bhutan.eledger.application.port.in.ref.taxperiodconfig.ReadOpenCloseTaxPeriodUseCase;
 import bhutan.eledger.application.port.in.ref.taxperiodconfig.UpsertRefOpenCloseTaxPeriodUseCase;
 import bhutan.eledger.domain.ref.taxperiodconfig.RefOpenCloseTaxPeriod;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 class RefOpenCloseTaxPeriodController {
     private final UpsertRefOpenCloseTaxPeriodUseCase upsertRefOpenCloseTaxPeriodUseCase;
     private final LoadGenOpenCloseTaxPeriodUseCase loadGenOpenCloseTaxPeriodUseCase;
+    private final ReadOpenCloseTaxPeriodUseCase readOpenCloseTaxPeriodUseCase;
 
     @PostMapping("/upsert")
     public void create(@RequestBody UpsertRefOpenCloseTaxPeriodUseCase.UpsertOpenCloseTaxPeriodCommand command) {
@@ -24,6 +26,12 @@ class RefOpenCloseTaxPeriodController {
     @ResponseStatus(value = HttpStatus.OK)
     public RefOpenCloseTaxPeriod loadGen(LoadGenOpenCloseTaxPeriodUseCase.LoadGenOpenCloseTaxPeriodConfigCommand command) {
         return loadGenOpenCloseTaxPeriodUseCase.loadGen(command);
+    }
+
+    @GetMapping(value = "/readDetails", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.OK)
+    public RefOpenCloseTaxPeriod readDetails(ReadOpenCloseTaxPeriodUseCase.OpenCloseTaxPeriodConfigCommand command) {
+        return readOpenCloseTaxPeriodUseCase.getOpenCloseTaxPeriodDetails(command);
     }
 
 
