@@ -90,7 +90,7 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                 LocalDate endOfMonth = YearMonth.of(year, monthIndex).atEndOfMonth();
                 records.add(
                         TaxPeriodConfigRecord.withoutId(
-                                segment.getId(),
+                                Long.parseLong(segment.getCode()),
                                 segment.getDescription(),
                                 LocalDate.of(year, monthIndex, 1),// Start period
                                 endOfMonth,// End period
@@ -109,7 +109,7 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                 LocalDate endOfQuarter = YearMonth.of(year, 3 * quarterIndex).atEndOfMonth();
                 records.add(
                         TaxPeriodConfigRecord.withoutId(
-                                segment.getId(),
+                                Long.parseLong(segment.getCode()),
                                 segment.getDescription(),
                                 LocalDate.of(year, (3 * quarterIndex) - 2, 1),// Start period
                                 endOfQuarter,// End period
@@ -139,7 +139,7 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                 }
                 records.add(
                         TaxPeriodConfigRecord.withoutId(
-                                segment.getId(),
+                                Long.parseLong(segment.getCode()),
                                 segment.getDescription(),
                                 LocalDate.of(year, fortnightMonth, fortnightFirstDay),// Start period
                                 endOfFortnight,// End period
@@ -158,7 +158,7 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                 LocalDate endOfHalf = YearMonth.of(year, 6 * halfIndex).atEndOfMonth();
                 records.add(
                         TaxPeriodConfigRecord.withoutId(
-                                segment.getId(),
+                                Long.parseLong(segment.getCode()),
                                 segment.getDescription(),
                                 LocalDate.of(year, (6 * halfIndex) - 5, 1),// Start period
                                 endOfHalf,// End period
@@ -175,7 +175,8 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                 LocalDate endOfYear = YearMonth.of(year, 12).atEndOfMonth();
                 records.add(
                         TaxPeriodConfigRecord.withoutId(
-                                segment.getId(),
+                                //todo need to change the type
+                                Long.parseLong(segment.getCode()),
                                 segment.getDescription(),
                                 LocalDate.of(year, 1, 1),// Start period
                                 endOfYear,// End period
