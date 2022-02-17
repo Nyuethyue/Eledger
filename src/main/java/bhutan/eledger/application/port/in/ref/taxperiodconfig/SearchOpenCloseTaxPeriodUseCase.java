@@ -10,9 +10,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 @Validated
-public interface ReadOpenCloseTaxPeriodUseCase {
+public interface SearchOpenCloseTaxPeriodUseCase {
 
-    RefOpenCloseTaxPeriod getOpenCloseTaxPeriodDetails(@Valid ReadOpenCloseTaxPeriodUseCase.OpenCloseTaxPeriodConfigCommand command);
+    RefOpenCloseTaxPeriod search(@Valid SearchOpenCloseTaxPeriodUseCase.OpenCloseTaxPeriodConfigCommand command);
 
     @Data
     class OpenCloseTaxPeriodConfigCommand {

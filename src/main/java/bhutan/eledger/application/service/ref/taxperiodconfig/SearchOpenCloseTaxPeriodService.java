@@ -1,7 +1,7 @@
 package bhutan.eledger.application.service.ref.taxperiodconfig;
 
 import am.iunetworks.lib.common.validation.RecordNotFoundException;
-import bhutan.eledger.application.port.in.ref.taxperiodconfig.ReadOpenCloseTaxPeriodUseCase;
+import bhutan.eledger.application.port.in.ref.taxperiodconfig.SearchOpenCloseTaxPeriodUseCase;
 import bhutan.eledger.application.port.out.ref.taxperiodconfig.RefOpenCloseTaxPeriodRepositoryPort;
 import bhutan.eledger.domain.ref.taxperiodconfig.RefOpenCloseTaxPeriod;
 import lombok.RequiredArgsConstructor;
@@ -15,12 +15,12 @@ import javax.validation.Valid;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-class ReadOpenCloseTaxPeriodService implements ReadOpenCloseTaxPeriodUseCase {
+class SearchOpenCloseTaxPeriodService implements SearchOpenCloseTaxPeriodUseCase {
 
     private final RefOpenCloseTaxPeriodRepositoryPort refOpenCloseTaxPeriodRepositoryPort;
 
     @Override
-    public RefOpenCloseTaxPeriod getOpenCloseTaxPeriodDetails(@Valid ReadOpenCloseTaxPeriodUseCase.OpenCloseTaxPeriodConfigCommand command) {
+    public RefOpenCloseTaxPeriod search(@Valid SearchOpenCloseTaxPeriodUseCase.OpenCloseTaxPeriodConfigCommand command) {
         log.trace("Get open close tax period record with command: {}", command);
 
         return refOpenCloseTaxPeriodRepositoryPort.readByGlFullCodeYearTaxPeriodTransType(
