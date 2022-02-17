@@ -175,6 +175,7 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                 LocalDate endOfYear = YearMonth.of(year, 12).atEndOfMonth();
                 records.add(
                         TaxPeriodConfigRecord.withoutId(
+                                //todo need to change the type
                                 Long.parseLong(segment.getCode()),
                                 segment.getDescription(),
                                 LocalDate.of(year, 1, 1),// Start period

@@ -73,6 +73,7 @@ class LoadGenOpenCloseTaxPeriodService implements LoadGenOpenCloseTaxPeriodUseCa
                         : YearMonth.of(openDate.plusMonths(command.getMonth() - 1).getYear(), openDate.plusMonths(command.getMonth() - 1).getMonth()).atEndOfMonth();
                 records.add(
                         RefOpenCloseTaxPeriodRecord.withoutId(
+                                //todo need to change the type
                                 Long.parseLong(segment.getCode()),
                                 segment.getDescription(),
                                 openDate,
