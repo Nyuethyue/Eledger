@@ -28,9 +28,9 @@ class RefOpenCloseTaxPeriodController {
         return loadGenOpenCloseTaxPeriodUseCase.loadGen(command);
     }
 
-    @GetMapping(value = "/searchDetails", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
-    public RefOpenCloseTaxPeriod searchDetails(SearchOpenCloseTaxPeriodUseCase.OpenCloseTaxPeriodConfigCommand command) {
+    public RefOpenCloseTaxPeriod search(SearchOpenCloseTaxPeriodUseCase.OpenCloseTaxPeriodConfigCommand command) {
         return searchOpenCloseTaxPeriodUseCase.search(command);
     }
 
