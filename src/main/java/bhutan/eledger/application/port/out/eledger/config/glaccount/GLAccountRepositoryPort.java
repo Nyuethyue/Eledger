@@ -9,6 +9,8 @@ public interface GLAccountRepositoryPort {
 
     Optional<GLAccount> readById(Long id);
 
+    Optional<GLAccount> readByCode(String code);
+
     Collection<GLAccount> readAll();
 
     Long create(GLAccount glAccount);
