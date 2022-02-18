@@ -1,7 +1,6 @@
 package bhutan.eledger.application.service.eledger.config.glaccount;
 
 import am.iunetworks.lib.common.validation.RecordNotFoundException;
-import bhutan.eledger.application.port.in.eledger.config.glaccount.ReadGLAccountUseCase;
 import bhutan.eledger.application.port.in.eledger.config.glaccount.UpdateGLAccountPartUseCase;
 import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountPartRepositoryPort;
 import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountRepositoryPort;
@@ -20,7 +19,6 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 class UpdateGLAccountPartService implements UpdateGLAccountPartUseCase {
     private final GLAccountPartRepositoryPort glAccountPartRepositoryPort;
-    private final ReadGLAccountUseCase readGLAccountUseCase;
     private final GLAccountRepositoryPort glAccountRepositoryPort;
 
     @Override
@@ -50,8 +48,8 @@ class UpdateGLAccountPartService implements UpdateGLAccountPartUseCase {
         log.trace("Persisting updated gl account Part: {}", updatedGLAccountPart);
 
         glAccountPartRepositoryPort.update(updatedGLAccountPart);
-//todo need to improve update code
-        var glAccountExisted = readGLAccountUseCase.readByCode(glAccountPart.getFullCode());
+//todo need to improve  code
+        var glAccountExisted = glAccountRepositoryPort.readByCode(glAccountPart.getFullCode());
 
         if (glAccountExisted.isPresent()) {
             GLAccount updatedGLAccount = GLAccount.withId(

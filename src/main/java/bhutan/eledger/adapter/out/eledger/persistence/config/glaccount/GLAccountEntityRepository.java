@@ -9,5 +9,6 @@ import java.util.Optional;
 
 interface GLAccountEntityRepository extends CustomQuerydslJpaRepository<GLAccountEntity, Long>, QuerydslPredicateExecutor<GLAccountEntity>, RevisionRepository<GLAccountEntity, Long, Long> {
     boolean existsByCodeIn(Collection<String> codes);
+
     Optional<GLAccountEntity> findByCode(String code);
 }
