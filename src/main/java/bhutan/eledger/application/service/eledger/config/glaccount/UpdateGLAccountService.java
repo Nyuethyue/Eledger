@@ -45,9 +45,9 @@ class UpdateGLAccountService implements UpdateGLAccountUseCase {
         log.trace("Persisting updated gl account: {}", updatedGLAccount);
 
         glAccountRepositoryPort.update(updatedGLAccount);
-        System.out.println("beforeee"+glAccount.getCode());
+
         var glPartAccountExisted = glAccountPartRepositoryPort.readByFullCode(glAccount.getCode());
-        System.out.println("jhjshddh"+glPartAccountExisted.get().getCode());
+
         if (glPartAccountExisted.isPresent()) {
             GLAccountPart updatedGLAccountPart = GLAccountPart.withId(
                     glPartAccountExisted.get().getId(),
