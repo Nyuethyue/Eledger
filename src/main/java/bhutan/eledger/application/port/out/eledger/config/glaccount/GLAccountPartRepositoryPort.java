@@ -29,4 +29,6 @@ public interface GLAccountPartRepositoryPort {
     boolean existsByFullCode(String fullCode);
 
     void update(GLAccountPart glAccountPart);
+
+    Optional<GLAccountPart> readByFullCode(String fullCode);
 }

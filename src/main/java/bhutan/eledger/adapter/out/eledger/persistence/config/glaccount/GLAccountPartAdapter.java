@@ -110,4 +110,10 @@ class GLAccountPartAdapter implements GLAccountPartRepositoryPort, GetGlAccountP
                         new RecordNotFoundException("GLAccountPart by id: [" + id + "] not found.")
                 );
     }
+
+    @Override
+    public Optional<GLAccountPart> readByFullCode(String fullCode) {
+        return glAccountPartEntityRepository.findByFullCode(fullCode)
+                .map(glAccountPartMapper::mapToDomain);
+    }
 }
