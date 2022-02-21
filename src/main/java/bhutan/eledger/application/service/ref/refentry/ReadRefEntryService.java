@@ -58,4 +58,32 @@ class ReadRefEntryService implements RefEntryRepository {
 
         return result;
     }
+
+    @Override
+    public RefEntry findByRefNameAndCode(String refName, String code) {
+        log.trace("Reading ref entry. Ref name: {}, code: {}.", refName, code);
+
+        if (code == null) {
+            return null;
+        }
+
+        RefEntry result;
+
+        if (RefCurrency.class.getSimpleName().equals(refName)) {
+            var refCurrency = refCurrencyRepositoryPort.requiredReadByCode(code);
+
+            result = RefEntry.builder(
+                            refCurrency.getId(),
+                            refCurrency.getCode()
+                    )
+                    .description(refCurrency.getDescription())
+                    .addAttribute("symbol", refCurrency.getSymbol())
+                    .build();
+        } else {
+            throw new IllegalArgumentException("Illegal ref name: " + refName);
+        }
+
+        return result;
+
+    }
 }

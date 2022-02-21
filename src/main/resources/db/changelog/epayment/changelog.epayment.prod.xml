@@ -33,7 +33,12 @@
     </changeSet>
 
     <changeSet id="Reconciliation history schemas" author="A.A." dbms="postgresql">
-        <sqlFile path="../../sql/epayment/009_create_reconciliation_upload_history_schema.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="../../sql/epayment/009_create_reconciliation_upload_history_schema.sql"
+                 relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="Rma message schema" author="B.A." dbms="postgresql">
+        <sqlFile path="../../sql/epayment/010_create_rma_message_schema.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
 </databaseChangeLog>

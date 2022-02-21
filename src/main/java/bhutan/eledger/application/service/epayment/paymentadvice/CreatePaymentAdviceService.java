@@ -8,7 +8,6 @@ import bhutan.eledger.application.port.out.epayment.glaccount.EpGLAccountReposit
 import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceNumberGeneratorPort;
 import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.taxpayer.EpTaxpayerRepositoryPort;
-import bhutan.eledger.domain.epayment.glaccount.EpGLAccount;
 import bhutan.eledger.domain.epayment.paymentadvice.PayableLine;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdviceBankInfo;
@@ -19,7 +18,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
@@ -93,7 +91,6 @@ class CreatePaymentAdviceService implements CreatePaymentAdviceUseCase {
                         .map(plc ->
                                 PayableLine.withoutId(
                                         glAccountResolverService.resolve(plc.getGlAccount()),
-                                        BigDecimal.ZERO,
                                         plc.getAmount(),
                                         plc.getTransactionId()
                                 )
@@ -128,29 +125,4 @@ class CreatePaymentAdviceService implements CreatePaymentAdviceUseCase {
         return result;
     }
 
-    private EpGLAccount resolveGlAccount(UpsertPaymentAdviceUseCase.GLAccountCommand glAccountCommand) {
-        EpGLAccount result;
-
-        var glAccountOptional = epGLAccountRepositoryPort.readByCode(glAccountCommand.getCode());
-
-        if (glAccountOptional.isPresent()) {
-            result = glAccountOptional.get();
-        } else {
-            var taxpayer = EpGLAccount.withoutId(
-                    glAccountCommand.getCode(),
-                    LocalDateTime.now(),
-                    Multilingual.fromMap(glAccountCommand.getDescriptions())
-            );
-
-            log.trace("Persisting taxpayer info: {}", taxpayer);
-
-            result = epGLAccountRepositoryPort.create(
-                    taxpayer
-            );
-
-            log.debug("Taxpayer info with id: {} successfully created.", result);
-        }
-
-        return result;
-    }
 }

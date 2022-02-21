@@ -43,10 +43,14 @@ public class PayableLine {
         return amount.compareTo(paidAmount) == 0;
     }
 
+    void pay() {
+        pay(getToBePaidAmount());
+    }
+
     void pay(BigDecimal paidAmount) {
         checkPayableLine(paidAmount);
 
-        this.paidAmount = paidAmount;
+        this.paidAmount = paidAmount.add(paidAmount);
 
         recalculateToBePaidAmount();
     }
@@ -79,14 +83,13 @@ public class PayableLine {
 
     public static PayableLine withoutId(
             EpGLAccount glAccount,
-            BigDecimal paidAmount,
             BigDecimal amount,
             Long elTransactionId
     ) {
         return new PayableLine(
                 null,
                 glAccount,
-                paidAmount,
+                BigDecimal.ZERO,
                 amount,
                 null,
                 elTransactionId

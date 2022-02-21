@@ -49,7 +49,7 @@ class PaymentAdviceAdapter implements PaymentAdviceRepositoryPort {
         return paymentAdviceEntityRepository.findAll()
                 .stream()
                 .map(paymentAdviceMapper::mapToDomain)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
     }
 
     @Override
@@ -71,6 +71,19 @@ class PaymentAdviceAdapter implements PaymentAdviceRepositoryPort {
         paymentAdviceEntityRepository.save(
                 paymentAdviceMapper.mapToEntity(updatedPaymentAdvice)
         );
+    }
+
+    @Override
+    public void updateStatus(PaymentAdvice updatedPaymentAdvice) {
+        paymentAdviceEntityRepository.updateStatus(
+                updatedPaymentAdvice.getId(),
+                updatedPaymentAdvice.getStatus().getValue()
+        );
+    }
+
+    @Override
+    public Optional<FlatPaymentAdvice> readFlatById(Long id) {
+        return paymentAdviceEntityRepository.readById(id);
     }
 
     @Override

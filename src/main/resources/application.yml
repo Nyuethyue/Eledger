@@ -28,9 +28,33 @@ logging:
   level:
     root: WARN
     bhutan.eledger: trace
+    am.iunetworks.lib.task: trace
+
+task:
+  creationSource: Server 1
+  tasksScanningInterval: 60
 
 bhutan:
   eledger:
+    rma:
+      api:
+        host: http://uatbfssecure.rma.org.bt
+        ar-web-path: /BFSSecure/makePayment
+        as-check-status-path: /BFSSecure/checkStatus
+        ar-mobile-path: /BFSSecure/nvpapi
+        version: 5.0
+      sign:
+        ks-location: classpath:keystores/rma/bu_rma_ks.p12
+        ks-password: yPDPvmMarz9Dt64M
+        ks-type: PKCS12
+        algorithm: SHA1withRSA
+        key-password: yPDPvmMarz9Dt64M
+        key-alias: bu_rma_ks_alias
+      beneficiary:
+        id: BE10000169
+        bank-code: "01"
+      task:
+        retry-count-until-fail: 3
     fms:
       uri: http://10.11.1.13
     glaccount:

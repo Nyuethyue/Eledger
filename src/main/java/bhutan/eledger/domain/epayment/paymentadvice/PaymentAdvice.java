@@ -72,26 +72,71 @@ public class PaymentAdvice {
                 .orElseThrow(() -> new RecordNotFoundException("PayableLine by id: [" + payableLineId + "] not found."));
     }
 
+    public void initiate() {
+        if (status == PaymentAdviceStatus.SPLIT_PAYMENT || status == PaymentAdviceStatus.INITIAL) {
+            changeStatus(PaymentAdviceStatus.INITIATED);
+        } else {
+            throw new ViolationException(
+                    new ValidationError()
+                            .addViolation(
+                                    "status",
+                                    "Payment advice can't be initiated from status: " + status
+                            )
+            );
+        }
+    }
+
+    public void rollbackFromInitiated() {
+        if (PaymentAdviceStatus.INITIATED != status) {
+            throw new IllegalStateException("Illegal status for rollback. Status: " + status);
+        }
+
+        if (BigDecimal.ZERO.compareTo(getTotalPaidAmount()) == 0) {
+            changeStatus(PaymentAdviceStatus.INITIAL);
+        } else {
+            changeStatus(PaymentAdviceStatus.SPLIT_PAYMENT);
+        }
+    }
+
+    public void pay() {
+        checkStatusForPayment();
+
+        payableLines.forEach(PayableLine::pay);
+
+        afterPayment();
+    }
+
+    public void pay(BigDecimal amount) {
+        checkStatusForPayment();
+
+        if (getTotalToBePaidAmount().compareTo(amount) != 0) {
+            throw new ViolationException(
+                    new ValidationError()
+                            .addViolation(
+                                    "totalToBePaidAmount",
+                                    "Payment amount didn't match to be paid amount. To be paid amount: " + getTotalToBePaidAmount() + ", payment amount: " + amount
+                            )
+            );
+        }
+
+        payableLines.forEach(PayableLine::pay);
+
+        afterPayment();
+    }
+
     public void pay(PaymentContext paymentContext) {
 
         checkStatusForPayment();
 
         paymentContext.getPayableLinePayments()
                 .forEach(plc -> {
-                            PayableLine payableLine = getRequiredPayableLineById(plc.getPayableLineId());
+                    PayableLine payableLine = getRequiredPayableLineById(plc.getPayableLineId());
 
-                            payableLine.pay(plc.getPaidAmount());
+                    payableLine.pay(plc.getPaidAmount());
                         }
                 );
 
-        recalculateTotalPaidAmount();
-        recalculateTotalToBePaidAmount();
-
-        if (isPaid()) {
-            changeStatus(PaymentAdviceStatus.PAID);
-        } else {
-            changeStatus(PaymentAdviceStatus.SPLIT_PAYMENT);
-        }
+        afterPayment();
     }
 
     public void upsertPaymentLine(PayableLine payableLine) {
@@ -114,10 +159,8 @@ public class PaymentAdvice {
         return BigDecimal.ZERO.compareTo(getTotalToBePaidAmount()) == 0;
     }
 
-    private PaymentAdvice changeStatus(PaymentAdviceStatus status) {
+    private void changeStatus(PaymentAdviceStatus status) {
         this.status = status;
-
-        return this;
     }
 
     private void checkStatusForPayment() {
@@ -129,6 +172,17 @@ public class PaymentAdvice {
                                     "Payment advice by pan: [" + pan + "] has been already paid."
                             )
             );
+        }
+    }
+
+    private void afterPayment() {
+        recalculateTotalPaidAmount();
+        recalculateTotalToBePaidAmount();
+
+        if (isPaid()) {
+            changeStatus(PaymentAdviceStatus.PAID);
+        } else {
+            changeStatus(PaymentAdviceStatus.SPLIT_PAYMENT);
         }
     }
 

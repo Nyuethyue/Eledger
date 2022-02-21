@@ -8,7 +8,6 @@ import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdviceStatus;
 
 import java.util.Collection;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public interface PaymentAdviceRepositoryPort {
 
@@ -22,7 +21,7 @@ public interface PaymentAdviceRepositoryPort {
         var result = readAllByIds(ids);
 
         if (result.size() != ids.size()) {
-            throw new RecordNotFoundException("Payment advice missed. Given ids: " + ids + ", founded ids: " + result.stream().map(PaymentAdvice::getId).collect(Collectors.toList()));
+            throw new RecordNotFoundException("Payment advice missed. Given ids: " + ids + ", founded ids: " + result.stream().map(PaymentAdvice::getId).toList());
         }
 
         return result;
@@ -42,6 +41,17 @@ public interface PaymentAdviceRepositoryPort {
     void deleteAll();
 
     void update(PaymentAdvice updatedPaymentAdvice);
+
+    void updateStatus(PaymentAdvice updatedPaymentAdvice);
+
+    Optional<FlatPaymentAdvice> readFlatById(Long id);
+
+    default FlatPaymentAdvice requiredReadFlatById(Long id) {
+        return readFlatById(id)
+                .orElseThrow(() ->
+                        new RecordNotFoundException("PaymentAdvice by id: [" + id + "] not found.")
+                );
+    }
 
     Collection<FlatPaymentAdvice> readAllFlatByDrns(Collection<String> drns);
 

@@ -6,9 +6,16 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
 
+    <changeSet id="default schemas" author="B.A.">
+        <sql dbms="postgresql">
+            SET
+            search_path TO public, "$user";
+        </sql>
+    </changeSet>
 
     <include file="eledger/changelog.eledger.dev.xml" relativeToChangelogFile="true"/>
     <include file="epayment/changelog.epayment.dev.xml" relativeToChangelogFile="true"/>
     <include file="ref/changelog.ref.dev.xml" relativeToChangelogFile="true"/>
+    <include file="public/changelog.public.dev.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

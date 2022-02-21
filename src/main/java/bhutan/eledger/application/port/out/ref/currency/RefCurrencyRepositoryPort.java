@@ -24,6 +24,12 @@ public interface RefCurrencyRepositoryPort {
 
     Optional<RefCurrency> readByCode(String code);
 
+    default RefCurrency requiredReadByCode(String code) {
+        return readByCode(code).orElseThrow(() ->
+                new RecordNotFoundException("Currency by code: [" + code + "] not found.")
+        );
+    }
+
     boolean existsByCode(String code);
 
 }

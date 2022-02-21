@@ -13,8 +13,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-
 @Log4j2
 @Service
 @Transactional
@@ -46,7 +44,6 @@ public class UpdatePaymentAdviceService implements UpdatePaymentAdviceUseCase {
                 .map(plc ->
                         PayableLine.withoutId(
                                 glAccountResolverService.resolve(plc.getGlAccount()),
-                                BigDecimal.ZERO,
                                 plc.getAmount(),
                                 plc.getTransactionId()
                         )

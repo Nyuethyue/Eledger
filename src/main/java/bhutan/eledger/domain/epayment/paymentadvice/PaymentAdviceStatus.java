@@ -14,7 +14,8 @@ public enum PaymentAdviceStatus {
     SPLIT_PAYMENT("SPLIT_PAYMENT"),
     PAID("PAID"),
     PRE_RECONCILED("PRE_RECONCILED"),
-    RECONCILED("RECONCILED");
+    RECONCILED("RECONCILED"),
+    INITIATED("INITIATED");
 
     private final String value;
 

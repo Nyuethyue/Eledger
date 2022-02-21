@@ -44,6 +44,7 @@ dependencies {
     implementation "am.iunetworks:multilingual-core:0.0.1"
     implementation "am.iunetworks:common-persistence:0.0.4"
     implementation "am.iunetworks:common-validation:0.0.1"
+    implementation "am.iunetworks:task:1.0.1"
 
     implementation "com.querydsl:querydsl-jpa:${querydslVersion}"
     implementation "com.querydsl:querydsl-core:${querydslVersion}"

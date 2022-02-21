@@ -1,54 +1,57 @@
 package bhutan.eledger.common.rma;
 
+import bhutan.eledger.configuration.epayment.rma.RmaProperties;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.bouncycastle.openssl.PEMParser;
 import org.springframework.stereotype.Component;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import javax.annotation.PostConstruct;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.*;
+import java.security.cert.CertificateException;
+import java.util.HexFormat;
 
 @Log4j2
 @Component
+@RequiredArgsConstructor
 class BFSPKISignerImpl implements BFSPKISigner {
-    private static final char[] HEX_CHAR = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-            'A', 'B', 'C', 'D', 'E', 'F'};
+
+    private final RmaProperties rmaProperties;
+    private KeyStore keyStore;
+
+    @PostConstruct
+    private void init() throws IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException {
+        try (InputStream ksInputStream = new FileInputStream(rmaProperties.getSign().getKsResource().getFile())) {
+            keyStore = KeyStore.getInstance("PKCS12");
+            keyStore.load(ksInputStream, rmaProperties.getSign().getKsPassword().toCharArray());
+        }
+    }
 
     @Override
-    public String sign(BFSPKISignContext context) throws IOException, NoSuchAlgorithmException, InvalidKeyException, SignatureException {
-        log.debug("Signing context: {}", context);
+    public String sign(String dataToSign) {
+        log.debug("Data to sign: {}", dataToSign);
 
-        PrivateKey privateKey = getPrivateKey(context.getPvtKeyFileName());
+        try {
+            PrivateKey privateKey = getPrivateKey();
 
-        var provider = Security.getProvider("BC");
+            Signature signature = Signature.getInstance(rmaProperties.getSign().getAlgorithm());
 
-        Signature signature = Signature.getInstance(context.getSignatureAlg(), provider);
-        signature.initSign(privateKey);
+            signature.initSign(privateKey);
 
-        signature.update(context.getDataToSign().getBytes());
-        byte[] signatureBytes = signature.sign();
+            signature.update(dataToSign.getBytes());
+            byte[] signatureBytes = signature.sign();
 
-        return byteArrayToHexString(signatureBytes);
+            return HexFormat.of().withUpperCase().formatHex(signatureBytes);
+
+        } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException | UnrecoverableKeyException | KeyStoreException e) {
+            throw new IllegalStateException(e.getMessage(), e);
+        }
 
     }
 
-    private static PrivateKey getPrivateKey(String pvtKeyFileName) throws FileNotFoundException, IOException {
-
-        try (FileReader pvtFileReader = new FileReader(pvtKeyFileName); PEMParser pvtPemParser = new PEMParser(pvtFileReader)) {
-            KeyPair keyPair = (KeyPair) pvtPemParser.readObject();
-
-            return keyPair.getPrivate();
-        }
-    }
-
-    public String byteArrayToHexString(byte[] bytes) {
-        StringBuilder sb = new StringBuilder(bytes.length * 2);
-
-        for (byte aByte : bytes) {
-            sb.append(HEX_CHAR[(aByte & 0xf0) >>> 4]);
-            sb.append(HEX_CHAR[aByte & 0x0f]);
-        }
-        return sb.toString();
+    private PrivateKey getPrivateKey() throws UnrecoverableKeyException, KeyStoreException, NoSuchAlgorithmException {
+        return (PrivateKey) keyStore.getKey(rmaProperties.getSign().getKeyAlias(), rmaProperties.getSign().getKeyPassword().toCharArray());
     }
 }
