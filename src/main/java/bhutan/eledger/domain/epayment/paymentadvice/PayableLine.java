@@ -43,6 +43,10 @@ public class PayableLine {
         return amount.compareTo(paidAmount) == 0;
     }
 
+    public boolean isNotPaid() {
+        return !isPaid();
+    }
+
     void pay() {
         pay(getToBePaidAmount());
     }

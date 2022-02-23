@@ -119,7 +119,10 @@ public class PaymentAdvice {
             );
         }
 
-        payableLines.forEach(PayableLine::pay);
+        payableLines
+                .stream()
+                .filter(PayableLine::isNotPaid)
+                .forEach(PayableLine::pay);
 
         afterPayment();
     }

@@ -179,6 +179,37 @@ public class Receipt {
         );
     }
 
+    public static Receipt rmaWithoutId(
+            PaymentMode paymentMode,
+            ReceiptStatus status,
+            RefEntry currency,
+            String receiptNumber,
+            LocalDateTime creationDateTime,
+            EpTaxpayer taxpayer,
+            Collection<Payment> payments,
+            BigDecimal totalPaidAmount,
+            String securityNumber
+    ) {
+        return new Receipt(
+                null,
+                paymentMode,
+                status,
+                currency,
+                receiptNumber,
+                creationDateTime,
+                taxpayer,
+                payments,
+                totalPaidAmount,
+                securityNumber,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+    }
+
     public static Receipt cashWarrantWithoutId(
             PaymentMode paymentMode,
             ReceiptStatus status,
