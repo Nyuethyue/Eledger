@@ -99,6 +99,7 @@ class UpsertTaxPeriodService implements UpsertTaxPeriodUseCase {
                     TaxPeriodConfigRecord.withoutId(
                             tpc.getPeriodSegmentId(),
                             null,
+                            null,
                             tpc.getPeriodStart(),
                             tpc.getPeriodEnd(),
                             tpc.getFilingDueDate(),

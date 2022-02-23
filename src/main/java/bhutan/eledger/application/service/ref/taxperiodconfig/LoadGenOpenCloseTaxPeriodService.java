@@ -5,10 +5,9 @@ import bhutan.eledger.application.port.in.ref.taxperiodconfig.LoadTaxPeriodSegme
 import bhutan.eledger.application.port.in.ref.taxperiodconfig.ReadTaxPeriodTypesUseCase;
 import bhutan.eledger.application.port.out.ref.taxperiodconfig.RefOpenCloseTaxPeriodRepositoryPort;
 import bhutan.eledger.common.ref.taxperiodconfig.TaxPeriodType;
-import bhutan.eledger.domain.ref.taxperiodconfig.RefOpenCloseTaxPeriodRecord;
 import bhutan.eledger.domain.ref.taxperiodconfig.RefOpenCloseTaxPeriod;
+import bhutan.eledger.domain.ref.taxperiodconfig.RefOpenCloseTaxPeriodRecord;
 import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodSegment;
-import bhutan.eledger.domain.ref.taxperiodconfig.TaxPeriodConfigRecord;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -16,12 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
-import java.time.Month;
-import java.time.Year;
 import java.time.YearMonth;
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.Map;
 
 @Log4j2
 @Service
@@ -32,8 +28,6 @@ class LoadGenOpenCloseTaxPeriodService implements LoadGenOpenCloseTaxPeriodUseCa
     private final RefOpenCloseTaxPeriodRepositoryPort refOpenCloseTaxPeriodRepositoryPort;
     private final LoadTaxPeriodSegmentsUseCase loadTaxPeriodSegmentsUseCase;
     private final ReadTaxPeriodTypesUseCase readTaxPeriodTypesUseCase;
-
-    private static final String fortnight = " fortnight";
 
     @Override
     public RefOpenCloseTaxPeriod loadGen(@Valid LoadGenOpenCloseTaxPeriodUseCase.LoadGenOpenCloseTaxPeriodConfigCommand command) {
@@ -73,8 +67,8 @@ class LoadGenOpenCloseTaxPeriodService implements LoadGenOpenCloseTaxPeriodUseCa
                         : YearMonth.of(openDate.plusMonths(command.getMonth() - 1).getYear(), openDate.plusMonths(command.getMonth() - 1).getMonth()).atEndOfMonth();
                 records.add(
                         RefOpenCloseTaxPeriodRecord.withoutId(
-                                //todo need to change the type
-                                Long.parseLong(segment.getCode()),
+                                segment.getId(),
+                                segment.getCode(),
                                 segment.getDescription(),
                                 openDate,
                                 closeDate
@@ -90,7 +84,8 @@ class LoadGenOpenCloseTaxPeriodService implements LoadGenOpenCloseTaxPeriodUseCa
                 closeOfQuarter = command.getMonth() != null ? openOfQuarter.plusMonths(command.getMonth() - 1) : openOfQuarter.plusYears(command.getYears());
                 records.add(
                         RefOpenCloseTaxPeriodRecord.withoutId(
-                                Long.parseLong(segment.getCode()),
+                                segment.getId(),
+                                segment.getCode(),
                                 segment.getDescription(),
                                 openOfQuarter,
                                 YearMonth.of(closeOfQuarter.getYear(), closeOfQuarter.getMonth()).atEndOfMonth()
@@ -121,7 +116,8 @@ class LoadGenOpenCloseTaxPeriodService implements LoadGenOpenCloseTaxPeriodUseCa
                         openOfFortnight.plusYears(command.getYears()).minusDays(1);
                 records.add(
                         RefOpenCloseTaxPeriodRecord.withoutId(
-                                Long.parseLong(segment.getCode()),
+                                segment.getId(),
+                                segment.getCode(),
                                 segment.getDescription(),
                                 openOfFortnight,
                                 closeOfFortnight
@@ -137,10 +133,11 @@ class LoadGenOpenCloseTaxPeriodService implements LoadGenOpenCloseTaxPeriodUseCa
                         :openOfHalf.plusYears(command.getYears());
                 records.add(
                         RefOpenCloseTaxPeriodRecord.withoutId(
-                                Long.parseLong(segment.getCode()),
+                                segment.getId(),
+                                segment.getCode(),
                                 segment.getDescription(),
                                 openOfHalf,
-                                YearMonth.of(closeOfHalf.getYear(),closeOfHalf.getMonth()).atEndOfMonth()
+                                YearMonth.of(closeOfHalf.getYear(), closeOfHalf.getMonth()).atEndOfMonth()
                         ));
             }
         }else if (TaxPeriodType.YEARLY.getValue().equals(command.getTaxPeriodCode())) {
@@ -150,10 +147,11 @@ class LoadGenOpenCloseTaxPeriodService implements LoadGenOpenCloseTaxPeriodUseCa
                     :openYear.plusMonths(command.getYears());
             records.add(
                     RefOpenCloseTaxPeriodRecord.withoutId(
-                            Long.parseLong(segment.getCode()),
+                            segment.getId(),
+                            segment.getCode(),
                             segment.getDescription(),
                             openYear,
-                            YearMonth.of(closeYear.getYear(),closeYear.getMonth()).atEndOfMonth()
+                            YearMonth.of(closeYear.getYear(), closeYear.getMonth()).atEndOfMonth()
                     ));
         }
 

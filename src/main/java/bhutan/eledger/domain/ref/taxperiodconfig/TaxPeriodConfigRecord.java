@@ -19,6 +19,8 @@ public class TaxPeriodConfigRecord {
     @NotNull
     private final Long periodId;
 
+    private final String periodCode;
+
     @NotNull
     private final Multilingual periodName;
 
@@ -57,6 +59,7 @@ public class TaxPeriodConfigRecord {
     public static TaxPeriodConfigRecord withId(
             Long id,
             Long periodId,
+            String periodCode,
             Multilingual periodSegmentName,
             LocalDate periodStartDate,
             LocalDate periodEndDate,
@@ -70,6 +73,7 @@ public class TaxPeriodConfigRecord {
         return new TaxPeriodConfigRecord(
                 id,
                 periodId,
+                periodCode,
                 periodSegmentName,
                 periodStartDate,
                 periodEndDate,
@@ -84,6 +88,7 @@ public class TaxPeriodConfigRecord {
 
     public static TaxPeriodConfigRecord withoutId(
             Long periodSegmentId,
+            String periodCode,
             Multilingual periodSegmentName,
             LocalDate periodStartDate,
             LocalDate periodEndDate,
@@ -97,6 +102,7 @@ public class TaxPeriodConfigRecord {
         return new TaxPeriodConfigRecord(
                 null,
                 periodSegmentId,
+                periodCode,
                 periodSegmentName,
                 periodStartDate,
                 periodEndDate,

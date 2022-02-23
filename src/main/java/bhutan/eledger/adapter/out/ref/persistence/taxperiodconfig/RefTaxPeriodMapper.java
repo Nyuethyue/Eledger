@@ -2,10 +2,12 @@ package bhutan.eledger.adapter.out.ref.persistence.taxperiodconfig;
 
 import am.iunetworks.lib.multilingual.core.Multilingual;
 import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodConfig;
+import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodSegment;
 import bhutan.eledger.domain.ref.taxperiodconfig.TaxPeriodConfigRecord;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 class RefTaxPeriodMapper {
@@ -47,13 +49,24 @@ class RefTaxPeriodMapper {
 
     RefTaxPeriodConfig mapToDomain(RefTaxPeriodConfigEntity entity,
                                    Collection<RefTaxPeriodRecordEntity> entityRecords,
-                                   Map<Long, Multilingual> segmentNames) {
+                                   List<RefTaxPeriodSegment> segmentList) {
         List<TaxPeriodConfigRecord> records = new LinkedList<>();
+        Map<Long, Multilingual> segmentNames = segmentList
+                .stream()
+                .collect(
+                        Collectors.toMap(RefTaxPeriodSegment::getId, RefTaxPeriodSegment::getDescription)
+                );
+        Map<Long, String> segmentCodes = segmentList
+                .stream()
+                .collect(
+                        Collectors.toMap(RefTaxPeriodSegment::getId, RefTaxPeriodSegment::getCode)
+                );
         entityRecords.stream().forEach(re ->
                 records.add(
                         TaxPeriodConfigRecord.withId(
                                 re.getId(),
                                 re.getPeriodSegmentId(),
+                                segmentCodes.get(re.getPeriodSegmentId()),
                                 segmentNames.get(re.getPeriodSegmentId()),
                                 re.getPeriodStartDate(),
                                 re.getPeriodEndDate(),

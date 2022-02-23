@@ -48,6 +48,7 @@ class UpdateOpenCloseTaxPeriodService implements UpdateOpenCloseTaxPeriodUseCase
                                 RefOpenCloseTaxPeriodRecord.withoutId(
                                         record.getPeriodSegmentId(),
                                         null,
+                                        null,
                                         record.getPeriodOpenDate(),
                                         record.getPeriodCloseDate()
                                 )

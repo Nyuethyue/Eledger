@@ -37,6 +37,7 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
 
     @Override
     public RefTaxPeriodConfig loadGen(@Valid LoadGenTaxPeriodConfigCommand command) {
+        log.trace("Loading tax period record with command: {}", command);
         var refTaxPeriodConfig =
                 refTaxPeriodRepositoryPort.readBy(
                         command.getTaxTypeCode(),
@@ -44,6 +45,7 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                         command.getTaxPeriodCode(),
                         command.getTransactionTypeId()
                 );
+
         if (refTaxPeriodConfig.isPresent()) {
             return refTaxPeriodConfig.get();
         } else {
@@ -75,6 +77,7 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
 
     public RefTaxPeriodConfig generate(LoadGenTaxPeriodConfigCommand command) {
         var taxPeriodType = readTaxPeriodTypesUseCase.readByCode(command.getTaxPeriodCode());
+
         Collection<RefTaxPeriodSegment> segments =
                 loadTaxPeriodSegmentsUseCase.findByTaxPeriodId(taxPeriodType.get().getId());
         Map<String, String> taxTypeFullCodeMap = loadTaxTypeFullCodeMap();
@@ -90,7 +93,8 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                 LocalDate endOfMonth = YearMonth.of(year, monthIndex).atEndOfMonth();
                 records.add(
                         TaxPeriodConfigRecord.withoutId(
-                                Long.parseLong(segment.getCode()),
+                                segment.getId(),
+                                segment.getCode(),
                                 segment.getDescription(),
                                 LocalDate.of(year, monthIndex, 1),// Start period
                                 endOfMonth,// End period
@@ -109,7 +113,8 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                 LocalDate endOfQuarter = YearMonth.of(year, 3 * quarterIndex).atEndOfMonth();
                 records.add(
                         TaxPeriodConfigRecord.withoutId(
-                                Long.parseLong(segment.getCode()),
+                                segment.getId(),
+                                segment.getCode(),
                                 segment.getDescription(),
                                 LocalDate.of(year, (3 * quarterIndex) - 2, 1),// Start period
                                 endOfQuarter,// End period
@@ -139,7 +144,8 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                 }
                 records.add(
                         TaxPeriodConfigRecord.withoutId(
-                                Long.parseLong(segment.getCode()),
+                                segment.getId(),
+                                segment.getCode(),
                                 segment.getDescription(),
                                 LocalDate.of(year, fortnightMonth, fortnightFirstDay),// Start period
                                 endOfFortnight,// End period
@@ -158,7 +164,8 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                 LocalDate endOfHalf = YearMonth.of(year, 6 * halfIndex).atEndOfMonth();
                 records.add(
                         TaxPeriodConfigRecord.withoutId(
-                                Long.parseLong(segment.getCode()),
+                                segment.getId(),
+                                segment.getCode(),
                                 segment.getDescription(),
                                 LocalDate.of(year, (6 * halfIndex) - 5, 1),// Start period
                                 endOfHalf,// End period
@@ -175,8 +182,8 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                 LocalDate endOfYear = YearMonth.of(year, 12).atEndOfMonth();
                 records.add(
                         TaxPeriodConfigRecord.withoutId(
-                                //todo need to change the type
-                                Long.parseLong(segment.getCode()),
+                                segment.getId(),
+                                segment.getCode(),
                                 segment.getDescription(),
                                 LocalDate.of(year, 1, 1),// Start period
                                 endOfYear,// End period

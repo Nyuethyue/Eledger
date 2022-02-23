@@ -9,12 +9,14 @@ import java.time.LocalDate;
 public class RefOpenCloseTaxPeriodRecord {
     private final Long id;
     private final Long periodSegmentId;
+    private final String periodSegmentCode;
     private final Multilingual periodSegmentName;
     private final LocalDate periodOpenDate;
     private final LocalDate periodCloseDate;
 
     public static RefOpenCloseTaxPeriodRecord withoutId(
             Long periodSegmentId,
+            String periodSegmentCode,
             Multilingual periodSegmentName,
             LocalDate periodOpenDate,
             LocalDate periodCloseDate
@@ -22,6 +24,7 @@ public class RefOpenCloseTaxPeriodRecord {
         return new RefOpenCloseTaxPeriodRecord(
                 null,
                 periodSegmentId,
+                periodSegmentCode,
                 periodSegmentName,
                 periodOpenDate,
                 periodCloseDate
