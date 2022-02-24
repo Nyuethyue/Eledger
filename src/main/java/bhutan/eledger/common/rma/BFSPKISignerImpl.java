@@ -23,7 +23,7 @@ class BFSPKISignerImpl implements BFSPKISigner {
 
     @PostConstruct
     private void init() throws IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException {
-        try (InputStream ksInputStream = new FileInputStream(rmaProperties.getSign().getKsResource().getFile())) {
+        try (InputStream ksInputStream = rmaProperties.getSign().getKsResource().getInputStream()) {
             keyStore = KeyStore.getInstance("PKCS12");
             keyStore.load(ksInputStream, rmaProperties.getSign().getKsPassword().toCharArray());
         }
