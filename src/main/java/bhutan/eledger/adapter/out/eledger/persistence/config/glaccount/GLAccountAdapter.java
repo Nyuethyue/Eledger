@@ -22,6 +22,12 @@ class GLAccountAdapter implements GLAccountRepositoryPort {
     }
 
     @Override
+    public Optional<GLAccount> readByCode(String code) {
+        return glAccountEntityRepository.findByCode(code)
+                .map(glAccountMapper::mapToDomain);
+    }
+
+    @Override
     public Collection<GLAccount> readAll() {
         return glAccountEntityRepository.findAll()
                 .stream()

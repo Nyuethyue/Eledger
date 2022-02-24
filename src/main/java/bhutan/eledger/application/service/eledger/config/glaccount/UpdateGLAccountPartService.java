@@ -3,6 +3,8 @@ package bhutan.eledger.application.service.eledger.config.glaccount;
 import am.iunetworks.lib.common.validation.RecordNotFoundException;
 import bhutan.eledger.application.port.in.eledger.config.glaccount.UpdateGLAccountPartUseCase;
 import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountPartRepositoryPort;
+import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountPartTypeRepositoryPort;
+import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountRepositoryPort;
 import bhutan.eledger.domain.eledger.config.glaccount.GLAccount;
 import bhutan.eledger.domain.eledger.config.glaccount.GLAccountPart;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,8 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 class UpdateGLAccountPartService implements UpdateGLAccountPartUseCase {
     private final GLAccountPartRepositoryPort glAccountPartRepositoryPort;
+    private final GLAccountRepositoryPort glAccountRepositoryPort;
+    private final GLAccountPartTypeRepositoryPort glAccountPartTypeRepositoryPort;
 
     @Override
     public void updateGLAccountPart(Long id, UpdateGLAccountPartUseCase.UpdateGLAccountPartCommand command) {
@@ -46,5 +50,28 @@ class UpdateGLAccountPartService implements UpdateGLAccountPartUseCase {
         log.trace("Persisting updated gl account Part: {}", updatedGLAccountPart);
 
         glAccountPartRepositoryPort.update(updatedGLAccountPart);
+
+        var glAccountPartType = glAccountPartTypeRepositoryPort.readById(glAccountPart.getGlAccountPartLevelId())
+                .orElseThrow(() -> new IllegalStateException("GLAccountPartType by id: " + glAccountPart.getGlAccountPartLevelId() + " not exists."));
+
+        if (glAccountPartType.getLevel() == 7) {
+            //todo need to improve  code
+            var glAccountExisted = glAccountRepositoryPort.readByCode(glAccountPart.getFullCode())
+                    .orElseThrow(() -> new IllegalStateException("GLAccount by code: " + glAccountPart.getFullCode() + " not exists."));
+
+            GLAccount updatedGLAccount = GLAccount.withId(
+                    glAccountExisted.getId(),
+                    glAccountExisted.getCode(),
+                    glAccountExisted.getCreationDateTime(),
+                    LocalDateTime.now(),
+                    glAccountExisted.getDescription().merge(command.getDescriptions()),
+                    glAccountExisted.getGlAccountLastPartId()
+            );
+
+            log.trace("Persisting updated gl account: {}", updatedGLAccount);
+
+            glAccountRepositoryPort.update(updatedGLAccount);
+        }
     }
+
 }

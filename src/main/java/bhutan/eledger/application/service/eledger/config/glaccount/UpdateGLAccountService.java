@@ -2,8 +2,10 @@ package bhutan.eledger.application.service.eledger.config.glaccount;
 
 import am.iunetworks.lib.common.validation.RecordNotFoundException;
 import bhutan.eledger.application.port.in.eledger.config.glaccount.UpdateGLAccountUseCase;
+import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountPartRepositoryPort;
 import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountRepositoryPort;
 import bhutan.eledger.domain.eledger.config.glaccount.GLAccount;
+import bhutan.eledger.domain.eledger.config.glaccount.GLAccountPart;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 class UpdateGLAccountService implements UpdateGLAccountUseCase {
     private final GLAccountRepositoryPort glAccountRepositoryPort;
+    private final GLAccountPartRepositoryPort glAccountPartRepositoryPort;
 
     @Override
     public void updateGLAccount(Long id, UpdateGLAccountCommand command) {
@@ -30,7 +33,6 @@ class UpdateGLAccountService implements UpdateGLAccountUseCase {
 
         //todo apply validation logic
 
-
         GLAccount updatedGLAccount = GLAccount.withId(
                 glAccount.getId(),
                 glAccount.getCode(),
@@ -43,5 +45,23 @@ class UpdateGLAccountService implements UpdateGLAccountUseCase {
         log.trace("Persisting updated gl account: {}", updatedGLAccount);
 
         glAccountRepositoryPort.update(updatedGLAccount);
+
+        var glAccountPartExisted = glAccountPartRepositoryPort.requiredReadById(glAccount.getGlAccountLastPartId());
+
+        GLAccountPart updatedGLAccountPart = GLAccountPart.withId(
+                glAccountPartExisted.getId(),
+                glAccountPartExisted.getCode(),
+                glAccountPartExisted.getFullCode(),
+                glAccountPartExisted.getParentId(),
+                glAccountPartExisted.getCreationDateTime(),
+                LocalDateTime.now(),
+                glAccountPartExisted.getDescription().merge(command.getDescriptions()),
+                glAccountPartExisted.getGlAccountPartLevelId()
+        );
+
+        log.trace("Persisting updated gl part account: {}", updatedGLAccountPart);
+
+        glAccountPartRepositoryPort.update(updatedGLAccountPart);
+
     }
 }
