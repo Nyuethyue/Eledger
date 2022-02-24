@@ -46,24 +46,22 @@ class UpdateGLAccountService implements UpdateGLAccountUseCase {
 
         glAccountRepositoryPort.update(updatedGLAccount);
 
-        var glPartAccountExisted = glAccountPartRepositoryPort.readById(glAccount.getGlAccountLastPartId());
+        var glAccountPartExisted = glAccountPartRepositoryPort.requiredReadById(glAccount.getGlAccountLastPartId());
 
-        if (glPartAccountExisted.get().getGlAccountPartLevelId()==7) {
-            GLAccountPart updatedGLAccountPart = GLAccountPart.withId(
-                    glPartAccountExisted.get().getId(),
-                    glPartAccountExisted.get().getCode(),
-                    glPartAccountExisted.get().getFullCode(),
-                    glPartAccountExisted.get().getParentId(),
-                    glPartAccountExisted.get().getCreationDateTime(),
-                    LocalDateTime.now(),
-                    glPartAccountExisted.get().getDescription().merge(command.getDescriptions()),
-                    glPartAccountExisted.get().getGlAccountPartLevelId()
-            );
+        GLAccountPart updatedGLAccountPart = GLAccountPart.withId(
+                glAccountPartExisted.getId(),
+                glAccountPartExisted.getCode(),
+                glAccountPartExisted.getFullCode(),
+                glAccountPartExisted.getParentId(),
+                glAccountPartExisted.getCreationDateTime(),
+                LocalDateTime.now(),
+                glAccountPartExisted.getDescription().merge(command.getDescriptions()),
+                glAccountPartExisted.getGlAccountPartLevelId()
+        );
 
-            log.trace("Persisting updated gl part account: {}", updatedGLAccountPart);
+        log.trace("Persisting updated gl part account: {}", updatedGLAccountPart);
 
-            glAccountPartRepositoryPort.update(updatedGLAccountPart);
-        }
+        glAccountPartRepositoryPort.update(updatedGLAccountPart);
 
     }
 }
