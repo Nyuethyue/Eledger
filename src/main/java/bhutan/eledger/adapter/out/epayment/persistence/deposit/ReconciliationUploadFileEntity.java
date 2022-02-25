@@ -12,14 +12,14 @@ import java.util.Collection;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "reconciliation_upload_file", schema = "epayment")
+@Table(name = "ep_reconciliation_upload_file", schema = "epayment")
 @Getter
 @Setter
 class ReconciliationUploadFileEntity {
 
     @Id
-    @SequenceGenerator(name = "reconciliation_upload_file_id_seq", sequenceName = "reconciliation_upload_file_id_seq", schema = "epayment", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reconciliation_upload_file_id_seq")
+    @SequenceGenerator(name = "ep_reconciliation_upload_file_id_seq", sequenceName = "ep_reconciliation_upload_file_id_seq", schema = "epayment", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ep_reconciliation_upload_file_id_seq")
     @Column(name = "id")
     private Long id;
 

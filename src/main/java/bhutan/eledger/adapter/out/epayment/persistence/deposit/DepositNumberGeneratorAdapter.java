@@ -27,10 +27,10 @@ class DepositNumberGeneratorAdapter implements DepositNumberGeneratorPort {
     }
 
     private String resolveSeqValue() {
-        var seqVal = jdbcTemplate.queryForObject("SELECT NEXTVAL('epayment.deposit_number_seq')", Long.class);
+        var seqVal = jdbcTemplate.queryForObject("SELECT NEXTVAL('epayment.ep_deposit_number_seq')", Long.class);
 
         if (seqVal == null) {
-            throw new IllegalStateException("The NEXTVAL of sequence 'epayment.deposit_number_seq' returned null.");
+            throw new IllegalStateException("The NEXTVAL of sequence 'epayment.ep_deposit_number_seq' returned null.");
         }
 
         return Strings.padStart(seqVal.toString(), 6, '0');
