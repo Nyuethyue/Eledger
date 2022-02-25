@@ -10,13 +10,13 @@ import javax.persistence.*;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "deposit_denomination_counts", schema = "epayment")
+@Table(name = "ep_deposit_denomination_counts", schema = "epayment")
 @Getter
 @Setter
 class DepositDenominationCountsEntity {
     @Id
-    @SequenceGenerator(name = "deposit_denomination_counts_id_seq", sequenceName = "deposit_denomination_counts_id_seq", schema = "epayment", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "deposit_denomination_counts_id_seq")
+    @SequenceGenerator(name = "ep_deposit_denomination_counts_id_seq", sequenceName = "ep_deposit_denomination_counts_id_seq", schema = "epayment", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ep_deposit_denomination_counts_id_seq")
     @Column(name = "id")
     private Long id;
     @Column(name = "denomination_id")
