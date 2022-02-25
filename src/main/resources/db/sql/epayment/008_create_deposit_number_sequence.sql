@@ -1,5 +1,5 @@
 -----------------------------------------------------------------------------------------------------------------------------
-CREATE SEQUENCE epayment.deposit_number_seq
+CREATE SEQUENCE epayment.ep_deposit_number_seq
     INCREMENT BY 1
     MAXVALUE 999999
     MINVALUE 1

@@ -14,13 +14,13 @@ import java.util.Set;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "deposit", schema = "epayment")
+@Table(name = "ep_deposit", schema = "epayment")
 @Getter
 @Setter
 class DepositEntity {
     @Id
-    @SequenceGenerator(name = "deposit_id_seq", sequenceName = "deposit_id_seq", schema = "epayment", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "deposit_id_seq")
+    @SequenceGenerator(name = "ep_deposit_id_seq", sequenceName = "ep_deposit_id_seq", schema = "epayment", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ep_deposit_id_seq")
     @Column(name = "id")
     private Long id;
 
