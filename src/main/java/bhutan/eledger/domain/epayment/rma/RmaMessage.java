@@ -50,6 +50,10 @@ public class RmaMessage {
         status = RmaMessageStatus.FAILED;
     }
 
+    public void cancel() {
+        status = RmaMessageStatus.CANCELLED;
+    }
+
     public Collection<RmaMessageResponse> getRmaMessageResponses() {
         return CollectionUtils.isEmpty(rmaMessageResponses) ? Set.of() : rmaMessageResponses;
     }

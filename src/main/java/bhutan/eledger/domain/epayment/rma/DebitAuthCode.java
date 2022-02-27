@@ -10,6 +10,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public enum DebitAuthCode {
     NONE(null, "AR sent but not action done yet."),
+    USER_CANCELLED("UC", "User Cancelled."),
     APPROVED("00", "Approved"),
     INVALID_BENF("03", "Invalid Beneficiary"),
     BENF_ACCOUNT_CLOSED("05", "Beneficiary Account Closed"),

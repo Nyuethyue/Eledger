@@ -24,7 +24,8 @@ import java.util.Set;
 class RmaASTaskHandler implements ExtendedTaskHandler {
     private static final Collection<RmaMessageStatus> COMPLETE_TASK_STATUSES = Set.of(
             RmaMessageStatus.COMPLETED,
-            RmaMessageStatus.FAILED
+            RmaMessageStatus.FAILED,
+            RmaMessageStatus.CANCELLED
     );
 
     private final RmaRequesterPort rmaRequesterPort;
@@ -68,7 +69,7 @@ class RmaASTaskHandler implements ExtendedTaskHandler {
                     )
             );
 
-        } else if (RmaMessageStatus.FAILED == rmaMessage.getStatus()) {
+        } else if (RmaMessageStatus.FAILED == rmaMessage.getStatus() || RmaMessageStatus.CANCELLED == rmaMessage.getStatus()) {
             rollbackRmaPaymentUseCase.rollback(
                     new RollbackRmaPaymentUseCase.RollbackRmaPaymentCommand(
                             rmaMessage.getPaymentAdviceId()
@@ -90,6 +91,8 @@ class RmaASTaskHandler implements ExtendedTaskHandler {
             case NONE -> log.trace("Rma AR with order id: {} sent but no action is done yet.", rmaMessage.getOrderNo());
 
             case INTERNAL_ERROR -> log.warn("Internal error from rma side. Response: {}", rmaMessageResponse);
+
+            case USER_CANCELLED -> rmaMessage.cancel();
 
             default -> rmaMessage.fail();
         }

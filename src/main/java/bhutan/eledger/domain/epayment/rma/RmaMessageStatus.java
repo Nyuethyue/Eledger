@@ -12,6 +12,7 @@ public enum RmaMessageStatus {
     CREATED("CREATED"),
     PENDING("PENDING"),
     FAILED("FAILED"),
+    CANCELLED("CANCELLED"),
     COMPLETED("COMPLETED");
 
     private final String value;
