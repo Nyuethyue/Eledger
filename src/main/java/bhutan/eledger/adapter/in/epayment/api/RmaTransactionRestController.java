@@ -1,5 +1,7 @@
 package bhutan.eledger.adapter.in.epayment.api;
 
+import bhutan.eledger.application.port.in.epayment.payment.rma.RmaTransactionCancelUseCase;
+import bhutan.eledger.application.port.in.epayment.payment.rma.RmaTransactionFailUseCase;
 import bhutan.eledger.application.port.in.epayment.payment.rma.RmaTransactionSuccessUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 class RmaTransactionRestController {
 
     private final RmaTransactionSuccessUseCase rmaTransactionSuccessUseCase;
+    private final RmaTransactionFailUseCase rmaTransactionFailUseCase;
+    private final RmaTransactionCancelUseCase rmaTransactionCancelUseCase;
 
     @PostMapping("/success")
     public ResponseEntity<Void> create(RmaTransactionSuccessUseCase.RmaTransactionSuccessCommand command) {
@@ -25,7 +29,9 @@ class RmaTransactionRestController {
     }
 
     @PostMapping("/failure")
-    public ResponseEntity<Void> failure() {
+    public ResponseEntity<Void> failure(RmaTransactionFailUseCase.RmaTransactionFailCommand command) {
+
+        rmaTransactionFailUseCase.processFail(command);
 
         return ResponseEntity
                 .noContent()
@@ -33,7 +39,9 @@ class RmaTransactionRestController {
     }
 
     @PostMapping("/canceled")
-    public ResponseEntity<Void> canceled() {
+    public ResponseEntity<Void> canceled(RmaTransactionCancelUseCase.RmaTransactionCancelCommand command) {
+
+        rmaTransactionCancelUseCase.processCancel(command);
 
         return ResponseEntity
                 .noContent()
