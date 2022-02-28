@@ -1,9 +1,7 @@
 package bhutan.eledger.ref.taxperiodconfig;
 
-import bhutan.eledger.application.port.in.ref.taxperiodconfig.LoadGenTaxPeriodConfigUseCase;
-import bhutan.eledger.application.port.in.ref.taxperiodconfig.LoadTaxPeriodSegmentsUseCase;
-import bhutan.eledger.application.port.in.ref.taxperiodconfig.ReadTaxPeriodTypesUseCase;
-import bhutan.eledger.application.port.in.ref.taxperiodconfig.UpsertTaxPeriodUseCase;
+import am.iunetworks.lib.common.persistence.search.SearchResult;
+import bhutan.eledger.application.port.in.ref.taxperiodconfig.*;
 import bhutan.eledger.application.port.out.ref.taxperiodconfig.RefTaxPeriodRepositoryPort;
 import bhutan.eledger.common.ref.taxperiodconfig.TaxPeriodType;
 import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodConfig;
@@ -34,6 +32,9 @@ class CreateRefTaxPeriodConfigTest {
 
     @Autowired
     private LoadGenTaxPeriodConfigUseCase loadGenTaxPeriodConfigUseCase;
+
+    @Autowired
+    private SearchTaxPeriodConfigUseCase searchTaxPeriodConfigUseCase;
 
     @Autowired
     private UpsertTaxPeriodUseCase upsertTaxPeriodUseCase;
@@ -114,19 +115,30 @@ class CreateRefTaxPeriodConfigTest {
 
         Long recordId = upsertTaxPeriodUseCase.upsert(upsertCommand);
 
-        RefTaxPeriodConfig configPersisted = loadGenTaxPeriodConfigUseCase.loadGen(generateCommand);
-        validate(configPersisted);
-        Assertions.assertEquals(recordId, configPersisted.getId());
+        SearchTaxPeriodConfigUseCase.SearchTaxPeriodConfigCommand searchCommand = new SearchTaxPeriodConfigUseCase.SearchTaxPeriodConfigCommand(
+                generateCommand.getTaxTypeCode(),
+                generateCommand.getCalendarYear(),
+                generateCommand.getTaxPeriodCode(),
+                generateCommand.getTransactionTypeId()
+        );
 
-//        try {
-//            System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(configLoaded));
-//        } catch (Exception i) {}
+        SearchResult<RefTaxPeriodConfig> configPersisted = searchTaxPeriodConfigUseCase.search(searchCommand);
+        validate(configPersisted);
+        Assertions.assertEquals(recordId, configPersisted.getContent().get(0).getId());
     }
 
     private void validate(RefTaxPeriodConfig configLoaded) {
         configLoaded.getRecords().forEach(record -> {
             Assertions.assertNotNull(record.getPeriodName());
             Assertions.assertNotNull(record.getPeriodName().getTranslation("en"));
+        });
+    }
+
+    private void validate(SearchResult<RefTaxPeriodConfig> configLoaded) {
+        Assertions.assertNotNull(configLoaded);
+        Assertions.assertNotNull(configLoaded.getContent());
+        configLoaded.getContent().forEach(config -> {
+            validate(config);
         });
     }
 
