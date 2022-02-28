@@ -26,8 +26,6 @@ class BFSPKISignerImpl implements BFSPKISigner {
         try (InputStream ksInputStream = rmaProperties.getSign().getKsResource().getInputStream()) {
             keyStore = KeyStore.getInstance("PKCS12");
             keyStore.load(ksInputStream, rmaProperties.getSign().getKsPassword().toCharArray());
-        } catch (Exception e) {
-
         }
     }
 
