@@ -20,7 +20,7 @@ CREATE SEQUENCE epayment.ep_deposit_id_seq
     START 1
     CACHE 1
     NO CYCLE
-    OWNED BY epayment.deposit.id;
+    OWNED BY epayment.ep_deposit.id;
 -----------------------------------------------------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS epayment.ep_deposit_receipt
 (
