@@ -8,10 +8,7 @@ import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodSegment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -50,10 +47,9 @@ class RefTaxPeriodAdapter implements RefTaxPeriodRepositoryPort {
         return refTaxPeriodConfigEntityRepository.readBy(taxTypeCode, calendarYear, taxPeriodCode, transactionTypeId)
                 .map(taxPeriodConfig -> {
                     var taxPeriodType = readTaxPeriodTypesUseCase.readByCode(taxPeriodConfig.getTaxPeriodCode());
-                    var segmentMap = refTaxPeriodSegmentEntityRepository.findAllByTaxPeriodIdOrderByIdAsc(taxPeriodType.get().getId())
-                            .stream().collect(Collectors.toMap(RefTaxPeriodSegment::getId, RefTaxPeriodSegment::getDescription));
+                    List<RefTaxPeriodSegment> segmentList = refTaxPeriodSegmentEntityRepository.findAllByTaxPeriodIdOrderByIdAsc(taxPeriodType.get().getId());
                     Collection<RefTaxPeriodRecordEntity> entityRecords = refTaxPeriodRecordEntityRepository.readTaxPeriodRecords(taxPeriodConfig.getId());
-                    return refTaxPeriodMapper.mapToDomain(taxPeriodConfig, entityRecords, segmentMap);
+                    return refTaxPeriodMapper.mapToDomain(taxPeriodConfig, entityRecords, segmentList);
                 });
     }
 
