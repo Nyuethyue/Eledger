@@ -38,7 +38,6 @@ class RmaTransactionRestController {
         return ResponseEntity.status(HttpStatus.FOUND).location(
                 UriComponentsBuilder.fromUriString(backTo)
                         .queryParam("orderNo", command.getOrderNo())
-                        .queryParam("debitAuthNo", command.getDebitAuthNo())
                         .queryParam("debitAuthCode", command.getDebitAuthCode())
                         .queryParam("txnAmount", command.getTxnAmount())
                         .queryParam("status", "Success")

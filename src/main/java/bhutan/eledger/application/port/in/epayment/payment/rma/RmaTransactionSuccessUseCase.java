@@ -9,15 +9,13 @@ public interface RmaTransactionSuccessUseCase {
     @Data
     class RmaTransactionSuccessCommand {
         private final String orderNo;
-        private final String debitAuthNo;
         private final String debitAuthCode;
         private final String txnAmount;
 
-        public RmaTransactionSuccessCommand(String bfs_orderNo, String bfs_debitAuthNo, String bfs_debitAuthCode, String bfs_txnAmount) {
+        public RmaTransactionSuccessCommand(String bfs_orderNo, String bfs_debitAuthCode, String bfs_txnAmount) {
             this.orderNo = bfs_orderNo;
-            this.debitAuthNo = bfs_debitAuthNo;
-            this.debitAuthCode = bfs_debitAuthNo;
-            this.txnAmount = bfs_debitAuthNo;
+            this.debitAuthCode = bfs_debitAuthCode;
+            this.txnAmount = bfs_txnAmount;
         }
     }
 }
