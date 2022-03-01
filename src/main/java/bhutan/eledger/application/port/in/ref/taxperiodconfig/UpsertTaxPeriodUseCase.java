@@ -4,9 +4,7 @@ import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.Collection;
 
@@ -36,12 +34,14 @@ public interface UpsertTaxPeriodUseCase {
 
         @Valid
         @NotNull
-        @PositiveOrZero
+        @Min(0)
+        @Max(364)
         private final Integer dueDateCountForReturnFiling;
 
         @Valid
         @NotNull
-        @PositiveOrZero
+        @Min(0)
+        @Max(364)
         private final Integer dueDateCountForPayment;
 
         @Valid
