@@ -26,24 +26,41 @@ class RmaTransactionRestController {
     private final RmaTransactionFailUseCase rmaTransactionFailUseCase;
     private final RmaTransactionCancelUseCase rmaTransactionCancelUseCase;
 
-    @PostMapping("/success")
-    public ResponseEntity<Void> create(RmaTransactionSuccessUseCase.RmaTransactionSuccessCommand command) {
+    @PostMapping(path = "/success", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+    public ResponseEntity<Void> create(RmaTransactionSuccessUseCase.RmaTransactionSuccessCommand command, @RequestHeader("Back-To") String backTo) {
+
+        log.debug("Success request received with mapped dto: {}", command);
 
         rmaTransactionSuccessUseCase.processSuccess(command);
 
-        return ResponseEntity
-                .noContent()
-                .build();
+        log.debug("Redirecting to {} with order no {}", backTo, command.getOrderNo());
+
+        return ResponseEntity.status(HttpStatus.FOUND).location(
+                UriComponentsBuilder.fromUriString(backTo)
+                        .queryParam("orderNo", command.getOrderNo())
+                        .queryParam("debitAuthNo", command.getDebitAuthNo())
+                        .queryParam("debitAuthCode", command.getDebitAuthCode())
+                        .queryParam("txnAmount", command.getTxnAmount())
+                        .queryParam("status", "Success")
+                        .build().toUri()
+        ).build();
     }
 
-    @PostMapping("/failure")
-    public ResponseEntity<Void> failure(RmaTransactionFailUseCase.RmaTransactionFailCommand command) {
+    @PostMapping(path = "/failure", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+    public ResponseEntity<Void> failure(RmaTransactionFailUseCase.RmaTransactionFailCommand command, @RequestHeader("Back-To") String backTo) {
+
+        log.debug("Failure request received with mapped dto: {}", command);
 
         rmaTransactionFailUseCase.processFail(command);
 
-        return ResponseEntity
-                .noContent()
-                .build();
+        log.debug("Redirecting to {} with order no {}", backTo, command.getOrderNo());
+
+        return ResponseEntity.status(HttpStatus.FOUND).location(
+                UriComponentsBuilder.fromUriString(backTo)
+                        .queryParam("orderNo", command.getOrderNo())
+                        .queryParam("status", "Failure")
+                        .build().toUri()
+        ).build();
     }
 
     @PostMapping(path = "/canceled", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
@@ -59,7 +76,10 @@ class RmaTransactionRestController {
         log.debug("Redirecting to {} with order no {}", backTo, command.getOrderNo());
 
         return ResponseEntity.status(HttpStatus.FOUND).location(
-                UriComponentsBuilder.fromUriString(backTo).queryParam("orderNo", command.getOrderNo()).build().toUri()
+                UriComponentsBuilder.fromUriString(backTo)
+                        .queryParam("orderNo", command.getOrderNo())
+                        .queryParam("status", "Cancelled")
+                        .build().toUri()
         ).build();
     }
 }

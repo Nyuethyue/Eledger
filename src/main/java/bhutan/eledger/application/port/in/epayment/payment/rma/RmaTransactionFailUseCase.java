@@ -1,6 +1,5 @@
 package bhutan.eledger.application.port.in.epayment.payment.rma;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Data;
 
 public interface RmaTransactionFailUseCase {
@@ -11,9 +10,8 @@ public interface RmaTransactionFailUseCase {
     class RmaTransactionFailCommand {
         private final String orderNo;
 
-        @JsonCreator
-        public RmaTransactionFailCommand(String orderNo) {
-            this.orderNo = orderNo;
+        public RmaTransactionFailCommand(String bfs_orderNo) {
+            this.orderNo = bfs_orderNo;
         }
     }
 }
