@@ -62,6 +62,9 @@ class RmaASTaskHandler implements ExtendedTaskHandler {
 
     private void processPayment(RmaMessage rmaMessage, RmaMessageResponse rmaMessageResponse) {
         if (RmaMessageStatus.COMPLETED == rmaMessage.getStatus()) {
+
+            log.debug("Rma transaction completed. OrderNo: {}, PA_ID: {}, amount: {}", rmaMessage.getOrderNo(), rmaMessage.getPaymentAdviceId(), rmaMessageResponse.getTxnAmount());
+
             completeRmaPaymentUseCase.complete(
                     new CompleteRmaPaymentUseCase.CompleteRmaPaymentCommand(
                             rmaMessage.getPaymentAdviceId(),

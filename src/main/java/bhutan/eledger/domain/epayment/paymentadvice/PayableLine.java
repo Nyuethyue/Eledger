@@ -54,7 +54,7 @@ public class PayableLine {
     void pay(BigDecimal paidAmount) {
         checkPayableLine(paidAmount);
 
-        this.paidAmount = paidAmount.add(paidAmount);
+        this.paidAmount = this.paidAmount.add(paidAmount);
 
         recalculateToBePaidAmount();
     }
