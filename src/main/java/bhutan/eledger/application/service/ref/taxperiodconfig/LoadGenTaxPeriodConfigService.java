@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Year;
 import java.time.YearMonth;
@@ -242,20 +243,26 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
         int endDay = dateTo.getDayOfYear();
         int numberOfNonWorkingDays;
         if (startDay <= endDay) {
-            numberOfNonWorkingDays = countNWDays(nonWorkingDays, startDay, endDay);
+            numberOfNonWorkingDays = countNWDays(dateFrom, nonWorkingDays, startDay, endDay);
         } else {
             int middleDay = dateFrom.lengthOfYear();
-            numberOfNonWorkingDays = countNWDays(nonWorkingDays, startDay, middleDay)
-                                     + countNWDays(nonWorkingDays, 1, endDay);
+            numberOfNonWorkingDays = countNWDays(dateFrom, nonWorkingDays, startDay, middleDay)
+                                     + countNWDays(dateTo, nonWorkingDays, 1, endDay);
         }
         return dateFrom.plusDays(dayCount + numberOfNonWorkingDays);
     }
 
-    private int countNWDays(Set<Integer> nonWorkingDays, int startDay, int endDay) {
+    private int countNWDays(LocalDate dateFrom, Set<Integer> nonWorkingDays, int startDay, int endDay) {
         int numberOfNonWorkingDays = 0;
         for (int day = startDay; day < endDay; day++) {
             if (nonWorkingDays.contains(day)) {
                 numberOfNonWorkingDays++;
+            } else {
+                LocalDate dayDate = dateFrom.withDayOfYear(day);
+                DayOfWeek dayOfWeek = dayDate.getDayOfWeek();
+                if(DayOfWeek.SATURDAY.equals(dayOfWeek) || DayOfWeek.SUNDAY.equals(dayOfWeek)) {
+                    numberOfNonWorkingDays++;
+                }
             }
         }
         return numberOfNonWorkingDays;

@@ -5,9 +5,7 @@ import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Validated
@@ -31,7 +29,12 @@ public interface LoadGenTaxPeriodConfigUseCase {
         @NotNull
         private final Long transactionTypeId;
 
+        @Min(0)
+        @Max(364)
         private final Integer dueDateCountForReturnFiling;
+
+        @Min(0)
+        @Max(364)
         private final Integer dueDateCountForPayment;
         private final LocalDate validFrom;
         private final LocalDate validTo;

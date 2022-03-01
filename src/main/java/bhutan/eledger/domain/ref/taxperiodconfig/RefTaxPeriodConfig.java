@@ -6,9 +6,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,11 +31,13 @@ public class RefTaxPeriodConfig {
     private final Long transactionTypeId;
 
     @Valid
-    @PositiveOrZero
+    @Min(0)
+    @Max(364)
     private int dueDateCountForReturnFiling;
 
     @Valid
-    @PositiveOrZero
+    @Min(0)
+    @Max(364)
     private int dueDateCountForPayment;
 
     @Valid

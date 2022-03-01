@@ -9,10 +9,13 @@ import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodConfig;
 import bhutan.eledger.domain.ref.taxperiodconfig.TaxPeriodConfigRecord;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.joda.time.Days;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -50,19 +53,42 @@ class UpsertTaxPeriodService implements UpsertTaxPeriodUseCase {
         }
 
         command.getRecords().forEach(r -> {
-           if(r.getPeriodStart().isAfter(r.getPeriodEnd())) {
-               throw new ViolationException(
-                       new ValidationError()
-                               .addViolation("periodStart", "Period start is after period end")
-               );
-           }
-            if(r.getPaymentDueDate().isAfter(r.getFinePenaltyCalcStartDate())) {
+            LocalDate periodEnd = r.getPeriodEnd();
+
+            if (364 < ChronoUnit.DAYS.between(periodEnd, r.getFilingDueDate())) {
                 throw new ViolationException(
                         new ValidationError()
-                                .addViolation("paymentDueDate", "paymentDueDate end is after FinePenaltyCalcStartDate date")
+                                .addViolation("fillingDueDate", "Invalid Filling Due Date, difference in days must be less than 365")
                 );
             }
 
+            if (364 < ChronoUnit.DAYS.between(periodEnd, r.getPaymentDueDate())) {
+                throw new ViolationException(
+                        new ValidationError()
+                                .addViolation("paymentDueDate", "Invalid Payment Due Date, difference in days must be less than 365")
+                );
+            }
+
+            if (364 < ChronoUnit.DAYS.between(periodEnd, r.getFinePenaltyCalcStartDate())) {
+                throw new ViolationException(
+                        new ValidationError()
+                                .addViolation("finePenaltyCalcStartDate", "Invalid Fine Penalty Calc Start Date, difference in days must be less than 365")
+                );
+            }
+
+            if (364 < ChronoUnit.DAYS.between(periodEnd, r.getInterestCalcStartDate())) {
+                throw new ViolationException(
+                        new ValidationError()
+                                .addViolation("interestCalcStartDate", "Invalid Interest Calc Start Date, difference in days must be less than 365")
+                );
+            }
+
+            if (r.getPaymentDueDate().isAfter(r.getFinePenaltyCalcStartDate())) {
+                throw new ViolationException(
+                        new ValidationError()
+                                .addViolation("paymentDueDate", "paymentDueDate end is after finePenaltyCalcStartDate date")
+                );
+            }
         });
     }
 

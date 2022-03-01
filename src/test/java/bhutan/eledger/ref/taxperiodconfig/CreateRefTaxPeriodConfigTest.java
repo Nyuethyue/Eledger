@@ -84,7 +84,7 @@ class CreateRefTaxPeriodConfigTest {
         validate(configGenerated);
 
         Collection<UpsertTaxPeriodUseCase.TaxPeriodRecordCommand> records = new LinkedList<>();
-        for(TaxPeriodConfigRecord gr : configGenerated.getRecords()) {
+        for (TaxPeriodConfigRecord gr : configGenerated.getRecords()) {
             records.add(new UpsertTaxPeriodUseCase.TaxPeriodRecordCommand(
                     gr.getPeriodId(),
                     gr.getPeriodStartDate(),
