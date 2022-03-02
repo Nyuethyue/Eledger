@@ -42,5 +42,4 @@ class RefTaxPeriodController {
     public SearchResult<RefTaxPeriodConfig> search(SearchTaxPeriodConfigUseCase.SearchTaxPeriodConfigCommand command) {
         return searchTaxPeriodConfigUseCase.search(command);
     }
-
 }

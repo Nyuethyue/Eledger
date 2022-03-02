@@ -12,39 +12,19 @@ import java.util.stream.Collectors;
 @Component
 class RefTaxPeriodMapper {
 
-    RefTaxPeriodConfigEntity mapToEntity(long id, RefTaxPeriodConfig refTaxPeriodConfig) {
-        RefTaxPeriodConfigEntity refTaxPeriodConfigEntity =
-                RefTaxPeriodConfigEntity.withId(
-                        id,
-                        refTaxPeriodConfig.getTaxTypeCode(),
-                        refTaxPeriodConfig.getCalendarYear(),
-                        refTaxPeriodConfig.getTaxPeriodCode(),
-                        refTaxPeriodConfig.getTransactionTypeId(),
-                        refTaxPeriodConfig.getDueDateCountForReturnFiling(),
-                        refTaxPeriodConfig.getDueDateCountForPayment(),
-                        refTaxPeriodConfig.getValidFrom(),
-                        refTaxPeriodConfig.getValidTo(),
-                        refTaxPeriodConfig.getConsiderNonWorkingDays()
-                );
-
-        return refTaxPeriodConfigEntity;
-    }
-
     RefTaxPeriodConfigEntity mapToEntity(RefTaxPeriodConfig refTaxPeriodConfig) {
-        RefTaxPeriodConfigEntity refTaxPeriodConfigEntity =
-                RefTaxPeriodConfigEntity.withoutId(
-                        refTaxPeriodConfig.getTaxTypeCode(),
-                        refTaxPeriodConfig.getCalendarYear(),
-                        refTaxPeriodConfig.getTaxPeriodCode(),
-                        refTaxPeriodConfig.getTransactionTypeId(),
-                        refTaxPeriodConfig.getDueDateCountForReturnFiling(),
-                        refTaxPeriodConfig.getDueDateCountForPayment(),
-                        refTaxPeriodConfig.getValidFrom(),
-                        refTaxPeriodConfig.getValidTo(),
-                        refTaxPeriodConfig.getConsiderNonWorkingDays()
-                );
-
-        return refTaxPeriodConfigEntity;
+        return new RefTaxPeriodConfigEntity(
+                refTaxPeriodConfig.getId(),
+                refTaxPeriodConfig.getTaxTypeCode(),
+                refTaxPeriodConfig.getCalendarYear(),
+                refTaxPeriodConfig.getTaxPeriodCode(),
+                refTaxPeriodConfig.getTransactionTypeId(),
+                refTaxPeriodConfig.getDueDateCountForReturnFiling(),
+                refTaxPeriodConfig.getDueDateCountForPayment(),
+                refTaxPeriodConfig.getValidFrom(),
+                refTaxPeriodConfig.getValidTo(),
+                refTaxPeriodConfig.getConsiderNonWorkingDays()
+        );
     }
 
     RefTaxPeriodConfig mapToDomain(RefTaxPeriodConfigEntity entity,

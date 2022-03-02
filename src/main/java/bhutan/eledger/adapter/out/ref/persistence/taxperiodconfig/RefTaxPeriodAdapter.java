@@ -1,18 +1,9 @@
 package bhutan.eledger.adapter.out.ref.persistence.taxperiodconfig;
 
-import am.iunetworks.lib.common.persistence.search.PageableResolver;
-import am.iunetworks.lib.common.persistence.search.PagedSearchResult;
 import am.iunetworks.lib.common.persistence.search.SearchResult;
-import am.iunetworks.lib.multilingual.core.Multilingual;
 import bhutan.eledger.application.port.in.ref.taxperiodconfig.ReadTaxPeriodTypesUseCase;
-import bhutan.eledger.application.port.in.ref.taxperiodconfig.SearchTaxPeriodConfigUseCase;
-import bhutan.eledger.application.port.out.epayment.payment.ReceiptForDetailsSearchPort;
 import bhutan.eledger.application.port.out.ref.taxperiodconfig.RefTaxPeriodRepositoryPort;
-import bhutan.eledger.common.ref.refentry.RefEntry;
-import bhutan.eledger.common.ref.refentry.RefName;
-import bhutan.eledger.domain.epayment.payment.Receipt;
 import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodConfig;
-import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodSegment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -31,20 +22,20 @@ class RefTaxPeriodAdapter implements RefTaxPeriodRepositoryPort {
     private final RefTaxPeriodRecordEntityRepository refTaxPeriodRecordEntityRepository;
 
     @Override
-    public Long create(RefTaxPeriodConfig b) {
-        var id = refTaxPeriodConfigEntityRepository.save(refTaxPeriodMapper.mapToEntity(b)).getId();
-        b.getRecords().stream().forEach(r ->
-                refTaxPeriodRecordEntityRepository.save(refTaxPeriodMapper.mapToEntity(id, r))
+    public Long create(RefTaxPeriodConfig config) {
+        var id = refTaxPeriodConfigEntityRepository.save(refTaxPeriodMapper.mapToEntity(config)).getId();
+        config.getRecords().forEach(r ->
+            refTaxPeriodRecordEntityRepository.save(refTaxPeriodMapper.mapToEntity(id, r))
         );
         return id;
     }
 
     @Override
-    public Long update(RefTaxPeriodConfig conf) {
-        var id = refTaxPeriodConfigEntityRepository.save(refTaxPeriodMapper.mapToEntity(conf.getId(), conf)).getId();
+    public Long update(RefTaxPeriodConfig config) {
+        var id = refTaxPeriodConfigEntityRepository.save(refTaxPeriodMapper.mapToEntity(config)).getId();
         refTaxPeriodRecordEntityRepository.deleteByTaxPeriodConfigId(id);
-        conf.getRecords().stream().forEach(r ->
-                refTaxPeriodRecordEntityRepository.save(refTaxPeriodMapper.mapToEntity(id, r))
+        config.getRecords().forEach(r ->
+            refTaxPeriodRecordEntityRepository.save(refTaxPeriodMapper.mapToEntity(id, r))
         );
         return id;
     }

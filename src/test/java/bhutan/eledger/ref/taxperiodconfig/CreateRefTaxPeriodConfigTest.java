@@ -98,7 +98,7 @@ class CreateRefTaxPeriodConfigTest {
             ));
         }
 
-        UpsertTaxPeriodUseCase.UpsertTaxPeriodCommand upsertCommand =
+        UpsertTaxPeriodUseCase.UpsertTaxPeriodCommand createCommand =
                 new UpsertTaxPeriodUseCase.UpsertTaxPeriodCommand(
                         configGenerated.getId(),
                         configGenerated.getTaxTypeCode(),
@@ -113,7 +113,7 @@ class CreateRefTaxPeriodConfigTest {
                         records
                 );
 
-        Long recordId = upsertTaxPeriodUseCase.upsert(upsertCommand);
+        Long recordId = upsertTaxPeriodUseCase.upsert(createCommand);
 
         SearchTaxPeriodConfigUseCase.SearchTaxPeriodConfigCommand searchCommand = new SearchTaxPeriodConfigUseCase.SearchTaxPeriodConfigCommand(
                 generateCommand.getTaxTypeCode(),
@@ -122,9 +122,30 @@ class CreateRefTaxPeriodConfigTest {
                 generateCommand.getTransactionTypeId()
         );
 
-        SearchResult<RefTaxPeriodConfig> configPersisted = searchTaxPeriodConfigUseCase.search(searchCommand);
-        validate(configPersisted);
-        Assertions.assertEquals(recordId, configPersisted.getContent().get(0).getId());
+        SearchResult<RefTaxPeriodConfig> configsListPersisted = searchTaxPeriodConfigUseCase.search(searchCommand);
+        validate(configsListPersisted);
+
+        RefTaxPeriodConfig configPersisted = configsListPersisted.getContent().get(0);
+
+        Assertions.assertEquals(recordId, configPersisted.getId());
+
+        UpsertTaxPeriodUseCase.UpsertTaxPeriodCommand upsertCommand =
+                new UpsertTaxPeriodUseCase.UpsertTaxPeriodCommand(
+                        configPersisted.getId(),
+                        configPersisted.getTaxTypeCode(),
+                        configPersisted.getCalendarYear(),
+                        configPersisted.getTaxPeriodCode(),
+                        configPersisted.getTransactionTypeId(),
+                        configPersisted.getDueDateCountForReturnFiling(),
+                        configPersisted.getDueDateCountForPayment(),
+                        configPersisted.getValidFrom().plusDays(1),
+                        configPersisted.getValidTo().plusDays(2),
+                        configPersisted.getConsiderNonWorkingDays(),
+                        records
+                );
+
+        Long recordIdNew = upsertTaxPeriodUseCase.upsert(upsertCommand);
+        Assertions.assertEquals(recordId, recordIdNew);
     }
 
     private void validate(RefTaxPeriodConfig configLoaded) {
