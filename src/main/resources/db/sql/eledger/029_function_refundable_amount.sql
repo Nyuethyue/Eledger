@@ -25,7 +25,7 @@ $function$
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION eledger.fn_get_refundable_amount(p_tpn character varying, p_tax_type_code_list varchar[], p_calculation_date date)
+CREATE OR REPLACE FUNCTION eledger.fn_get_refundable_data_by_tax_type_codes(p_tpn character varying, p_tax_type_codes_list varchar[], p_calculation_date date)
  RETURNS TABLE(net_negative_type character varying, transaction_id bigint, tax_type_code varchar, gl_account_code varchar, gl_account_id bigint, drn character varying, period_year character varying, period_segment character varying, balance numeric)
  LANGUAGE plpgsql
 AS $function$
@@ -49,8 +49,8 @@ BEGIN
 		on ega.id = tb.gl_account_id
 		inner join eledger_config.el_gl_account_part egap
 		on ega.code like egap.full_code || '%' and egap.gl_account_part_type_id = 5
-		where tp.tpn = p_tpn and ett.code = 'NET_NEGATIVE_66'
-			 and egap.full_code = any(p_tax_type_code_list)
+		where tp.tpn = p_tpn and ett.code = 'NET_NEGATIVE'
+			 and egap.full_code = any(p_tax_type_codes_list)
         order BY 1, 2, 3, 4, 5;
 
 END;
@@ -59,7 +59,7 @@ $function$
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION eledger.fn_get_refundable_amount_for_transaction(p_tpn character varying, p_transaction_id bigint, p_calculation_date date)
+CREATE OR REPLACE FUNCTION eledger.fn_get_refundable_data_by_transaction_ids(p_tpn character varying, p_transaction_ids_list bigint[], p_calculation_date date)
  RETURNS TABLE(net_negative_type character varying, transaction_id bigint, tax_type_code varchar, gl_account_code varchar, gl_account_id bigint, drn character varying, period_year character varying, period_segment character varying, balance numeric)
  LANGUAGE plpgsql
 AS $function$
@@ -83,8 +83,8 @@ BEGIN
 		on ega.id = tb.gl_account_id
 		inner join eledger_config.el_gl_account_part egap
 		on ega.code like egap.full_code || '%' and egap.gl_account_part_type_id = 5
-		where tp.tpn = p_tpn and ett.code = 'NET_NEGATIVE_66'
-			 and tb.transaction_id = p_transaction_id
+		where tp.tpn = p_tpn and ett.code = 'NET_NEGATIVE'
+			 and tb.transaction_id = any(p_transaction_ids_list)
         order BY 1, 2, 3, 4, 5;
 
 END;
