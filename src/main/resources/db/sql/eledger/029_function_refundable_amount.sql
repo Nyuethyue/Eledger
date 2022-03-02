@@ -25,16 +25,18 @@ $function$
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION eledger.fn_get_refundable_amount(p_tpn varchar, p_tax_type_code varchar, p_calculation_date date)
- RETURNS TABLE(transaction_id bigint, gl_account_id bigint, net_negative_type varchar, drn varchar, period_year varchar, period_segment varchar, balance numeric)
+CREATE OR REPLACE FUNCTION eledger.fn_get_refundable_amount(p_tpn character varying, p_tax_type_code_list varchar[], p_calculation_date date)
+ RETURNS TABLE(net_negative_type character varying, transaction_id bigint, tax_type_code varchar, gl_account_code varchar, gl_account_id bigint, drn character varying, period_year character varying, period_segment character varying, balance numeric)
  LANGUAGE plpgsql
 AS $function$
 BEGIN
     RETURN QUERY
 
-        select tb.transaction_id
+        select ett.code as net_negative_type
+        	, tb.transaction_id
+        	, egap.full_code tax_type_code
+        	, ega.code gl_account_code
         	, tb.gl_account_id
-        	, ett.code as net_negative_type
 			, eledger.fn_get_attribute_value(tb.transaction_id, 'drn') as drn
 			, eledger.fn_get_attribute_value(tb.transaction_id, 'period_year') as period_year
 			, eledger.fn_get_attribute_value(tb.transaction_id, 'period_segment') as period_segment
@@ -45,9 +47,45 @@ BEGIN
 		on ett.id = tb.transaction_type_id
 		inner join eledger_config.el_gl_account ega
 		on ega.id = tb.gl_account_id
+		inner join eledger_config.el_gl_account_part egap
+		on ega.code like egap.full_code || '%' and egap.gl_account_part_type_id = 5
 		where tp.tpn = p_tpn and ett.code = 'NET_NEGATIVE_66'
-			and ega.code LIKE COALESCE(p_tax_type_code, ega.code) || '%'
-        order BY tb.transaction_id, tb.transaction_type_id, tb.gl_account_id;
+			 and egap.full_code = any(p_tax_type_code_list)
+        order BY 1, 2, 3, 4, 5;
+
+END;
+$function$
+;
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION eledger.fn_get_refundable_amount_for_transaction(p_tpn character varying, p_transaction_id bigint, p_calculation_date date)
+ RETURNS TABLE(net_negative_type character varying, transaction_id bigint, tax_type_code varchar, gl_account_code varchar, gl_account_id bigint, drn character varying, period_year character varying, period_segment character varying, balance numeric)
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+    RETURN QUERY
+
+        select ett.code as net_negative_type
+        	, tb.transaction_id
+        	, egap.full_code tax_type_code
+        	, ega.code gl_account_code
+        	, tb.gl_account_id
+			, eledger.fn_get_attribute_value(tb.transaction_id, 'drn') as drn
+			, eledger.fn_get_attribute_value(tb.transaction_id, 'period_year') as period_year
+			, eledger.fn_get_attribute_value(tb.transaction_id, 'period_segment') as period_segment
+			, -tb.balance as balance
+		from eledger.el_taxpayer tp
+		cross join eledger.fn_transaction_balance(tp.id, p_calculation_date) tb
+		inner join eledger_config.el_transaction_type ett
+		on ett.id = tb.transaction_type_id
+		inner join eledger_config.el_gl_account ega
+		on ega.id = tb.gl_account_id
+		inner join eledger_config.el_gl_account_part egap
+		on ega.code like egap.full_code || '%' and egap.gl_account_part_type_id = 5
+		where tp.tpn = p_tpn and ett.code = 'NET_NEGATIVE_66'
+			 and tb.transaction_id = p_transaction_id
+        order BY 1, 2, 3, 4, 5;
 
 END;
 $function$
