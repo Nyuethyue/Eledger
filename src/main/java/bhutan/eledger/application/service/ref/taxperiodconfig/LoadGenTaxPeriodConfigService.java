@@ -140,7 +140,7 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
                     endOfFortnight = LocalDate.of(year, fortnightMonth, 15);
                 } else {
                     fortnightMonth = fortnightIndex / 2;
-                    fortnightFirstDay = 15;
+                    fortnightFirstDay = 16;
                     endOfFortnight = YearMonth.of(year, fortnightMonth).atEndOfMonth();
                 }
                 records.add(
