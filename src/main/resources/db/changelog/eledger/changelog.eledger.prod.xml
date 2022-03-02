@@ -121,7 +121,7 @@
     </changeSet>
 
     <changeSet id="Create function for refund" author="V.G.">
-        <sqlFile path="../../sql/eledger/029_function_refundable_amount.sql" relativeToChangelogFile="true"
+        <sqlFile path="../../sql/eledger/029_function_refundable_datas.sql" relativeToChangelogFile="true"
                  splitStatements="false"/>
     </changeSet>
 
