@@ -188,18 +188,26 @@ select nextval('eledger_config.el_transaction_couples_id_seq')                  
      , f.id
      , t.id
 from (
-         select ettga.*
+         select ettga.*, egad.value
          from eledger_config.el_transaction_type_gl_account ettga
                   inner join eledger_config.el_transaction_type ett
                              on ettga.transaction_type_id = ett.id
+                  inner join eledger_config.el_gl_account_description egad
+                             on egad.gl_account_id = ettga.gl_account_id
          where ett.code = 'NET_NEGATIVE'
+           and egad.language_code = 'en'
+           and egad.value like '%(POS)'
      ) f
          cross join (
-    select ettga.*
+    select ettga.*, egad.value
     from eledger_config.el_transaction_type_gl_account ettga
              inner join eledger_config.el_transaction_type ett
                         on ettga.transaction_type_id = ett.id
+             inner join eledger_config.el_gl_account_description egad
+                        on egad.gl_account_id = ettga.gl_account_id
     where ett.code = 'LIABILITY'
+      and egad.language_code = 'en'
+      and egad.value not like '%(POE)'
 ) t;
 
 ------------------------------------------------------------------------------------------------------------------------

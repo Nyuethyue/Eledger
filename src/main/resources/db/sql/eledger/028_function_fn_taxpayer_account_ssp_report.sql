@@ -52,6 +52,32 @@ $function$
 
 --------------------------------------------------------------------------------------------------
 
+CREATE OR REPLACE FUNCTION eledger.fn_get_accounting_period_description(p_account_id bigint, p_language_code character varying)
+    RETURNS character varying
+    LANGUAGE plpgsql
+AS
+$function$
+DECLARE
+    v_ret_val varchar;
+BEGIN
+
+    select eledger.fn_get_period_description(eledger.fn_get_attribute_value(t.id, 'PERIOD_YEAR'),
+                                             eledger.fn_get_attribute_value(t.id, 'PERIOD_SEGMENT'), p_language_code)
+    into v_ret_val
+    from eledger.el_accounting a
+             inner join eledger.el_transaction t
+                        on a.transaction_id = t.id
+    where a.id = p_account_id
+    limit 1;
+
+    RETURN COALESCE(v_ret_val, '');
+
+END;
+$function$
+;
+
+--------------------------------------------------------------------------------------------------
+
 CREATE OR REPLACE FUNCTION eledger.fn_get_accounting_descrption(p_account_id bigint, p_language_code character varying)
     RETURNS character varying
     LANGUAGE plpgsql
@@ -62,7 +88,7 @@ DECLARE
 BEGIN
 
     SELECT CASE
-               WHEN ea.accounting_action_type_id = 1 AND ea.transfer_type = 'D' AND ea.account_type = 'A'
+               WHEN ea.accounting_action_type_id = 1
                    THEN 'Return Filed'
                WHEN ea.accounting_action_type_id = 2 AND ea.transfer_type = 'D' AND ea.account_type = 'A'
                    THEN 'Interest assessed'
@@ -72,10 +98,18 @@ BEGIN
                WHEN ea.accounting_action_type_id = 5 THEN 'Net Off'
                ELSE ''
                END || ' ' ||
-           case
-               when ea.accounting_action_type_id = 5 and ea.transfer_type = 'D'
-                   then eledger.fn_get_gl_account_value(ea.parent_id, p_language_code)
-               else eledger.fn_get_gl_account_value(ea.id, p_language_code) end AS description
+           CASE
+               WHEN ea.accounting_action_type_id = 5 AND ea.account_type = 'P'
+                   THEN eledger.fn_get_gl_account_value(ea.parent_id, p_language_code) || ' '
+                   --|| eledger.fn_get_gl_account_value(ea.parent_id, p_language_code)  || ' '
+                   || eledger.fn_get_accounting_period_description(ea.parent_id, p_language_code)
+
+               WHEN ea.accounting_action_type_id = 5 AND ea.account_type = 'A'
+                   THEN eledger.fn_get_gl_account_value(ea.id, p_language_code) || ' From '
+                            || eledger.fn_get_gl_account_value(ea.parent_id, p_language_code) || ' '
+                   || eledger.fn_get_accounting_period_description(ea.parent_id, p_language_code)
+
+               ELSE eledger.fn_get_gl_account_value(ea.id, p_language_code) END AS description
     INTO v_ret_val
     FROM eledger.el_accounting ea
              INNER JOIN eledger_config.el_gl_account_description egad
@@ -92,7 +126,7 @@ $function$
 
 --------------------------------------------------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION eledger.fn_get_accounting_period_description(p_year varchar, p_segment varchar, p_language_code varchar)
+CREATE OR REPLACE FUNCTION eledger.fn_get_period_description(p_year varchar, p_segment varchar, p_language_code varchar)
     RETURNS character varying
     LANGUAGE plpgsql
 AS
@@ -194,6 +228,7 @@ BEGIN
                                        INNER JOIN eledger_config.el_gl_account ega
                                                   ON ega.id = ea.gl_account_id
                               WHERE tp.tpn = p_tpn
+                                AND ea.amount <> 0
                                 AND ega.code LIKE COALESCE(p_tax_type_code, ega.code) || '%'
                                 AND (
                                       accounting_action_type_id IN (2, 3)
@@ -215,9 +250,9 @@ BEGIN
 
         SELECT ret.row_type::varchar
              , CASE
-                   WHEN ret.row_type = 'HEADER' THEN eledger.fn_get_accounting_period_description(transaction_year,
-                                                                                                  transaction_segment,
-                                                                                                  p_language_code)
+                   WHEN ret.row_type = 'HEADER' THEN eledger.fn_get_period_description(transaction_year,
+                                                                                       transaction_segment,
+                                                                                       p_language_code)
                    ELSE period_description END period_description
              , CASE
                    WHEN ret.row_type = 'BODY' THEN eledger.fn_get_accounting_descrption(id, p_language_code)
