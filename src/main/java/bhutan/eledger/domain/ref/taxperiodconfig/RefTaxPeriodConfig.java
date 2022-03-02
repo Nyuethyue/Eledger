@@ -3,6 +3,7 @@ package bhutan.eledger.domain.ref.taxperiodconfig;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.Valid;
@@ -15,7 +16,7 @@ import java.util.Collection;
 @Getter
 @ToString
 public class RefTaxPeriodConfig {
-    private final Long id;
+    @Setter private Long id;
 
     @NotNull
     @NotEmpty

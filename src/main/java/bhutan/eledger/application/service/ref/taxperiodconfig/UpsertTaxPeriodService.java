@@ -101,17 +101,17 @@ class UpsertTaxPeriodService implements UpsertTaxPeriodUseCase {
 
         log.trace("Persisting TaxPeriod: {}", refTaxPeriodConfig);
 
-        var conf =
-                refTaxPeriodRepositoryPort.readBy(refTaxPeriodConfig.getTaxTypeCode(),
-                                    refTaxPeriodConfig.getCalendarYear(),
-                                    refTaxPeriodConfig.getTaxPeriodCode(),
-                                    refTaxPeriodConfig.getTransactionTypeId());
-        Long id;
-        if(conf.isPresent()) {
-            id = refTaxPeriodRepositoryPort.update(refTaxPeriodConfig);
-        } else {
-            id = refTaxPeriodRepositoryPort.create(refTaxPeriodConfig);
-        }
+        var configSearchResult =
+                refTaxPeriodRepositoryPort.readBy(
+                    refTaxPeriodConfig.getTaxTypeCode(),
+                    refTaxPeriodConfig.getCalendarYear(),
+                    refTaxPeriodConfig.getTaxPeriodCode(),
+                    refTaxPeriodConfig.getTransactionTypeId());
+        Long id = configSearchResult.map(config -> {
+            refTaxPeriodConfig.setId(config.getId());
+            return refTaxPeriodRepositoryPort.update(refTaxPeriodConfig);
+        })
+        .orElse(refTaxPeriodRepositoryPort.create(refTaxPeriodConfig));
 
         log.debug("TaxPeriod with id: {} successfully created.", id);
 

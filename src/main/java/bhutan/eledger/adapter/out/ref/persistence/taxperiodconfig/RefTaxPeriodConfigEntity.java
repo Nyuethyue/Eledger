@@ -46,32 +46,6 @@ class RefTaxPeriodConfigEntity {
     @Column(name = "consider_non_working_days")
     private Boolean considerNonWorkingDays;
 
-
-    public static RefTaxPeriodConfigEntity withoutId(
-            String glAccountPartFullCode,
-            Integer calendarYear,
-            String taxPeriodCode,
-            Long transactionTypeId,
-            Integer dueDateCountForReturnFiling,
-            Integer dueDateCountForPayment,
-            LocalDate validFrom,
-            LocalDate validTo,
-            Boolean considerNonWorkingDays
-    ) {
-        return new RefTaxPeriodConfigEntity(
-                null,
-                glAccountPartFullCode,
-                calendarYear,
-                taxPeriodCode,
-                transactionTypeId,
-                dueDateCountForReturnFiling,
-                dueDateCountForPayment,
-                validFrom,
-                validTo,
-                considerNonWorkingDays
-                );
-    }
-
     public static RefTaxPeriodConfigEntity withId(
             long id,
             String glAccountPartFullCode,
