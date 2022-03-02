@@ -49,7 +49,7 @@ BEGIN
 		on ega.id = tb.gl_account_id
 		inner join eledger_config.el_gl_account_part egap
 		on ega.code like egap.full_code || '%' and egap.gl_account_part_type_id = 5
-		where tp.tpn = p_tpn and ett.code = 'NET_NEGATIVE'
+		where tp.tpn = p_tpn and ett.code = 'NET_NEGATIVE_66'
 			 and egap.full_code = any(p_tax_type_codes_list)
         order BY 1, 2, 3, 4, 5;
 
@@ -83,7 +83,7 @@ BEGIN
 		on ega.id = tb.gl_account_id
 		inner join eledger_config.el_gl_account_part egap
 		on ega.code like egap.full_code || '%' and egap.gl_account_part_type_id = 5
-		where tp.tpn = p_tpn and ett.code = 'NET_NEGATIVE'
+		where tp.tpn = p_tpn and ett.code = 'NET_NEGATIVE_66'
 			 and tb.transaction_id = any(p_transaction_ids_list)
         order BY 1, 2, 3, 4, 5;
 
