@@ -48,8 +48,6 @@ public interface UpsertTaxPeriodUseCase {
         @NotNull
         private final LocalDate validFrom;
 
-        @Valid
-        @NotNull
         private final LocalDate validTo;
 
         @Valid
