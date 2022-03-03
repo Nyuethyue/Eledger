@@ -95,7 +95,7 @@ $function$
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION eledger.fn_reporting_taxpayer_account_2(p_tpn character varying,
+CREATE OR REPLACE FUNCTION eledger.fn_reporting_taxpayer_account(p_tpn character varying,
                                                                    p_language_code character varying,
                                                                    p_tax_type_code character varying,
                                                                    p_year character varying,
