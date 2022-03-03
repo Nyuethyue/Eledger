@@ -16,6 +16,7 @@ public enum DebitAuthCode {
     BENF_ACCOUNT_CLOSED("05", "Beneficiary Account Closed"),
     INVALID_TRANSACTION("12", "Invalid Transaction"),
     INVALID_AMOUNT("13", "Invalid Amount"),
+    INVALID_REMITTER_ACCOUNT("14", "Invalid Remitter Account"),
     INVALID_RESPONSE("20", "Invalid Response"),
     TRANSACTION_NOT_SUPPORTED("30", "Transaction Not Supported Or Format Error"),
     DUPLICATE_BENF_ORDER_NO("45", "Duplicate Beneficiary Order Number"),
@@ -50,6 +51,6 @@ public enum DebitAuthCode {
         return Arrays.stream(values())
                 .filter(element -> Objects.equals(element.value, value))
                 .findAny()
-                .orElseThrow(() -> new IllegalArgumentException("Illegal value: [" + value + "]. Possible values: " + Arrays.toString(values())));
+                .orElseThrow(() -> new IllegalArgumentException("Illegal value: [" + value + "]. Possible values: " + Arrays.stream(values()).map(DebitAuthCode::getValue).toList()));
     }
 }
