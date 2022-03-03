@@ -20,3 +20,8 @@ VALUES ( nextval('eledger_config.el_accounting_action_type_id_seq')
 INSERT INTO eledger_config.el_accounting_action_type(id, accounting_action_id, name)
 VALUES (nextval('eledger_config.el_accounting_action_type_id_seq'),
         (SELECT id FROM eledger_config.el_accounting_action WHERE name = 'TRANSFER'), 'REPAY_NET_NEGATIVE');
+
+INSERT INTO eledger_config.el_accounting_action_type(id, accounting_action_id, name)
+VALUES (nextval('eledger_config.el_accounting_action_type_id_seq'),
+        (SELECT id FROM eledger_config.el_accounting_action WHERE name = 'TRANSFER'),
+        'NET_NEGATIVE_TO_TAXPAYER_ACCOUNT');

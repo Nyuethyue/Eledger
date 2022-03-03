@@ -92,35 +92,10 @@ $function$
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION eledger.fn_reporting_taxpayer_account(p_tpn character varying, p_language_code character varying,
-                                                            p_tax_type_code character varying, p_year character varying,
-                                                            p_segment character varying, p_start_date date,
-                                                            p_end_date date, p_offset bigint, p_limit bigint)
-    RETURNS TABLE
-            (
-                transaction_date       date,
-                accounting_description character varying,
-                period_year            character varying,
-                period_segment         character varying,
-                amount                 numeric,
-                net_negative           numeric,
-                total_liability        numeric,
-                total_interest         numeric,
-                total_penalty          numeric,
-                payment                numeric,
-                non_revenue            numeric,
-                drn                    character varying,
-                tpn                    character varying,
-                accounting_id          bigint,
-                transaction_type       character varying,
-                transaction_id         bigint,
-                gl_account_id          bigint,
-                gl_account_code        character varying,
-                action_type            character varying
-            )
+CREATE OR REPLACE FUNCTION eledger.fn_reporting_taxpayer_account(p_tpn character varying, p_language_code character varying, p_tax_type_code character varying, p_year character varying, p_segment character varying, p_start_date date, p_end_date date, p_offset bigint, p_limit bigint)
+    RETURNS TABLE(transaction_date date, accounting_description character varying, period_year character varying, period_segment character varying, amount numeric, net_negative numeric, total_net_negative numeric, total_liability numeric, total_interest numeric, total_penalty numeric, payment numeric, non_revenue numeric, drn character varying, tpn character varying, accounting_id bigint, transaction_type character varying, transaction_id bigint, gl_account_id bigint, gl_account_code character varying, action_type character varying)
     LANGUAGE plpgsql
-AS
-$function$
+AS $function$
 BEGIN
     RETURN QUERY
         SELECT *
@@ -131,6 +106,7 @@ BEGIN
                       , t.period_segment
                       , t.amount
                       , NULL::decimal AS                                                                  net_negative
+                      , NULL::decimal AS                                                                  total_net_negative
                       , sum(t.liability_amount)
                         OVER (PARTITION BY t.tpn ORDER BY t.transaction_date, t.id)                       total_liability
                       , sum(t.interest_amount)
@@ -261,13 +237,12 @@ BEGIN
         WHERE ret.transaction_date >= coalesce(p_start_date, ret.transaction_date)
           AND ret.transaction_date <= coalesce(p_end_date, ret.transaction_date)
         ORDER BY ret.transaction_date, ret.id
-            OFFSET p_offset
-        LIMIT p_limit;
+        OFFSET p_offset
+            LIMIT p_limit;
 
 END;
 $function$
 ;
-
 
 ----------------------------------------------------------------------------------------------------------------------------------
 

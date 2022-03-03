@@ -96,20 +96,20 @@ BEGIN
                    THEN 'Penalty assessed'
                WHEN ea.accounting_action_type_id = 4 THEN 'Payment Received with'
                WHEN ea.accounting_action_type_id = 5 THEN 'Net Off'
+               WHEN ea.accounting_action_type_id = 6 THEN 'Refund'
                ELSE ''
                END || ' ' ||
-           CASE
-               WHEN ea.accounting_action_type_id = 5 AND ea.account_type = 'P'
-                   THEN eledger.fn_get_gl_account_value(ea.parent_id, p_language_code) || ' '
+           case
+               when ea.accounting_action_type_id = 5 and ea.account_type = 'P'
+                   then eledger.fn_get_gl_account_value(ea.parent_id, p_language_code) || ' '
                    --|| eledger.fn_get_gl_account_value(ea.parent_id, p_language_code)  || ' '
                    || eledger.fn_get_accounting_period_description(ea.parent_id, p_language_code)
 
-               WHEN ea.accounting_action_type_id = 5 AND ea.account_type = 'A'
-                   THEN eledger.fn_get_gl_account_value(ea.id, p_language_code) || ' From '
+               when ea.accounting_action_type_id = 5 and ea.account_type = 'A'
+                   then eledger.fn_get_gl_account_value(ea.id, p_language_code) || ' From '
                             || eledger.fn_get_gl_account_value(ea.parent_id, p_language_code) || ' '
                    || eledger.fn_get_accounting_period_description(ea.parent_id, p_language_code)
-
-               ELSE eledger.fn_get_gl_account_value(ea.id, p_language_code) END AS description
+               else eledger.fn_get_gl_account_value(ea.id, p_language_code) end AS description
     INTO v_ret_val
     FROM eledger.el_accounting ea
              INNER JOIN eledger_config.el_gl_account_description egad
@@ -122,7 +122,6 @@ BEGIN
 END;
 $function$
 ;
-
 
 --------------------------------------------------------------------------------------------------
 
@@ -210,6 +209,7 @@ BEGIN
                           , CASE
                                 WHEN t.accounting_action_type_id IN (1, 2, 3) and account_type = 'A' THEN amount
                                 WHEN t.accounting_action_type_id IN (5) and account_type = 'P' THEN amount
+                                WHEN t.accounting_action_type_id IN (6) and account_type = 'P' THEN amount
                                 ELSE NULL::numeric END     debit
                           , t.parent_id
                           , t.gl_account_id
@@ -228,12 +228,13 @@ BEGIN
                                        INNER JOIN eledger_config.el_gl_account ega
                                                   ON ega.id = ea.gl_account_id
                               WHERE tp.tpn = p_tpn
-                                AND ea.amount <> 0
+                                and ea.amount <> 0
                                 AND ega.code LIKE COALESCE(p_tax_type_code, ega.code) || '%'
                                 AND (
                                       accounting_action_type_id IN (2, 3)
                                       OR
-                                      (accounting_action_type_id = 1 AND account_type = 'A' AND transfer_type = 'D')
+                                      (accounting_action_type_id = 1 AND account_type = 'A' AND transfer_type = 'D' and
+                                       et.transaction_type_id = 1)
                                       OR
                                       (accounting_action_type_id = 1 AND account_type = 'P' AND transfer_type = 'C' and
                                        et.transaction_type_id = 2)
@@ -241,6 +242,8 @@ BEGIN
                                       (accounting_action_type_id = 4 AND account_type = 'A' AND transfer_type = 'C')
                                       OR
                                       (accounting_action_type_id = 5)
+                                      OR
+                                      (accounting_action_type_id = 6 AND account_type = 'P' AND transfer_type = 'D')
                                   )
                           ) t
                      WHERE transaction_year = COALESCE(p_year, transaction_year)
@@ -306,6 +309,7 @@ BEGIN
                       , CASE
                             WHEN accounting_action_type_id = 4 THEN eledger.fn_get_accounting_drn(parent_id)
                             WHEN accounting_action_type_id = 5 THEN eledger.fn_get_accounting_drn(parent_id)
+                            WHEN accounting_action_type_id = 6 THEN eledger.fn_get_accounting_drn(parent_id)
                             ELSE eledger.fn_get_accounting_drn(id) END drn
                       , parent_id
                       , gl_account_id
@@ -319,6 +323,5 @@ BEGIN
 END;
 $function$
 ;
-
 
 --------------------------------------------------------------------------------------------------
