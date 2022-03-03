@@ -18,23 +18,14 @@ class CreateTransactionsServiceFactory implements CreateTransactionsUseCaseFacto
 
     @Override
     public CreateTransactionsUseCase get(String service) {
-        CreateTransactionsUseCase result;
-
-        switch (service) {
-            case "return":
-                result = createReturnTransactionsService;
-                break;
-            case "payment":
-                result = createPaymentTransactionsService;
-                break;
-            default:
-                throw new ViolationException(
-                        "Incorrect parameter: " + service,
-                        new ValidationError()
-                                .addViolation("create.service", "Path variable service's value expected to be in: [return, payment]")
-                );
-        }
-
-        return result;
+        return switch (service) {
+            case "return" -> createReturnTransactionsService;
+            case "payment" -> createPaymentTransactionsService;
+            default -> throw new ViolationException(
+                    "Incorrect parameter: " + service,
+                    new ValidationError()
+                            .addViolation("create.service", "Path variable service's value expected to be in: [return, payment]")
+            );
+        };
     }
 }
