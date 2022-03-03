@@ -125,7 +125,7 @@
                  splitStatements="false"/>
     </changeSet>
 
-    <changeSet id="Create function for refund" author="V.G.">
+    <changeSet id="Create procedure for refund transaction" author="V.G.">
         <sqlFile path="../../sql/eledger/030_procedure_sp_refund_from_net_negative.sql" relativeToChangelogFile="true"
                  splitStatements="false"/>
     </changeSet>
