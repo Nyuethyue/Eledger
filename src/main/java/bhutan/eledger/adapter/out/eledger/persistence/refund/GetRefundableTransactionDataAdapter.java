@@ -30,7 +30,7 @@ class GetRefundableTransactionDataAdapter implements GetRefundableDataByTaxTypes
                         "taxTypeCodes", taxTypes
                                 .stream()
                                 .map(GLAccountPart::getFullCode)
-                                .toList(),
+                                .toArray(String[]::new),
                         "calculationDate", calculationDate
                 ),
                 this::mapToRefundableTransactionData
@@ -45,7 +45,7 @@ class GetRefundableTransactionDataAdapter implements GetRefundableDataByTaxTypes
                 query,
                 Map.of(
                         "tpn", tpn,
-                        "transactionIds", transactionIds,
+                        "transactionIds", transactionIds.toArray(Long[]::new),
                         "calculationDate", calculationDate
                 ),
                 this::mapToRefundableTransactionData
