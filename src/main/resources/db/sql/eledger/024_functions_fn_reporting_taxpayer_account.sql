@@ -182,7 +182,7 @@ BEGIN
                                , r.gl_account_code
                                , r.action_type
                                , (case
-                                      when r.transaction_type_id = 2
+                                      when r.transaction_type_id in (2, 4)
                                           then CASE WHEN r.action_type = 'FORMULAIT' THEN r.amount ELSE -r.amount end
                                       else 0
                               end)::numeric                                                               net_negative
