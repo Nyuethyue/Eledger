@@ -1,5 +1,6 @@
 package bhutan.eledger.application.port.out.eledger.config.glaccount;
 
+import am.iunetworks.lib.common.validation.RecordNotFoundException;
 import bhutan.eledger.domain.eledger.config.glaccount.GLAccountPartType;
 
 import java.util.Collection;
@@ -10,6 +11,11 @@ public interface GLAccountPartTypeRepositoryPort {
     Optional<GLAccountPartType> readById(Integer id);
 
     Optional<GLAccountPartType> readByLevel(Integer level);
+
+    default GLAccountPartType requiredReadByLevel(Integer level) {
+        return readByLevel(level)
+                .orElseThrow(() -> new RecordNotFoundException("Part type by level:" + level + " not found."));
+    }
 
     Collection<GLAccountPartType> readAll();
 

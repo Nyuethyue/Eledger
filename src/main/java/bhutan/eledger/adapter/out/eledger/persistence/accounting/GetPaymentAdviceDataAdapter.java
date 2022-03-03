@@ -28,11 +28,11 @@ class GetPaymentAdviceDataAdapter implements GetPaymentAdviceDataPort {
     @Override
     public Collection<PaymentAdviceData> get(String tpn, LocalDate formulationDate) {
         //language=PostgreSQL
-        var countQuery = "SELECT * FROM eledger.fn_get_payment_advice_data(:tpn, :formulationDate)";
+        var query = "SELECT * FROM eledger.fn_get_payment_advice_data(:tpn, :formulationDate)";
 
 
         var result = jdbcTemplate.query(
-                countQuery,
+                query,
                 Map.of(
                         "tpn", tpn,
                         "formulationDate", formulationDate
@@ -82,6 +82,4 @@ class GetPaymentAdviceDataAdapter implements GetPaymentAdviceDataPort {
                 payableLines
         );
     }
-
-
 }

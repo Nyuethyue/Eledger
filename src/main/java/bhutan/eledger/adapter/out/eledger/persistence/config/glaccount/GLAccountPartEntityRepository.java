@@ -30,4 +30,6 @@ interface GLAccountPartEntityRepository extends CustomQuerydslJpaRepository<GLAc
     boolean existsByFullCode(String fullCode);
 
     Optional<GLAccountPartEntity> findByFullCode(String fullCode);
+
+    Collection<GLAccountPartEntity> findAllByFullCodeInAndGlAccountPartTypeId(Collection<String> fullCodes, Integer id);
 }

@@ -4,6 +4,7 @@ import am.iunetworks.lib.common.validation.RecordNotFoundException;
 import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountPartRepositoryPort;
 import bhutan.eledger.application.port.out.eledger.config.glaccount.GetGlAccountPartFullCodeOnlyPort;
 import bhutan.eledger.domain.eledger.config.glaccount.GLAccountPart;
+import bhutan.eledger.domain.eledger.config.glaccount.GLAccountPartType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +32,7 @@ class GLAccountPartAdapter implements GLAccountPartRepositoryPort, GetGlAccountP
         return glAccountPartEntityRepository.queryAllByIdInSortedByLevel(ids)
                 .stream()
                 .map(glAccountPartMapper::mapToDomain)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
     }
 
     @Override
@@ -39,7 +40,7 @@ class GLAccountPartAdapter implements GLAccountPartRepositoryPort, GetGlAccountP
         return glAccountPartEntityRepository.readAllByParentId(parentId)
                 .stream()
                 .map(glAccountPartMapper::mapToDomain)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
     }
 
     @Override
@@ -47,7 +48,7 @@ class GLAccountPartAdapter implements GLAccountPartRepositoryPort, GetGlAccountP
         return glAccountPartEntityRepository.findAll()
                 .stream()
                 .map(glAccountPartMapper::mapToDomain)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
     }
 
     @Override
@@ -69,7 +70,7 @@ class GLAccountPartAdapter implements GLAccountPartRepositoryPort, GetGlAccountP
                 )
                 .stream()
                 .map(glAccountPartMapper::mapToDomain)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
     }
 
     @Override
@@ -87,7 +88,7 @@ class GLAccountPartAdapter implements GLAccountPartRepositoryPort, GetGlAccountP
         return glAccountPartEntityRepository.readAllByGlAccountPartTypeId(partTypeId)
                 .stream()
                 .map(glAccountPartMapper::mapToDomain)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
     }
 
     @Override
@@ -115,5 +116,13 @@ class GLAccountPartAdapter implements GLAccountPartRepositoryPort, GetGlAccountP
     public Optional<GLAccountPart> readByFullCode(String fullCode) {
         return glAccountPartEntityRepository.findByFullCode(fullCode)
                 .map(glAccountPartMapper::mapToDomain);
+    }
+
+    @Override
+    public Collection<GLAccountPart> readAllByFullCodesAndPartType(Collection<String> fullCodes, GLAccountPartType partType) {
+        return glAccountPartEntityRepository.findAllByFullCodeInAndGlAccountPartTypeId(fullCodes, partType.getId())
+                .stream()
+                .map(glAccountPartMapper::mapToDomain)
+                .toList();
     }
 }

@@ -2,6 +2,7 @@ package bhutan.eledger.application.port.out.eledger.config.glaccount;
 
 import am.iunetworks.lib.common.validation.RecordNotFoundException;
 import bhutan.eledger.domain.eledger.config.glaccount.GLAccountPart;
+import bhutan.eledger.domain.eledger.config.glaccount.GLAccountPartType;
 
 import java.util.Collection;
 import java.util.List;
@@ -38,4 +39,7 @@ public interface GLAccountPartRepositoryPort {
     void update(GLAccountPart glAccountPart);
 
     Optional<GLAccountPart> readByFullCode(String fullCode);
+
+    Collection<GLAccountPart> readAllByFullCodesAndPartType(Collection<String> fullCodes, GLAccountPartType partType);
+
 }
