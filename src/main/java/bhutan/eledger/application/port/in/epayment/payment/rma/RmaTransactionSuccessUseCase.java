@@ -4,7 +4,7 @@ import lombok.Data;
 
 public interface RmaTransactionSuccessUseCase {
 
-    void processSuccess(RmaTransactionSuccessCommand command);
+    String processSuccess(RmaTransactionSuccessCommand command);
 
     @Data
     class RmaTransactionSuccessCommand {

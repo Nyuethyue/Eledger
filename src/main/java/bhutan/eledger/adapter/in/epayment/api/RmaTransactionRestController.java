@@ -29,7 +29,7 @@ class RmaTransactionRestController {
 
         log.debug("Success request received with mapped dto: {}", command);
 
-        rmaTransactionSuccessUseCase.processSuccess(command);
+        var receiptNumber = rmaTransactionSuccessUseCase.processSuccess(command);
 
         log.debug("Redirecting to {} with order no {}", backTo, command.getOrderNo());
 
@@ -39,6 +39,7 @@ class RmaTransactionRestController {
                         .queryParam("debitAuthCode", command.getDebitAuthCode())
                         .queryParam("txnAmount", command.getTxnAmount())
                         .queryParam("status", "Success")
+                        .queryParam("receiptNumber", receiptNumber)
                         .build().toUri()
         ).build();
     }

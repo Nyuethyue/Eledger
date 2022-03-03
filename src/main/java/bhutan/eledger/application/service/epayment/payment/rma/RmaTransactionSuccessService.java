@@ -4,6 +4,7 @@ import am.iunetworks.lib.task.TaskManager;
 import bhutan.eledger.application.port.in.epayment.payment.rma.RmaTransactionCancelUseCase;
 import bhutan.eledger.application.port.in.epayment.payment.rma.RmaTransactionFailUseCase;
 import bhutan.eledger.application.port.in.epayment.payment.rma.RmaTransactionSuccessUseCase;
+import bhutan.eledger.application.port.out.epayment.payment.ReceiptRepositoryPort;
 import bhutan.eledger.domain.epayment.rma.RmaMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -15,12 +16,15 @@ import org.springframework.stereotype.Service;
 class RmaTransactionSuccessService implements RmaTransactionSuccessUseCase, RmaTransactionCancelUseCase, RmaTransactionFailUseCase {
 
     private final TaskManager taskManager;
+    private final ReceiptRepositoryPort receiptRepositoryPort;
 
     @Override
-    public void processSuccess(RmaTransactionSuccessCommand command) {
+    public String processSuccess(RmaTransactionSuccessCommand command) {
         log.debug("Transaction with orderNo: {} has been succeed.", command.getOrderNo());
 
         awaitTasksCompletion(command.getOrderNo());
+
+        return receiptRepositoryPort.getReceiptNumberByPaId(command.getOrderNo());
     }
 
     @Override
