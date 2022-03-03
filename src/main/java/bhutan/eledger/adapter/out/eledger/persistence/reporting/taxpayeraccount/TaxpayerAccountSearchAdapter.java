@@ -71,6 +71,7 @@ class TaxpayerAccountSearchAdapter implements TaxpayerAccountSearchPort {
                 rs.getString("period_segment"),
                 rs.getBigDecimal("amount"),
                 rs.getBigDecimal("net_negative"),
+                rs.getBigDecimal("total_net_negative"),
                 rs.getBigDecimal("total_liability"),
                 rs.getBigDecimal("total_interest"),
                 rs.getBigDecimal("total_penalty"),

@@ -16,6 +16,7 @@ public class TaxpayerAccountDto {
     private final String periodSegment;
     private final BigDecimal amount;
     private final BigDecimal netNegative;
+    private final BigDecimal totalNetNegative;
     private final BigDecimal totalLiability;
     private final BigDecimal totalInterest;
     private final BigDecimal totalPenalty;
