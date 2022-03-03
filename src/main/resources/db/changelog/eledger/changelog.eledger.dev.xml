@@ -55,7 +55,7 @@
                  relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="Type refund from net negative data" author="V.G.">
+    <changeSet id="Transaction type GL account data for refund" author="V.G.">
         <sqlFile path="../../sql/eledger/dev/012_transaction_type_gl_account_data_for_refund.sql"
                  relativeToChangelogFile="true"/>
     </changeSet>
