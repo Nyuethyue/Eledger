@@ -6,6 +6,8 @@ import bhutan.eledger.domain.eledger.taxpayer.ElTaxpayer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -38,5 +40,10 @@ class ElTaxpayerAdapter implements ElTaxpayerRepositoryPort {
     @Override
     public void deleteAll() {
         taxpayerEntityRepository.deleteAll();
+    }
+
+    @Override
+    public BigDecimal getNetNegativeBalance(String tpn, LocalDate calculateDate) {
+        return taxpayerEntityRepository.getNetNegativeBalance(tpn, calculateDate);
     }
 }
