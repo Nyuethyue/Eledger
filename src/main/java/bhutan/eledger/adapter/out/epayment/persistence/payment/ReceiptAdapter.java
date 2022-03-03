@@ -63,4 +63,9 @@ class ReceiptAdapter implements ReceiptRepositoryPort {
     public Collection<FlatReceipt> readAllByIds(Collection<Long> ids) {
         return receiptEntityRepository.findAllByIdIn(ids);
     }
+
+    @Override
+    public String getReceiptNumberByPaId(String orderNo) {
+        return receiptEntityRepository.getReceiptNumberByPaId(orderNo);
+    }
 }
