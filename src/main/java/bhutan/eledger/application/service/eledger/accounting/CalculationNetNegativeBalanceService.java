@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Log4j2
 @Service
@@ -19,6 +20,6 @@ class CalculationNetNegativeBalanceService implements CalculationNetNegativeBala
 
     @Override
     public BigDecimal getNetNegativeBalance(CalculateBalanceCommand command) {
-        return elTaxpayerRepositoryPort.getNetNegativeBalance(command.getTpn(), command.getCalculateDate());
+        return elTaxpayerRepositoryPort.getNetNegativeBalance(command.getTpn(), LocalDate.now());
     }
 }

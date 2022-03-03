@@ -27,7 +27,7 @@ class CalculateNetBalanceTest {
     @Test
     void createTest() {
         CalculationNetNegativeBalanceUseCase.CalculateBalanceCommand commandBalance =
-        new CalculationNetNegativeBalanceUseCase.CalculateBalanceCommand("OPS", LocalDate.now());
+        new CalculationNetNegativeBalanceUseCase.CalculateBalanceCommand("OPS");
         var result = calculationNetNegativeBalanceUseCase.getNetNegativeBalance(commandBalance);
         Assertions.assertNotNull(result);
     }
