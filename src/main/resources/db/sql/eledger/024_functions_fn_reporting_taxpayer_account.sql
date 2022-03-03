@@ -1,10 +1,11 @@
 ----------------------------------------------------------------------------------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION eledger.fn_reporting_taxpayer_account_count(p_tpn character varying,
-                                                                  p_language_code character varying,
-                                                                  p_tax_type_code character varying,
-                                                                  p_year character varying, p_segment character varying,
-                                                                  p_start_date date, p_end_date date)
+                                                                       p_language_code character varying,
+                                                                       p_tax_type_code character varying,
+                                                                       p_year character varying,
+                                                                       p_segment character varying,
+                                                                       p_start_date date, p_end_date date)
     RETURNS bigint
     LANGUAGE plpgsql
 AS
@@ -41,7 +42,9 @@ BEGIN
                       WHERE tp.tpn = p_tpn
                         AND ga.code LIKE coalesce(p_tax_type_code, ga.code) || '%'
                         AND lower(trim(gad.language_code)) = lower(trim(p_language_code))
-                        AND a.account_type = 'A'
+                        and not (t.transaction_type_id = 3 and a.account_type = 'P')
+                        and not (a.accounting_action_type_id = 1 and t.transaction_type_id = 5)
+                        and not (a.accounting_action_type_id = 6 and a.transfer_type = 'C' and a.account_type = 'A')
 
                       UNION ALL
 
@@ -92,28 +95,63 @@ $function$
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION eledger.fn_reporting_taxpayer_account(p_tpn character varying, p_language_code character varying, p_tax_type_code character varying, p_year character varying, p_segment character varying, p_start_date date, p_end_date date, p_offset bigint, p_limit bigint)
-    RETURNS TABLE(transaction_date date, accounting_description character varying, period_year character varying, period_segment character varying, amount numeric, net_negative numeric, total_net_negative numeric, total_liability numeric, total_interest numeric, total_penalty numeric, payment numeric, non_revenue numeric, drn character varying, tpn character varying, accounting_id bigint, transaction_type character varying, transaction_id bigint, gl_account_id bigint, gl_account_code character varying, action_type character varying)
+CREATE OR REPLACE FUNCTION eledger.fn_reporting_taxpayer_account_2(p_tpn character varying,
+                                                                   p_language_code character varying,
+                                                                   p_tax_type_code character varying,
+                                                                   p_year character varying,
+                                                                   p_segment character varying, p_start_date date,
+                                                                   p_end_date date, p_offset bigint, p_limit bigint)
+    RETURNS TABLE
+            (
+                transaction_date       date,
+                accounting_description character varying,
+                period_year            character varying,
+                period_segment         character varying,
+                amount                 numeric,
+                net_negative           numeric,
+                total_net_negative     numeric,
+                total_liability        numeric,
+                total_interest         numeric,
+                total_penalty          numeric,
+                payment                numeric,
+                non_revenue            numeric,
+                drn                    character varying,
+                tpn                    character varying,
+                accounting_id          bigint,
+                transaction_type       character varying,
+                transaction_id         bigint,
+                gl_account_id          bigint,
+                gl_account_code        character varying,
+                action_type            character varying
+            )
     LANGUAGE plpgsql
-AS $function$
+AS
+$function$
 BEGIN
     RETURN QUERY
         SELECT *
         FROM (
                  SELECT t.transaction_date
-                      , t.liability_description
+
+                      , (case
+                             when t.action_type = 'REPAY_NET_NEGATIVE' then 'Net Off '
+                             when t.action_type = 'NET_NEGATIVE_TO_TAXPAYER_ACCOUNT' then 'Refund '
+                             else '' end || t.liability_description)::varchar as                          liability_description
                       , t.period_year
                       , t.period_segment
                       , t.amount
-                      , NULL::decimal AS                                                                  net_negative
-                      , NULL::decimal AS                                                                  total_net_negative
+                      , case
+                            when t.action_type::varchar = 'FORMULAIT'::varchar then t.net_negative
+                            else 0 end                                        AS                          net_negative
+                      , sum(t.net_negative)
+                        OVER (PARTITION BY t.tpn ORDER BY t.transaction_date, t.id)                       total_net_negative
                       , sum(t.liability_amount)
                         OVER (PARTITION BY t.tpn ORDER BY t.transaction_date, t.id)                       total_liability
                       , sum(t.interest_amount)
                         OVER (PARTITION BY t.tpn ORDER BY t.transaction_date, t.id)                       total_interest
                       , sum(t.penalty_amount) OVER (PARTITION BY t.tpn ORDER BY t.transaction_date, t.id) total_penalty
                       , t.payment
-                      , NULL::decimal AS                                                                  non_revenue
+                      , NULL::decimal                                         AS                          non_revenue
                       , t.drn
                       -- other data
                       , t.tpn
@@ -134,24 +172,35 @@ BEGIN
                                , r.value                                                                  liability_description
                                , eledger.fn_get_attribute_value(r.transaction_id, 'period_year')       AS "period_year"
                                , eledger.fn_get_attribute_value(r.transaction_id, 'period_segment')    AS "period_segment"
-                               , CASE WHEN r.accounting_action_type_id = 4 THEN NULL ELSE r.amount END AS amount
+                               , CASE
+                                     WHEN r.accounting_action_type_id = 4 THEN NULL
+                                     WHEN r.accounting_action_type_id = 1 and r.transaction_type_id = 5 THEN NULL
+                                     ELSE r.amount END                                                 AS amount
                                , CASE WHEN r.accounting_action_type_id = 4 THEN r.amount ELSE NULL END AS payment
                                , eledger.fn_get_attribute_value(r.transaction_id, 'drn')                  drn
                                , r.gl_account_id
                                , r.gl_account_code
                                , r.action_type
+                               , (case
+                                      when r.transaction_type_id = 2
+                                          then CASE WHEN r.action_type = 'FORMULAIT' THEN r.amount ELSE -r.amount end
+                                      else 0
+                              end)::numeric                                                               net_negative
                                , CASE
-                                     WHEN substring(r.gl_account_code, 6, 6) = '990001'
-                                         THEN CASE WHEN r.transfer_type = 'D' THEN r.amount ELSE -r.amount END
+                                     when r.transaction_type_id = 1 and substring(r.gl_account_code, 6, 6) = '990001'
+                                         THEN CASE WHEN r.action_type = 'INTEREST' THEN r.amount ELSE -r.amount END
                                      ELSE 0
                               END                                                                         interest_amount
                                , CASE
-                                     WHEN substring(r.gl_account_code, 6, 6) = '990002'
-                                         THEN CASE WHEN r.transfer_type = 'D' THEN r.amount ELSE -r.amount END
+                                     WHEN r.transaction_type_id = 1 and substring(r.gl_account_code, 6, 6) = '990002'
+                                         THEN CASE
+                                                  WHEN r.action_type = 'FINE_AND_PENALTY' THEN r.amount
+                                                  ELSE -r.amount END
                                      ELSE 0
                               END                                                                         penalty_amount
                                , CASE
-                                     WHEN substring(r.gl_account_code, 6, 6) NOT IN ('990001', '990002')
+                                     WHEN r.transaction_type_id = 1 and
+                                          substring(r.gl_account_code, 6, 6) NOT IN ('990001', '990002')
                                          THEN CASE WHEN r.transfer_type = 'D' THEN r.amount ELSE -r.amount END
                                      ELSE 0
                               END                                                                         liability_amount
@@ -176,13 +225,17 @@ BEGIN
                                             LEFT JOIN eledger_config.el_gl_account ga
                                                       ON ga.id = a.gl_account_id
                                             LEFT JOIN eledger_config.el_gl_account_description gad
-                                                      ON gad.gl_account_id = a.gl_account_id AND gad.language_code = 'en'
+                                                      ON gad.gl_account_id = a.gl_account_id AND
+                                                         gad.language_code = p_language_code
                                             LEFT JOIN eledger_config.el_accounting_action_type tat
                                                       ON tat.id = a.accounting_action_type_id
                                    WHERE tp.tpn = p_tpn
                                      AND ga.code LIKE coalesce(p_tax_type_code, ga.code) || '%'
                                      AND lower(trim(gad.language_code)) = lower(trim(p_language_code))
-                                     AND a.account_type = 'A'
+                                     and not (t.transaction_type_id = 3 and a.account_type = 'P')
+                                     and not (a.accounting_action_type_id = 1 and t.transaction_type_id = 5)
+                                     and not (a.accounting_action_type_id = 6 and a.transfer_type = 'C' and
+                                              a.account_type = 'A')
 
                                    UNION ALL
 
@@ -212,6 +265,7 @@ BEGIN
                                             WHERE calculation_date <= coalesce(p_end_date, '99990101')
                                               AND coalesce(orig_calculation_date, '99990102') >
                                                   coalesce(p_end_date, '99990101')
+
                                             GROUP BY ecii.transaction_id, ecii.gl_account_id,
                                                      ecii.accounting_action_type_id
                                         ) a
@@ -222,13 +276,14 @@ BEGIN
                                             LEFT JOIN eledger_config.el_gl_account ga
                                                       ON ga.id = a.gl_account_id
                                             LEFT JOIN eledger_config.el_gl_account_description gad
-                                                      ON gad.gl_account_id = a.gl_account_id AND gad.language_code = 'en'
+                                                      ON gad.gl_account_id = a.gl_account_id AND
+                                                         gad.language_code = p_language_code
                                             LEFT JOIN eledger_config.el_accounting_action_type tat
                                                       ON tat.id = a.accounting_action_type_id
                                    WHERE tp.tpn = p_tpn
                                      AND ga.code LIKE coalesce(p_tax_type_code, ga.code) || '%'
                                      AND lower(trim(gad.language_code)) = lower(trim(p_language_code))
-                                     AND a.account_type = 'A'
+                                     and a.account_type = 'A'
                                ) r
                       ) t
                  WHERE t.period_year = coalesce(p_year, t.period_year)
@@ -237,12 +292,12 @@ BEGIN
         WHERE ret.transaction_date >= coalesce(p_start_date, ret.transaction_date)
           AND ret.transaction_date <= coalesce(p_end_date, ret.transaction_date)
         ORDER BY ret.transaction_date, ret.id
-        OFFSET p_offset
-            LIMIT p_limit;
+        OFFSET p_offset LIMIT p_limit;
 
 END;
 $function$
 ;
+
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
