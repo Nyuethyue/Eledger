@@ -4,8 +4,8 @@ CREATE OR REPLACE FUNCTION eledger.fn_reporting_taxpayer_account_count(p_tpn cha
                                                                        p_language_code character varying,
                                                                        p_tax_type_code character varying,
                                                                        p_year character varying,
-                                                                       p_segment character varying,
-                                                                       p_start_date date, p_end_date date)
+                                                                       p_segment character varying, p_start_date date,
+                                                                       p_end_date date)
     RETURNS bigint
     LANGUAGE plpgsql
 AS
@@ -21,6 +21,8 @@ BEGIN
                   , t.tpn
                   , t.id
                   , t.transaction_date
+                  , t.action_type
+                  , t.account_type
              FROM (
                       SELECT --a.id, a.parent_id,
                           a.id
@@ -28,6 +30,8 @@ BEGIN
                            , tp.tpn
                            , eledger.fn_get_attribute_value(a.transaction_id, 'period_year')    AS "period_year"
                            , eledger.fn_get_attribute_value(a.transaction_id, 'period_segment') AS "period_segment"
+                           , tat."name"                                                            action_type
+                           , a.account_type
                       FROM eledger.el_accounting a
                                INNER JOIN eledger.el_transaction t
                                           ON t.id = a.transaction_id
@@ -53,6 +57,8 @@ BEGIN
                            , tp.tpn
                            , eledger.fn_get_attribute_value(a.transaction_id, 'period_year')    AS "period_year"
                            , eledger.fn_get_attribute_value(a.transaction_id, 'period_segment') AS "period_segment"
+                           , tat."name"                                                            action_type
+                           , a.account_type
                       FROM (
                                SELECT row_number() OVER (ORDER BY ecii.gl_account_id, ecii.transaction_id) id
                                     , ecii.transaction_id
@@ -86,7 +92,8 @@ BEGIN
                AND t.period_segment = coalesce(p_segment, t.period_segment)
          ) ret
     WHERE ret.transaction_date >= coalesce(p_start_date, ret.transaction_date)
-      AND ret.transaction_date <= coalesce(p_end_date, ret.transaction_date);
+      AND ret.transaction_date <= coalesce(p_end_date, ret.transaction_date)
+      and not (ret.action_type = 'REPAY_NET_NEGATIVE' and ret.account_type = 'P');
 
     RETURN coalesce(v_ret_val, 0);
 END;
@@ -96,11 +103,11 @@ $function$
 ----------------------------------------------------------------------------------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION eledger.fn_reporting_taxpayer_account(p_tpn character varying,
-                                                                   p_language_code character varying,
-                                                                   p_tax_type_code character varying,
-                                                                   p_year character varying,
-                                                                   p_segment character varying, p_start_date date,
-                                                                   p_end_date date, p_offset bigint, p_limit bigint)
+                                                                 p_language_code character varying,
+                                                                 p_tax_type_code character varying,
+                                                                 p_year character varying, p_segment character varying,
+                                                                 p_start_date date, p_end_date date, p_offset bigint,
+                                                                 p_limit bigint)
     RETURNS TABLE
             (
                 transaction_date       date,
@@ -129,7 +136,26 @@ AS
 $function$
 BEGIN
     RETURN QUERY
-        SELECT *
+        SELECT ret.transaction_date
+             , ret.liability_description
+             , ret.period_year
+             , ret.period_segment
+             , ret.amount
+             , ret.net_negative
+             , ret.total_net_negative
+             , ret.total_liability
+             , ret.total_interest
+             , ret.total_penalty
+             , ret.payment
+             , ret.non_revenue
+             , ret.drn
+             , ret.tpn
+             , ret.id
+             , ret.transaction_name
+             , ret.transaction_id
+             , ret.gl_account_id
+             , ret.gl_account_code
+             , ret.action_type
         FROM (
                  SELECT t.transaction_date
 
@@ -161,6 +187,7 @@ BEGIN
                       , t.gl_account_id
                       , t.gl_account_code
                       , t.action_type
+                      , t.account_type
                  FROM (
                           SELECT r.id
                                , r.tpn
@@ -181,6 +208,7 @@ BEGIN
                                , r.gl_account_id
                                , r.gl_account_code
                                , r.action_type
+                               , r.account_type
                                , (case
                                       when r.transaction_type_id in (2, 4)
                                           then CASE WHEN r.action_type = 'FORMULAIT' THEN r.amount ELSE -r.amount end
@@ -217,6 +245,7 @@ BEGIN
                                         , ga.code  gl_account_code
                                         , tat.name action_type
                                         , a.transfer_type
+                                        , a.account_type
                                    FROM eledger.el_accounting a
                                             INNER JOIN eledger.el_transaction t
                                                        ON t.id = a.transaction_id
@@ -232,6 +261,7 @@ BEGIN
                                    WHERE tp.tpn = p_tpn
                                      AND ga.code LIKE coalesce(p_tax_type_code, ga.code) || '%'
                                      AND lower(trim(gad.language_code)) = lower(trim(p_language_code))
+                                     and a.amount <> 0
                                      and not (t.transaction_type_id = 3 and a.account_type = 'P')
                                      and not (a.accounting_action_type_id = 1 and t.transaction_type_id = 5)
                                      and not (a.accounting_action_type_id = 6 and a.transfer_type = 'C' and
@@ -251,6 +281,7 @@ BEGIN
                                         , ga.code  gl_account_code
                                         , tat.name action_type
                                         , a.transfer_type
+                                        , a.account_type
                                    FROM (
                                             SELECT row_number() OVER (ORDER BY ecii.gl_account_id, ecii.transaction_id) id
                                                  , ecii.transaction_id
@@ -291,13 +322,13 @@ BEGIN
              ) ret
         WHERE ret.transaction_date >= coalesce(p_start_date, ret.transaction_date)
           AND ret.transaction_date <= coalesce(p_end_date, ret.transaction_date)
+          and not (ret.action_type = 'REPAY_NET_NEGATIVE' and ret.account_type = 'P')
         ORDER BY ret.transaction_date, ret.id
         OFFSET p_offset LIMIT p_limit;
 
 END;
 $function$
 ;
-
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
