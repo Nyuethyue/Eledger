@@ -60,4 +60,9 @@
                  relativeToChangelogFile="true"/>
     </changeSet>
 
+    <changeSet id="Transaction_copules insert delete to do" author="V.G.">
+        <sqlFile path="../../sql/eledger/dev/013_transaction_couples_for_refund.sql"
+                 relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog>
