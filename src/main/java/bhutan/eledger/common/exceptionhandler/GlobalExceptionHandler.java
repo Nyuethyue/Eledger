@@ -4,6 +4,7 @@ import am.iunetworks.lib.common.validation.RecordNotFoundException;
 import am.iunetworks.lib.common.validation.ValidationError;
 import am.iunetworks.lib.common.validation.Violation;
 import am.iunetworks.lib.common.validation.ViolationException;
+import com.jsunsoft.http.ResponseException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -107,5 +108,13 @@ public class GlobalExceptionHandler {
         log.trace(e.getMessage());
 
         return e.getHumanMessage();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_GATEWAY)
+    @ExceptionHandler(ResponseException.class)
+    @ResponseBody
+    public String handleUnexpectedStatusCodeException(ResponseException e) {
+        log.error(e.getMessage(), e);
+        return HttpStatus.BAD_GATEWAY.getReasonPhrase();
     }
 }
