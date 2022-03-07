@@ -130,8 +130,13 @@
                  splitStatements="false"/>
     </changeSet>
 
-    <changeSet id="Replacind files delete to do" author="V.G.">
+    <changeSet id="Replacing files delete to do" author="V.G.">
         <sqlFile path="../../sql/eledger/031_replace_files_deleted_to_do.sql" relativeToChangelogFile="true"
+                 splitStatements="false"/>
+    </changeSet>
+
+    <changeSet id="Replacing function fn_get_payment_advice_data" author="V.G.">
+        <sqlFile path="../../sql/eledger/032_function_fn_get_payment_advice_data.sql" relativeToChangelogFile="true"
                  splitStatements="false"/>
     </changeSet>
 
