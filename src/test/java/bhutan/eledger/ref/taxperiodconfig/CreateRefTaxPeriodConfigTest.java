@@ -25,6 +25,9 @@ import java.util.LinkedList;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CreateRefTaxPeriodConfigTest {
     @Autowired
+    private DeleteTaxPeriodUseCase deleteTaxPeriodUseCase;
+
+    @Autowired
     private ReadTaxPeriodTypesUseCase readTaxPeriodTypesUseCase;
 
     @Autowired
@@ -116,6 +119,10 @@ class CreateRefTaxPeriodConfigTest {
         Long recordId = upsertTaxPeriodUseCase.upsert(createCommand);
 
         SearchTaxPeriodConfigUseCase.SearchTaxPeriodConfigCommand searchCommand = new SearchTaxPeriodConfigUseCase.SearchTaxPeriodConfigCommand(
+                0,
+                1000,
+                null,
+                null,
                 generateCommand.getTaxTypeCode(),
                 generateCommand.getCalendarYear(),
                 generateCommand.getTaxPeriodCode(),
@@ -145,6 +152,10 @@ class CreateRefTaxPeriodConfigTest {
                 );
 
         Long recordIdNew = upsertTaxPeriodUseCase.upsert(upsertCommand);
+
+        DeleteTaxPeriodUseCase.DeleteTaxPeriodCommand deleteTaxPeriodCommand =
+                new DeleteTaxPeriodUseCase.DeleteTaxPeriodCommand(recordIdNew);
+        deleteTaxPeriodUseCase.delete(deleteTaxPeriodCommand);
         Assertions.assertEquals(recordId, recordIdNew);
     }
 

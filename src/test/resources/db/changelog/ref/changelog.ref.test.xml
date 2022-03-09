@@ -64,4 +64,9 @@
     <changeSet id="Tax Period Calendar ref table" author="A.A." dbms="postgresql">
         <sqlFile path="../../sql/ref/016_create_tax_period_config_ref_table.sql" relativeToChangelogFile="true"/>
     </changeSet>
+
+    <changeSet id="Alter Tax Period Calendar ref table" author="A.A." dbms="postgresql">
+        <sqlFile path="../../sql/ref/017_alter_tax_period_config_ref_table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog>

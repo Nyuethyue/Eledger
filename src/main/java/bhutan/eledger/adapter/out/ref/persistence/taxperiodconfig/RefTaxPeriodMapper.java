@@ -72,6 +72,24 @@ class RefTaxPeriodMapper {
         );
     }
 
+    RefTaxPeriodConfig mapToDomain(RefTaxPeriodConfigEntity entity) {
+        return RefTaxPeriodConfig.withId(
+                entity.getId(),
+                entity.getGlAccountPartFullCode(),
+                entity.getCalendarYear(),
+                entity.getTaxPeriodCode(),
+                entity.getTransactionTypeId(),
+                entity.getDueDateCountForReturnFiling(),
+                entity.getDueDateCountForPayment(),
+                entity.getValidFrom(),
+                entity.getValidTo(),
+                entity.getConsiderNonWorkingDays(),
+                new LinkedList<>()
+        );
+    }
+
+
+
     RefTaxPeriodRecordEntity mapToEntity(long parentId, TaxPeriodConfigRecord re) {
         return new RefTaxPeriodRecordEntity(
                 parentId,

@@ -21,11 +21,6 @@ class SearchTaxPeriodConfigService implements SearchTaxPeriodConfigUseCase {
     @Override
     public SearchResult<RefTaxPeriodConfig> search(@Valid SearchTaxPeriodConfigCommand command) {
         log.trace("Searching tax period record with command: {}", command);
-        return refTaxPeriodRepositoryPort.search(
-                command.getTaxTypeCode(),
-                command.getCalendarYear(),
-                command.getTaxPeriodCode(),
-                command.getTransactionTypeId()
-        );
+        return refTaxPeriodRepositoryPort.search(command);
     }
 }

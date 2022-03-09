@@ -9,7 +9,6 @@ import bhutan.eledger.domain.ref.taxperiodconfig.RefTaxPeriodConfig;
 import bhutan.eledger.domain.ref.taxperiodconfig.TaxPeriodConfigRecord;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.joda.time.Days;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +17,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Objects;
 
 @Log4j2
 @Service
@@ -27,7 +27,32 @@ class UpsertTaxPeriodService implements UpsertTaxPeriodUseCase {
 
     private final RefTaxPeriodRepositoryPort refTaxPeriodRepositoryPort;
 
-    void validate(UpsertTaxPeriodCommand command) {
+    void dynamicValidate(UpsertTaxPeriodCommand command) {
+        var taxPeriods = refTaxPeriodRepositoryPort.searchAll(
+                command.getTaxTypeCode(),
+                command.getCalendarYear(),
+                command.getTaxPeriodCode(),
+                command.getTransactionTypeId()
+        );
+
+        LocalDate validFrom = command.getValidFrom();
+        LocalDate validTo = command.getValidTo();
+
+        taxPeriods.forEach(tp -> {
+            if(Objects.equals(command.getId(), tp.getId())) {
+                if(!Objects.equals(tp.getValidFrom(), validFrom)) {
+                    new ValidationError()
+                            .addViolation("validFrom",
+                                    "Valid from of used tax period type can not be changed, id:" + command.getId());
+                }
+            }
+
+//            if(validFrom.isBefore())
+
+        });
+    }
+
+    void staticValidate(UpsertTaxPeriodCommand command) {
         try {
             TaxPeriodType.of(command.getTaxPeriodCode());
         } catch (Exception e) {
@@ -95,7 +120,8 @@ class UpsertTaxPeriodService implements UpsertTaxPeriodUseCase {
     @Override
     public Long upsert(@Valid UpsertTaxPeriodCommand command) {
         log.trace("Upserting TaxPeriod with command: {}", command);
-        validate(command);
+        staticValidate(command);
+        dynamicValidate(command);
 
         RefTaxPeriodConfig refTaxPeriodConfig = mapCommandToRefTaxPeriodConfig(command);
 
@@ -106,7 +132,9 @@ class UpsertTaxPeriodService implements UpsertTaxPeriodUseCase {
                     refTaxPeriodConfig.getTaxTypeCode(),
                     refTaxPeriodConfig.getCalendarYear(),
                     refTaxPeriodConfig.getTaxPeriodCode(),
-                    refTaxPeriodConfig.getTransactionTypeId());
+                    refTaxPeriodConfig.getTransactionTypeId(),
+                    refTaxPeriodConfig.getValidFrom(),
+                    refTaxPeriodConfig.getValidTo());
         Long id = configSearchResult.map(config -> {
             refTaxPeriodConfig.setId(config.getId());
             return refTaxPeriodRepositoryPort.update(refTaxPeriodConfig);

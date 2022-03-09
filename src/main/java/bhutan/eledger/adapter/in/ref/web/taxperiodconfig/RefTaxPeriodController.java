@@ -1,6 +1,7 @@
 package bhutan.eledger.adapter.in.ref.web.taxperiodconfig;
 
 import am.iunetworks.lib.common.persistence.search.SearchResult;
+import bhutan.eledger.application.port.in.ref.taxperiodconfig.DeleteTaxPeriodUseCase;
 import bhutan.eledger.application.port.in.ref.taxperiodconfig.LoadGenTaxPeriodConfigUseCase;
 import bhutan.eledger.application.port.in.ref.taxperiodconfig.SearchTaxPeriodConfigUseCase;
 import bhutan.eledger.application.port.in.ref.taxperiodconfig.UpsertTaxPeriodUseCase;
@@ -19,6 +20,7 @@ import java.net.URI;
 class RefTaxPeriodController {
 
     private final UpsertTaxPeriodUseCase upsertTaxPeriodUseCase;
+    private final DeleteTaxPeriodUseCase deleteTaxPeriodUseCase;
     private final LoadGenTaxPeriodConfigUseCase loadGenTaxPeriodConfigUseCase;
     private final SearchTaxPeriodConfigUseCase searchTaxPeriodConfigUseCase;
 
@@ -28,6 +30,14 @@ class RefTaxPeriodController {
         Long id = upsertTaxPeriodUseCase.upsert(command);
         return ResponseEntity
                 .created(URI.create("/" + id))
+                .build();
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<Object> delete(@RequestBody DeleteTaxPeriodUseCase.DeleteTaxPeriodCommand command) {
+        deleteTaxPeriodUseCase.delete(command);
+        return ResponseEntity
+                .created(URI.create("/" + command.getId()))
                 .build();
     }
 

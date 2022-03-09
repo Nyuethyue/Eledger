@@ -40,15 +40,15 @@ class LoadGenTaxPeriodConfigService implements LoadGenTaxPeriodConfigUseCase {
     public RefTaxPeriodConfig loadGen(@Valid LoadGenTaxPeriodConfigCommand command) {
         log.trace("Loading tax period record with command: {}", command);
         var refTaxPeriodConfig =
-                refTaxPeriodRepositoryPort.readBy(
+                refTaxPeriodRepositoryPort.searchAll(
                         command.getTaxTypeCode(),
                         command.getCalendarYear(),
                         command.getTaxPeriodCode(),
                         command.getTransactionTypeId()
                 );
 
-        if (refTaxPeriodConfig.isPresent()) {
-            return refTaxPeriodConfig.get();
+        if (refTaxPeriodConfig.size() > 0) {
+            return refTaxPeriodConfig.iterator().next();
         } else {
             return generate(command);
         }
