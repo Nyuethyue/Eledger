@@ -32,6 +32,7 @@ public enum DebitAuthCode {
     BUYER_CANCEL_TRANSACTION("80", "Buyer Cancel Transaction"),
     INVALID_TRANSACTION_TYPE("84", "Invalid Transaction Type"),
     INTERNAL_ERROR_AT_BANK_SYSTEM("85", "Internal Error At Bank System"),
+    TECHNICAL_DECLINE("91", "Technical decline"),
     TIME_OUT("TO", "Time out"),
     TRANSACTION_CANCELLED_BY_CUSTOMER("BC", "Transaction Cancelled By Customer"),
     INTERNAL_ERROR("FE", "Internal Error"),
