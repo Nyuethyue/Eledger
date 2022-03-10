@@ -49,7 +49,7 @@ class CompleteRmaPaymentService implements CompleteRmaPaymentUseCase {
                 ))
                 .toList();
 
-        paymentAdvice.pay(command.getPaidAmount());
+        paymentAdvice.payInitiated(command.getPaidAmount());
 
         paymentAdviceRepositoryPort.update(paymentAdvice);
 

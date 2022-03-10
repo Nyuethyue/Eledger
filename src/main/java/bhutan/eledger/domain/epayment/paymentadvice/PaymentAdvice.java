@@ -16,11 +16,16 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
 
 @Builder(toBuilder = true)
 @Getter
 @ToString
 public class PaymentAdvice {
+    private static final Collection<PaymentAdviceStatus> PAYABLE_STATUSES = Set.of(
+            PaymentAdviceStatus.INITIAL,
+            PaymentAdviceStatus.SPLIT_PAYMENT
+    );
 
     private final Long id;
     private final String drn;
@@ -98,16 +103,10 @@ public class PaymentAdvice {
         }
     }
 
-    public void pay() {
-        checkStatusForPayment();
-
-        payableLines.forEach(PayableLine::pay);
-
-        afterPayment();
-    }
-
-    public void pay(BigDecimal amount) {
-        checkStatusForPayment();
+    public void payInitiated(BigDecimal amount) {
+        if (PaymentAdviceStatus.INITIATED != status) {
+            throw new IllegalStateException("Payment advice by pan: [" + pan + "] is not initiated.");
+        }
 
         if (getTotalToBePaidAmount().compareTo(amount) != 0) {
             throw new ViolationException(
@@ -167,12 +166,12 @@ public class PaymentAdvice {
     }
 
     private void checkStatusForPayment() {
-        if (isPaid()) {
+        if (!PAYABLE_STATUSES.contains(status) || isPaid()) {
             throw new ViolationException(
                     new ValidationError()
                             .addViolation(
                                     "paymentAdviceId",
-                                    "Payment advice by pan: [" + pan + "] has been already paid."
+                                    "Payment advice by pan: [" + pan + "] and by status: " + status + " has been already paid or is incorrect status."
                             )
             );
         }
