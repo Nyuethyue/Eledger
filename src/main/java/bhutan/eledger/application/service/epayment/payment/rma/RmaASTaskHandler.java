@@ -14,6 +14,7 @@ import bhutan.eledger.domain.epayment.task.EpTaskType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.Collection;
 import java.util.Set;
@@ -33,6 +34,7 @@ class RmaASTaskHandler implements ExtendedTaskHandler {
     private final CompleteRmaPaymentUseCase completeRmaPaymentUseCase;
     private final RollbackRmaPaymentUseCase rollbackRmaPaymentUseCase;
     private final RmaProperties rmaProperties;
+    private final TransactionTemplate transactionTemplate;
 
     @Override
     public String getTaskType() {
@@ -42,22 +44,26 @@ class RmaASTaskHandler implements ExtendedTaskHandler {
     @Override
     public boolean handle(Task task) {
 
-        log.trace("Handling task: {}", task);
+        return Boolean.TRUE.equals(transactionTemplate.execute(status -> {
 
-        RmaMessage rmaMessage =
-                rmaMessageRepositoryPort.requiredReadByOrderNo(task.getOriginatorId());
+                    log.trace("Handling task: {}", task);
 
-        var rmaMessageResponse = rmaRequesterPort.send(rmaMessage.getAsPart());
+                    RmaMessage rmaMessage =
+                            rmaMessageRepositoryPort.requiredReadByOrderNo(task.getOriginatorId());
 
-        rmaMessage.addToRmaMessageResponses(rmaMessageResponse);
+                    var rmaMessageResponse = rmaRequesterPort.send(rmaMessage.getAsPart());
 
-        processMessageStatus(task, rmaMessage, rmaMessageResponse);
+                    rmaMessage.addToRmaMessageResponses(rmaMessageResponse);
 
-        rmaMessageRepositoryPort.update(rmaMessage);
+                    processMessageStatus(task, rmaMessage, rmaMessageResponse);
 
-        processPayment(rmaMessage, rmaMessageResponse);
+                    rmaMessageRepositoryPort.update(rmaMessage);
 
-        return COMPLETE_TASK_STATUSES.contains(rmaMessage.getStatus());
+                    processPayment(rmaMessage, rmaMessageResponse);
+
+                    return COMPLETE_TASK_STATUSES.contains(rmaMessage.getStatus());
+                })
+        );
     }
 
     private void processPayment(RmaMessage rmaMessage, RmaMessageResponse rmaMessageResponse) {

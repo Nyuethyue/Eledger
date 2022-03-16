@@ -1,10 +1,11 @@
 package bhutan.eledger.application.port.in.epayment.payment.rma;
 
+import bhutan.eledger.domain.epayment.rma.RmaMessageResponse;
 import lombok.Data;
 
 public interface RmaTransactionFailUseCase {
 
-    void processFail(RmaTransactionFailCommand command);
+    RmaMessageResponse processFail(RmaTransactionFailCommand command);
 
     @Data
     class RmaTransactionFailCommand {
