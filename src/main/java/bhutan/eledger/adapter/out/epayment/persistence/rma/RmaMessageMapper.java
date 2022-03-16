@@ -1,12 +1,18 @@
 package bhutan.eledger.adapter.out.epayment.persistence.rma;
 
-import bhutan.eledger.domain.epayment.rma.*;
+import bhutan.eledger.domain.epayment.rma.RmaMessage;
+import bhutan.eledger.domain.epayment.rma.RmaMessagePart;
+import bhutan.eledger.domain.epayment.rma.RmaMessageStatus;
+import bhutan.eledger.domain.epayment.rma.RmaMsgType;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
 @Component
+@AllArgsConstructor
 class RmaMessageMapper {
+    private final RmaMessageResponseMapper rmaMessageResponseMapper;
 
     RmaMessageEntity mapToEntity(RmaMessage rmaMessage) {
         var arPart = rmaMessage.getArPart();
@@ -53,24 +59,8 @@ class RmaMessageMapper {
         rmaMessageEntity.setRmaMessageResponses(
                 rmaMessage.getRmaMessageResponses()
                         .stream()
-                        .map(rmr -> new RmaMessageResponseEntity(
-                                        rmr.getId(),
-                                        rmr.getMsgType().getValue(),
-                                        rmr.getBfsTxnId(),
-                                        rmr.getBfsTxnTime(),
-                                        rmr.getBenfTxnTime(),
-                                        rmr.getOrderNo(),
-                                        rmr.getBenfId(),
-                                        rmr.getTxnCurrency(),
-                                        rmr.getTxnAmount(),
-                                        rmr.getCheckSum(),
-                                        rmr.getRemitterName(),
-                                        rmr.getRemitterBankId(),
-                                        rmr.getDebitAuthCode().getValue(),
-                                        rmr.getDebitAuthNo(),
-                                        rmr.getCreationDateTime(),
-                                        rmaMessageEntity
-                                )
+                        .map(rmr ->
+                                rmaMessageResponseMapper.mapToEntity(rmaMessageEntity, rmr)
                         )
                         .collect(Collectors.toSet())
         );
@@ -120,25 +110,7 @@ class RmaMessageMapper {
                 ),
                 rmaMessageEntity.getRmaMessageResponses() == null ? null : rmaMessageEntity.getRmaMessageResponses()
                         .stream()
-                        .map(rmre ->
-                                RmaMessageResponse.withId(
-                                        rmre.getId(),
-                                        RmaMsgType.of(rmre.getMsgType()),
-                                        rmre.getBfsTxnId(),
-                                        rmre.getBfsTxnTime(),
-                                        rmre.getBenfTxnTime(),
-                                        rmre.getOrderNo(),
-                                        rmre.getBenfId(),
-                                        rmre.getTxnCurrency(),
-                                        rmre.getTxnAmount(),
-                                        rmre.getCheckSum(),
-                                        rmre.getRemitterName(),
-                                        rmre.getRemitterBankId(),
-                                        DebitAuthCode.of(rmre.getDebitAuthCode()),
-                                        rmre.getDebitAuthNo(),
-                                        rmre.getCreationDateTime()
-                                )
-                        )
+                        .map(rmaMessageResponseMapper::mapToDomain)
                         .collect(Collectors.toSet())
         );
     }

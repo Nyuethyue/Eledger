@@ -49,7 +49,7 @@ class RmaTransactionRestController {
 
         log.debug("Failure request received with mapped dto: {}", command);
 
-        rmaTransactionFailUseCase.processFail(command);
+        var rmaMessageResponse = rmaTransactionFailUseCase.processFail(command);
 
         log.debug("Redirecting to {} with order no {}", backTo, command.getOrderNo());
 
@@ -57,6 +57,8 @@ class RmaTransactionRestController {
                 UriComponentsBuilder.fromUriString(backTo)
                         .queryParam("orderNo", command.getOrderNo())
                         .queryParam("status", "Failure")
+                        .queryParam("debitAuthCode", rmaMessageResponse.getDebitAuthCode().getValue())
+                        .queryParam("debitAuthDescription", rmaMessageResponse.getDebitAuthCode().getDescription())
                         .build().toUri()
         ).build();
     }
@@ -69,7 +71,7 @@ class RmaTransactionRestController {
 
         log.debug("Cancel request received with mapped dto: {}", command);
 
-        rmaTransactionCancelUseCase.processCancel(command);
+        var rmaMessageResponse = rmaTransactionCancelUseCase.processCancel(command);
 
         log.debug("Redirecting to {} with order no {}", backTo, command.getOrderNo());
 
@@ -77,6 +79,8 @@ class RmaTransactionRestController {
                 UriComponentsBuilder.fromUriString(backTo)
                         .queryParam("orderNo", command.getOrderNo())
                         .queryParam("status", "Cancelled")
+                        .queryParam("debitAuthCode", rmaMessageResponse.getDebitAuthCode().getValue())
+                        .queryParam("debitAutDescription", rmaMessageResponse.getDebitAuthCode().getDescription())
                         .build().toUri()
         ).build();
     }
