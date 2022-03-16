@@ -15,7 +15,7 @@ CREATE TABLE epayment.ep_receipt
     instrument_date            date,
     other_reference_number     varchar,
     creation_date_time         timestamp      NOT NULL,
-    taxpayer_id                bigint         NOT NULL,
+    taxpayer_id                uuid           NOT NULL,
     total_paid_amount          numeric(20, 2) NOT NULL
 );
 
@@ -25,20 +25,8 @@ ALTER TABLE epayment.ep_receipt
 CREATE UNIQUE INDEX IF NOT EXISTS idx_receipt_receipt_number
     ON epayment.ep_receipt (receipt_number);
 
--- ALTER TABLE ONLY epayment.ep_receipt
---     ADD CONSTRAINT fk_payment_advice_pa_bank_info
---         FOREIGN KEY (pa_bank_info_id) REFERENCES epayment.ep_pa_bank_info (id);
-
-
-ALTER TABLE ONLY epayment.ep_receipt
-    ADD CONSTRAINT fk_receipt_taxpayer
-        FOREIGN KEY (taxpayer_id) REFERENCES epayment.ep_taxpayer (id);
-
 CREATE INDEX IF NOT EXISTS fki_payment_advice_pa_bank_info
     ON epayment.ep_payment_advice (pa_bank_info_id);
-
-CREATE INDEX IF NOT EXISTS fki_receipt_taxpayer
-    ON epayment.ep_receipt (taxpayer_id);
 
 CREATE SEQUENCE epayment.ep_receipt_id_seq
     INCREMENT BY 1

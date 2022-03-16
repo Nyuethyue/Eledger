@@ -12,7 +12,6 @@ import bhutan.eledger.domain.epayment.paymentadvice.PayableLine;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdvice;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdviceBankInfo;
 import bhutan.eledger.domain.epayment.paymentadvice.PaymentAdviceStatus;
-import bhutan.eledger.domain.epayment.taxpayer.EpTaxpayer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -84,7 +83,7 @@ class CreatePaymentAdviceService implements CreatePaymentAdviceUseCase {
                 creationDateTime,
                 pan,
                 PaymentAdviceStatus.INITIAL,
-                resolveTaxpayer(command.getTaxpayer()),
+                taxpayerRepositoryPort.requiredReadByTpn(command.getTaxpayer().getTpn()),
                 bankInfo,
                 command.getPayableLines()
                         .stream()
@@ -98,31 +97,4 @@ class CreatePaymentAdviceService implements CreatePaymentAdviceUseCase {
                         .collect(Collectors.toUnmodifiableSet())
         );
     }
-
-    private EpTaxpayer resolveTaxpayer(UpsertPaymentAdviceUseCase.TaxpayerCommand taxpayerCommand) {
-        EpTaxpayer result;
-
-        var taxpayerOptional = taxpayerRepositoryPort.readByTpn(taxpayerCommand.getTpn());
-
-        if (taxpayerOptional.isPresent()) {
-            result = taxpayerOptional.get();
-        } else {
-            var taxpayer = EpTaxpayer.withoutId(
-                    taxpayerCommand.getTpn(),
-                    taxpayerCommand.getName(),
-                    LocalDateTime.now()
-            );
-
-            log.trace("Persisting taxpayer info: {}", taxpayer);
-
-            result = taxpayerRepositoryPort.create(
-                    taxpayer
-            );
-
-            log.debug("Taxpayer info with id: {} successfully created.", result);
-        }
-
-        return result;
-    }
-
 }

@@ -42,7 +42,7 @@ dependencies {
 
     //custom
     implementation "am.iunetworks:multilingual-core:0.0.1"
-    implementation "am.iunetworks:common-persistence:0.0.4"
+    implementation "am.iunetworks:common-persistence:0.0.6"
     implementation "am.iunetworks:common-validation:0.0.1"
     implementation "am.iunetworks:task:1.0.1"
 

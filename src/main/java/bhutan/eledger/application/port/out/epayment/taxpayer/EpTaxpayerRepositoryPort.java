@@ -7,9 +7,7 @@ import java.util.Optional;
 
 public interface EpTaxpayerRepositoryPort {
 
-    EpTaxpayer create(EpTaxpayer taxpayer);
-
-    Optional<EpTaxpayer> readById(Long id);
+    Optional<EpTaxpayer> readById(String id);
 
     Optional<EpTaxpayer> readByTpn(String tpn);
 
@@ -17,6 +15,4 @@ public interface EpTaxpayerRepositoryPort {
         return readByTpn(tpn)
                 .orElseThrow(() -> new RecordNotFoundException("EpTaxpayer by tpn: [" + tpn + "] not found."));
     }
-
-    void deleteAll();
 }

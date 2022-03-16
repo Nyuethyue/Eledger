@@ -64,7 +64,7 @@ CREATE TABLE epayment.ep_payment_advice
     period_segment          varchar        NOT NULL,
     creation_date_time      timestamp      NOT NULL,
     pan                     varchar        NOT NULL,
-    taxpayer_id             bigint         NOT NULL,
+    taxpayer_id             uuid           NOT NULL,
     pa_bank_info_id         bigint         NOT NULL,
     total_liability_amount  numeric(20, 2) NOT NULL DEFAULT 0,
     total_paid_amount       numeric(20, 2) NOT NULL DEFAULT 0,
@@ -80,17 +80,6 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_payment_advice_pan
 ALTER TABLE ONLY epayment.ep_payment_advice
     ADD CONSTRAINT fk_payment_advice_pa_bank_info
         FOREIGN KEY (pa_bank_info_id) REFERENCES epayment.ep_pa_bank_info (id);
-
-
-ALTER TABLE ONLY epayment.ep_payment_advice
-    ADD CONSTRAINT fk_payment_advice_taxpayer
-        FOREIGN KEY (taxpayer_id) REFERENCES epayment.ep_taxpayer (id);
-
-CREATE INDEX IF NOT EXISTS fki_payment_advice_pa_bank_info
-    ON epayment.ep_payment_advice (pa_bank_info_id);
-
-CREATE INDEX IF NOT EXISTS fki_payment_advice_taxpayer
-    ON epayment.ep_payment_advice (taxpayer_id);
 
 CREATE SEQUENCE epayment.ep_payment_advice_id_seq
     INCREMENT BY 1

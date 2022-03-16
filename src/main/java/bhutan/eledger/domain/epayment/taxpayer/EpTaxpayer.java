@@ -1,44 +1,31 @@
 package bhutan.eledger.domain.epayment.taxpayer;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.hibernate.annotations.Immutable;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.util.UUID;
 
 @Entity
-@Table(name = "ep_taxpayer", schema = "epayment")
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Immutable
+@Table(name = "\"Taxpayer\"", schema = "taxpayer")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@ToString
 public class EpTaxpayer {
     @Id
-    @SequenceGenerator(name = "ep_taxpayer_id_seq", schema = "epayment", sequenceName = "ep_taxpayer_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ep_taxpayer_id_seq")
     @Column(name = "id")
-    private Long id;
+    private UUID id;
 
     @Column(name = "tpn")
     private String tpn;
 
-    @Column(name = "name")
+    @Column(name = "\"tpName\"")
     private String name;
-
-    @Column(name = "creation_date_time")
-    private LocalDateTime creationDateTime;
-
-    public static EpTaxpayer withoutId(
-            String tpn,
-            String name,
-            LocalDateTime creationDateTime
-    ) {
-        return new EpTaxpayer(
-                null,
-                tpn,
-                name,
-                creationDateTime
-        );
-    }
 }
