@@ -2,10 +2,14 @@ package bhutan.eledger.application.port.in.epayment.payment.rma;
 
 import bhutan.eledger.domain.epayment.rma.RmaMessageResponse;
 import lombok.Data;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
+
+@Validated
 public interface RmaTransactionCancelUseCase {
 
-    RmaMessageResponse processCancel(RmaTransactionCancelCommand command);
+    RmaMessageResponse processCancel(@Valid RmaTransactionCancelCommand command);
 
     @Data
     class RmaTransactionCancelCommand {

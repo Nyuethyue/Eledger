@@ -1,13 +1,19 @@
 package bhutan.eledger.application.port.in.epayment.payment.rma;
 
 import lombok.Data;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
+@Validated
 public interface RmaTransactionSuccessUseCase {
 
-    String processSuccess(RmaTransactionSuccessCommand command);
+    String processSuccess(@Valid RmaTransactionSuccessCommand command);
 
     @Data
     class RmaTransactionSuccessCommand {
+        @NotNull
         private final String orderNo;
         private final String debitAuthCode;
         private final String txnAmount;
