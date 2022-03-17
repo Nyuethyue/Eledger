@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -101,6 +102,8 @@ class CreateGLAccountTest {
         var agencyGLAccounts = createRefAgencyGLAccountUseCase.create(
                 new CreateRefAgencyGLAccountUseCase.CreateAgencyGlAccountCommand(
                         "A-123",
+                        LocalDate.now(),
+                        null,
                         Set.of(
                                 new CreateRefAgencyGLAccountUseCase.AgencyGlAccountCommand(
                                         glAccountOptional.get().getCode()

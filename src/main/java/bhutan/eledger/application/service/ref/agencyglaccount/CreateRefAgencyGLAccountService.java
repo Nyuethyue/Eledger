@@ -5,6 +5,7 @@ import am.iunetworks.lib.common.validation.ViolationException;
 import bhutan.eledger.application.port.in.ref.agencyglaccount.CreateRefAgencyGLAccountUseCase;
 import bhutan.eledger.application.port.out.eledger.config.glaccount.GLAccountRepositoryPort;
 import bhutan.eledger.application.port.out.ref.agencyglaccount.RefAgencyGLAccountRepositoryPort;
+import bhutan.eledger.common.dto.ValidityPeriod;
 import bhutan.eledger.domain.ref.agencyglaccount.RefAgencyGLAccount;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -63,7 +64,11 @@ class CreateRefAgencyGLAccountService implements CreateRefAgencyGLAccountUseCase
                 .map(agencyGlAccountCommand -> {
                     return RefAgencyGLAccount.withoutId(
                             agencyGlAccountCommand.getCode(),
-                            agencyCode
+                            agencyCode,
+                            ValidityPeriod.of(
+                                    command.getStartOfValidity(),
+                                    command.getEndOfValidity()
+                            )
                     );
                 })
                 .collect(Collectors.toUnmodifiableList());
