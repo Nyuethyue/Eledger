@@ -77,8 +77,12 @@ public class PaymentAdvice {
                 .orElseThrow(() -> new RecordNotFoundException("PayableLine by id: [" + payableLineId + "] not found."));
     }
 
+    public boolean canBeInitiated() {
+        return status == PaymentAdviceStatus.SPLIT_PAYMENT || status == PaymentAdviceStatus.INITIAL;
+    }
+
     public void initiate() {
-        if (status == PaymentAdviceStatus.SPLIT_PAYMENT || status == PaymentAdviceStatus.INITIAL) {
+        if (canBeInitiated()) {
             changeStatus(PaymentAdviceStatus.INITIATED);
         } else {
             throw new ViolationException(

@@ -1,5 +1,7 @@
 package bhutan.eledger.application.service.epayment.payment.rma;
 
+import am.iunetworks.lib.common.validation.ValidationError;
+import am.iunetworks.lib.common.validation.ViolationException;
 import bhutan.eledger.application.port.in.epayment.payment.rma.CreateRmaMessageUseCase;
 import bhutan.eledger.application.port.out.epayment.paymentadvice.PaymentAdviceRepositoryPort;
 import bhutan.eledger.application.port.out.epayment.rma.RmaMessageRepositoryPort;
@@ -30,6 +32,16 @@ class CreateRmaMessageService implements CreateRmaMessageUseCase {
         log.trace("Creating rma payment with command: {}", command);
 
         var paymentAdvice = paymentAdviceRepositoryPort.requiredReadById(command.getPaymentAdviceId());
+
+        if (!paymentAdvice.canBeInitiated()) {
+            throw new ViolationException(
+                    new ValidationError()
+                            .addViolation(
+                                    "status",
+                                    "Payment advice can't be initiated from status: " + paymentAdvice.getStatus()
+                            )
+            );
+        }
 
         var refCurrencyEntry = refEntryRepository.findByRefNameAndCode(
                 RefName.CURRENCY.getValue(),
