@@ -136,7 +136,7 @@ public class PaymentAdvice {
 
         paymentContext.getPayableLinePayments()
                 .forEach(plc -> {
-                    PayableLine payableLine = getRequiredPayableLineById(plc.getPayableLineId());
+                            PayableLine payableLine = getRequiredPayableLineById(plc.getPayableLineId());
 
                     payableLine.pay(plc.getPaidAmount());
                         }
@@ -186,7 +186,11 @@ public class PaymentAdvice {
         recalculateTotalToBePaidAmount();
 
         if (isPaid()) {
-            changeStatus(PaymentAdviceStatus.PAID);
+            if (status == PaymentAdviceStatus.INITIATED) {
+                changeStatus(PaymentAdviceStatus.PRE_RECONCILED);
+            } else {
+                changeStatus(PaymentAdviceStatus.PAID);
+            }
         } else {
             changeStatus(PaymentAdviceStatus.SPLIT_PAYMENT);
         }
