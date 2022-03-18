@@ -1,5 +1,6 @@
 package bhutan.eledger.adapter.out.ref.persistence.agencyglaccount;
 
+import bhutan.eledger.common.dto.ValidityPeriod;
 import bhutan.eledger.domain.ref.agencyglaccount.RefAgencyGLAccount;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +11,9 @@ class RefAgencyGLAccountMapper {
         RefAgencyGLAccountEntity refAgencyGLAccountEntity = new RefAgencyGLAccountEntity(
                 refAgencyGLAccount.getId(),
                 refAgencyGLAccount.getCode(),
-                refAgencyGLAccount.getAgencyCode()
+                refAgencyGLAccount.getAgencyCode(),
+                refAgencyGLAccount.getValidityPeriod().getStart(),
+                refAgencyGLAccount.getValidityPeriod().getEnd()
         );
 
 
@@ -21,7 +24,11 @@ class RefAgencyGLAccountMapper {
         return RefAgencyGLAccount.withId(
                 refAgencyGLAccountEntity.getId(),
                 refAgencyGLAccountEntity.getCode(),
-                refAgencyGLAccountEntity.getAgencyCode()
+                refAgencyGLAccountEntity.getAgencyCode(),
+                ValidityPeriod.of(
+                        refAgencyGLAccountEntity.getStartOfValidity(),
+                        refAgencyGLAccountEntity.getEndOfValidity()
+                )
         );
     }
 }

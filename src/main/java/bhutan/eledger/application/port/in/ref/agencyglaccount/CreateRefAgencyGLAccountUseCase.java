@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.time.LocalDate;
 import java.util.Collection;
 
 @Validated
@@ -19,6 +20,11 @@ public interface CreateRefAgencyGLAccountUseCase {
     class CreateAgencyGlAccountCommand {
         @NotNull
         private final String agencyCode;
+
+        @NotNull
+        private final LocalDate startOfValidity;
+
+        private final LocalDate endOfValidity;
 
         @NotNull
         @Valid
