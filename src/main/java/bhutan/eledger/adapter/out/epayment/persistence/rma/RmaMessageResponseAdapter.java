@@ -15,7 +15,7 @@ class RmaMessageResponseAdapter implements RmaMessageResponseRepositoryPort {
 
     @Override
     public Optional<RmaMessageResponse> findLastResponseByOrderNo(String orderNo) {
-        return rmaMessageResponseEntityRepository.findByOrderNoOrderByCreationDateTimeDesc(orderNo)
+        return rmaMessageResponseEntityRepository.findTopByOrderNoOrderByCreationDateTimeDesc(orderNo)
                 .map(rmaMessageResponseMapper::mapToDomain);
     }
 }

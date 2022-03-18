@@ -6,5 +6,5 @@ import java.util.Optional;
 
 interface RmaMessageResponseEntityRepository extends JpaRepository<RmaMessageResponseEntity, Long> {
 
-    Optional<RmaMessageResponseEntity> findByOrderNoOrderByCreationDateTimeDesc(String orderNo);
+    Optional<RmaMessageResponseEntity> findTopByOrderNoOrderByCreationDateTimeDesc(String orderNo);
 }
