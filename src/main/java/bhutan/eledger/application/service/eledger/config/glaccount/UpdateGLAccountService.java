@@ -31,8 +31,6 @@ class UpdateGLAccountService implements UpdateGLAccountUseCase {
 
         log.trace("GL account to be updated: {}", glAccount);
 
-        //todo apply validation logic
-
         GLAccount updatedGLAccount = GLAccount.withId(
                 glAccount.getId(),
                 glAccount.getCode(),

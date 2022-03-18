@@ -33,9 +33,6 @@ class UpdateGLAccountPartService implements UpdateGLAccountPartUseCase {
 
         log.trace("GL account part to be updated: {}", glAccountPart);
 
-        //todo apply validation logic
-
-
         GLAccountPart updatedGLAccountPart = GLAccountPart.withId(
                 glAccountPart.getId(),
                 glAccountPart.getCode(),

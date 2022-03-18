@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.jackson.JsonComponent;
 
 import java.io.IOException;
@@ -13,8 +15,9 @@ import java.time.MonthDay;
 import java.time.format.DateTimeFormatter;
 
 @JsonComponent
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 class MonthDaySerializerDeserializer {
-    static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM-dd");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("MM-dd");
 
     public static class MonthDaySerializer
             extends JsonSerializer<MonthDay> {
@@ -22,7 +25,7 @@ class MonthDaySerializerDeserializer {
         @Override
         public void serialize(MonthDay monthDay, JsonGenerator jsonGenerator,
                               SerializerProvider serializerProvider) throws IOException {
-            jsonGenerator.writeString(dateFormatter.format(monthDay));
+            jsonGenerator.writeString(DATE_TIME_FORMATTER.format(monthDay));
         }
     }
 
@@ -33,7 +36,7 @@ class MonthDaySerializerDeserializer {
         public MonthDay deserialize(JsonParser jsonParser,
                                     DeserializationContext deserializationContext)
                 throws IOException {
-            return MonthDay.parse(jsonParser.getCodec().readValue(jsonParser, String.class), dateFormatter);
+            return MonthDay.parse(jsonParser.getCodec().readValue(jsonParser, String.class), DATE_TIME_FORMATTER);
         }
     }
 }
