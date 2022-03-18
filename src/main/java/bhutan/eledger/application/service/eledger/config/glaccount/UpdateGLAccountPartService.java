@@ -52,7 +52,6 @@ class UpdateGLAccountPartService implements UpdateGLAccountPartUseCase {
                 .orElseThrow(() -> new IllegalStateException("GLAccountPartType by id: " + glAccountPart.getGlAccountPartLevelId() + " not exists."));
 
         if (glAccountPartType.getLevel() == 7) {
-            //todo need to improve  code
             var glAccountExisted = glAccountRepositoryPort.readByCode(glAccountPart.getFullCode())
                     .orElseThrow(() -> new IllegalStateException("GLAccount by code: " + glAccountPart.getFullCode() + " not exists."));
 
