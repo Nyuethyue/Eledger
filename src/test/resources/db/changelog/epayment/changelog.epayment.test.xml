@@ -8,7 +8,7 @@
 
     <changeSet id="Payment advice schemas" author="B.A." dbms="postgresql">
         <sqlFile path="../../sql/epayment/000_init_db.sql" relativeToChangelogFile="true"/>
-        <sqlFile path="../../sql/epayment/001_ep_gl_account.sql" relativeToChangelogFile="true"/>
+        <!--todo import eledgers gl account table by fdw when eledger's config will be moved to common ref service-->
         <sqlFile path="../../sql/epayment/002_taxpayer_schema.sql" relativeToChangelogFile="true"/>
         <sqlFile path="../../sql/epayment/003_create_payment_advice_schema.sql" relativeToChangelogFile="true"/>
         <sqlFile path="../../sql/epayment/004_create_payment_advice_number_sequence.sql"

@@ -13,14 +13,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
-@Table(name = "ep_gl_account", schema = "epayment")
+@Table(name = "el_gl_account", schema = "eledger_config")
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class EpGLAccount {
     @Id
-    @SequenceGenerator(name = "ep_gl_account_id_seq", schema = "epayment", sequenceName = "ep_gl_account_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ep_gl_account_id_seq")
     @Column(name = "id")
     private Long id;
     @Column(name = "code")

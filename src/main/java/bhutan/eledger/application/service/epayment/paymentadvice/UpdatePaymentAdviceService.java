@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class UpdatePaymentAdviceService implements UpdatePaymentAdviceUseCase {
     private final PaymentAdviceRepositoryPort paymentAdviceRepositoryPort;
     private final EpGLAccountRepositoryPort glAccountRepositoryPort;
-    private final GLAccountResolverService glAccountResolverService;
 
     @Override
     public void update(Long id, UpsertPaymentAdviceUseCase.UpsertPaymentAdviceCommand command) {
@@ -43,7 +42,7 @@ public class UpdatePaymentAdviceService implements UpdatePaymentAdviceUseCase {
                 .stream()
                 .map(plc ->
                         PayableLine.withoutId(
-                                glAccountResolverService.resolve(plc.getGlAccount()),
+                                glAccountRepositoryPort.requiredReadByCode(plc.getGlAccount().getCode()),
                                 plc.getAmount(),
                                 plc.getTransactionId()
                         )

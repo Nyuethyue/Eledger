@@ -31,7 +31,6 @@ class CreatePaymentAdviceService implements CreatePaymentAdviceUseCase {
     private final PaymentAdviceRepositoryPort paymentAdviceRepositoryPort;
     private final EpTaxpayerRepositoryPort taxpayerRepositoryPort;
     private final EpGLAccountRepositoryPort epGLAccountRepositoryPort;
-    private final GLAccountResolverService glAccountResolverService;
     private final GetPrimaryBankAccountRefEntryByGLCodeAccountPort getPrimaryBankAccountRefEntryByGLCodeAccountPort;
 
     @Override
@@ -90,7 +89,7 @@ class CreatePaymentAdviceService implements CreatePaymentAdviceUseCase {
                         .stream()
                         .map(plc ->
                                 PayableLine.withoutId(
-                                        glAccountResolverService.resolve(plc.getGlAccount()),
+                                        epGLAccountRepositoryPort.requiredReadByCode(plc.getGlAccount().getCode()),
                                         plc.getAmount(),
                                         plc.getTransactionId()
                                 )

@@ -122,10 +122,6 @@ ALTER TABLE ONLY epayment.ep_pa_payable_line
     ADD CONSTRAINT fk_pa_payable_line_payment_advice
         FOREIGN KEY (payment_advice_id) REFERENCES epayment.ep_payment_advice (id);
 
-ALTER TABLE ONLY epayment.ep_pa_payable_line
-    ADD CONSTRAINT fk_pa_payable_line_gl_account
-        FOREIGN KEY (gl_account_id) REFERENCES epayment.ep_gl_account (id);
-
 CREATE SEQUENCE epayment.ep_pa_payable_line_id_seq
     INCREMENT BY 1
     MINVALUE 1

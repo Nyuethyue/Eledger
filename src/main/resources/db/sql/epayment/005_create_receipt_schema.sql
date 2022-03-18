@@ -100,10 +100,6 @@ ALTER TABLE ONLY epayment.ep_payment
     ADD CONSTRAINT fk_payment_payment_advice_info
         FOREIGN KEY (payment_advice_info_id) REFERENCES epayment.ep_payment_payment_advice_info (id);
 
-ALTER TABLE ONLY epayment.ep_payment
-    ADD CONSTRAINT fk_payment_gl_account
-        FOREIGN KEY (gl_account_id) REFERENCES epayment.ep_gl_account (id);
-
 CREATE SEQUENCE epayment.ep_payment_id_seq
     INCREMENT BY 1
     MINVALUE 1
