@@ -65,7 +65,7 @@ class CompleteRmaPaymentService implements CompleteRmaPaymentUseCase {
         );
 
         var receipt = Receipt.rmaWithoutId(
-                PaymentMode.RMA,
+                PaymentMode.RMA_PAYMENT,
                 ReceiptStatus.PRE_RECONCILIATION,
                 refCurrencyEntry,
                 receiptNumber,

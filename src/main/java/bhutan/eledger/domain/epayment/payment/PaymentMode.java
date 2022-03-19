@@ -18,8 +18,7 @@ public enum PaymentMode {
     RMA_PAYMENT("RMA_PAYMENT"),
     M_BOB("M_BOB"),
     BOB_INTERNET_BANKING("BOB_INTERNET_BANKING"),
-    BOB_COUNTER("BOB_COUNTER"),
-    RMA("RMA");;
+    BOB_COUNTER("BOB_COUNTER");
 
     private final String value;
 
